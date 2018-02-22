@@ -74,5 +74,14 @@ hs.application.watcher.new(function(name, event, app)
         end)
       end
     end)
+  elseif name == 'Tweetbot' and event == hs.application.watcher.launched then
+    if screenclass == 'small' then
+      gridset(50, 0, 50, 100)
+      hs.timer.doAfter(0.25, function()
+        gridset('opp', 'current', 'current', 'current')
+      end)
+    else
+      gridset(75, 0, 25, 55)
+    end
   end
 end):start()
