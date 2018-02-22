@@ -6,6 +6,13 @@ hs.grid.MARGINY = 0
 hs.grid.GRIDWIDTH = 100
 hs.grid.GRIDHEIGHT = 100
 
+local computerNameFull = hs.host.localizedName()
+local screenclass = 'large' -- assumes large iMac
+
+if string.match(string.lower(computerNameFull), 'macbook') then
+  screenclass = 'small'
+end
+
 require 'common'
 
 local windowGridKeyCombo = {'cmd', 'alt', 'ctrl'}
@@ -39,17 +46,33 @@ hs.hotkey.bind(windowGridKeyCombo, "'", function() gridset('opp', 'current', 'cu
 
 hs.application.watcher.new(function(name, event, app)
   if name == 'Terminal' and event == hs.application.watcher.launched then
-    gridset(75, 0, 25, 100, 'one-quarter')
+    if screenclass == 'small' then
+      gridset(50, 0, 50, 100)
+    else
+      gridset(75, 0, 25, 100, 'one-quarter')
+    end
   elseif name == 'TextEdit' and event == hs.application.watcher.launched then
-    gridset(75, 60, 25, 40)
+    if screenclass == 'small' then
+      gridset(50, 0, 50, 100)
+    else
+      gridset(75, 60, 25, 40)
+    end
   elseif (name == 'Atom' or name == 'GitHub Desktop') and event == hs.application.watcher.launched then
-    gridset(0, 0, 75, 100, 'three-quarters')
+    if screenclass == 'small' then
+      gridset(0, 0, 100, 100)
+    else
+      gridset(0, 0, 75, 100, 'three-quarters')
+    end
   elseif name == 'Google Chrome' and event == hs.application.watcher.launched then
     hs.timer.doAfter(0.25, function()
-      gridset(0, 0, 75, 100, 'three-quarters')
-      hs.timer.doAfter(0.25, function()
-        gridset(0, 'current', 'current', 'current')
-      end)
+      if screenclass == 'small' then
+        gridset(0, 0, 100, 100)
+      else
+        gridset(0, 0, 75, 100, 'three-quarters')
+        hs.timer.doAfter(0.25, function()
+          gridset(0, 'current', 'current', 'current')
+        end)
+      end
     end)
   end
 end):start()
