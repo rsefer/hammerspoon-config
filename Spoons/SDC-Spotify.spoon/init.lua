@@ -1,4 +1,8 @@
--- Spotify
+--- === SDC Spotify ===
+local obj = {}
+obj.__index = obj
+obj.name = "SDC-Spotify"
+
 local spotifyControlMenu = nil
 local spotifyTitleMenu = nil
 local spotifyTimer = nil
@@ -61,3 +65,5 @@ hs.application.watcher.new(function(name, event, app)
     end
   end
 end):start()
+
+return obj

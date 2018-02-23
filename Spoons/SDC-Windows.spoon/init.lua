@@ -1,4 +1,8 @@
--- Window Management
+--- === SDC Windows ===
+local obj = {}
+obj.__index = obj
+obj.name = "SDC-Windows"
+
 hs.window.animationDuration = 0
 hs.window.setFrameCorrectness = true
 hs.grid.MARGINX = 0
@@ -85,3 +89,5 @@ hs.application.watcher.new(function(name, event, app)
     end
   end
 end):start()
+
+return obj

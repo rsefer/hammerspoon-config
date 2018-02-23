@@ -1,4 +1,8 @@
--- Audio Switcher
+--- === SDC Audio ===
+local obj = {}
+obj.__index = obj
+obj.name = "SDC-Audio"
+
 local audioSwitcherDisplay = hs.menubar.new()
 local activeAudioSlug = 'headphones'
 hs.audiodevice.defaultOutputDevice()
@@ -34,3 +38,5 @@ end
 hs.hotkey.bind({'cmd', 'alt', 'ctrl'}, 'A', function()
   audioSwitcherSet()
 end)
+
+return obj

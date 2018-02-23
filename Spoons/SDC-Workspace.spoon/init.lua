@@ -1,4 +1,7 @@
--- Workspace
+--- === SDC Workspace ===
+local obj = {}
+obj.__index = obj
+obj.name = "SDC-Workspace"
 
 require 'common'
 
@@ -72,3 +75,5 @@ local menu_items = {
 
 menuWork:setTitle('W')
 menuWork:setMenu(menu_items)
+
+return obj

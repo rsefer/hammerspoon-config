@@ -1,6 +1,7 @@
--- Weather
-
-require 'common'
+--- === SDC Weather ===
+local obj = {}
+obj.__index = obj
+obj.name = "SDC-Weather"
 
 if keys.darksky_api_key then
 
@@ -90,3 +91,5 @@ if keys.darksky_api_key then
   updateWeather()
 
 end
+
+return obj

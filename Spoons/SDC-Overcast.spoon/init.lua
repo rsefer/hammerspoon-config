@@ -1,4 +1,8 @@
--- Overcast
+--- === SDC Overcast ===
+local obj = {}
+obj.__index = obj
+obj.name = "SDC-Overcast"
+
 local overcastWebview = nil
 local overcastWebviewHome = 'https://overcast.fm/podcasts'
 local isShown = false
@@ -52,3 +56,5 @@ overcastWebview = hs.webview.newBrowser(rect, { developerExtrasEnabled = true },
 if overcastMenu then
   overcastMenu:setClickCallback(toggleWebview)
 end
+
+return obj
