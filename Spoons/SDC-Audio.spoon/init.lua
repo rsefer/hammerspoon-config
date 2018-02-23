@@ -9,16 +9,10 @@ hs.audiodevice.defaultOutputDevice()
 
 function audioSwitcherSet()
 
-  if (hs.audiodevice.findOutputByName('USB Audio Device')) then
-    if activeAudioSlug == 'headphones' then
-      activeAudioSlug = 'built-in'
-      activeAudioName = 'Built-in Output'
-      menuTitle = '🖥'
-    else
-      activeAudioSlug = 'headphones'
-      activeAudioName = 'USB Audio Device'
-      menuTitle = '🎧'
-    end
+  if (hs.audiodevice.findOutputByName('USB Audio Device')) and activeAudioSlug ~= 'headphones' then
+    activeAudioSlug = 'headphones'
+    activeAudioName = 'USB Audio Device'
+    menuTitle = '🎧'
   else
     activeAudioSlug = 'built-in'
     activeAudioName = 'Built-in Output'
