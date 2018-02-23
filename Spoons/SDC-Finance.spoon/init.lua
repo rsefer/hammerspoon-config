@@ -31,7 +31,7 @@ function updateCrypto(currency, menu_item)
         end
       end
     end
-    menuTitle = ' ' .. menuTitleString
+    menuTitle = ' ' .. numWithCommas(menuTitleString)
     if useIcons == false then
       menuTitle = currency .. menuTitle
     end
