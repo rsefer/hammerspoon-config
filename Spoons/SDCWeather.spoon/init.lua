@@ -87,8 +87,8 @@ function obj:init()
   self.menuWeather = hs.menubar.new()
 end
 
-function obj:start(darksky_api_key, longitude, latitude)
-  obj:setConfig(keys.darksky_api_key, keys.longitude, keys.latitude)
+function obj:start(darksky_api_key, latitude, longitude)
+  obj:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
   obj:weatherTimerStart()
   obj:updateWeather()
 end
