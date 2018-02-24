@@ -1,7 +1,7 @@
 --- === SDC Overcast ===
 local obj = {}
 obj.__index = obj
-obj.name = "SDC-Overcast"
+obj.name = "SDCOvercast"
 
 local overcastWebview = nil
 local overcastWebviewHome = 'https://overcast.fm/podcasts'

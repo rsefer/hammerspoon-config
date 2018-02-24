@@ -1,7 +1,7 @@
 --- === SDC Spotify ===
 local obj = {}
 obj.__index = obj
-obj.name = "SDC-Spotify"
+obj.name = "SDCSpotify"
 
 local spotifyControlMenu = nil
 local spotifyTitleMenu = nil

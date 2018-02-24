@@ -1,7 +1,7 @@
 --- === SDC Finance ===
 local obj = {}
 obj.__index = obj
-obj.name = "SDC-Overcast"
+obj.name = "SDCFinance"
 
 -- Cryptocurrencies to display (likely in reverse order)
 -- User Coinmarketcap slug

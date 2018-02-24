@@ -1,7 +1,7 @@
 --- === SDC Workspace ===
 local obj = {}
 obj.__index = obj
-obj.name = "SDC-Workspace"
+obj.name = "SDCWorkspace"
 
 require 'common'
 

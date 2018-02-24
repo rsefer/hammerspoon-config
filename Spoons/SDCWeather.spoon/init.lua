@@ -1,7 +1,7 @@
 --- === SDC Weather ===
 local obj = {}
 obj.__index = obj
-obj.name = "SDC-Weather"
+obj.name = "SDCWeather"
 
 if keys.darksky_api_key then
 

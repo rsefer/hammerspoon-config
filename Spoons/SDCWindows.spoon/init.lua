@@ -1,7 +1,7 @@
 --- === SDC Windows ===
 local obj = {}
 obj.__index = obj
-obj.name = "SDC-Windows"
+obj.name = "SDCWindows"
 
 hs.window.animationDuration = 0
 hs.window.setFrameCorrectness = true
