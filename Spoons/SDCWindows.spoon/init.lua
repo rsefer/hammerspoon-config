@@ -3,95 +3,148 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCWindows"
 
-hs.window.animationDuration = 0
-hs.window.setFrameCorrectness = true
-hs.grid.MARGINX = 0
-hs.grid.MARGINY = 0
-hs.grid.GRIDWIDTH = 100
-hs.grid.GRIDHEIGHT = 100
-
-local computerNameFull = hs.host.localizedName()
-local screenclass = 'large' -- assumes large iMac
-
-if string.match(string.lower(computerNameFull), 'macbook') then
-  screenclass = 'small'
-end
-
-require 'common'
-
-local windowGridKeyCombo = {'cmd', 'alt', 'ctrl'}
-
---Size Left Half
-hs.hotkey.bind(windowGridKeyCombo, 'L', function() gridset(0, 0, 50, 100) end)
--- Size Right Half
-hs.hotkey.bind(windowGridKeyCombo, 'R', function() gridset(50, 0, 50, 100) end)
--- Size Full
-hs.hotkey.bind(windowGridKeyCombo, 'F', function() gridset(0, 0, 100, 100) end)
--- Size Centered
-hs.hotkey.bind(windowGridKeyCombo, 'C', function() gridset(12.5, 12.5, 75, 75) end)
--- Size Left 3/4ths
-hs.hotkey.bind(windowGridKeyCombo, 'N', function() gridset(0, 0, 75, 100, 'three-quarters') end)
--- Size 3/4ths Centered
-hs.hotkey.bind(windowGridKeyCombo, 'X', function() gridset(12.5, 0, 75, 100) end)
--- Size Right 1/4th
-hs.hotkey.bind(windowGridKeyCombo, 'M', function() gridset(75, 0, 25, 100, 'one-quarter') end)
--- Size Right 1/4th Top 1/2-ish
-hs.hotkey.bind(windowGridKeyCombo, ',', function() gridset(75, 0, 25, 55) end)
--- Size Right 1/4th Bottom 1/2-ish
-hs.hotkey.bind(windowGridKeyCombo, '.', function() gridset(75, 60, 25, 40) end)
--- Size Half Height, Top Edge
-hs.hotkey.bind(windowGridKeyCombo, 'T', function() gridset('current', 0, 'current', 50) end)
--- Size Half Height, Bottom Edge
-hs.hotkey.bind(windowGridKeyCombo, 'B', function() gridset('current', 50, 'current', 50) end)
--- Move to Left Edge
-hs.hotkey.bind(windowGridKeyCombo, ';', function() gridset(0, 'current', 'current', 'current') end)
--- Move to Right Edge
-hs.hotkey.bind(windowGridKeyCombo, "'", function() gridset('opp', 'current', 'current', 'current') end)
-
-hs.application.watcher.new(function(name, event, app)
-  delay = 0.5
-  if event == 1 or event == hs.application.watcher.launched then
-    if name == 'Terminal' then
-      if screenclass == 'small' then
-        gridset(50, 0, 50, 100, app)
-      else
-        gridset(75, 0, 25, 100, 'one-quarter', app)
-      end
-    elseif name == 'TextEdit' then
-      if screenclass == 'small' then
-        gridset(50, 0, 50, 100, app)
-      else
-        gridset(75, 60, 25, 40, app)
-      end
-    elseif (name == 'Atom' or name == 'GitHub Desktop') then
-      if screenclass == 'small' then
-        gridset(0, 0, 100, 100, app)
-      else
-        gridset(0, 0, 75, 100, 'three-quarters', app)
-      end
-    elseif name == 'Google Chrome' then
-      hs.timer.doAfter(delay, function()
-        if screenclass == 'small' then
-          gridset(0, 0, 100, 100, app)
-        else
-          gridset(0, 0, 75, 100, 'three-quarters', app)
-          hs.timer.doAfter(0.25, function()
-            gridset(0, 'current', 'current', 'current', app)
-          end)
-        end
-      end)
-    elseif name == 'Tweetbot' then
-      if screenclass == 'small' then
-        gridset(50, 0, 50, 100, app)
-        hs.timer.doAfter(delay, function()
-          gridset('opp', 'current', 'current', 'current', app)
-        end)
-      else
-        gridset(75, 0, 25, 55, app)
-      end
+local function contains(table, val)
+  for i = 1, #table do
+    if table[i] == val then
+      return true
     end
   end
+  return false
+end
 
-end):start()
+function obj:gridset(x1, y1, w1, h1, nickname, app)
+  local currentwin = hs.window.focusedWindow()
+  if app ~= nil then
+    currentwin = app:allWindows()[1] -- lua starts array at 1
+  end
+  local currentRect = hs.grid.get(currentwin)
+  local win = hs.window.focusedWindow()
+  local monitorName = win:screen():name()
+  if nickname ~= nil and obj.secondaryMonitorName ~= nil and obj.secondaryMonitorName == monitorName then
+    if nickname == '34ths' then
+      x1 = 25
+    elseif nickname == '14th' then
+      x1 = 0
+    end
+  end
+  if x1 == 'current' then
+    x2 = currentRect.x
+  elseif x1 == 'opp' then
+    x2 = 100 - currentRect.w
+  else
+    x2 = x1
+  end
+  if y1 == 'current' then
+    y2 = currentRect.y
+  else
+    y2 = y1
+  end
+  if w1 == 'current' then
+    w2 = currentRect.w
+  else
+    w2 = w1
+  end
+  if h1 == 'current' then
+    h2 = currentRect.h
+  else
+    h2 = h1
+  end
+  hs.grid.set(
+    win,
+    { x = x2, y = y2, w = w2, h = h2 },
+    win:screen()
+  )
+end
+
+function obj:setSecondaryMonitor(secondaryName)
+  obj.secondaryMonitorName = secondaryName
+end
+
+function obj:setWatchedApps(apps)
+  obj.watchedApps = apps
+  print(hs.inspect(obj.watchedApps))
+end
+
+function obj:bindHotkeys(mapping)
+  local def = {
+    sizeLeftHalf                    = function() obj:gridset(0, 0, 50, 100) end,
+    sizeRightHalf                   = function() obj:gridset(50, 0, 50, 100) end,
+    sizeFull                        = function() obj:gridset(0, 0, 100, 100) end,
+    sizeCentered                    = function() obj:gridset(12.5, 12.5, 75, 75) end,
+    sizeLeft34ths                   = function() obj:gridset(0, 0, 75, 100, '34ths') end,
+    size34thsCentered               = function() obj:gridset(12.5, 0, 75, 100) end,
+    sizeRight14th                   = function() obj:gridset(75, 0, 25, 100, '14th') end,
+    sizeRight14thTopHalfish         = function() obj:gridset(75, 0, 25, 55) end,
+    sizeRight14thBottomHalfish      = function() obj:gridset(75, 60, 25, 40) end,
+    sizeHalfHeightTopEdge           = function() obj:gridset('current', 0, 'current', 50) end,
+    sizeHalfHeightBottomEdge        = function() obj:gridset('current', 50, 'current', 50) end,
+    moveLeftEdge                    = function() obj:gridset(0, 'current', 'current', 'current') end,
+    moveRightEdge                   = function() obj:gridset('opp', 'current', 'current', 'current') end
+  }
+  hs.spoons.bindHotkeysToSpec(def, mapping)
+end
+
+function obj:init()
+
+  hs.window.animationDuration = 0
+  hs.window.setFrameCorrectness = true
+  hs.grid.MARGINX = 0
+  hs.grid.MARGINY = 0
+  hs.grid.GRIDWIDTH = 100
+  hs.grid.GRIDHEIGHT = 100
+
+  self.computerName = hs.host.localizedName()
+  self.screenClass = 'large' -- assumes large iMac
+  if string.match(string.lower(self.computerName), 'macbook') then
+    self.screenClass = 'small'
+  end
+  self.secondaryMonitorName = nil
+  self.watchedApps = {}
+  self.applicationWatcher = nil
+
+end
+
+function obj:start()
+
+  self.applicationWatcher = hs.application.watcher.new(function(name, event, app)
+    if event == 1 or event == hs.application.watcher.launched then
+      for k, watchedApp in ipairs(self.watchedApps) do
+        if contains(watchedApp.names, tostring(name)) then
+          standardDelay = 0.5
+          delay = 0
+          if watchedApp.delay ~= nil then
+            if watchedApp.delay == true then
+              delay = standardDelay
+            elseif watchedApp.delay > 0 then
+              delay = watchedApp.delay
+            end
+          end
+          hs.timer.doAfter(delay, function()
+            if obj.screenClass == 'small' then
+              obj:gridset(watchedApp.small.x1, watchedApp.small.y1, watchedApp.small.w1, watchedApp.small.h1, watchedApp.small.nickname, app)
+              if watchedApp.small.doAfter then
+                obj:gridset(watchedApp.small.doAfter.x1, watchedApp.small.doAfter.y1, watchedApp.small.doAfter.w1, watchedApp.small.doAfter.h1, watchedApp.small.doAfter.nickname)
+              end
+            else
+              obj:gridset(watchedApp.large.x1, watchedApp.large.y1, watchedApp.large.w1, watchedApp.large.h1, watchedApp.large.nickname, app)
+              if watchedApp.large.doAfter then
+                obj:gridset(watchedApp.large.doAfter.x1, watchedApp.large.doAfter.y1, watchedApp.large.doAfter.w1, watchedApp.large.doAfter.h1, watchedApp.large.doAfter.nickname)
+              end
+            end
+          end)
+          break
+        end
+      end
+    end
+
+  end):start()
+
+  return self
+end
+
+function obj:stop()
+  self.applicationWatcher:stop()
+  return self
+end
 
 return obj
