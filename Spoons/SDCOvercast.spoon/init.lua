@@ -15,7 +15,8 @@ local iconSize = 14.0
 local icon = hs.image.imageFromPath(script_path() .. 'images/overcast_orange.pdf'):setSize({ w = iconSize, h = iconSize })
 
 local js = hs.webview.usercontent.new('idhsovercastwebview')
-local injectFileResult, injectFileStatus = hs.execute("cat " .. script_path() .. "inject.js")
+local injectFileResult = ''
+for line in io.lines(script_path() .. "inject.js") do injectFileResult = injectFileResult .. line end
 localjsScript = "var thome = '" .. overcastWebviewHome .. "';" .. injectFileResult
 js:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'documentEnd' }):setCallback(function(message)
   if message.body.isPlaying then

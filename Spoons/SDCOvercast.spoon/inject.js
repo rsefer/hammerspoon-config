@@ -1,5 +1,4 @@
-// css tweaks
-// overcast.com doesn't allow css injection via traditional means
+/* css tweaks - overcast.com doesn't allow css injection via traditional means */
 $('.navlink:eq(1), #speedcontrols').hide();
 $('h2.ocseparatorbar:first()').css({
   marginTop: '0px'
@@ -26,14 +25,14 @@ if ($('#audioplayer').length > 0) {
   });
 }
 
-// refresh home page
+/* refresh home page */
 if (window.location.href == thome) {
   setTimeout(function() {
     location.reload();
   }, 60 * 1000);
 }
 
-// check play status
+/* check play status */
 setInterval(function() {
   var isAudioPlaying = false;
   if ($('#audioplayer').length > 0 && !$('#audioplayer').prop('paused')) {
