@@ -62,7 +62,6 @@ end
 
 function obj:setWatchedApps(apps)
   obj.watchedApps = apps
-  print(hs.inspect(obj.watchedApps))
 end
 
 function obj:bindHotkeys(mapping)
