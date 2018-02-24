@@ -49,45 +49,49 @@ hs.hotkey.bind(windowGridKeyCombo, ';', function() gridset(0, 'current', 'curren
 hs.hotkey.bind(windowGridKeyCombo, "'", function() gridset('opp', 'current', 'current', 'current') end)
 
 hs.application.watcher.new(function(name, event, app)
-  if name == 'Terminal' and event == hs.application.watcher.launched then
-    if screenclass == 'small' then
-      gridset(50, 0, 50, 100)
-    else
-      gridset(75, 0, 25, 100, 'one-quarter')
-    end
-  elseif name == 'TextEdit' and event == hs.application.watcher.launched then
-    if screenclass == 'small' then
-      gridset(50, 0, 50, 100)
-    else
-      gridset(75, 60, 25, 40)
-    end
-  elseif (name == 'Atom' or name == 'GitHub Desktop') and event == hs.application.watcher.launched then
-    if screenclass == 'small' then
-      gridset(0, 0, 100, 100)
-    else
-      gridset(0, 0, 75, 100, 'three-quarters')
-    end
-  elseif name == 'Google Chrome' and event == hs.application.watcher.launched then
-    hs.timer.doAfter(0.25, function()
+  delay = 0.5
+  if event == 1 or event == hs.application.watcher.launched then
+    if name == 'Terminal' then
       if screenclass == 'small' then
-        gridset(0, 0, 100, 100)
+        gridset(50, 0, 50, 100, app)
       else
-        gridset(0, 0, 75, 100, 'three-quarters')
-        hs.timer.doAfter(0.25, function()
-          gridset(0, 'current', 'current', 'current')
-        end)
+        gridset(75, 0, 25, 100, 'one-quarter', app)
       end
-    end)
-  elseif name == 'Tweetbot' and event == hs.application.watcher.launched then
-    if screenclass == 'small' then
-      gridset(50, 0, 50, 100)
-      hs.timer.doAfter(0.25, function()
-        gridset('opp', 'current', 'current', 'current')
+    elseif name == 'TextEdit' then
+      if screenclass == 'small' then
+        gridset(50, 0, 50, 100, app)
+      else
+        gridset(75, 60, 25, 40, app)
+      end
+    elseif (name == 'Atom' or name == 'GitHub Desktop') then
+      if screenclass == 'small' then
+        gridset(0, 0, 100, 100, app)
+      else
+        gridset(0, 0, 75, 100, 'three-quarters', app)
+      end
+    elseif name == 'Google Chrome' then
+      hs.timer.doAfter(delay, function()
+        if screenclass == 'small' then
+          gridset(0, 0, 100, 100, app)
+        else
+          gridset(0, 0, 75, 100, 'three-quarters', app)
+          hs.timer.doAfter(0.25, function()
+            gridset(0, 'current', 'current', 'current', app)
+          end)
+        end
       end)
-    else
-      gridset(75, 0, 25, 55)
+    elseif name == 'Tweetbot' then
+      if screenclass == 'small' then
+        gridset(50, 0, 50, 100, app)
+        hs.timer.doAfter(delay, function()
+          gridset('opp', 'current', 'current', 'current', app)
+        end)
+      else
+        gridset(75, 0, 25, 55, app)
+      end
     end
   end
+
 end):start()
 
 return obj

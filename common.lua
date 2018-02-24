@@ -13,8 +13,11 @@ function file_exists(name)
   end
 end
 
-function gridset(x1, y1, w1, h1, nickname)
+function gridset(x1, y1, w1, h1, nickname, app)
   local currentwin = hs.window.focusedWindow()
+  if app ~= nil then
+    currentwin = app:allWindows()[1] -- lua starts array at 1
+  end
   local currentRect = hs.grid.get(currentwin)
   local win = hs.window.focusedWindow()
   local monitorName = win:screen():name()

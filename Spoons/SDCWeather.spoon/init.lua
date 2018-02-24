@@ -34,7 +34,6 @@ function obj:weatherTimerStop()
 end
 
 function obj:updateWeather()
-  print("UPDATING")
   status, data, headers = hs.http.get('https://api.darksky.net/forecast/' .. obj.apiKey .. '/' .. obj.latitude .. ',' .. obj.longitude, {})
   if status == 200 then
     json = hs.json.decode(data)
