@@ -3,14 +3,14 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCFinance"
 
+require 'common'
+
 -- Cryptocurrencies to display (likely in reverse order)
 -- User Coinmarketcap slug
 local cryptocurrencies = {'bitcoin', 'ethereum'}
 local localcurrency = 'USD'
 local updateInterval = 60 * 5 -- seconds
 local fontSize = 14.0
-
-require 'common'
 
 local menusCrypto = {}
 local updateTimer = nil
@@ -55,15 +55,12 @@ function buildCryptoMenus()
       hs.urlevent.openURL('https://coinmarketcap.com/assets/' .. currency .. '/')
     end
     menusCrypto[i]:setClickCallback(setMenu)
-    iconPath = 'images/bitcoin.pdf'
-    if currency == 'BTC' then
-      iconPath = 'images/bitcoin.pdf'
-    elseif currency == 'ETH' then
-      iconPath = 'images/ethereum.pdf'
-    elseif currency == 'GNT' then
-      iconPath = 'images/golem.pdf'
-    elseif currency == 'LTC' then
-      iconPath = 'images/litecoin.pdf'
+    iconPathPrefix = script_path() .. 'images/'
+    iconPath = iconPathPrefix .. 'bitcoin.pdf'
+    if currency == 'bitcoin' then
+      iconPath = iconPathPrefix .. 'bitcoin.pdf'
+    elseif currency == 'ethereum' then
+      iconPath = iconPathPrefix .. 'ethereum.pdf'
     end
     icon = hs.image.imageFromPath(iconPath)
     menusCrypto[i]:setIcon(icon:setSize({ w = fontSize, h = fontSize }))

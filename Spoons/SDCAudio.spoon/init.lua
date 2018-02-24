@@ -32,7 +32,9 @@ function obj:bindHotkeys(mapping)
 end
 
 function obj:init()
-  self.audioSwitcherMenu = hs.menubar.new():setTitle('🔈🖥'):setClickCallback(obj.switchAudio)
+  self.audioSwitcherMenu = hs.menubar.new()
+    :setTitle('🔈🖥')
+    :setClickCallback(obj.switchAudio)
   self.activeAudioSlug = ''
   self:switchAudio()
 end

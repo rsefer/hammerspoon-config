@@ -11,7 +11,8 @@ hs.loadSpoon('SDCAudio'):bindHotkeys({
   switchAudio = {{'cmd', 'alt', 'ctrl'}, 'A'}
 })
 hs.loadSpoon('SDCOvercast')
-hs.loadSpoon('SDCWeather')
+print(keys.latitude)
+hs.loadSpoon('SDCWeather'):start(keys.darksky_api_key, keys.longitude, keys.latitude)
 hs.loadSpoon('SDCFinance')
 -- hs.loadSpoon('SDCWorkspace')
 -- hs.loadSpoon('SDCSpotify')
