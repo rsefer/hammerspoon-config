@@ -3,8 +3,6 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCWorkspace"
 
-require 'common'
-
 local menuWork = hs.menubar.new()
 
 function menu_item_callback(currentStatus, openOnly, openClose, hide)

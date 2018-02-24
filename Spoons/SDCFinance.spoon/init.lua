@@ -3,8 +3,6 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCFinance"
 
-require 'common'
-
 -- Cryptocurrencies to display (likely in reverse order)
 -- User Coinmarketcap slug
 local cryptocurrencies = {'bitcoin', 'ethereum'}
@@ -14,6 +12,11 @@ local fontSize = 14.0
 
 local menusCrypto = {}
 local updateTimer = nil
+
+-- https://stackoverflow.com/a/10992898
+function numWithCommas(n)
+  return tostring(math.floor(n)):reverse():gsub('(%d%d%d)','%1,'):gsub(',(%-?)$','%1'):reverse()
+end
 
 function updateTimerSet()
   updateTimer = hs.timer.doEvery(updateInterval, function()
