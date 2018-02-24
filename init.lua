@@ -7,7 +7,9 @@ dofile('config.lua')
 
 -- spoons
 hs.loadSpoon('SDC-Windows')
-hs.loadSpoon('SDC-Audio')
+hs.loadSpoon('SDCAudio'):bindHotkeys({
+  switchAudio = {{'cmd', 'alt', 'ctrl'}, 'A'}
+})
 hs.loadSpoon('SDC-Overcast')
 hs.loadSpoon('SDC-Weather')
 hs.loadSpoon('SDC-Finance')
