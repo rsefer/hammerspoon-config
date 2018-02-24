@@ -66,9 +66,11 @@ spoon.SDCAudio:bindHotkeys({
 })
 
 hs.loadSpoon('SDCOvercast')
+
 hs.loadSpoon('SDCWeather')
 spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
 spoon.SDCWeather:start()
+
 hs.loadSpoon('SDCFinance')
 
 -- hs.loadSpoon('SDCWorkspace')
