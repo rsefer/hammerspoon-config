@@ -12,7 +12,7 @@ hs.loadSpoon('SDCAudio'):bindHotkeys({
 })
 hs.loadSpoon('SDCOvercast')
 print(keys.latitude)
-hs.loadSpoon('SDCWeather'):start(keys.darksky_api_key, keys.longitude, keys.latitude)
+hs.loadSpoon('SDCWeather'):start(keys.darksky_api_key, keys.latitude, keys.longitude)
 hs.loadSpoon('SDCFinance')
 -- hs.loadSpoon('SDCWorkspace')
 -- hs.loadSpoon('SDCSpotify')
