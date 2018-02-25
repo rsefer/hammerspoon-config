@@ -116,6 +116,11 @@ spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
 spoon.SDCWeather:start()
 
 hs.loadSpoon('SDCFinance')
+spoon.SDCFinance:setConfig({
+  currencies = {'bitcoin', 'ethereum'}
+})
+spoon.SDCFinance:start()
+
 hs.loadSpoon('SDCSpotify')
 spoon.SDCSpotify:start()
 
