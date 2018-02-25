@@ -42,11 +42,11 @@ end
 
 function obj:init()
   if hs.spotify.isRunning() then
-    self.loadSpotifyMenus()
+    self:loadSpotifyMenus()
   end
   obj.spotifyTimer = hs.timer.doEvery(2, function()
     if hs.spotify:isRunning() then
-      obj.setSpotifyMenusText()
+      obj:setSpotifyMenusText()
     end
   end):stop()
 end
