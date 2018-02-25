@@ -94,6 +94,18 @@ spoon.SDCWorkspace:setWorkspaces({
       'Terminal'
     },
     hardToggle = {}
+  },
+  {
+    title = '🖌️ Design',
+    softToggleOpen = {
+      'Adobe Photoshop CC 2018',
+      'Adobe Illustrator'
+    },
+    softToggleClose = {
+      'Tweetbot',
+      'Messages'
+    },
+    hardToggle = {}
   }
 })
 
