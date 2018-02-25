@@ -46,9 +46,7 @@ spoon.SDCWindows:setWatchedApps({
     names = {'Google Chrome'},
     delay = true,
     small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-    large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths', doAfter = {
-      x1 = 0, y1 = 'current', w1 = 'current', h1 = 'current'
-    } }
+    large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' }
   },
   {
     names = {'Tweetbot'},
