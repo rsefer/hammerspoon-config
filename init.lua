@@ -63,14 +63,10 @@ spoon.SDCAudio:bindHotkeys({
   switchAudio = {hotkeyCombo, 'A'}
 })
 
-hs.loadSpoon('SDCOvercast')
-
-hs.loadSpoon('SDCWeather')
-spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
-spoon.SDCWeather:start()
-
-hs.loadSpoon('SDCFinance')
 hs.loadSpoon('SDCWorkspace')
+spoon.SDCWorkspace:bindHotkeys({
+  toggleChooser = {hotkeyCombo, 'W'}
+})
 spoon.SDCWorkspace:setWorkspaces({
   {
     title = '⌨️ Code',
@@ -100,6 +96,14 @@ spoon.SDCWorkspace:setWorkspaces({
     hardToggle = {}
   }
 })
+
+hs.loadSpoon('SDCOvercast')
+
+hs.loadSpoon('SDCWeather')
+spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
+spoon.SDCWeather:start()
+
+hs.loadSpoon('SDCFinance')
 -- hs.loadSpoon('SDCSpotify')
 
 -- Reload
