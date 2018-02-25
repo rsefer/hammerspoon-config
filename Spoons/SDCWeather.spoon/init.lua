@@ -23,16 +23,6 @@ local function getWeatherIcon(iconSlug)
   return iconLabel
 end
 
-function obj:weatherTimerStart()
-  obj.weatherTimer = hs.timer.doEvery(obj.updateInterval, function()
-    obj.updateWeather()
-  end)
-end
-
-function obj:weatherTimerStop()
-  obj.weatherTimer:stop()
-end
-
 function obj:updateWeather()
   status, data, headers = hs.http.get('https://api.darksky.net/forecast/' .. obj.apiKey .. '/' .. obj.latitude .. ',' .. obj.longitude, {})
   if status == 200 then
@@ -85,15 +75,18 @@ end
 function obj:init()
   self.updateInterval = 60 * 15
   self.menuWeather = hs.menubar.new()
+  self.weatherTimer = hs.timer.doEvery(obj.updateInterval, function()
+    obj.updateWeather()
+  end):stop()
 end
 
 function obj:start()
   obj:updateWeather()
-  obj:weatherTimerStart()
+  obj.weatherTimer:start()
 end
 
 function obj:stop()
-  obj:weatherTimerStop()
+  obj.weatherTimer:stop()
 end
 
 return obj
