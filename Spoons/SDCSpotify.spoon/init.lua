@@ -3,67 +3,78 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCSpotify"
 
-local spotifyControlMenu = nil
-local spotifyTitleMenu = nil
-local spotifyTimer = nil
-
-function spotifyTimerSet()
-  spotifyTimer = hs.timer.doEvery(2, function()
-    if hs.spotify:isRunning() then
-      setSpotifyMenusText()
-    end
-  end)
-end
-
-function setSpotifyMenusText()
-  if spotifyControlMenu then
+function obj:setSpotifyMenusText()
+  if obj.spotifyControlMenu then
     if hs.spotify:isPlaying() then
-      spotifyControlMenu:setTitle("❚❚")
+      obj.spotifyControlMenu:setTitle("❚❚")
     else
-      spotifyControlMenu:setTitle("▶")
+      obj.spotifyControlMenu:setTitle("▶")
     end
   end
-  if spotifyTitleMenu and hs.spotify.getCurrentArtist() and hs.spotify.getCurrentTrack() then
-    spotifyTitleMenu:setTitle(hs.spotify.getCurrentArtist() .. ' - ' .. '"' .. hs.spotify.getCurrentTrack() .. '"')
+  if obj.spotifyTitleMenu and hs.spotify.getCurrentArtist() and hs.spotify.getCurrentTrack() then
+    obj.spotifyTitleMenu:setTitle(hs.spotify.getCurrentArtist() .. ' - ' .. '"' .. hs.spotify.getCurrentTrack() .. '"')
   end
 end
 
-function loadSpotifyMenus()
-  spotifyTitleMenu = hs.menubar.new():setClickCallback(openSpotify)
-  spotifyControlMenu = hs.menubar.new():setClickCallback(spotifyTogglePlayPause)
+function obj:loadSpotifyMenus()
+  obj.spotifyTitleMenu = hs.menubar.new():setClickCallback(obj.openSpotify)
+  obj.spotifyControlMenu = hs.menubar.new():setClickCallback(obj.spotifyTogglePlayPause)
+  obj:setSpotifyMenusText()
 end
 
-function spotifyTogglePlayPause()
+function obj:unloadSpotifyMenus()
+  if obj.spotifyControlMenu then
+    obj.spotifyControlMenu:removeFromMenuBar():delete()
+  end
+  if obj.spotifyTitleMenu then
+    obj.spotifyTitleMenu:removeFromMenuBar():delete()
+  end
+end
+
+function obj:spotifyTogglePlayPause()
   hs.spotify.playpause()
-  setSpotifyMenusText()
+  obj:setSpotifyMenusText()
 end
 
-function openSpotify()
+function obj:openSpotify()
   hs.application.launchOrFocus('Spotify')
 end
 
-if hs.spotify.isRunning() then
-  loadSpotifyMenus()
-  spotifyTimerSet()
+function obj:init()
+  if hs.spotify.isRunning() then
+    self.loadSpotifyMenus()
+  end
+  obj.spotifyTimer = hs.timer.doEvery(2, function()
+    if hs.spotify:isRunning() then
+      obj.setSpotifyMenusText()
+    end
+  end):stop()
 end
 
-hs.application.watcher.new(function(name, event, app)
-  if name == 'Spotify' then
-    if event == hs.application.watcher.terminated then
-      if spotifyTimer then
-        spotifyTimer = spotifyTimer:stop() and nil
+function obj:start()
+
+  obj.spotifyTimer:start()
+
+  obj.watcher = hs.application.watcher.new(function(name, event, app)
+    if name == 'Spotify' then
+      if event == 2 or event == hs.application.watcher.terminated then
+        obj.spotifyTimer:stop()
+        obj:unloadSpotifyMenus()
+      elseif event == 1 or event == hs.application.watcher.launched then
+        obj:loadSpotifyMenus()
+        obj.spotifyTimer:start()
       end
-      if spotifyControlMenu then
-        spotifyControlMenu:removeFromMenuBar():delete()
-      end
-      if spotifyTitleMenu then
-        spotifyTitleMenu:removeFromMenuBar():delete()
-      end
-    elseif event == hs.application.watcher.launched then
-      loadSpotifyMenus()
-      spotifyTimerSet()
     end
-  end
-end):start()
+  end):start()
+
+  return self
+
+end
+
+function obj:stop()
+  obj.applicationWatcher:stop()
+  obj.spotifyTimer:stop()
+  return self
+end
 
 return obj
