@@ -58,8 +58,13 @@ function obj:setSpotifyMenus()
         x = obj.spotifyTitleMenuFrame.x + (obj.spotifyTitleMenuFrame.w * currentSongPositionPercentage),
         y = obj.spotifyTitleMenuFrame.h - 2
       })
-      obj.currentSongProgressBar:setStrokeColor({['hex'] = '1db954', ['alpha'] = 1})
+      alpha = 1
+      -- if currentSongPositionPercentage < 0.1 then
+      --   alpha = currentSongPositionPercentage * 10
+      -- end
+      obj.currentSongProgressBar:setStrokeColor({['hex'] = '1db954', ['alpha'] = alpha})
       obj.currentSongProgressBar:setStrokeWidth(4)
+      -- obj.currentSongProgressBar:show()
       if currentSongPositionPercentage > 0.05 then
         -- helps when song title length changes
         obj.currentSongProgressBar:show()
@@ -96,7 +101,7 @@ function obj:init()
   end
   self.showCurrentSongProgressBar = true
   self.currentSong = ''
-  self.spotifyTimer = hs.timer.doEvery(2, function()
+  self.spotifyTimer = hs.timer.doEvery(0.5, function()
     if hs.spotify:isRunning() then
       obj:setSpotifyMenus()
     end
