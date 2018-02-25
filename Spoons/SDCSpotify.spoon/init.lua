@@ -19,7 +19,8 @@ function obj:setSpotifyMenusText()
     newSongString = songString(hs.spotify.getCurrentArtist(), hs.spotify.getCurrentTrack())
     obj.spotifyTitleMenu:setTitle(newSongString)
     if newSongString ~= obj.currentSong then
-      hs.alert.show("🎵 " .. newSongString, {
+      hs.alert.closeSpecific(obj.currentSongAlertUUID, 0)
+      obj.currentSongAlertUUID = hs.alert.show("🎵 " .. newSongString, {
         fillColor = {
           white = 0,
           alpha = 0
@@ -70,8 +71,8 @@ function obj:init()
   if hs.spotify.isRunning() then
     self:loadSpotifyMenus()
   end
-  obj.currentSong = ''
-  obj.spotifyTimer = hs.timer.doEvery(2, function()
+  self.currentSong = ''
+  self.spotifyTimer = hs.timer.doEvery(2, function()
     if hs.spotify:isRunning() then
       obj:setSpotifyMenusText()
     end
