@@ -3,6 +3,10 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCSpotify"
 
+function songString(artist, track)
+  return artist .. ' - ' .. '"' .. track .. '"'
+end
+
 function obj:setSpotifyMenusText()
   if obj.spotifyControlMenu then
     if hs.spotify:isPlaying() then
@@ -12,7 +16,29 @@ function obj:setSpotifyMenusText()
     end
   end
   if obj.spotifyTitleMenu and hs.spotify.getCurrentArtist() and hs.spotify.getCurrentTrack() then
-    obj.spotifyTitleMenu:setTitle(hs.spotify.getCurrentArtist() .. ' - ' .. '"' .. hs.spotify.getCurrentTrack() .. '"')
+    newSongString = songString(hs.spotify.getCurrentArtist(), hs.spotify.getCurrentTrack())
+    obj.spotifyTitleMenu:setTitle(newSongString)
+    if newSongString ~= obj.currentSong then
+      hs.alert.show("🎵 " .. newSongString, {
+        fillColor = {
+          white = 0,
+          alpha = 0
+        },
+        strokeColor = {
+          white = 1,
+          alpha = 0
+        },
+        strokeWidth = 0,
+        textColor = {
+          white = 0,
+          alpha = 1
+        },
+        textSize = 10,
+        radius = 10,
+        atScreenEdge = 1
+      }, 5)
+    end
+    obj.currentSong = newSongString
   end
 end
 
@@ -44,6 +70,7 @@ function obj:init()
   if hs.spotify.isRunning() then
     self:loadSpotifyMenus()
   end
+  obj.currentSong = ''
   obj.spotifyTimer = hs.timer.doEvery(2, function()
     if hs.spotify:isRunning() then
       obj:setSpotifyMenusText()
