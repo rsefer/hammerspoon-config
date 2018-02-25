@@ -70,8 +70,36 @@ spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
 spoon.SDCWeather:start()
 
 hs.loadSpoon('SDCFinance')
-
--- hs.loadSpoon('SDCWorkspace')
+hs.loadSpoon('SDCWorkspace')
+spoon.SDCWorkspace:setWorkspaces({
+  {
+    title = '⌨️ Code',
+    softToggleOpen = {
+      'Google Chrome',
+      'GitHub Desktop',
+      'Atom',
+      'Terminal'
+    },
+    softToggleClose = {
+      'Tweetbot',
+      'Messages'
+    },
+    hardToggle = {}
+  },
+  {
+    title = '😁 Browse',
+    softToggleOpen = {
+      'Google Chrome',
+      'Tweetbot'
+    },
+    softToggleClose = {
+      'GitHub Desktop',
+      'Atom',
+      'Terminal'
+    },
+    hardToggle = {}
+  }
+})
 -- hs.loadSpoon('SDCSpotify')
 
 -- Reload

@@ -3,27 +3,22 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCWorkspace"
 
-local menuWork = hs.menubar.new()
-
-function menu_item_callback(currentStatus, openOnly, openClose, hide)
+local function menu_item_callback(itemTitle, softToggleOpen, softToggleClose, hardToggle)
   return function()
-    if currentStatus then
-      closeApps(openClose)
-    else
-      openApps(openOnly)
-      openApps(openClose)
-      hideApps(hide)
-    end
+    obj:hideApps(softToggleClose)
+    obj:openApps(softToggleOpen)
+    obj:openApps(hardToggle)
+    hs.alert.show(itemTitle)
   end
 end
 
-function openApps(apps)
+function obj:openApps(apps)
   for i, app in ipairs(apps) do
     hs.application.launchOrFocus(app)
   end
 end
 
-function hideApps(apps)
+function obj:hideApps(apps)
   for i, app in ipairs(apps) do
     thisApp = hs.application.find(app)
     if thisApp ~= nil then
@@ -32,7 +27,7 @@ function hideApps(apps)
   end
 end
 
-function closeApps(apps)
+function obj:closeApps(apps)
   for i, app in ipairs(apps) do
     thisApp = hs.application.find(app)
     if thisApp ~= nil then
@@ -41,37 +36,20 @@ function closeApps(apps)
   end
 end
 
-local menu_items = {
-  {
-    title = 'Code',
-    menu = {
-      {
-        title = 'Close',
-        fn = menu_item_callback(true, {},
-        {
-          'GitHub Desktop',
-          'Atom',
-          'Terminal'
-        },
-        {})
-      }
-    },
-    fn = menu_item_callback(false, {
-      'Google Chrome'
-    },
-    {
-      'GitHub Desktop',
-      'Atom',
-      'Terminal'
-    },
-    {
-      'Tweetbot',
-      'Messages'
-    })
-  }
-}
+function obj:setWorkspaces(workspaces)
+  obj.workspaces = workspaces
+  menuItems = {}
+  for i, workspace in ipairs(workspaces) do
+    menuItem = {}
+    menuItem.title = workspace.title
+    menuItem.fn = menu_item_callback(menuItem.title, workspace.softToggleOpen, workspace.softToggleClose, workspace.hardToggle)
+    table.insert(menuItems, menuItem)
+  end
+  obj.menuWorkspace:setMenu(menuItems)
+end
 
-menuWork:setTitle('W')
-menuWork:setMenu(menu_items)
+function obj:init()
+  self.menuWorkspace = hs.menubar.new():setTitle('W')
+end
 
 return obj
