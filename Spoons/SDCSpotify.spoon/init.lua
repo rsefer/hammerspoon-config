@@ -22,25 +22,37 @@ function obj:setSpotifyMenus()
 
     if newSongString ~= obj.currentSong then
       obj.currentSongDuration = hs.spotify.getDuration()
-      hs.alert.closeSpecific(obj.currentSongAlertUUID, 0)
-      obj.currentSongAlertUUID = hs.alert.show("🎵 " .. newSongString, {
-        fillColor = {
-          white = 0,
-          alpha = 0
-        },
-        strokeColor = {
-          white = 1,
-          alpha = 0
-        },
-        strokeWidth = 0,
-        textColor = {
-          white = 0,
-          alpha = 1
-        },
-        textSize = 10,
-        radius = 10,
-        atScreenEdge = 1
-      }, 5)
+
+      if hs.spotify:isPlaying() then
+        if obj.showAlerts then
+          hs.alert.closeSpecific(obj.currentSongAlertUUID, 0)
+          obj.currentSongAlertUUID = hs.alert.show("🎵 " .. newSongString, {
+            fillColor = {
+              white = 0,
+              alpha = 0
+            },
+            strokeColor = {
+              white = 1,
+              alpha = 0
+            },
+            strokeWidth = 0,
+            textColor = {
+              white = 0,
+              alpha = 1
+            },
+            textSize = 10,
+            radius = 10,
+            atScreenEdge = 1
+          }, 5)
+        end
+        if obj.showNotifications then
+          local notification = hs.notify.new({ title = hs.spotify.getCurrentTrack(), subTitle = 'Artist: ' .. hs.spotify.getCurrentArtist(), informativeText = 'Album: ' .. hs.spotify.getCurrentAlbum() })
+          notification:setIdImage(hs.image.imageFromAppBundle('com.spotify.client'))
+          notification:send()
+          hs.timer.doAfter(2.5, function() notification:withdraw() end)
+        end
+      end
+
     end
 
     if obj.showCurrentSongProgressBar then
@@ -96,11 +108,13 @@ function obj:spotifyTogglePlayPause()
 end
 
 function obj:init()
+  self.showCurrentSongProgressBar = true
+  self.showNotifications = true
+  self.showAlerts = false
   if hs.spotify.isRunning() then
     self:loadSpotifyMenus()
   end
-  self.showCurrentSongProgressBar = true
-  self.currentSong = ''
+
   self.spotifyTimer = hs.timer.doEvery(0.5, function()
     if hs.spotify:isRunning() then
       obj:setSpotifyMenus()
@@ -110,6 +124,7 @@ end
 
 function obj:start()
 
+  obj.currentSong = ''
   obj.currentSongDuration = 0
   obj.currentSongPosition = 0
   obj.spotifyTimer:start()
