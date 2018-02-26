@@ -99,6 +99,9 @@ function obj:unloadSpotifyMenus()
   end
   if obj.spotifyTitleMenu then
     obj.spotifyTitleMenu:removeFromMenuBar():delete()
+    if obj.currentSongProgressBar then
+      obj.currentSongProgressBar:delete()
+    end
   end
 end
 
