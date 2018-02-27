@@ -25,7 +25,19 @@ js:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'doc
   else
 
     if message.body.isPlaying then
+
       obj.overcastMenu:setIcon(icon, false)
+
+      if obj.hideSpotify then
+        if hs.spotify.isPlaying() then
+          hs.spotify.pause()
+        end
+        spoonSpotify = spoon.SDCSpotify
+        if spoonSpotify and (spoonSpotify.spotifyTitleMenu ~= nil or spoonSpotify.spotifyTitleMenu:isInMenuBar()) then
+          spoonSpotify:unloadSpotifyMenus()
+        end
+      end
+
     else
       obj.overcastMenu:setIcon(icon, true)
     end
@@ -81,6 +93,7 @@ function obj:init()
 
   self.isShown = false
   self.showProgressBar = true
+  self.hideSpotify = true
 
   self.overcastToolbar = hs.webview.toolbar.new('myConsole', { { id = 'resetBrowser', label = 'Home', fn = function(t, w, i) self.overcastWebview:url(overcastWebviewHome) end } })
     :sizeMode('small')

@@ -106,9 +106,11 @@ end
 function obj:unloadSpotifyMenus()
   if obj.spotifyControlMenu then
     obj.spotifyControlMenu:removeFromMenuBar():delete()
+    obj.spotifyControlMenu = nil
   end
   if obj.spotifyTitleMenu then
     obj.spotifyTitleMenu:removeFromMenuBar():delete()
+    obj.spotifyTitleMenu = nil
     if obj.currentSongProgressBar then
       obj.currentSongProgressBar:delete()
     end
