@@ -62,7 +62,8 @@ function obj:setSpotifyMenus()
     if obj.showCurrentSongProgressBar then
       currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
 
-      fontCharacterWidth = 8 -- with SF Mono @ size 14, use 7 or 8
+      -- at textSize 14...San Francisco: 7, SF Mono: 8
+      fontCharacterWidth = 8
       menubarHeight = 22
 
       obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = (string.len(newSongString)) * fontCharacterWidth })
