@@ -19,11 +19,52 @@ local injectFileResult = ''
 for line in io.lines(script_path() .. "inject.js") do injectFileResult = injectFileResult .. line end
 localjsScript = "var thome = '" .. overcastWebviewHome .. "';" .. injectFileResult
 js:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'documentEnd' }):setCallback(function(message)
-  if message.body.isPlaying then
-    obj.overcastMenu:setIcon(icon, false)
+
+  if message.body.page == 'home' then
+    obj.overCastInfoMenu:setIcon(nil)
   else
-    obj.overcastMenu:setIcon(icon, true)
+
+    if message.body.isPlaying then
+      obj.overcastMenu:setIcon(icon, false)
+    else
+      obj.overcastMenu:setIcon(icon, true)
+    end
+
+    if obj.showProgressBar then
+
+      local episodeString = message.body.podcast.name .. ' - ' .. message.body.podcast.episodeTitle
+
+      menubarHeight = 22
+
+      obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = 250 })
+        :appendElements({
+          id = 'songText',
+          type = 'rectangle',
+          action = 'fill',
+          frame = {
+            x = '0%',
+            y = menubarHeight - 2,
+            h = 2,
+            w = round(message.body.progress * 100, 2) .. '%'
+          },
+          fillColor = { ['hex'] = 'fc7e0f', alpha = 1.0 }
+        },
+        {
+          id = 'songProgress',
+          type = 'text',
+          text = episodeString,
+          textSize = 14,
+          textLineBreak = 'truncateTail',
+          textColor = { black = 1.0 },
+          textFont = 'SF Mono',
+          frame = { x = '0%', y = 1, h = '100%', w = '100%' }
+        })
+
+      obj.overCastInfoMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
+    end
+
   end
+
 end)
 
 function obj:toggleWebview()
@@ -39,10 +80,14 @@ end
 function obj:init()
 
   self.isShown = false
+  self.showProgressBar = true
 
   self.overcastToolbar = hs.webview.toolbar.new('myConsole', { { id = 'resetBrowser', label = 'Home', fn = function(t, w, i) self.overcastWebview:url(overcastWebviewHome) end } })
     :sizeMode('small')
     :displayMode('label')
+
+  self.overCastInfoMenu = hs.menubar.new()
+    :setClickCallback(obj.toggleWebview)
 
   self.overcastMenu = hs.menubar.new()
     :setClickCallback(obj.toggleWebview)

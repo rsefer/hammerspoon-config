@@ -25,17 +25,31 @@ if ($('#audioplayer').length > 0) {
   });
 }
 
-/* refresh home page */
 if (window.location.href == thome) {
+  webkit.messageHandlers.idhsovercastwebview.postMessage({
+    page: 'home'
+  });
   setTimeout(function() {
     location.reload();
   }, 60 * 1000);
+} else {
+  var progress = 0;
+  setInterval(function() {
+    var isAudioPlaying = false;
+    if ($('#audioplayer').length > 0) {
+      if (!$('#audioplayer').prop('paused')) {
+        isAudioPlaying = true;
+      }
+      var audioPlayer = document.getElementById('audioplayer');
+      progress = audioPlayer.currentTime / audioPlayer.duration;
+    }
+    webkit.messageHandlers.idhsovercastwebview.postMessage({
+      isPlaying: isAudioPlaying,
+      progress: progress,
+      podcast: {
+        name: $('.titlestack .ocbutton').html(),
+        episodeTitle: $('.titlestack .title').html(),
+      }
+    });
+  }, 3000);
 }
-
-/* check play status */
-setInterval(function() {
-  var isAudioPlaying = false;
-  if ($('#audioplayer').length > 0 && !$('#audioplayer').prop('paused')) {
-    isAudioPlaying = true;
-  } webkit.messageHandlers.idhsovercastwebview.postMessage({ isPlaying: isAudioPlaying });
-}, 3000);
