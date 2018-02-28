@@ -49,6 +49,18 @@ function sendProgress() {
   });
 }
 
+function togglePlayPause() {
+  if ($('#audioplayer').length > 0) {
+    var audioPlayer = $('#audioplayer').first();
+    if (audioPlayer.prop('paused')) {
+      audioPlayer[0].play();
+    } else {
+      audioPlayer[0].pause();
+    }
+    sendProgress();
+  }
+}
+
 if (window.location.href == thome) {
   webkit.messageHandlers.idhsovercastwebview.postMessage({
     page: 'home'
@@ -63,5 +75,5 @@ if (window.location.href == thome) {
   }, 2 * 1000);
   setInterval(function() {
     sendProgress()
-  }, 15 * 1000);
+  }, 5 * 1000);
 }
