@@ -51,5 +51,5 @@ if (window.location.href == thome) {
         episodeTitle: $('.titlestack .title').html(),
       }
     });
-  }, 3000);
+  }, 1000);
 }

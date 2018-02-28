@@ -20,8 +20,9 @@ for line in io.lines(script_path() .. "inject.js") do injectFileResult = injectF
 localjsScript = "var thome = '" .. overcastWebviewHome .. "';" .. injectFileResult
 js:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'documentEnd' }):setCallback(function(message)
 
-  if message.body.page == 'home' then
-    obj.overCastInfoMenu:setIcon(nil)
+  if message.body.page == 'home' or message.body.progress >= 1 then
+    obj.overcastInfoMenu:setIcon(nil)
+    obj.overcastMenu:setIcon(icon, true)
   else
 
     if message.body.isPlaying then
@@ -32,10 +33,10 @@ js:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'doc
         if hs.spotify.isPlaying() then
           hs.spotify.pause()
         end
-        spoonSpotify = spoon.SDCSpotify
-        if spoonSpotify and (spoonSpotify.spotifyTitleMenu ~= nil or spoonSpotify.spotifyTitleMenu:isInMenuBar()) then
-          spoonSpotify:unloadSpotifyMenus()
-        end
+        -- spoonSpotify = spoon.SDCSpotify
+        -- if spoonSpotify and (spoonSpotify.spotifyTitleMenu ~= nil or spoonSpotify.spotifyTitleMenu:isInMenuBar()) then
+        --   spoonSpotify:unloadSpotifyMenus()
+        -- end
       end
 
     else
@@ -50,7 +51,7 @@ js:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'doc
 
       obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = 250 })
         :appendElements({
-          id = 'songText',
+          id = 'songProgress',
           type = 'rectangle',
           action = 'fill',
           frame = {
@@ -62,7 +63,7 @@ js:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'doc
           fillColor = { ['hex'] = 'fc7e0f', alpha = 1.0 }
         },
         {
-          id = 'songProgress',
+          id = 'songText',
           type = 'text',
           text = episodeString,
           textSize = 14,
@@ -72,7 +73,7 @@ js:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'doc
           frame = { x = '0%', y = 1, h = '100%', w = '100%' }
         })
 
-      obj.overCastInfoMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
+      obj.overcastInfoMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
     end
 
   end
@@ -99,7 +100,7 @@ function obj:init()
     :sizeMode('small')
     :displayMode('label')
 
-  self.overCastInfoMenu = hs.menubar.new()
+  self.overcastInfoMenu = hs.menubar.new()
     :setClickCallback(obj.toggleWebview)
 
   self.overcastMenu = hs.menubar.new()
