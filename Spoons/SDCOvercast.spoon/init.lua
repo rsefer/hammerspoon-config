@@ -33,9 +33,8 @@ js:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'doc
         if hs.spotify.isPlaying() then
           hs.spotify.pause()
         end
-        -- spoonSpotify = spoon.SDCSpotify
-        -- if spoonSpotify and (spoonSpotify.spotifyTitleMenu ~= nil or spoonSpotify.spotifyTitleMenu:isInMenuBar()) then
-        --   spoonSpotify:unloadSpotifyMenus()
+        -- if hs.spoons.isLoaded('SDCSpotify') then
+        --   spoonSpotify = spoon.SDCSpotify
         -- end
       end
 

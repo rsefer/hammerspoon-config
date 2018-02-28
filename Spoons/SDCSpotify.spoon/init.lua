@@ -3,6 +3,16 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCSpotify"
 
+function script_path()
+  local str = debug.getinfo(2, 'S').source:sub(2)
+  return str:match("(.*/)")
+end
+
+local iconSize = 14.0
+local icon = hs.image.imageFromPath(script_path() .. 'images/spotify_green.pdf'):setSize({ w = iconSize, h = iconSize })
+local iconPlay = hs.image.imageFromPath(script_path() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
+local iconPause = hs.image.imageFromPath(script_path() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
+
 function songString(artist, track)
   return artist .. ' - ' .. '"' .. track .. '"'
 end
@@ -15,9 +25,9 @@ end
 function obj:setSpotifyMenus()
   if obj.spotifyControlMenu then
     if hs.spotify:isPlaying() then
-      obj.spotifyControlMenu:setTitle("❚❚")
+      obj.spotifyControlMenu:setIcon(iconPause)
     else
-      obj.spotifyControlMenu:setTitle("▶")
+      obj.spotifyControlMenu:setIcon(iconPlay)
     end
   end
   if obj.spotifyTitleMenu and hs.spotify.getCurrentArtist() and hs.spotify.getCurrentTrack() then
@@ -97,23 +107,11 @@ function obj:setSpotifyMenus()
   end
 end
 
-function obj:loadSpotifyMenus()
-  obj.spotifyTitleMenu = hs.menubar.new():setClickCallback(function() hs.application.launchOrFocus('Spotify') end)
-  obj.spotifyControlMenu = hs.menubar.new():setClickCallback(obj.spotifyTogglePlayPause)
-  obj:setSpotifyMenus()
-end
-
 function obj:unloadSpotifyMenus()
-  if obj.spotifyControlMenu then
-    obj.spotifyControlMenu:removeFromMenuBar():delete()
-    obj.spotifyControlMenu = nil
-  end
-  if obj.spotifyTitleMenu then
-    obj.spotifyTitleMenu:removeFromMenuBar():delete()
-    obj.spotifyTitleMenu = nil
-    if obj.currentSongProgressBar then
-      obj.currentSongProgressBar:delete()
-    end
+  obj.spotifyControlMenu:setIcon(nil)
+  obj.spotifyTitleMenu:setIcon(nil)
+  if obj.currentSongProgressBar then
+    obj.currentSongProgressBar:delete()
   end
 end
 
@@ -122,17 +120,36 @@ function obj:spotifyTogglePlayPause()
   obj:setSpotifyMenus()
 end
 
+function obj:toggleSpotify()
+  spotifyApp = hs.application.find('Spotify')
+  if hs.spotify:isRunning() and spotifyApp:isFrontmost() then
+    spotifyApp:hide()
+  else
+    hs.application.launchOrFocus('Spotify')
+  end
+end
+
 function obj:init()
   self.showCurrentSongProgressBar = true
   self.showNotifications = true
   self.showAlerts = false
-  if hs.spotify.isRunning() then
-    self:loadSpotifyMenus()
-  end
+
+  self.spotifyTitleMenu = hs.menubar.newWithPriority(2):setClickCallback(obj.toggleSpotify)
+  self.spotifyControlMenu = hs.menubar.newWithPriority(1):setClickCallback(obj.spotifyTogglePlayPause)
+  obj:setSpotifyMenus()
+
+  self.spotifyMenu = hs.menubar.newWithPriority(0)
+    :setClickCallback(obj.toggleSpotify)
+    :setIcon(icon, true)
 
   self.spotifyTimer = hs.timer.doEvery(0.5, function()
     if hs.spotify:isRunning() then
       obj:setSpotifyMenus()
+      if hs.spotify:isPlaying() then
+        obj.spotifyMenu:setIcon(icon, false)
+      else
+        obj.spotifyMenu:setIcon(icon, true)
+      end
     end
   end):stop()
 end
@@ -149,8 +166,8 @@ function obj:start()
       if event == 2 or event == hs.application.watcher.terminated then
         obj.spotifyTimer:stop()
         obj:unloadSpotifyMenus()
+        obj.spotifyMenu:setIcon(icon, true)
       elseif event == 1 or event == hs.application.watcher.launched then
-        obj:loadSpotifyMenus()
         obj.spotifyTimer:start()
       end
     end
