@@ -25,6 +25,30 @@ if ($('#audioplayer').length > 0) {
   });
 }
 
+var progress = 0;
+
+function sendProgress() {
+  var isAudioPlaying = false;
+  if ($('#audioplayer').length > 0) {
+    if (!$('#audioplayer').prop('paused')) {
+      isAudioPlaying = true;
+    }
+    var audioPlayer = document.getElementById('audioplayer');
+    progress = audioPlayer.currentTime / audioPlayer.duration;
+  }
+  if (!progress) {
+    progress = 0;
+  }
+  webkit.messageHandlers.idhsovercastwebview.postMessage({
+    isPlaying: isAudioPlaying,
+    progress: progress,
+    podcast: {
+      name: $('.titlestack .ocbutton').html(),
+      episodeTitle: $('.titlestack .title').html(),
+    }
+  });
+}
+
 if (window.location.href == thome) {
   webkit.messageHandlers.idhsovercastwebview.postMessage({
     page: 'home'
@@ -33,23 +57,11 @@ if (window.location.href == thome) {
     location.reload();
   }, 60 * 1000);
 } else {
-  var progress = 0;
+  sendProgress();
+  setTimeout(function() {
+    sendProgress();
+  }, 2 * 1000);
   setInterval(function() {
-    var isAudioPlaying = false;
-    if ($('#audioplayer').length > 0) {
-      if (!$('#audioplayer').prop('paused')) {
-        isAudioPlaying = true;
-      }
-      var audioPlayer = document.getElementById('audioplayer');
-      progress = audioPlayer.currentTime / audioPlayer.duration;
-    }
-    webkit.messageHandlers.idhsovercastwebview.postMessage({
-      isPlaying: isAudioPlaying,
-      progress: progress,
-      podcast: {
-        name: $('.titlestack .ocbutton').html(),
-        episodeTitle: $('.titlestack .title').html(),
-      }
-    });
-  }, 1000);
+    sendProgress()
+  }, 15 * 1000);
 }
