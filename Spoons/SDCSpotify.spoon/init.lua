@@ -96,7 +96,7 @@ function obj:setSpotifyMenus()
           textSize = 14,
           textLineBreak = 'truncateTail',
           textColor = { black = 1.0 },
-          textFont = 'SF Mono',
+          textFont = 'Courier',
           frame = { x = '0%', y = 1, h = '100%', w = '100%' }
         })
 
