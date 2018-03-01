@@ -74,10 +74,16 @@ function obj:setSpotifyMenus()
 
       fontCharacterWidth = 8
       menubarHeight = 22
+      titleWidth = (string.len(newSongString)) * fontCharacterWidth
+      if titleWidth > 250 then
+        barWidth = 250
+      else
+        barWidth = titleWidth
+      end
 
-      obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = (string.len(newSongString)) * fontCharacterWidth })
+      obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = barWidth })
         :appendElements({
-          id = 'songText',
+          id = 'songProgress',
           type = 'rectangle',
           action = 'fill',
           frame = {
@@ -89,7 +95,7 @@ function obj:setSpotifyMenus()
           fillColor = { ['hex'] = '1db954' }
         },
         {
-          id = 'songProgress',
+          id = 'songText',
           type = 'text',
           text = newSongString,
           textSize = 14,
