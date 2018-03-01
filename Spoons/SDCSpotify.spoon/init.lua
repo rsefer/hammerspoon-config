@@ -72,7 +72,6 @@ function obj:setSpotifyMenus()
     if obj.showCurrentSongProgressBar then
       currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
 
-      -- at textSize 14...San Francisco: 7, SF Mono: 8
       fontCharacterWidth = 8
       menubarHeight = 22
 
@@ -87,7 +86,7 @@ function obj:setSpotifyMenus()
             h = 2,
             w = round(currentSongPositionPercentage * 100, 2) .. '%'
           },
-          fillColor = { ['hex'] = '1db954', ['alpha'] = 1.0 }
+          fillColor = { ['hex'] = '1db954' }
         },
         {
           id = 'songProgress',
@@ -134,11 +133,11 @@ function obj:init()
   self.showNotifications = true
   self.showAlerts = false
 
-  self.spotifyTitleMenu = hs.menubar.newWithPriority(2):setClickCallback(obj.toggleSpotify)
-  self.spotifyControlMenu = hs.menubar.newWithPriority(1):setClickCallback(obj.spotifyTogglePlayPause)
+  self.spotifyTitleMenu = hs.menubar.new():setClickCallback(obj.toggleSpotify)
+  self.spotifyControlMenu = hs.menubar.new():setClickCallback(obj.spotifyTogglePlayPause)
   obj:setSpotifyMenus()
 
-  self.spotifyMenu = hs.menubar.newWithPriority(0)
+  self.spotifyMenu = hs.menubar.new()
     :setClickCallback(obj.toggleSpotify)
     :setIcon(icon, true)
 

@@ -99,7 +99,7 @@ function obj:init()
                 h = 2,
                 w = round(message.body.progress * 100, 2) .. '%'
               },
-              fillColor = { ['hex'] = 'fc7e0f', alpha = 1.0 }
+              fillColor = { ['hex'] = 'fc7e0f' }
             },
             {
               id = 'songText',
