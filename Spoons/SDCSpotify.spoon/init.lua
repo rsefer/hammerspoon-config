@@ -97,7 +97,7 @@ function obj:setSpotifyMenus()
         {
           id = 'songText',
           type = 'text',
-          text = newSongString,
+          text = newSongString:gsub(' ', ' '), -- replace 'normal space' character with 'en space',
           textSize = 14,
           textLineBreak = 'truncateTail',
           textColor = { black = 1.0 },

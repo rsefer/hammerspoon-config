@@ -104,7 +104,7 @@ function obj:init()
             {
               id = 'songText',
               type = 'text',
-              text = episodeString,
+              text = episodeString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
               textSize = 14,
               textLineBreak = 'truncateTail',
               textColor = { black = 1.0 },
