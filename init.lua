@@ -5,6 +5,11 @@
 dofile('config.lua')
 
 local hotkeyCombo = {'cmd', 'alt', 'ctrl'}
+local computerName = hs.host.localizedName()
+local screenClass = 'large' -- assumes large iMac
+if string.match(string.lower(computerName), 'macbook') then
+  screenClass = 'small'
+end
 
 -- Spoons
 
@@ -113,11 +118,13 @@ hs.loadSpoon('SDCWeather')
 spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
 spoon.SDCWeather:start()
 
-hs.loadSpoon('SDCFinance')
-spoon.SDCFinance:setConfig({
-  currencies = {'bitcoin', 'ethereum'}
-})
-spoon.SDCFinance:start()
+if screenClass ~= 'small' then
+  hs.loadSpoon('SDCFinance')
+  spoon.SDCFinance:setConfig({
+    currencies = {'bitcoin', 'ethereum'}
+  })
+  spoon.SDCFinance:start()
+end
 
 hs.loadSpoon('SDCOvercast')
 

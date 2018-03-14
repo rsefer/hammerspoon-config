@@ -69,7 +69,7 @@ function obj:setSpotifyMenus()
 
     end
 
-    if obj.showCurrentSongProgressBar then
+    if obj.screenClass ~= 'small' and obj.showCurrentSongProgressBar then
       currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
 
       fontCharacterWidth = 8
@@ -135,6 +135,13 @@ function obj:toggleSpotify()
 end
 
 function obj:init()
+
+  self.computerName = hs.host.localizedName()
+  self.screenClass = 'large' -- assumes large iMac
+  if string.match(string.lower(self.computerName), 'macbook') then
+    self.screenClass = 'small'
+  end
+
   self.showCurrentSongProgressBar = true
   self.showNotifications = true
   self.showAlerts = false

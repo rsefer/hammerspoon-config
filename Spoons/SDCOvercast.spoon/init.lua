@@ -32,6 +32,12 @@ end
 
 function obj:init()
 
+  self.computerName = hs.host.localizedName()
+  self.screenClass = 'large' -- assumes large iMac
+  if string.match(string.lower(self.computerName), 'macbook') then
+    self.screenClass = 'small'
+  end
+
   self.isShown = false
   self.showProgressBar = true
   self.hideSpotify = true
@@ -82,7 +88,7 @@ function obj:init()
           obj.overcastMenu:setIcon(icon, true)
         end
 
-        if obj.showProgressBar then
+        if obj.screenClass ~= 'small' and obj.showProgressBar then
 
           local episodeString = message.body.podcast.name .. ' - ' .. message.body.podcast.episodeTitle
 
