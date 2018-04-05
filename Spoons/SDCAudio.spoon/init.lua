@@ -36,12 +36,13 @@ function obj:switchAudio(direct)
 
   if newSource ~= nil then
     obj.activeAudioName = newSource.name
-    obj.activeTitle = newSource.icon
+    obj.activeMenuTitle = newSource.menuIcon
+    obj.activeAlertTitle = newSource.alertIcon
     obj.activeOrder = newSource.order
     hs.audiodevice.findOutputByName(obj.activeAudioName):setDefaultOutputDevice()
-    obj.audioSwitcherMenu:setTitle('🔈' .. obj.activeTitle)
+    obj.audioSwitcherMenu:setTitle('🔈' .. obj.activeMenuTitle)
     hs.alert.closeAll()
-    hs.alert.show(obj.activeTitle .. ' ' .. obj.activeAudioName)
+    hs.alert.show(obj.activeAlertTitle .. ' ' .. obj.activeAudioName)
     obj.activeAudioName = newSource.name
   end
 
@@ -71,7 +72,6 @@ end
 
 function obj:start()
   self.audioSwitcherMenu = hs.menubar.new()
-    :setTitle('🔈🖥')
     :setClickCallback(obj.switchAudio)
   self:switchAudio(1)
 end

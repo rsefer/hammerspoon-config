@@ -68,17 +68,20 @@ spoon.SDCAudio:setConfig({
   {
     order = 1,
     name = 'Built-in Output',
-    icon = '🖥'
+    menuIcon = '🖥',
+    alertIcon = '🖥'
   },
   {
     order = 2,
     name = 'USB Audio Device',
-    icon = '🎧'
+    menuIcon = '🎧',
+    alertIcon = '🎧'
   },
   {
     order = 3,
     name = 'AirPods',
-    icon = '',
+    menuIcon = '🎧',
+    alertIcon = '',
     overrides = 2
   }
 })
