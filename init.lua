@@ -64,9 +64,28 @@ spoon.SDCWindows:setWatchedApps({
 spoon.SDCWindows:start()
 
 hs.loadSpoon('SDCAudio')
+spoon.SDCAudio:setConfig({
+  {
+    order = 1,
+    name = 'Built-in Output',
+    icon = '🖥'
+  },
+  {
+    order = 2,
+    name = 'USB Audio Device',
+    icon = '🎧'
+  },
+  {
+    order = 3,
+    name = 'AirPods',
+    icon = '',
+    overrides = 2
+  }
+})
 spoon.SDCAudio:bindHotkeys({
   switchAudio = {hotkeyCombo, 'A'}
 })
+spoon.SDCAudio:start()
 
 hs.loadSpoon('SDCWorkspace')
 spoon.SDCWorkspace:bindHotkeys({

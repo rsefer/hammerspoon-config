@@ -3,36 +3,59 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCAudio"
 
-function obj:switchAudio()
+function directAudioSource(direct)
+  if obj.devices[direct] ~= nil then
+    return obj.devices[direct]
+  else
+    return nil
+  end
+end
 
-  -- Switch between on-board
-  -- ('Built-in Output' or 'Headphones' plugged into the 3.5mm slot)
-  -- and an external headset ('AirPods' or USB Audio Device')
-  if (hs.audiodevice.findOutputByName('Built-in Output') or hs.audiodevice.findOutputByName('Headphones')) and obj.activeAudioSlug ~= 'built-in' then
-    obj.activeAudioSlug = 'built-in'
-    if hs.audiodevice.findOutputByName('Headphones') then
-      obj.activeAudioName = 'Headphones'
-    else
-      obj.activeAudioName = 'Built-in Output'
+function nextAudioSource(current)
+  newSource = nil
+  workingStart = current - 1
+  if workingStart < 1 then
+    workingStart = obj.devicesCount
+  end
+  for i = workingStart, 1, -1 do
+    thisDevice = obj.devices[i]
+    if hs.audiodevice.findOutputByName(thisDevice.name) and (obj.devices[current].overrides == nil or obj.devices[current].overrides ~= i) then
+      return thisDevice
     end
-    obj.activeTitle = '🖥'
-  elseif hs.audiodevice.findOutputByName('AirPods') then
-    obj.activeAudioSlug = 'headphones'
-    obj.activeAudioName = 'AirPods'
-    obj.activeTitle = ''
-  elseif hs.audiodevice.findOutputByName('USB Audio Device') then
-    obj.activeAudioSlug = 'headphones'
-    obj.activeAudioName = 'USB Audio Device'
-    obj.activeTitle = '🎧'
+  end
+  return newSource
+end
+
+function obj:switchAudio(direct)
+
+  if direct ~= nil then
+    newSource = directAudioSource(direct)
+  else
+    newSource = nextAudioSource(obj.activeOrder)
   end
 
-  hs.audiodevice.findOutputByName(obj.activeAudioName):setDefaultOutputDevice()
-  obj.audioSwitcherMenu:setTitle('🔈' .. obj.activeTitle)
-  hs.alert.closeAll()
-  hs.alert.show(obj.activeTitle .. ' ' .. obj.activeAudioName)
+  if newSource ~= nil then
+    obj.activeAudioName = newSource.name
+    obj.activeTitle = newSource.icon
+    obj.activeOrder = newSource.order
+    hs.audiodevice.findOutputByName(obj.activeAudioName):setDefaultOutputDevice()
+    obj.audioSwitcherMenu:setTitle('🔈' .. obj.activeTitle)
+    hs.alert.closeAll()
+    hs.alert.show(obj.activeTitle .. ' ' .. obj.activeAudioName)
+    obj.activeAudioName = newSource.name
+  end
 
   return self
 
+end
+
+function obj:setConfig(devices)
+  obj.devices = devices
+  count = 0
+  for i, v in pairs(devices) do
+    count = count + 1
+  end
+  obj.devicesCount = count
 end
 
 function obj:bindHotkeys(mapping)
@@ -43,11 +66,14 @@ function obj:bindHotkeys(mapping)
 end
 
 function obj:init()
+  --
+end
+
+function obj:start()
   self.audioSwitcherMenu = hs.menubar.new()
     :setTitle('🔈🖥')
     :setClickCallback(obj.switchAudio)
-  self.activeAudioSlug = ''
-  self:switchAudio()
+  self:switchAudio(1)
 end
 
 return obj
