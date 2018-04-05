@@ -12,7 +12,8 @@ local overcastWebviewHome = 'https://overcast.fm/podcasts'
 local viewWidth = 350
 local viewHeight = 400
 local iconSize = 14.0
-local icon = hs.image.imageFromPath(script_path() .. 'images/overcast_orange.pdf'):setSize({ w = iconSize, h = iconSize })
+local iconFull = hs.image.imageFromPath(script_path() .. 'images/overcast_orange.pdf')
+local icon = iconFull:setSize({ w = iconSize, h = iconSize })
 local iconPlay = hs.image.imageFromPath(script_path() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
 local iconPause = hs.image.imageFromPath(script_path() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
 
@@ -69,7 +70,15 @@ function obj:init()
 
       if message.body.page == 'home' or message.body.progress >= 1 then
         obj.overcastInfoMenu:setIcon(nil)
+        obj.overcastControlMenu:setIcon(nil)
         obj.overcastMenu:setIcon(icon, true)
+        local notification = hs.notify.new({ title = 'Overcast', subTitle = 'Finished playing ' .. message.body.podcast.name })
+        notification:setIdImage(iconFull)
+        notification:send()
+        hs.timer.doAfter(2.5, function() notification:withdraw() end)
+        if message.body.isFinished or message.body.progress >= 1 then
+          self.overcastWebview:url(overcastWebviewHome)
+        end
       else
 
         if message.body.isPlaying then

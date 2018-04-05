@@ -29,18 +29,23 @@ var progress = 0;
 
 function sendProgress() {
   var isAudioPlaying = false;
+  var isFinished = false;
   if ($('#audioplayer').length > 0) {
     if (!$('#audioplayer').prop('paused')) {
       isAudioPlaying = true;
     }
     var audioPlayer = document.getElementById('audioplayer');
     progress = audioPlayer.currentTime / audioPlayer.duration;
+    if (progress == 1) {
+      isFinished = true;
+    }
   }
   if (!progress) {
     progress = 0;
   }
   webkit.messageHandlers.idhsovercastwebview.postMessage({
     isPlaying: isAudioPlaying,
+    isFinished: isFinished,
     progress: progress,
     podcast: {
       name: $('.titlestack .ocbutton').html(),
