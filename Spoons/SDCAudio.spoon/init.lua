@@ -5,10 +5,21 @@ obj.name = "SDCAudio"
 
 function obj:switchAudio()
 
-  if (hs.audiodevice.findOutputByName('Built-in Output')) and obj.activeAudioSlug ~= 'built-in' then
+  -- Switch between on-board
+  -- ('Built-in Output' or 'Headphones' plugged into the 3.5mm slot)
+  -- and an external headset ('AirPods' or USB Audio Device')
+  if (hs.audiodevice.findOutputByName('Built-in Output') or hs.audiodevice.findOutputByName('Headphones')) and obj.activeAudioSlug ~= 'built-in' then
     obj.activeAudioSlug = 'built-in'
-    obj.activeAudioName = 'Built-in Output'
+    if hs.audiodevice.findOutputByName('Headphones') then
+      obj.activeAudioName = 'Headphones'
+    else
+      obj.activeAudioName = 'Built-in Output'
+    end
     obj.activeTitle = '🖥'
+  elseif hs.audiodevice.findOutputByName('AirPods') then
+    obj.activeAudioSlug = 'headphones'
+    obj.activeAudioName = 'AirPods'
+    obj.activeTitle = ''
   elseif hs.audiodevice.findOutputByName('USB Audio Device') then
     obj.activeAudioSlug = 'headphones'
     obj.activeAudioName = 'USB Audio Device'
