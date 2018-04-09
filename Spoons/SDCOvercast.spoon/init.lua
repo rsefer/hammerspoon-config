@@ -78,7 +78,7 @@ function obj:init()
           notification:send()
           hs.timer.doAfter(2.5, function() notification:withdraw() end)
         end
-        if message.body.isFinished or message.body.progress >= 1 then
+        if message.body.isFinished or (message.body.progress ~=nil and message.body.progress >= 1) then
           self.overcastWebview:url(overcastWebviewHome)
         end
       else
