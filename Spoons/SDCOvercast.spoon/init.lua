@@ -72,10 +72,12 @@ function obj:init()
         obj.overcastInfoMenu:setIcon(nil)
         obj.overcastControlMenu:setIcon(nil)
         obj.overcastMenu:setIcon(icon, true)
-        local notification = hs.notify.new({ title = 'Overcast', subTitle = 'Finished playing ' .. message.body.podcast.name })
-        notification:setIdImage(iconFull)
-        notification:send()
-        hs.timer.doAfter(2.5, function() notification:withdraw() end)
+        if message.body.podcast ~= nil then
+          local notification = hs.notify.new({ title = 'Overcast', subTitle = 'Finished playing ' .. message.body.podcast.name })
+          notification:setIdImage(iconFull)
+          notification:send()
+          hs.timer.doAfter(2.5, function() notification:withdraw() end)
+        end
         if message.body.isFinished or message.body.progress >= 1 then
           self.overcastWebview:url(overcastWebviewHome)
         end
