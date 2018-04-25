@@ -13,13 +13,14 @@ local function contains(table, val)
 end
 
 function obj:gridset(x1, y1, w1, h1, nickname, app)
-  local currentwin = hs.window.focusedWindow()
+  local win = nil
   if app ~= nil then
-    currentwin = app:allWindows()[1] -- lua starts array at 1
+    win = app:allWindows()[1] -- lua starts array at 1
+  else
+    win = hs.window.focusedWindow()
   end
-  local currentRect = hs.grid.get(currentwin)
-  local win = hs.window.focusedWindow()
   if win ~= nil then
+    local currentRect = hs.grid.get(win)
     local monitorName = win:screen():name()
     if nickname ~= nil and obj.secondaryMonitorName ~= nil and obj.secondaryMonitorName == monitorName then
       if nickname == '34ths' then
