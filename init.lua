@@ -90,51 +90,51 @@ spoon.SDCAudio:bindHotkeys({
 })
 spoon.SDCAudio:start()
 
-hs.loadSpoon('SDCWorkspace')
-spoon.SDCWorkspace:bindHotkeys({
-  toggleChooser = {hotkeyCombo, 'W'}
-})
-spoon.SDCWorkspace:setWorkspaces({
-  {
-    title = '⌨️ Code',
-    softToggleOpen = {
-      'Google Chrome',
-      'GitHub Desktop',
-      'Atom',
-      'Terminal'
-    },
-    softToggleClose = {
-      'Tweetbot',
-      'Messages'
-    },
-    hardToggle = {}
-  },
-  {
-    title = '😁 Browse',
-    softToggleOpen = {
-      'Google Chrome',
-      'Tweetbot'
-    },
-    softToggleClose = {
-      'GitHub Desktop',
-      'Atom',
-      'Terminal'
-    },
-    hardToggle = {}
-  },
-  {
-    title = '🖌️ Design',
-    softToggleOpen = {
-      'Adobe Photoshop CC 2018',
-      'Adobe Illustrator'
-    },
-    softToggleClose = {
-      'Tweetbot',
-      'Messages'
-    },
-    hardToggle = {}
-  }
-})
+-- hs.loadSpoon('SDCWorkspace')
+-- spoon.SDCWorkspace:bindHotkeys({
+--   toggleChooser = {hotkeyCombo, 'W'}
+-- })
+-- spoon.SDCWorkspace:setWorkspaces({
+--   {
+--     title = '⌨️ Code',
+--     softToggleOpen = {
+--       'Google Chrome',
+--       'GitHub Desktop',
+--       'Atom',
+--       'Terminal'
+--     },
+--     softToggleClose = {
+--       'Tweetbot',
+--       'Messages'
+--     },
+--     hardToggle = {}
+--   },
+--   {
+--     title = '😁 Browse',
+--     softToggleOpen = {
+--       'Google Chrome',
+--       'Tweetbot'
+--     },
+--     softToggleClose = {
+--       'GitHub Desktop',
+--       'Atom',
+--       'Terminal'
+--     },
+--     hardToggle = {}
+--   },
+--   {
+--     title = '🖌️ Design',
+--     softToggleOpen = {
+--       'Adobe Photoshop CC 2018',
+--       'Adobe Illustrator'
+--     },
+--     softToggleClose = {
+--       'Tweetbot',
+--       'Messages'
+--     },
+--     hardToggle = {}
+--   }
+-- })
 
 hs.loadSpoon('SDCWeather')
 spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
