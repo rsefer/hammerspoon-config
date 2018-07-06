@@ -42,6 +42,7 @@ function obj:init()
   self.isShown = false
   self.showProgressBar = true
   self.hideSpotify = true
+  self.hideItunes = true
 
   self.overcastToolbar = hs.webview.toolbar.new('myConsole', { { id = 'resetBrowser', label = 'Home', fn = function(t, w, i) self.overcastWebview:url(overcastWebviewHome) end } })
     :sizeMode('small')
@@ -91,6 +92,12 @@ function obj:init()
           if obj.hideSpotify then
             if hs.spotify.isPlaying() then
               hs.spotify.pause()
+            end
+          end
+
+          if obj.hideItunes then
+            if hs.itunes.isPlaying() then
+              hs.itunes.pause()
             end
           end
 
