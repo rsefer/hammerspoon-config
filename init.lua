@@ -153,8 +153,8 @@ hs.loadSpoon('SDCOvercast')
 -- hs.loadSpoon('SDCSpotify')
 -- spoon.SDCSpotify:start()
 
-hs.loadSpoon('SDCItunes')
-spoon.SDCItunes:start()
+-- hs.loadSpoon('SDCItunes')
+-- spoon.SDCItunes:start()
 
 -- Reload
 hs.hotkey.bind(hotkeyCombo, '/', function()
