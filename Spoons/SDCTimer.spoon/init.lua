@@ -37,9 +37,12 @@ function timeString()
 	return timeString
 end
 
+function updateTimeElapsedAlert()
+	hs.alert.show(timeString(), obj.alertStyle, 9)
+end
+
 function updateTimeElapsed()
 	obj.timeAccrued = os.time() - obj.timeStart
-	hs.alert.show(timeString(), obj.alertStyle, 9)
 end
 
 function obj:toggleTimer()
@@ -54,13 +57,19 @@ end
 function obj:timerReset()
 	obj.timeAccrued = 0
 	obj.timeStart = nil
-	obj.timerMain = hs.timer.doEvery(obj.timeIntervalSeconds, function() updateTimeElapsed() end):stop()
+	obj.timerMain = hs.timer.doEvery(obj.timeIntervalSeconds, function()
+		updateTimeElapsedAlert()
+	end):stop()
+	obj.timerCounter = hs.timer.doEvery(60, function()
+		updateTimeElapsed()
+	end):stop()
 end
 
 function obj:timerStart()
 	local time = os.date('*t')
 	obj.timeStart = os.time()
 	obj.timerMain:start()
+	obj.timerCounter:start()
 	obj.timerMenu:setIcon(iconGreen, false)
 	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
 	hs.alert.show(timeStringStart, obj.alertStyle, 5)
@@ -69,6 +78,7 @@ end
 
 function obj:timerStop()
 	obj.timerMain:stop()
+	obj.timerCounter:stop()
 	obj.timerMenu:setIcon(iconBlack, true)
 	local timeStringEnd = 'Timer stopped. Total time: ' .. timeString()
 	hs.alert.show(timeStringEnd, obj.alertStyle, 15)
@@ -83,6 +93,7 @@ end
 
 function obj:start()
 	obj.timerMain = nil
+	obj.timerCounter = nil
 	obj:timerReset()
 end
 
