@@ -20,7 +20,7 @@ function timeString()
 	local remainingTime = obj.timeAccrued
 	local timeAccruedHoursR = math.floor(obj.timeAccrued / 60 / 60)
 	if (timeAccruedHoursR > 0) then
-		timeString = timeAccruedHoursR .. 'hour'
+		timeString = timeAccruedHoursR .. ' hour'
 		if timeAccruedHoursR ~= 1 then
 			timeString = timeString .. 's'
 		end
