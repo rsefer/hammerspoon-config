@@ -62,14 +62,17 @@ function obj:timerStart()
 	obj.timeStart = os.time()
 	obj.timerMain:start()
 	obj.timerMenu:setIcon(iconGreen, false)
-	hs.alert.show('Timer started at ' .. os.date('%I:%M%p'), obj.alertStyle, 5)
+	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
+	hs.alert.show(timeStringStart, obj.alertStyle, 5)
+	print(timeStringStart)
 end
 
 function obj:timerStop()
 	obj.timerMain:stop()
 	obj.timerMenu:setIcon(iconBlack, true)
-	hs.alert.show('Timer stopped. Total time: ' .. timeString(), obj.alertStyle, 15)
-	print('Timer stopped. Total time: ' .. timeString())
+	local timeStringEnd = 'Timer stopped. Total time: ' .. timeString()
+	hs.alert.show(timeStringEnd, obj.alertStyle, 15)
+	print(timeStringEnd)
 end
 
 function obj:init()
