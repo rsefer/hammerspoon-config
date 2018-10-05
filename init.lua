@@ -140,6 +140,9 @@ hs.loadSpoon('SDCWeather')
 spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
 spoon.SDCWeather:start()
 
+hs.loadSpoon('SDCTimer')
+spoon.SDCTimer:start()
+
 -- if screenClass ~= 'small' then
 --   hs.loadSpoon('SDCFinance')
 --   spoon.SDCFinance:setConfig({
