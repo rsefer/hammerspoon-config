@@ -141,6 +141,9 @@ spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
 spoon.SDCWeather:start()
 
 hs.loadSpoon('SDCTimer')
+spoon.SDCTimer:bindHotkeys({
+  toggleTimer = {hotkeyCombo, '\\'}
+})
 spoon.SDCTimer:start()
 
 -- if screenClass ~= 'small' then

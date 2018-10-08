@@ -85,6 +85,13 @@ function obj:timerStop()
 	print(timeStringEnd)
 end
 
+function obj:bindHotkeys(mapping)
+  local def = {
+    toggleTimer = hs.fnutils.partial(self.toggleTimer, self)
+  }
+  hs.spoons.bindHotkeysToSpec(def, mapping)
+end
+
 function obj:init()
 	self.timerMenu = hs.menubar.new()
 		:setClickCallback(obj.toggleTimer)
