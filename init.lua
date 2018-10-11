@@ -140,6 +140,12 @@ hs.loadSpoon('SDCWeather')
 spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
 spoon.SDCWeather:start()
 
+hs.loadSpoon('SDCPhone')
+spoon.SDCPhone:bindHotkeys({
+  toggleChooser = {hotkeyCombo, 'P'}
+})
+spoon.SDCPhone:setShortcuts(keys.phoneNumbers)
+
 hs.loadSpoon('SDCTimer')
 spoon.SDCTimer:bindHotkeys({
   toggleTimer = {hotkeyCombo, '\\'}
