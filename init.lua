@@ -86,7 +86,7 @@ spoon.SDCAudio:setConfig({
   }
 })
 spoon.SDCAudio:bindHotkeys({
-  switchAudio = {hotkeyCombo, 'A'}
+  switchAudio = {hotkeyCombo, 'f13'}
 })
 spoon.SDCAudio:start()
 
@@ -148,7 +148,7 @@ spoon.SDCPhone:setShortcuts(keys.phoneNumbers)
 
 hs.loadSpoon('SDCTimer')
 spoon.SDCTimer:bindHotkeys({
-  toggleTimer = {hotkeyCombo, '\\'}
+  toggleTimer = {hotkeyCombo, 'f14'}
 })
 spoon.SDCTimer:start()
 
@@ -172,4 +172,4 @@ hs.loadSpoon('SDCOvercast')
 hs.hotkey.bind(hotkeyCombo, '/', function()
   hs.reload()
 end)
-hs.alert.show('Configuration reloaded.')
+hs.alert.show('Configuration loaded.')
