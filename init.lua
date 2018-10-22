@@ -86,9 +86,10 @@ spoon.SDCAudio:setConfig({
   }
 })
 spoon.SDCAudio:bindHotkeys({
-  switchAudio = {hotkeyCombo, 'f13'}
+  switchAudio = {hotkeyCombo, 'A'}
 })
 spoon.SDCAudio:start()
+hs.hotkey.bind(hotkeyCombo, 'f13', nil, function() spoon.SDCAudio:switchAudio() end)
 
 -- hs.loadSpoon('SDCWorkspace')
 -- spoon.SDCWorkspace:bindHotkeys({
@@ -148,9 +149,10 @@ spoon.SDCPhone:setShortcuts(keys.phoneNumbers)
 
 hs.loadSpoon('SDCTimer')
 spoon.SDCTimer:bindHotkeys({
-  toggleTimer = {hotkeyCombo, 'f14'}
+  toggleTimer = {hotkeyCombo, '\\'}
 })
 spoon.SDCTimer:start()
+hs.hotkey.bind(hotkeyCombo, 'f14', nil, function() spoon.SDCTimer:toggleTimer() end)
 
 -- if screenClass ~= 'small' then
 --   hs.loadSpoon('SDCFinance')
