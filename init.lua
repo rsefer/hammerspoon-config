@@ -137,6 +137,12 @@ hs.hotkey.bind(hotkeyCombo, 'f13', nil, function() spoon.SDCAudio:switchAudio() 
 --   }
 -- })
 
+hs.loadSpoon('SDCDash')
+spoon.SDCDash:setConfig(keys.dashHomeURL)
+spoon.SDCDash:bindHotkeys({
+  toggleWebview = {hotkeyCombo, 'f15'}
+})
+
 hs.loadSpoon('SDCWeather')
 spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
 spoon.SDCWeather:start()
