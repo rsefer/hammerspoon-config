@@ -63,6 +63,12 @@ spoon.SDCWindows:setWatchedApps({
 })
 spoon.SDCWindows:start()
 
+hs.loadSpoon('SDCHomeAssistant')
+spoon.SDCHomeAssistant:setConfig(keys.homeassistant_api_endpoint, keys.homeassistant_api_key)
+spoon.SDCHomeAssistant:bindHotkeys({
+  switchLights = {hotkeyCombo, 'f19'}
+})
+
 hs.loadSpoon('SDCAudio')
 spoon.SDCAudio:setConfig({
   {
