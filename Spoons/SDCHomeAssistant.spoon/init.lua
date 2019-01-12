@@ -5,20 +5,25 @@ obj.name = "SDCHomeAssistant"
 
 function obj:switchLights(on)
 
-	-- newLight = 'on'
-	-- if obj.lastLight == 'on' then
-	-- 	newLight = 'off'
-	-- 	obj.lastLight = 'off'
-	-- end
+	local groupLightsName = 'group.all_lights'
 
-	-- postString = obj.api_endpoint .. 'services/light/turn_' .. newLight
-	postString = obj.api_endpoint .. 'services/light/toggle'
-
-	status, data, headers = hs.http.asyncPost(postString, '{"entity_id":"group.all_lights"}', {
+	status, data, headers = hs.http.asyncGet(obj.api_endpoint .. 'states/' .. groupLightsName, {
 		['Authorization'] = 'Bearer ' .. obj.api_key,
 		['Content-Type'] = 'application/json'
 	}, function(cstatus, cbody, cheaders)
-		-- print(cstatus)
+		local json = hs.json.decode(cbody)
+		if json.state then
+			local action = 'on'
+			if json.state == 'on' then
+				action = 'off'
+			end
+			status, data, headers = hs.http.asyncPost(obj.api_endpoint .. 'services/light/turn_' .. action, '{"entity_id":"' .. groupLightsName .. '"}', {
+				['Authorization'] = 'Bearer ' .. obj.api_key,
+				['Content-Type'] = 'application/json'
+			}, function(cstatus, cbody, cheaders)
+				-- print(cstatus)
+			end)
+		end
 	end)
 
   return self
@@ -35,10 +40,6 @@ function obj:bindHotkeys(mapping)
     switchLights = hs.fnutils.partial(self.switchLights, self)
   }
   hs.spoons.bindHotkeysToSpec(def, mapping)
-end
-
-function obj:init()
-	obj.lastLight = 'off'
 end
 
 return obj
