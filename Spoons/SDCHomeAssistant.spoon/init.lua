@@ -49,7 +49,7 @@ function obj:moveWindows()
 		if app ~= nil then
 			windows = app:allWindows()
 			screen = hs.screen.find(watchedApp.monitor)
-			delay = 0
+			delay = 6
 			for k2, window in ipairs(windows) do
 				hs.timer.doAfter(delay, function()
 					window:moveToScreen(screen)
