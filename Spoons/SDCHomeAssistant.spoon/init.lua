@@ -37,12 +37,40 @@ function toggleSecondaryMonitor(action)
 		['Content-Type'] = 'application/json'
 	}, function(cstatus, cbody, cheaders)
 		-- print(cstatus)
+		if action == 'on' then
+			obj:moveWindows()
+		end
 	end)
+end
+
+function obj:moveWindows()
+	for k, watchedApp in ipairs(obj.watchedApps) do
+		app = hs.application.find(watchedApp.name)
+		if app ~= nil then
+			windows = app:allWindows()
+			screen = hs.screen.find(watchedApp.monitor)
+			delay = 0
+			for k2, window in ipairs(windows) do
+				hs.timer.doAfter(delay, function()
+					window:moveToScreen(screen)
+					if watchedApp.large ~= nil then
+						hs.timer.doAfter(1, function()
+							spoon.SDCWindows:gridset(watchedApp.large.x1, watchedApp.large.y1, watchedApp.large.w1, watchedApp.large.h1, watchedApp.large.nickname, app)
+						end)
+					end
+				end)
+			end
+		end
+	end
 end
 
 function obj:setConfig(api_endpoint, api_key)
 	obj.api_endpoint = api_endpoint
   obj.api_key = api_key
+end
+
+function obj:setWatchedApps(apps)
+  obj.watchedApps = apps
 end
 
 function obj:bindHotkeys(mapping)

@@ -10,6 +10,7 @@ local screenClass = 'large' -- assumes large iMac
 if string.match(string.lower(computerName), 'macbook') then
   screenClass = 'small'
 end
+local secondaryMonitorName = 'DELL P2415Q'
 
 -- Spoons
 
@@ -29,7 +30,7 @@ spoon.SDCWindows:bindHotkeys({
   moveLeftEdge                    = {hotkeyCombo, ';'},
   moveRightEdge                   = {hotkeyCombo, "'"}
 })
-spoon.SDCWindows:setSecondaryMonitor('DELL P2415Q')
+spoon.SDCWindows:setSecondaryMonitor(secondaryMonitorName)
 spoon.SDCWindows:setWatchedApps({
   {
     names = {'Terminal'},
@@ -65,6 +66,23 @@ spoon.SDCWindows:start()
 
 hs.loadSpoon('SDCHomeAssistant')
 spoon.SDCHomeAssistant:setConfig(keys.homeassistant_api_endpoint, keys.homeassistant_api_key)
+spoon.SDCHomeAssistant:setWatchedApps({
+  {
+    name = 'Terminal',
+    monitor = secondaryMonitorName,
+		large = { x1 = 75, y1 = 0, w1 = 25, h1 = 100, nickname = '14th' }
+  },
+	{
+    name = 'Atom',
+    monitor = secondaryMonitorName,
+		large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' }
+  },
+	{
+    name = 'GitHub Desktop',
+    monitor = secondaryMonitorName,
+		large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' }
+  }
+})
 spoon.SDCHomeAssistant:bindHotkeys({
   switchLights = {hotkeyCombo, 'f19'}
 })
