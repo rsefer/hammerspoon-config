@@ -68,6 +68,7 @@ spoon.SDCHomeAssistant:setConfig(keys.homeassistant_api_endpoint, keys.homeassis
 spoon.SDCHomeAssistant:bindHotkeys({
   switchLights = {hotkeyCombo, 'f19'}
 })
+spoon.SDCHomeAssistant:start()
 
 hs.loadSpoon('SDCAudio')
 spoon.SDCAudio:setConfig({
