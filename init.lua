@@ -87,6 +87,7 @@ spoon.SDCHomeAssistant:bindHotkeys({
   switchLights = {hotkeyCombo, 'f19'}
 })
 spoon.SDCHomeAssistant:start()
+spoon.SDCHomeAssistant:toggleSecondaryMonitor('on')
 
 hs.loadSpoon('SDCAudio')
 spoon.SDCAudio:setConfig({

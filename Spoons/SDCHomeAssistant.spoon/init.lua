@@ -30,7 +30,7 @@ function obj:switchLights(on)
 
 end
 
-function toggleSecondaryMonitor(action)
+function obj:toggleSecondaryMonitor(action)
 	local secondaryMonitorEntityID = 'switch.secondary_monitor'
 	status, data, headers = hs.http.asyncPost(obj.api_endpoint .. 'services/switch/turn_' .. action, '{"entity_id":"' .. secondaryMonitorEntityID .. '"}', {
 		['Authorization'] = 'Bearer ' .. obj.api_key,
@@ -88,7 +88,7 @@ function obj:start()
 			if state == hs.caffeinate.watcher.systemDidWake then
 				action = 'on'
 			end
-			toggleSecondaryMonitor(action)
+			self:toggleSecondaryMonitor(action)
 		end
 
 	end)
