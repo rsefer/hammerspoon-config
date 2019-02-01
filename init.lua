@@ -4,6 +4,11 @@
 
 dofile('config.lua')
 
+function script_path()
+  local str = debug.getinfo(2, 'S').source:sub(2)
+  return str:match("(.*/)")
+end
+
 local hotkeyCombo = {'cmd', 'alt', 'ctrl'}
 local computerName = hs.host.localizedName()
 local screenClass = 'large' -- assumes large iMac
@@ -201,6 +206,11 @@ hs.loadSpoon('SDCOvercast')
 
 -- hs.loadSpoon('SDCItunes')
 -- spoon.SDCItunes:start()
+
+-- Dark Mode toggle
+hs.hotkey.bind(hotkeyCombo, 'f16', function()
+  hs.execute('osascript ' .. script_path() .. '/misc/darkmode-toggle.scpt')
+end)
 
 -- Reload
 hs.hotkey.bind(hotkeyCombo, '/', function()
