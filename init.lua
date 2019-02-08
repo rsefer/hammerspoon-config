@@ -21,6 +21,7 @@ local secondaryMonitorName = 'DELL P2415Q'
 
 hs.loadSpoon('SDCWindows')
 spoon.SDCWindows:bindHotkeys({
+	resetWindows										= {hotkeyCombo, 'f18'},
   sizeLeftHalf                    = {hotkeyCombo, 'L'},
   sizeRightHalf                   = {hotkeyCombo, 'R'},
   sizeFull                        = {hotkeyCombo, 'F'},
@@ -40,31 +41,36 @@ spoon.SDCWindows:setWatchedApps({
   {
     names = {'Terminal'},
     small = { x1 = 50, y1 = 0, w1 = 50, h1 = 100 },
-    large = { x1 = 75, y1 = 0, w1 = 25, h1 = 100, nickname = '14th' }
+    large = { x1 = 75, y1 = 0, w1 = 25, h1 = 100, nickname = '14th' },
+		with2Monitors = 'secondary'
   },
   {
     names = {'TextEdit'},
     small = { x1 = 50, y1 = 0, w1 = 50, h1 = 100 },
-    large = { x1 = 75, y1 = 60, w1 = 25, h1 = 40 }
+    large = { x1 = 75, y1 = 60, w1 = 25, h1 = 40 },
+		with2Monitors = 'primary'
   },
   {
     names = {'Atom', 'GitHub Desktop'},
     delay = 1,
     small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-    large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' }
+    large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' },
+		with2Monitors = 'secondary'
   },
   {
     names = {'Google Chrome'},
     delay = true,
     small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-    large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' }
+    large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' },
+		with2Monitors = 'primary'
   },
   {
     names = {'Tweetbot'},
     small = { x1 = 50, y1 = 0, w1 = 50, h1 = 100, doAfter = {
       x1 = 'opp', y1 = 'current', w1 = 'current', h1 = 'current'
     } },
-    large = { x1 = 75, y1 = 0, w1 = 25, h1 = 55 }
+    large = { x1 = 75, y1 = 0, w1 = 25, h1 = 55 },
+		with2Monitors = 'primary'
   }
 })
 spoon.SDCWindows:start()

@@ -61,6 +61,27 @@ function obj:gridset(x1, y1, w1, h1, nickname, app)
 	end
 end
 
+function obj:resetWindows()
+	if obj.secondaryMonitorName ~= nil then
+		for k, appGroup in ipairs(obj.watchedApps) do
+			for k2, name in ipairs(appGroup.names) do
+				app = hs.application.find(name)
+				windows = app:allWindows()
+				screenTarget = hs.screen.primaryScreen()
+				if appGroup.with2Monitors == 'secondary' then
+					screenTarget = hs.screen.find(obj.secondaryMonitorName)
+				end
+				for k3, window in ipairs(windows) do
+					window:moveToScreen(screenTarget)
+					if appGroup.with2Monitors == 'secondary' then
+						obj:gridset(appGroup.large.x1, appGroup.large.y1, appGroup.large.w1, appGroup.large.h1, appGroup.large.nickname, app)
+					end
+				end
+			end
+		end
+	end
+end
+
 function obj:setSecondaryMonitor(secondaryName)
   obj.secondaryMonitorName = secondaryName
 end
@@ -71,6 +92,7 @@ end
 
 function obj:bindHotkeys(mapping)
   local def = {
+		resetWindows										= function() obj:resetWindows() end,
     sizeLeftHalf                    = function() obj:gridset(0, 0, 50, 100) end,
     sizeRightHalf                   = function() obj:gridset(50, 0, 50, 100) end,
     sizeFull                        = function() obj:gridset(0, 0, 100, 100) end,
