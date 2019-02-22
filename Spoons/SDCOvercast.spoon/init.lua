@@ -32,6 +32,7 @@ function obj:toggleWebview()
     obj.isShown = false
   else
     obj.overcastWebview:show():bringToFront(true)
+		obj.overcastWebview:hswindow():focus()
     obj.isShown = true
   end
 end
@@ -153,6 +154,12 @@ function obj:init()
     :allowTextEntry(true)
     :shadow(true)
     :attachedToolbar(self.overcastToolbar)
+		:windowCallback(function(action, webview, state)
+			if action == 'focusChange' and state ~= true then
+				self.overcastWebview:hide()
+		    self.isShown = false
+			end
+		end)
 
 end
 
