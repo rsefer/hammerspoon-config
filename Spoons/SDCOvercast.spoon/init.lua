@@ -118,6 +118,12 @@ function obj:init()
 
           menubarHeight = 22
 
+					textColor = '000000'
+
+					if hs.host.interfaceStyle() == 'Dark' then
+						textColor = 'ffffff'
+					end
+
           obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = 250 })
             :appendElements({
               id = 'songProgress',
@@ -137,7 +143,7 @@ function obj:init()
               text = episodeString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
               textSize = 14,
               textLineBreak = 'truncateTail',
-              textColor = { black = 1.0 },
+              textColor = { ['hex'] = textColor },
               textFont = 'Courier',
               frame = { x = '0%', y = 1, h = '100%', w = '100%' }
             })
