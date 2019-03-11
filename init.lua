@@ -213,12 +213,24 @@ hs.loadSpoon('SDCOvercast')
 -- hs.loadSpoon('SDCItunes')
 -- spoon.SDCItunes:start()
 
+-- Do Not Disturb toggle
+-- (in Settings > Keyboard > Shortcuts)
+-- {'cmd', 'alt', 'ctrl'}, f17
+
 -- Dark Mode toggle
 hs.hotkey.bind(hotkeyCombo, 'f16', function()
   hs.execute('osascript ' .. script_path() .. '/misc/darkmode-toggle.scpt')
 end)
 
--- Reload
+-- Force Quit Hammerspoon
+-- (in Settings > Keyboard > Shortcuts)
+-- {'cmd', 'alt', 'ctrl'}, -
+
+-- Launch Hammerspoon
+-- (in Settings > Keyboard > Shortcuts)
+-- {'cmd', 'alt', 'ctrl'}, +
+
+-- Reload Hammerspoon
 hs.hotkey.bind(hotkeyCombo, '/', function()
   hs.reload()
 end)
