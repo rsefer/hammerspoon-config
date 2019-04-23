@@ -16,6 +16,7 @@ if string.match(string.lower(computerName), 'macbook') then
   screenClass = 'small'
 end
 local secondaryMonitorName = 'DELL P2415Q'
+local tertiaryMonitorName = 'Yam Display'
 
 -- Spoons
 
@@ -37,32 +38,33 @@ spoon.SDCWindows:bindHotkeys({
   moveRightEdge                   = {hotkeyCombo, "'"}
 })
 spoon.SDCWindows:setSecondaryMonitor(secondaryMonitorName)
+spoon.SDCWindows:setTertiaryMonitor(tertiaryMonitorName)
 spoon.SDCWindows:setWatchedApps({
   {
     names = {'Terminal'},
-    small = { x1 = 50, y1 = 0, w1 = 50, h1 = 100 },
+    small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
     large = { x1 = 75, y1 = 0, w1 = 25, h1 = 100, nickname = '14th' },
-		with2Monitors = 'secondary'
+		withMultipleMonitors = 'tertiary'
   },
   {
     names = {'TextEdit'},
     small = { x1 = 50, y1 = 0, w1 = 50, h1 = 100 },
     large = { x1 = 75, y1 = 60, w1 = 25, h1 = 40 },
-		with2Monitors = 'primary'
+		withMultipleMonitors = 'primary'
   },
   {
     names = {'Atom', 'GitHub Desktop'},
     delay = 1,
     small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-    large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' },
-		with2Monitors = 'secondary'
+    large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
+		withMultipleMonitors = 'secondary'
   },
   {
     names = {'Google Chrome'},
     delay = true,
     small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
     large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' },
-		with2Monitors = 'primary'
+		withMultipleMonitors = 'primary'
   },
   {
     names = {'Tweetbot'},
@@ -70,7 +72,7 @@ spoon.SDCWindows:setWatchedApps({
       x1 = 'opp', y1 = 'current', w1 = 'current', h1 = 'current'
     } },
     large = { x1 = 75, y1 = 0, w1 = 25, h1 = 55 },
-		with2Monitors = 'primary'
+		withMultipleMonitors = 'primary'
   }
 })
 spoon.SDCWindows:start()
@@ -78,20 +80,20 @@ spoon.SDCWindows:start()
 hs.loadSpoon('SDCHomeAssistant')
 spoon.SDCHomeAssistant:setConfig(keys.homeassistant_api_endpoint, keys.homeassistant_api_key)
 spoon.SDCHomeAssistant:setWatchedApps({
-  {
-    name = 'Terminal',
-    monitor = secondaryMonitorName,
-		large = { x1 = 75, y1 = 0, w1 = 25, h1 = 100, nickname = '14th' }
-  },
+  -- {
+  --   name = 'Terminal',
+  --   monitor = tertiaryMonitorName,
+	-- 	large = { x1 = 75, y1 = 0, w1 = 25, h1 = 100, nickname = '14th' }
+  -- },
 	{
     name = 'Atom',
     monitor = secondaryMonitorName,
-		large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' }
+		large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 }
   },
 	{
     name = 'GitHub Desktop',
     monitor = secondaryMonitorName,
-		large = { x1 = 0, y1 = 0, w1 = 75, h1 = 100, nickname = '34ths' }
+		large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 }
   }
 })
 spoon.SDCHomeAssistant:bindHotkeys({

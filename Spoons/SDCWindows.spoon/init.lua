@@ -62,19 +62,25 @@ function obj:gridset(x1, y1, w1, h1, nickname, app)
 end
 
 function obj:resetWindows()
-	if obj.secondaryMonitorName ~= nil then
+	if obj.secondaryMonitorName ~= nil or obj.tertiaryMonitorName ~= nil then
 		for k, appGroup in ipairs(obj.watchedApps) do
 			for k2, name in ipairs(appGroup.names) do
 				app = hs.application.find(name)
 				windows = app:allWindows()
 				screenTarget = hs.screen.primaryScreen()
-				if appGroup.with2Monitors == 'secondary' then
+				if appGroup.withMultipleMonitors == 'tertiary' then
+					screenTarget = hs.screen.find(obj.tertiaryMonitorName)
+				elseif appGroup.withMultipleMonitors == 'secondary' then
 					screenTarget = hs.screen.find(obj.secondaryMonitorName)
 				end
 				for k3, window in ipairs(windows) do
 					window:moveToScreen(screenTarget)
-					if appGroup.with2Monitors == 'secondary' then
-						obj:gridset(appGroup.large.x1, appGroup.large.y1, appGroup.large.w1, appGroup.large.h1, appGroup.large.nickname, app)
+					if appGroup.withMultipleMonitors == 'secondary' or appGroup.withMultipleMonitors == 'tertiary' then
+						local appDimensions = appGroup.large
+						if appGroup.withMultipleMonitors == 'tertiary' then
+							appDimensions = appGroup.small
+						end
+						obj:gridset(appDimensions.x1, appDimensions.y1, appDimensions.w1, appDimensions.h1, appDimensions.nickname, app)
 					end
 				end
 			end
@@ -84,6 +90,10 @@ end
 
 function obj:setSecondaryMonitor(secondaryName)
   obj.secondaryMonitorName = secondaryName
+end
+
+function obj:setTertiaryMonitor(tertiaryName)
+  obj.tertiaryMonitorName = tertiaryName
 end
 
 function obj:setWatchedApps(apps)
@@ -125,6 +135,7 @@ function obj:init()
     self.screenClass = 'small'
   end
   self.secondaryMonitorName = nil
+	self.tertiaryMonitorName = nil
   self.watchedApps = {}
   self.applicationWatcher = nil
 
@@ -135,6 +146,7 @@ function obj:start()
   self.applicationWatcher = hs.application.watcher.new(function(name, event, app)
     if event == 1 or event == hs.application.watcher.launched then
       for k, watchedApp in ipairs(self.watchedApps) do
+
         if contains(watchedApp.names, tostring(name)) then
           standardDelay = 0.5
           delay = 0
@@ -146,16 +158,14 @@ function obj:start()
             end
           end
           hs.timer.doAfter(delay, function()
-            if obj.screenClass == 'small' then
-              obj:gridset(watchedApp.small.x1, watchedApp.small.y1, watchedApp.small.w1, watchedApp.small.h1, watchedApp.small.nickname, app)
-              if watchedApp.small.doAfter then
-                obj:gridset(watchedApp.small.doAfter.x1, watchedApp.small.doAfter.y1, watchedApp.small.doAfter.w1, watchedApp.small.doAfter.h1, watchedApp.small.doAfter.nickname)
-              end
-            else
-              obj:gridset(watchedApp.large.x1, watchedApp.large.y1, watchedApp.large.w1, watchedApp.large.h1, watchedApp.large.nickname, app)
-              if watchedApp.large.doAfter then
-                obj:gridset(watchedApp.large.doAfter.x1, watchedApp.large.doAfter.y1, watchedApp.large.doAfter.w1, watchedApp.large.doAfter.h1, watchedApp.large.doAfter.nickname)
-              end
+						local appDimensions = watchedApp.large
+						if obj.screenClass == 'small' or (watchedApp.withMultipleMonitors == 'tertiary') then
+							appDimensions = watchedApp.small
+						end
+
+            obj:gridset(appDimensions.x1, appDimensions.y1, appDimensions.w1, appDimensions.h1, appDimensions.nickname, app)
+            if appDimensions.doAfter then
+              obj:gridset(appDimensions.doAfter.x1, appDimensions.doAfter.y1, appDimensions.doAfter.w1, appDimensions.doAfter.h1, appDimensions.doAfter.nickname)
             end
           end)
           break
