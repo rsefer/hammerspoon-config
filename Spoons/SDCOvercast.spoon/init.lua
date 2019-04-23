@@ -32,7 +32,7 @@ function obj:toggleWebview()
     obj.isShown = false
   else
     obj.overcastWebview:show():bringToFront(true)
-		obj.overcastWebview:hswindow():focus()
+		obj.overcastWebview:hswindow():moveToScreen(hs.screen.primaryScreen()):focus()
     obj.isShown = true
   end
 end
