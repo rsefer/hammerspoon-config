@@ -4,6 +4,9 @@ $('h2.ocseparatorbar:first()').css({
   marginTop: '0px'
 });
 if ($('#audioplayer').length > 0) {
+	$('h2').css({
+	  fontSize: '18px'
+	});
   $('.titlestack').prev().removeClass('marginbottom1').css({
     marginBottom: '8px'
   });
