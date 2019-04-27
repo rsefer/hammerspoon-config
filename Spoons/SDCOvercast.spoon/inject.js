@@ -51,8 +51,8 @@ function sendProgress() {
     isFinished: isFinished,
     progress: progress,
     podcast: {
-      name: $('.titlestack .ocbutton').html(),
-      episodeTitle: $('.titlestack .title').html(),
+      name: $('h2').html(),
+      episodeTitle: $('h3 a').html(),
     }
   });
 }
