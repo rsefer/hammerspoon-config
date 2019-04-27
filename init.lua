@@ -20,6 +20,8 @@ local tertiaryMonitorName = 'Yam Display'
 
 -- Spoons
 
+-- hs.loadSpoon('SDCDesktopCapture')
+
 hs.loadSpoon('SDCWindows')
 spoon.SDCWindows:bindHotkeys({
 	resetWindows										= {hotkeyCombo, 'f18'},
