@@ -4,6 +4,7 @@ $('h2.ocseparatorbar:first()').css({
   marginTop: '0px'
 });
 if ($('#audioplayer').length > 0) {
+	$('a.ocbutton[href="/podcasts"]').hide();
 	$('h2').css({
 	  fontSize: '18px'
 	});
