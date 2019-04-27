@@ -9,7 +9,7 @@ function script_path()
 end
 
 local overcastWebviewHome = 'https://overcast.fm/podcasts'
-local viewWidth = 350
+local viewWidth = 375
 local viewHeight = 400
 local iconSize = 14.0
 local iconFull = hs.image.imageFromPath(script_path() .. 'images/overcast_orange.pdf')
