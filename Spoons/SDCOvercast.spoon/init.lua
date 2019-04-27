@@ -95,11 +95,11 @@ function obj:init()
           obj.overcastControlMenu:setIcon(iconPause)
           obj.overcastMenu:setIcon(icon, false)
 
-          if obj.hideSpotify then
-            if hs.spotify.isPlaying() then
-              hs.spotify.pause()
-            end
-          end
+          -- if obj.hideSpotify then
+          --   if hs.spotify.isPlaying() then
+          --     hs.spotify.pause()
+          --   end
+          -- end
 
           if obj.hideItunes then
             if hs.itunes.isPlaying() then
