@@ -234,6 +234,17 @@ end)
 -- (in Settings > Keyboard > Shortcuts)
 -- {'cmd', 'alt', 'ctrl'}, +
 
+-- Mirror Display toggle
+hs.hotkey.bind(hotkeyCombo, '0', function()
+	hs.application.launchOrFocus('System Preferences')
+	hs.timer.doAfter(1, function()
+		hs.application.get('System Preferences'):selectMenuItem({'View', 'Displays'})
+		hs.timer.doAfter(1, function()
+			hs.window.focusedWindow():focusTab(2)
+		end)
+	end)
+end)
+
 -- Eject key puts computer to sleep
 hs.eventtap.new({ hs.eventtap.event.types.NSSystemDefined }, function(event)
 	event = event:systemKey()
