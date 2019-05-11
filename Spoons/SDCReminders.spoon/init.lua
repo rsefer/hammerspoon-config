@@ -8,14 +8,22 @@ function script_path()
   return str:match("(.*/)")
 end
 
-local viewWidth = 500
-local viewHeight = 300
+local viewWidth = 1000
+local viewHeight = 700
+
+function obj:setHTML()
+	local indexHTML = ''
+	for line in io.lines(script_path() .. "index.html") do indexHTML = indexHTML .. line .. "\n" end
+	obj.remindersWebview:html(indexHTML)
+end
 
 function obj:toggleWebview()
   if obj.isShown then
     obj.remindersWebview:hide()
     obj.isShown = false
   else
+		obj.remindersWebview:reload()
+		obj:setHTML()
     obj.remindersWebview:show():bringToFront(true)
 		obj.remindersWebview:hswindow():moveToScreen(hs.screen.primaryScreen()):focus()
     obj.isShown = true
@@ -46,19 +54,15 @@ function obj:init()
 
   self.remindersJS = hs.webview.usercontent.new('idhsremindersWebview'):setCallback(function(message)
 		if message.body.reminder ~= nil then
-			print(hs.inspect(message.body.reminder))
 			local reminder = message.body.reminder
+			output, status, type, rc = hs.execute('osascript ' .. script_path() .. 'new-reminder.scpt "' .. reminder.name .. '" "' .. reminder.list .. '" "' .. reminder.date .. ' ' .. reminder.time .. '"')
+			if status then
 
-			print(hs.execute('osascript ' .. script_path() .. 'new-reminder.scpt "' .. reminder.name .. '" "' .. reminder.list .. '" "' .. reminder.date .. ' ' .. reminder.time .. '"'))
-
+			end
 		end
   end)
 
-		local indexHTML = ''
-		for line in io.lines(script_path() .. "index.html") do indexHTML = indexHTML .. line .. "\n" end
-
   self.remindersWebview = hs.webview.newBrowser(self.rect, { developerExtrasEnabled = true }, self.remindersJS)
-    :html(indexHTML)
     :allowTextEntry(true)
     :shadow(true)
 		:windowCallback(function(action, webview, state)
@@ -68,6 +72,7 @@ function obj:init()
 			-- end
 		end)
 
+	self:setHTML()
 
 	self:toggleWebview()
 
