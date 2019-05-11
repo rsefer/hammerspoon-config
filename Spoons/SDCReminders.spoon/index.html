@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css" />
+<style>
+body {
+	font-size: 16px;
+}
+
+input {
+	font-size: 1.5rem;
+}
+</style>
+
+</head>
+<body>
+
+<h1>New Reminder</h1>
+<form id="new-reminder-form" autocomplete="false">
+	<input type="text" name="hidden" autocomplete="false" style="display:none;">
+	<input type="text" id="name" name="name" autocomplete="false" placeholder="Reminder" required="required" autofocus>
+	<select id="list" name="list">
+		<option selected>📗 To-Do</option>
+	</select>
+	<!-- <input type="checkbox" id="date-toggle" name="date-toggle" checked> -->
+	<input type="text" id="date" autocomplete="false" name="date" required="required">
+	<input type="text" id="time-display" autocomplete="false" name="time-display" required="required">
+	<input type="hidden" id="time-actual" autocomplete="false" name="time-actual" required="required">
+	<button type="submit">Save</button>
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script>
+var defaultDateFormat = 'YYYY-MM-DD';
+var defaultTimeFormat = 'HH:mm';
+var setDate = '';
+jQuery(document).ready(function($) {
+
+	// $('input[name="date"]').val(moment().format(defaultDateFormat));
+	// $('input[name="date"]').attr('min', moment().format(defaultDateFormat));
+
+	$('input[name="date"]').datepicker({
+		format: 'yyyy-mm-dd'
+	});
+	$('input[name="date"]').datepicker('setDate', new Date());
+
+	$('input[name="time-display"]').timepicker({
+		step: 15,
+		timeFormat: 'h:ia'
+	}).on('changeTime', function() {
+		var rawTime = $('input[name="time-display"]').val();
+		var ampm = rawTime.substring(5, 6);
+		var hour = rawTime.substring(0, 2);
+		var minute = rawTime.substring(3, 5);
+		if (ampm == 'p') {
+			var intH = parseInt(hour);
+			if (intH != 12) {
+				hour = intH + 12;
+			}
+		} else if (hour == 12) {
+			hour = '00';
+		}
+		var formattedTime = hour + ':' + minute;
+		$('input[name="time-actual"]').val(formattedTime);
+	});
+	$('input[name="time-display"]').timepicker('setTime', new Date())
+
+	$('#new-reminder-form').submit(function(e) {
+		e.preventDefault();
+
+		if ($('input[name="name"]').val() == '') {
+			$('input[name="name"]').focus();
+		} else {
+
+			webkit.messageHandlers.idhsremindersWebview.postMessage({
+		    reminder: {
+					name: $('input[name="name"]').val(),
+					list: $('select[name="list"]').val(),
+					date: $('input[name="date"]').val(),
+					time: $('input[name="time-actual"]').val()
+				}
+		  });
+
+		}
+	});
+
+});
+</script>
+
+</body>
+</html>

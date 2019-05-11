@@ -184,6 +184,11 @@ spoon.SDCDash:bindHotkeys({
   toggleWebview = {hotkeyCombo, 'f15'}
 })
 
+hs.loadSpoon('SDCReminders')
+spoon.SDCReminders:bindHotkeys({
+  toggleWebview = {hotkeyCombo, '9'}
+})
+
 hs.loadSpoon('SDCWeather')
 spoon.SDCWeather:setConfig(keys.darksky_api_key, keys.latitude, keys.longitude)
 spoon.SDCWeather:start()
