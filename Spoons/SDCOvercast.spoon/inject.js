@@ -48,12 +48,13 @@ function sendProgress() {
     progress = 0;
   }
   webkit.messageHandlers.idhsovercastwebview.postMessage({
+		hasPlayer: true,
     isPlaying: isAudioPlaying,
     isFinished: isFinished,
     progress: progress,
     podcast: {
-      name: $('h2').html(),
-      episodeTitle: $('h3 a').html(),
+      name: $('h3 a').html(),
+      episodeTitle: $('h2').html(),
     }
   });
 }
@@ -77,7 +78,7 @@ if (window.location.href == thome) {
   setTimeout(function() {
     location.reload();
   }, 60 * 1000);
-} else {
+} else if ($('h3').length > 0) {
   sendProgress();
   setTimeout(function() {
     sendProgress();

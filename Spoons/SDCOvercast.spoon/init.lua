@@ -88,9 +88,9 @@ function obj:init()
         if message.body.isFinished or (message.body.progress ~=nil and message.body.progress >= 1) then
           self.overcastWebview:url(overcastWebviewHome)
         end
-      else
+      elseif message.body.hasPlayer and message.body.hasPlayer == true then
 
-        if message.body.isPlaying then
+        if message.body.isPlaying == true then
 
           obj.overcastControlMenu:setIcon(iconPause)
           obj.overcastMenu:setIcon(icon, false)
@@ -112,7 +112,7 @@ function obj:init()
           obj.overcastMenu:setIcon(icon, true)
         end
 
-        if obj.screenClass ~= 'small' and obj.showProgressBar then
+        if obj.screenClass ~= 'small' and obj.showProgressBar and message.body.podcast.episodeTitle then
 
           local episodeString = message.body.podcast.name .. ' - ' .. message.body.podcast.episodeTitle
 
