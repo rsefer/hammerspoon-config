@@ -40,41 +40,27 @@ end
 function obj:init()
 
   self.isShown = false
-
-  self.remindersInfoMenu = hs.menubar.new()
-    :setClickCallback(obj.toggleWebview)
-  self.remindersControlMenu = hs.menubar.new()
-    :setClickCallback(obj.togglePlayPause)
-
-  self.remindersMenu = hs.menubar.new()
-    :setClickCallback(obj.toggleWebview)
-
-  self.remindersMenuFrame = self.remindersMenu:frame()
-  self.rect = hs.geometry.rect((self.remindersMenuFrame.x + self.remindersMenuFrame.w / 2) - (viewWidth / 2), self.remindersMenuFrame.y, viewWidth, viewHeight)
-
+	local frame = hs.screen.primaryScreen():frame()
+  self.rect = hs.geometry.rect((frame.w / 2) - (viewWidth / 2), (frame.h / 2) - (viewHeight / 2), viewWidth, viewHeight)
   self.remindersJS = hs.webview.usercontent.new('idhsremindersWebview'):setCallback(function(message)
 		if message.body.reminder ~= nil then
 			local reminder = message.body.reminder
 			output, status, type, rc = hs.execute('osascript ' .. script_path() .. 'new-reminder.scpt "' .. reminder.name .. '" "' .. reminder.list .. '" "' .. reminder.date .. ' ' .. reminder.time .. '"')
 			if status then
-
+				obj:toggleWebview()
 			end
 		end
   end)
-
   self.remindersWebview = hs.webview.newBrowser(self.rect, { developerExtrasEnabled = true }, self.remindersJS)
     :allowTextEntry(true)
     :shadow(true)
 		:windowCallback(function(action, webview, state)
-			-- if action == 'focusChange' and state ~= true then
-			-- 	self.remindersWebview:hide()
-		  --   self.isShown = false
-			-- end
+			if action == 'focusChange' and state ~= true then
+				self.remindersWebview:hide()
+		    self.isShown = false
+			end
 		end)
-
 	self:setHTML()
-
-	self:toggleWebview()
 
 end
 

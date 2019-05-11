@@ -53,6 +53,11 @@ button {
 	box-sizing: border-box;
 }
 
+select {
+	height: 55px;
+	-webkit-appearance: menulist-button;
+}
+
 button {
 	margin-top: 4%;
 	color: #fff;
@@ -97,6 +102,8 @@ button {
 	<input type="text" id="name" name="name" autocomplete="false" placeholder="Reminder" required="required" autofocus>
 	<select id="list" name="list">
 		<option selected>📗 To-Do</option>
+		<option>📅 Long Term</option>
+		<option>🔁 Recurring</option>
 	</select>
 	<!-- <input type="checkbox" id="date-toggle" name="date-toggle" checked> -->
 	<input type="text" id="date" autocomplete="false" name="date" required="required">
