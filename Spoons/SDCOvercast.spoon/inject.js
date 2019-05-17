@@ -27,6 +27,10 @@ if ($('#audioplayer').length > 0) {
     margin: '13px 0px 13px 20%',
     width: '80%'
   });
+	$('.footer').hide();
+	$('body').css({
+		paddingBottom: '30px'
+	});
 }
 
 var progress = 0;
