@@ -222,6 +222,11 @@ hs.loadSpoon('SDCOvercast')
 -- hs.loadSpoon('SDCItunes')
 -- spoon.SDCItunes:start()
 
+-- New Google Calendar Event
+hs.hotkey.bind(hotkeyCombo, '8', function()
+	hs.urlevent.openURL('https://calendar.google.com/calendar/r/eventedit')
+end)
+
 -- Do Not Disturb toggle
 -- (in Settings > Keyboard > Shortcuts)
 -- {'cmd', 'alt', 'ctrl'}, f17
