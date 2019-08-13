@@ -66,21 +66,23 @@ function obj:resetWindows()
 		for k, appGroup in ipairs(obj.watchedApps) do
 			for k2, name in ipairs(appGroup.names) do
 				app = hs.application.find(name)
-				windows = app:allWindows()
-				screenTarget = hs.screen.primaryScreen()
-				if appGroup.withMultipleMonitors == 'tertiary' then
-					screenTarget = hs.screen.find(obj.tertiaryMonitorName)
-				elseif appGroup.withMultipleMonitors == 'secondary' then
-					screenTarget = hs.screen.find(obj.secondaryMonitorName)
-				end
-				for k3, window in ipairs(windows) do
-					window:moveToScreen(screenTarget)
-					if appGroup.withMultipleMonitors == 'secondary' or appGroup.withMultipleMonitors == 'tertiary' then
-						local appDimensions = appGroup.large
-						if appGroup.withMultipleMonitors == 'tertiary' then
-							appDimensions = appGroup.small
+				if app then
+					windows = app:allWindows()
+					screenTarget = hs.screen.primaryScreen()
+					if appGroup.withMultipleMonitors == 'tertiary' then
+						screenTarget = hs.screen.find(obj.tertiaryMonitorName)
+					elseif appGroup.withMultipleMonitors == 'secondary' then
+						screenTarget = hs.screen.find(obj.secondaryMonitorName)
+					end
+					for k3, window in ipairs(windows) do
+						window:moveToScreen(screenTarget)
+						if appGroup.withMultipleMonitors == 'secondary' or appGroup.withMultipleMonitors == 'tertiary' then
+							local appDimensions = appGroup.large
+							if appGroup.withMultipleMonitors == 'tertiary' then
+								appDimensions = appGroup.small
+							end
+							obj:gridset(appDimensions.x1, appDimensions.y1, appDimensions.w1, appDimensions.h1, appDimensions.nickname, app)
 						end
-						obj:gridset(appDimensions.x1, appDimensions.y1, appDimensions.w1, appDimensions.h1, appDimensions.nickname, app)
 					end
 				end
 			end

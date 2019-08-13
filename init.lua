@@ -55,7 +55,7 @@ spoon.SDCWindows:setWatchedApps({
 		withMultipleMonitors = 'primary'
   },
   {
-    names = {'Visual Studio Code', 'Atom', 'GitHub Desktop'},
+    names = {'Visual Studio Code', 'Code', 'Atom', 'GitHub Desktop'},
     delay = 1,
     small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
     large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
