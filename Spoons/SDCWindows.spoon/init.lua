@@ -25,7 +25,7 @@ function obj:gridset(x1, y1, w1, h1, nickname, app)
 	    local monitorName = win:screen():name()
 	    if nickname ~= nil and obj.secondaryMonitorName ~= nil and obj.secondaryMonitorName == monitorName then
 	      if nickname == '34ths' then
-	        x1 = 25
+	        x1 = 27
 	      elseif nickname == '14th' then
 	        x1 = 0
 	      end
@@ -109,11 +109,11 @@ function obj:bindHotkeys(mapping)
     sizeRightHalf                   = function() obj:gridset(50, 0, 50, 100) end,
     sizeFull                        = function() obj:gridset(0, 0, 100, 100) end,
     sizeCentered                    = function() obj:gridset(12.5, 12.5, 75, 75) end,
-    sizeLeft34ths                   = function() obj:gridset(0, 0, 75, 100, '34ths') end,
+    sizeLeft34ths                   = function() obj:gridset(0, 0, 73, 100, '34ths') end,
     size34thsCentered               = function() obj:gridset(12.5, 0, 75, 100) end,
-    sizeRight14th                   = function() obj:gridset(75, 0, 25, 100, '14th') end,
-    sizeRight14thTopHalfish         = function() obj:gridset(75, 0, 25, 55) end,
-    sizeRight14thBottomHalfish      = function() obj:gridset(75, 60, 25, 40) end,
+    sizeRight14th                   = function() obj:gridset(73, 0, 27, 100, '14th') end,
+    sizeRight14thTopHalfish         = function() obj:gridset(73, 0, 27, 55) end,
+    sizeRight14thBottomHalfish      = function() obj:gridset(73, 60, 27, 40) end,
     sizeHalfHeightTopEdge           = function() obj:gridset('current', 0, 'current', 50) end,
     sizeHalfHeightBottomEdge        = function() obj:gridset('current', 50, 'current', 50) end,
     moveLeftEdge                    = function() obj:gridset(0, 'current', 'current', 'current') end,
