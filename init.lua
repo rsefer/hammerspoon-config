@@ -104,7 +104,8 @@ spoon.SDCHomeAssistant:setWatchedApps({
   }
 })
 spoon.SDCHomeAssistant:bindHotkeys({
-  switchLights = {hotkeyCombo, 'f19'}
+	switchLights = {hotkeyCombo, 'f19'},
+	turnOnSecondaryMonitor = {hotkeyCombo, 'S'}
 })
 spoon.SDCHomeAssistant:start()
 spoon.SDCHomeAssistant:toggleSecondaryMonitor('on')

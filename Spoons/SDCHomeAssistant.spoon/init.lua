@@ -32,6 +32,9 @@ end
 
 function obj:toggleSecondaryMonitor(action)
 	local secondaryMonitorEntityID = 'switch.secondary_monitor'
+	if action == nil then
+		action = 'on'
+	end
 	status, data, headers = hs.http.asyncPost(obj.api_endpoint .. 'services/switch/turn_' .. action, '{"entity_id":"' .. secondaryMonitorEntityID .. '"}', {
 		['Authorization'] = 'Bearer ' .. obj.api_key,
 		['Content-Type'] = 'application/json'
@@ -75,7 +78,8 @@ end
 
 function obj:bindHotkeys(mapping)
   local def = {
-    switchLights = hs.fnutils.partial(self.switchLights, self)
+		switchLights = hs.fnutils.partial(self.switchLights, self),
+		turnOnSecondaryMonitor = hs.fnutils.partial(self.toggleSecondaryMonitor, self)
   }
   hs.spoons.bindHotkeysToSpec(def, mapping)
 end
