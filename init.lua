@@ -253,7 +253,7 @@ end)
 -- Mirror Display toggle
 hs.hotkey.bind(hotkeyCombo, '0', function()
 	hs.application.launchOrFocus('System Preferences')
-	hs.timer.doAfter(1, function()
+	hs.timer.doAfter(3, function()
 		hs.application.get('System Preferences'):selectMenuItem({'View', 'Displays'})
 		hs.timer.doAfter(1, function()
 			hs.window.focusedWindow():focusTab(2)
