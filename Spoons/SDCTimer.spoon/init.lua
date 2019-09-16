@@ -79,7 +79,7 @@ end
 function obj:timerStop()
 	obj.timerMain:stop()
 	obj.timerCounter:stop()
-	obj.timerMenu:setIcon(iconBlack, true)
+	obj.timerMenu:setIcon(iconBlack, false)
 	local timeStringEnd = 'Timer stopped. Total time: ' .. timeString()
 	hs.alert.show(timeStringEnd, obj.alertStyle, 15)
 	print(timeStringEnd)
@@ -95,7 +95,7 @@ end
 function obj:init()
 	self.timerMenu = hs.menubar.new()
 		:setClickCallback(obj.toggleTimer)
-		:setIcon(iconBlack, true)
+		:setIcon(iconBlack, false)
 end
 
 function obj:start()
