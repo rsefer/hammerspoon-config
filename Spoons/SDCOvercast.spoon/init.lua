@@ -12,7 +12,8 @@ local overcastWebviewHome = 'https://overcast.fm/podcasts'
 local viewWidth = 375
 local viewHeight = 400
 local iconSize = 14.0
-local oIconOrange = hs.image.imageFromPath(script_path() .. 'images/overcast_orange.pdf'):setSize({ w = iconSize, h = iconSize })
+local oIconOrangeImage = hs.image.imageFromPath(script_path() .. 'images/overcast_orange.pdf')
+local oIconOrange = oIconOrangeImage:setSize({ w = iconSize, h = iconSize })
 local oIconBlack = hs.image.imageFromPath(script_path() .. 'images/overcast_black.pdf'):setSize({ w = iconSize, h = iconSize })
 local iconPlay = hs.image.imageFromPath(script_path() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
 local iconPause = hs.image.imageFromPath(script_path() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
@@ -81,7 +82,7 @@ function obj:init()
         obj.overcastMenu:setIcon(oIconBlack, false)
         if message.body.podcast ~= nil then
           local notification = hs.notify.new({ title = 'Overcast', subTitle = 'Finished playing ' .. message.body.podcast.name })
-          notification:setIdImage(oIconOrange)
+          notification:setIdImage(oIconOrangeImage)
           notification:send()
           hs.timer.doAfter(2.5, function() notification:withdraw() end)
         end
