@@ -92,7 +92,7 @@ function obj:init()
 
         if message.body.isPlaying == true then
 
-          obj.overcastControlMenu:setIcon(iconPause, false)
+          obj.overcastControlMenu:setIcon(iconPause, true)
           obj.overcastMenu:setIcon(icon, false)
 
           -- if obj.hideSpotify then
@@ -108,7 +108,7 @@ function obj:init()
           end
 
         else
-          obj.overcastControlMenu:setIcon(iconPlay, false)
+          obj.overcastControlMenu:setIcon(iconPlay, true)
           obj.overcastMenu:setIcon(icon, true)
         end
 
