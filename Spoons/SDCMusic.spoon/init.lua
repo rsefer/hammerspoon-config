@@ -1,7 +1,7 @@
---- === SDC iTunes ===
+--- === SDC Music ===
 local obj = {}
 obj.__index = obj
-obj.name = "SDCItunes"
+obj.name = "SDCMusic"
 
 function script_path()
   local str = debug.getinfo(2, 'S').source:sub(2)
@@ -9,7 +9,7 @@ function script_path()
 end
 
 local iconSize = 14.0
-local icon = hs.image.imageFromPath(script_path() .. 'images/itunes_red.pdf'):setSize({ w = iconSize, h = iconSize })
+local icon = hs.image.imageFromPath(script_path() .. 'images/music_red.pdf'):setSize({ w = iconSize, h = iconSize })
 local iconPlay = hs.image.imageFromPath(script_path() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
 local iconPause = hs.image.imageFromPath(script_path() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
 
@@ -22,22 +22,74 @@ function round(num, numDecimalPlaces)
   return math.floor(num * mult + 0.5) / mult
 end
 
+function getMusicState()
+	asBool, asObject, asDesc = hs.applescript([[
+		tell application "Music"
+			return "" & player state
+		end tell
+	]])
+	return asObject
+end
+
+function musicPlayPause()
+	hs.applescript('tell application "Music" to playpause')
+end
+
+function musicCurrentTrack()
+	ok, artist = hs.applescript([[
+		tell application "Music"
+			get artist of current track
+		end tell
+	]])
+	ok, album = hs.applescript([[
+		tell application "Music"
+			get album of current track
+		end tell
+	]])
+	ok, name = hs.applescript([[
+		tell application "Music"
+			get name of current track
+		end tell
+	]])
+	ok, duration = hs.applescript([[
+		tell application "Music"
+			get duration of current track
+		end tell
+	]])
+	ok, playerPosition = hs.applescript([[
+		tell application "Music"
+			return player position
+		end tell
+	]])
+	return {
+		artist = artist,
+		album = album,
+		name = name,
+		duration = duration,
+		playerPosition = playerPosition
+	}
+end
+
 function obj:setPlayerMenus()
+	currentState = getMusicState()
   if obj.playerControlMenu then
-    if hs.itunes:isPlaying() then
+    if currentState == 'playing' then
       obj.playerControlMenu:setIcon(iconPause)
     else
       obj.playerControlMenu:setIcon(iconPlay)
     end
-  end
-  if obj.playerTitleMenu and hs.itunes.getCurrentArtist() and hs.itunes.getCurrentTrack() then
-    newSongString = songString(hs.itunes.getCurrentArtist(), hs.itunes.getCurrentTrack())
-    obj.currentSongPosition = hs.itunes.getPosition()
+	end
+
+	currentTrack = musicCurrentTrack()
+	if obj.playerTitleMenu and currentTrack.artist and currentTrack.name then
+
+		newSongString = songString(currentTrack.artist, currentTrack.name)
+    obj.currentSongPosition = currentTrack.playerPosition
 
     if newSongString ~= obj.currentSong then
-      obj.currentSongDuration = hs.itunes.getDuration()
+      obj.currentSongDuration = currentTrack.duration
 
-      if hs.itunes:isPlaying() then
+      if currentState == 'playing' then
         if obj.showAlerts then
           hs.alert.closeSpecific(obj.currentSongAlertUUID, 0)
           obj.currentSongAlertUUID = hs.alert.show("🎵 " .. newSongString, {
@@ -60,8 +112,8 @@ function obj:setPlayerMenus()
           }, 5)
         end
         if obj.showNotifications then
-          local notification = hs.notify.new({ title = hs.itunes.getCurrentTrack(), subTitle = 'Artist: ' .. hs.itunes.getCurrentArtist(), informativeText = 'Album: ' .. hs.itunes.getCurrentAlbum() })
-          notification:setIdImage(hs.image.imageFromAppBundle('com.apple.iTunes'))
+          local notification = hs.notify.new({ title = currentTrack.name, subTitle = 'Artist: ' .. currentTrack.artist, informativeText = 'Album: ' .. currentTrack.album })
+          notification:setIdImage(hs.image.imageFromAppBundle('com.apple.Music'))
           notification:send()
           hs.timer.doAfter(2.5, function() notification:withdraw() end)
         end
@@ -74,35 +126,43 @@ function obj:setPlayerMenus()
 
       fontCharacterWidth = 8
       menubarHeight = 22
-      titleWidth = (string.len(newSongString)) * fontCharacterWidth
+			titleWidth = (string.len(newSongString)) * fontCharacterWidth
+			textLineBreak = 'truncateTail'
       if titleWidth > 250 then
         barWidth = 250
-      else
-        barWidth = titleWidth
-      end
+			else
+				textLineBreak = 'wordWrap'
+        barWidth = titleWidth + fontCharacterWidth
+			end
+
+			textColor = '000000'
+
+			if hs.host.interfaceStyle() == 'Dark' then
+				textColor = 'ffffff'
+			end
 
       obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = barWidth })
-        :appendElements({
-          id = 'songProgress',
-          type = 'rectangle',
-          action = 'fill',
-          frame = {
-            x = '0%',
-            y = menubarHeight - 2,
-            h = 2,
-            w = round(currentSongPositionPercentage * 100, 2) .. '%'
-          },
-          fillColor = { ['hex'] = 'f46060' }
-        },
+				:appendElements({
+					id = 'songProgress',
+					type = 'rectangle',
+					action = 'fill',
+					frame = {
+						x = '0%',
+						y = menubarHeight - 2,
+						h = 2,
+						w = round(currentSongPositionPercentage * 100, 2) .. '%'
+					},
+					fillColor = { ['hex'] = 'f46060' }
+				},
         {
           id = 'songText',
           type = 'text',
-          text = newSongString:gsub(' ', ' '), -- replace 'normal space' character with 'en space',
+          text = newSongString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
           textSize = 14,
-          textLineBreak = 'truncateTail',
-          textColor = { black = 1.0 },
-          textFont = 'Courier',
-          frame = { x = '0%', y = 1, h = '100%', w = '100%' }
+					textLineBreak = textLineBreak,
+					textColor = { ['hex'] = textColor },
+					textFont = 'Courier',
+					frame = { x = '0%', y = 1, h = '100%', w = '100%' }
         })
 
       obj.playerTitleMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
@@ -121,16 +181,16 @@ function obj:unloadPlayerMenus()
 end
 
 function obj:playerTogglePlayPause()
-  hs.itunes.playpause()
+  musicPlayPause()
   obj:setPlayerMenus()
 end
 
 function obj:togglePlayer()
-  playerApp = hs.application.find('iTunes')
-  if hs.itunes:isRunning() and playerApp:isFrontmost() then
+  playerApp = hs.application.find('Music')
+  if hs.application.find('Music'):isRunning() and playerApp:isFrontmost() then
     playerApp:hide()
   else
-    hs.application.launchOrFocus('iTunes')
+    hs.application.launchOrFocus('Music')
   end
 end
 
@@ -155,9 +215,9 @@ function obj:init()
     :setIcon(icon, true)
 
   self.playerTimer = hs.timer.doEvery(0.5, function()
-    if hs.itunes:isRunning() then
+    if hs.application.find('Music'):isRunning() then
       obj:setPlayerMenus()
-      if hs.itunes:isPlaying() then
+      if getMusicState() == 'playing' then
         obj.playerMenu:setIcon(icon, false)
       else
         obj.playerMenu:setIcon(icon, true)
@@ -174,7 +234,7 @@ function obj:start()
   obj.playerTimer:start()
 
   obj.watcher = hs.application.watcher.new(function(name, event, app)
-    if name == 'iTunes' then
+    if name == 'Music' then
       if event == 2 or event == hs.application.watcher.terminated then
         obj.playerTimer:stop()
         obj:unloadPlayerMenus()

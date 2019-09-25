@@ -225,8 +225,8 @@ hs.loadSpoon('SDCOvercast')
 -- hs.loadSpoon('SDCSpotify')
 -- spoon.SDCSpotify:start()
 
--- hs.loadSpoon('SDCItunes')
--- spoon.SDCItunes:start()
+hs.loadSpoon('SDCMusic')
+spoon.SDCMusic:start()
 
 -- New Google Calendar Event
 hs.hotkey.bind(hotkeyCombo, '8', function()
