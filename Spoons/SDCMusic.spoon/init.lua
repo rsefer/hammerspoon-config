@@ -127,12 +127,10 @@ function obj:setPlayerMenus()
       fontCharacterWidth = 8
       menubarHeight = 22
 			titleWidth = (string.len(newSongString)) * fontCharacterWidth
-			textLineBreak = 'truncateTail'
       if titleWidth > 250 then
         barWidth = 250
 			else
-				textLineBreak = 'wordWrap'
-        barWidth = titleWidth + fontCharacterWidth
+        barWidth = titleWidth + 1 * fontCharacterWidth
 			end
 
 			textColor = '000000'
@@ -159,7 +157,7 @@ function obj:setPlayerMenus()
           type = 'text',
           text = newSongString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
           textSize = 14,
-					textLineBreak = textLineBreak,
+					textLineBreak = 'truncateTail',
 					textColor = { ['hex'] = textColor },
 					textFont = 'Courier',
 					frame = { x = '0%', y = 1, h = '100%', w = '100%' }
@@ -203,7 +201,7 @@ function obj:init()
   end
 
   self.showCurrentSongProgressBar = true
-  self.showNotifications = false
+  self.showNotifications = true
   self.showAlerts = false
 
   self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.togglePlayer)
