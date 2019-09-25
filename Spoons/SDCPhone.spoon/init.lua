@@ -9,8 +9,8 @@ function script_path()
 end
 
 local function callNumber(number)
-  return function()
-		hs.execute('osascript ' .. script_path() .. 'phonecall.scpt ' .. number)
+	return function()
+		hs.applescript('open location "tel://' .. number .. '?audio=yes"')
 		-- hs.urlevent.openURL('tel://' .. number ..'?audio=yes')
   end
 end
