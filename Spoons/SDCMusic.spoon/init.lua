@@ -71,13 +71,18 @@ function musicCurrentTrack()
 end
 
 function obj:setPlayerMenus()
+	if obj.isDormant then
+		obj.playerControlMenu:setIcon(nil)
+		obj.playerTitleMenu:setIcon(nil)
+		do return end
+	end
 	currentState = getMusicState()
-  if obj.playerControlMenu then
-    if currentState == 'playing' then
-      obj.playerControlMenu:setIcon(iconPause)
-    else
-      obj.playerControlMenu:setIcon(iconPlay)
-    end
+
+	if currentState == 'playing' then
+		obj.hasResetToPlaying = true
+    obj.playerControlMenu:setIcon(iconPause)
+	else
+		obj.playerControlMenu:setIcon(iconPlay)
 	end
 
 	currentTrack = musicCurrentTrack()
@@ -86,8 +91,12 @@ function obj:setPlayerMenus()
 		newSongString = songString(currentTrack.artist, currentTrack.name)
     obj.currentSongPosition = currentTrack.playerPosition
 
-    if newSongString ~= obj.currentSong then
-      obj.currentSongDuration = currentTrack.duration
+		if newSongString ~= obj.currentSong then
+			if currentTrack.duration ~= nil then
+				obj.currentSongDuration = currentTrack.duration
+			else
+				obj.currentSongDuration = 300
+			end
 
       if currentState == 'playing' then
         if obj.showAlerts then
@@ -209,22 +218,30 @@ function obj:init()
 
   self.playerMenu = hs.menubar.new()
     :setClickCallback(obj.togglePlayer)
-    :setIcon(icon, true)
+		:setIcon(icon, true)
+
+	self.isDormant = true
+	self.hasResetToPlaying = false
 
   self.playerTimer = hs.timer.doEvery(0.5, function()
-    if hs.application.find('Music'):isRunning() then
+		if hs.application.find('Music'):isRunning() then
+			if (os.time() - obj.lastTimePlayed) > 5 then
+				obj.isDormant = true
+			else
+				obj.isDormant = false
+			end
       obj:setPlayerMenus()
-      if getMusicState() == 'playing' then
-        obj.playerMenu:setIcon(icon, false)
-      else
-        obj.playerMenu:setIcon(icon, true)
+			if getMusicState() == 'playing' then
+				obj.lastTimePlayed = os.time()
       end
     end
 	end):start()
 
 	self.currentSong = ''
   self.currentSongDuration = 0
-  self.currentSongPosition = 0
+	self.currentSongPosition = 0
+
+	self.lastTimePlayed = os.time()
 
   self.watcher = hs.application.watcher.new(function(name, event, app)
     if name == 'Music' then
