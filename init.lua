@@ -221,12 +221,12 @@ hs.hotkey.bind(hotkeyCombo, 'f14', nil, function() spoon.SDCTimer:toggleTimer() 
 -- end
 
 hs.loadSpoon('SDCOvercast')
+hs.loadSpoon('SDCMusic')
 
 -- hs.loadSpoon('SDCSpotify')
 -- spoon.SDCSpotify:start()
 
-hs.loadSpoon('SDCMusic')
-spoon.SDCMusic:start()
+
 
 -- New Google Calendar Event
 hs.hotkey.bind(hotkeyCombo, '8', function()

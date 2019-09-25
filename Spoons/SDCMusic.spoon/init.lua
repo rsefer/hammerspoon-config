@@ -220,17 +220,13 @@ function obj:init()
         obj.playerMenu:setIcon(icon, true)
       end
     end
-  end):stop()
-end
+	end):start()
 
-function obj:start()
+	self.currentSong = ''
+  self.currentSongDuration = 0
+  self.currentSongPosition = 0
 
-  obj.currentSong = ''
-  obj.currentSongDuration = 0
-  obj.currentSongPosition = 0
-  obj.playerTimer:start()
-
-  obj.watcher = hs.application.watcher.new(function(name, event, app)
+  self.watcher = hs.application.watcher.new(function(name, event, app)
     if name == 'Music' then
       if event == 2 or event == hs.application.watcher.terminated then
         obj.playerTimer:stop()
@@ -240,16 +236,8 @@ function obj:start()
         obj.playerTimer:start()
       end
     end
-  end):start()
+	end):start()
 
-  return self
-
-end
-
-function obj:stop()
-  obj.applicationWatcher:stop()
-  obj.playerTimer:stop()
-  return self
 end
 
 return obj
