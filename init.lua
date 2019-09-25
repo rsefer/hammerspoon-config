@@ -220,13 +220,13 @@ hs.hotkey.bind(hotkeyCombo, 'f14', nil, function() spoon.SDCTimer:toggleTimer() 
 --   spoon.SDCFinance:start()
 -- end
 
-hs.loadSpoon('SDCOvercast')
-hs.loadSpoon('SDCMusic')
-
--- hs.loadSpoon('SDCSpotify')
--- spoon.SDCSpotify:start()
-
-
+hs.timer.doAfter(5, function()
+	print('start')
+	hs.loadSpoon('SDCOvercast')
+	hs.loadSpoon('SDCMusic')
+	-- hs.loadSpoon('SDCSpotify')
+	-- spoon.SDCSpotify:start()
+end)
 
 -- New Google Calendar Event
 hs.hotkey.bind(hotkeyCombo, '8', function()
