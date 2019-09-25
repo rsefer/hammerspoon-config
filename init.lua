@@ -239,7 +239,13 @@ end)
 
 -- Dark Mode toggle
 hs.hotkey.bind(hotkeyCombo, 'f16', function()
-  hs.execute('osascript ' .. script_path() .. '/misc/darkmode-toggle.scpt')
+	hs.applescript([[
+		tell application "System Events"
+			tell appearance preferences
+				set dark mode to not dark mode
+			end tell
+		end tell
+	]])
 end)
 
 -- Force Quit Hammerspoon
