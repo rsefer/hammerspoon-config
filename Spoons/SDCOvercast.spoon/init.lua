@@ -14,6 +14,7 @@ local viewHeight = 400
 local iconSize = 14.0
 local oIconOrange = hs.image.imageFromPath(script_path() .. 'images/overcast_orange.pdf'):setSize({ w = iconSize, h = iconSize })
 local oIconBlack = hs.image.imageFromPath(script_path() .. 'images/overcast_black.pdf'):setSize({ w = iconSize, h = iconSize })
+local icon = oIconOrange:setSize({ w = iconSize, h = iconSize })
 local iconPlay = hs.image.imageFromPath(script_path() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
 local iconPause = hs.image.imageFromPath(script_path() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
 
@@ -61,7 +62,7 @@ function obj:init()
 
   self.overcastMenu = hs.menubar.new()
     :setClickCallback(obj.toggleWebview)
-    :setIcon(oIconBlack, false)
+    :setIcon(oIconOrange, false)
 
   self.overcastMenuFrame = self.overcastMenu:frame()
   self.rect = hs.geometry.rect((self.overcastMenuFrame.x + self.overcastMenuFrame.w / 2) - (viewWidth / 2), self.overcastMenuFrame.y, viewWidth, viewHeight)
