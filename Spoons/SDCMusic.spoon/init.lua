@@ -71,7 +71,7 @@ function musicCurrentTrack()
 end
 
 function obj:setPlayerMenus()
-	if obj.isDormant then
+	if obj.isDormant == true then
 		obj.playerControlMenu:setIcon(nil)
 		obj.playerTitleMenu:setIcon(nil)
 		do return end
@@ -79,7 +79,6 @@ function obj:setPlayerMenus()
 	currentState = getMusicState()
 
 	if currentState == 'playing' then
-		obj.hasResetToPlaying = true
     obj.playerControlMenu:setIcon(iconPause)
 	else
 		obj.playerControlMenu:setIcon(iconPlay)
@@ -221,11 +220,11 @@ function obj:init()
 		:setIcon(icon, true)
 
 	self.isDormant = true
-	self.hasResetToPlaying = false
+	self.lastTimePlayed = os.time()
 
   self.playerTimer = hs.timer.doEvery(0.5, function()
 		if hs.application.find('Music'):isRunning() then
-			if (os.time() - obj.lastTimePlayed) > 5 then
+			if (os.time() - obj.lastTimePlayed) > 5 * 60 then
 				obj.isDormant = true
 			else
 				obj.isDormant = false
@@ -240,8 +239,6 @@ function obj:init()
 	self.currentSong = ''
   self.currentSongDuration = 0
 	self.currentSongPosition = 0
-
-	self.lastTimePlayed = os.time()
 
   self.watcher = hs.application.watcher.new(function(name, event, app)
     if name == 'Music' then
