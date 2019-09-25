@@ -12,9 +12,8 @@ local overcastWebviewHome = 'https://overcast.fm/podcasts'
 local viewWidth = 375
 local viewHeight = 400
 local iconSize = 14.0
-local oIconOrange = hs.image.imageFromPath(script_path() .. 'images/overcast_orange.pdf'):setSize({ w = iconSize, h = iconSize })
-local oIconBlack = hs.image.imageFromPath(script_path() .. 'images/overcast_black.pdf'):setSize({ w = iconSize, h = iconSize })
-local icon = oIconOrange:setSize({ w = iconSize, h = iconSize })
+local iconFull = hs.image.imageFromPath(script_path() .. 'images/overcast_orange.pdf')
+local icon = iconFull:setSize({ w = iconSize, h = iconSize })
 local iconPlay = hs.image.imageFromPath(script_path() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
 local iconPause = hs.image.imageFromPath(script_path() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
 
@@ -62,7 +61,7 @@ function obj:init()
 
   self.overcastMenu = hs.menubar.new()
     :setClickCallback(obj.toggleWebview)
-    :setIcon(oIconOrange, false)
+    :setIcon(icon, true)
 
   self.overcastMenuFrame = self.overcastMenu:frame()
   self.rect = hs.geometry.rect((self.overcastMenuFrame.x + self.overcastMenuFrame.w / 2) - (viewWidth / 2), self.overcastMenuFrame.y, viewWidth, viewHeight)
@@ -79,10 +78,10 @@ function obj:init()
       if message.body.page == 'home' or message.body.progress >= 1 then
         obj.overcastInfoMenu:setIcon(nil)
         obj.overcastControlMenu:setIcon(nil)
-        obj.overcastMenu:setIcon(oIconBlack, false)
+        obj.overcastMenu:setIcon(icon, true)
         if message.body.podcast ~= nil then
           local notification = hs.notify.new({ title = 'Overcast', subTitle = 'Finished playing ' .. message.body.podcast.name })
-          notification:setIdImage(oIconOrange)
+          notification:setIdImage(iconFull)
           notification:send()
           hs.timer.doAfter(2.5, function() notification:withdraw() end)
         end
@@ -94,7 +93,7 @@ function obj:init()
         if message.body.isPlaying == true then
 
           obj.overcastControlMenu:setIcon(iconPause, false)
-          obj.overcastMenu:setIcon(oIconOrange, false)
+          obj.overcastMenu:setIcon(icon, false)
 
           -- if obj.hideSpotify then
           --   if hs.spotify.isPlaying() then
@@ -110,7 +109,7 @@ function obj:init()
 
         else
           obj.overcastControlMenu:setIcon(iconPlay, false)
-          obj.overcastMenu:setIcon(oIconBlack, false)
+          obj.overcastMenu:setIcon(icon, true)
         end
 
         if obj.screenClass ~= 'small' and obj.showProgressBar and message.body.podcast.episodeTitle then
