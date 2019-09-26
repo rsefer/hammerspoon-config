@@ -142,7 +142,15 @@ function obj:setPlayerMenus()
 						end
 					end
 
-          local notification = hs.notify.new({ title = currentTrack.name, subTitle = 'Artist: ' .. currentTrack.artist, informativeText = 'Album: ' .. currentTrack.album })
+					local notification = hs.notify.new(function()
+						hs.application.launchOrFocus('Music')
+					end, {
+						hasActionButton = true,
+						actionButtonTitle = 'Open',
+						title = currentTrack.name,
+						subTitle = 'Artist: ' .. currentTrack.artist,
+						informativeText = 'Album: ' .. currentTrack.album
+					})
           notification:setIdImage(workingImage)
           notification:send()
           hs.timer.doAfter(2.5, function() notification:withdraw() end)
