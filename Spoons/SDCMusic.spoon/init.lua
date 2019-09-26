@@ -26,38 +26,22 @@ function musicPlayPause()
 end
 
 function musicCurrentTrack()
-	ok, artist = hs.osascript.applescript([[
+	ok, asProps = hs.osascript.applescript([[
 		tell application "Music"
-			get artist of current track
+			return {artist of current track, album of current track, name of current track, duration of current track, player position}
 		end tell
 	]])
-	ok, album = hs.osascript.applescript([[
-		tell application "Music"
-			get album of current track
-		end tell
-	]])
-	ok, name = hs.osascript.applescript([[
-		tell application "Music"
-			get name of current track
-		end tell
-	]])
-	ok, duration = hs.osascript.applescript([[
-		tell application "Music"
-			get duration of current track
-		end tell
-	]])
-	ok, playerPosition = hs.osascript.applescript([[
-		tell application "Music"
-			return player position
-		end tell
-	]])
-	return {
-		artist = artist,
-		album = album,
-		name = name,
-		duration = duration,
-		playerPosition = playerPosition
-	}
+	if asProps ~= nil then
+		return {
+			artist = asProps[1],
+			album = asProps[2],
+			name = asProps[3],
+			duration = asProps[4],
+			playerPosition = asProps[5]
+		}
+	else
+		return {}
+	end
 end
 
 function obj:setPlayerMenus()
