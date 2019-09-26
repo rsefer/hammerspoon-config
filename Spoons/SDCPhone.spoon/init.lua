@@ -15,12 +15,20 @@ local function callNumber(number)
   end
 end
 
-function obj:setShortcuts(shortcuts)
-  obj.numbers = shortcuts
-  menuItems = {}
-  choices = {}
-  itemCount = 0
-  for i, shortcut in ipairs(shortcuts) do
+function obj:toggleChooser()
+  if obj.chooser then
+    if obj.chooser:isVisible() then
+      obj.chooser:hide()
+    else
+      obj.chooser:show()
+    end
+  end
+end
+
+function obj:setShortcuts()
+	choices = {}
+	itemCount = 0
+  for i, shortcut in ipairs(obj.phoneNumbers) do
     choice = {}
     choice.text = shortcut.text
 		choice.number = shortcut.number
@@ -36,16 +44,6 @@ function obj:setShortcuts(shortcuts)
   end
 end
 
-function obj:toggleChooser()
-  if obj.chooser then
-    if obj.chooser:isVisible() then
-      obj.chooser:hide()
-    else
-      obj.chooser:show()
-    end
-  end
-end
-
 function obj:bindHotkeys(mapping)
   local def = {
     toggleChooser = hs.fnutils.partial(self.toggleChooser, self)
@@ -55,9 +53,11 @@ end
 
 function obj:init()
 
-  self.chooser = hs.chooser.new(function(choice)
-    callNumber(choice.number)()
-  end)
+	self.chooser = hs.chooser.new(function(choice)
+		if choice then
+			callNumber(choice.number)()
+		end
+	end)
 
 end
 

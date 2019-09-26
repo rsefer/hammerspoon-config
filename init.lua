@@ -176,11 +176,16 @@ hs.spoons.use('SDCWeather', {
 })
 
 hs.spoons.use('SDCPhone', {
+	config = {
+		phoneNumbers = keys.phoneNumbers
+	},
 	hotkeys = {
 		toggleChooser = {hotkeyCombo, 'P'}
-	}
+	},
+	fn = function(thisSpoon)
+		thisSpoon.setShortcuts()
+	end
 })
-spoon.SDCPhone:setShortcuts(keys.phoneNumbers)
 
 hs.spoons.use('SDCTimer', {
 	hotkeys = {
