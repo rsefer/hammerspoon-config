@@ -203,15 +203,13 @@ hs.spoons.use('SDCTimer', {
 	start = true
 })
 
-hs.timer.doAfter(5, function()
-	hs.spoons.use('SDCOvercast')
-	hs.spoons.use('SDCMusic', {
-		config = {
-			discogs_key = keys.discogs.key,
-			discogs_secret = keys.discogs.secret
-		}
-	})
-end)
+hs.spoons.use('SDCOvercast')
+hs.spoons.use('SDCMusic', {
+	config = {
+		discogs_key = keys.discogs.key,
+		discogs_secret = keys.discogs.secret
+	}
+})
 
 -- New Google Calendar Event
 hs.hotkey.bind(hotkeyCombo, '8', function()
