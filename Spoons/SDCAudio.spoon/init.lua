@@ -50,15 +50,6 @@ function obj:switchAudio(direct)
 
 end
 
-function obj:setConfig(devices)
-  obj.devices = devices
-  count = 0
-  for i, v in pairs(devices) do
-    count = count + 1
-  end
-  obj.devicesCount = count
-end
-
 function obj:bindHotkeys(mapping)
   local def = {
     switchAudio = hs.fnutils.partial(self.switchAudio, self)
@@ -71,6 +62,11 @@ function obj:init()
 end
 
 function obj:start()
+	count = 0
+  for i, v in pairs(self.devices) do
+    count = count + 1
+  end
+  self.devicesCount = count
   self.audioSwitcherMenu = hs.menubar.new()
     :setClickCallback(obj.switchAudio)
   self:switchAudio(1)

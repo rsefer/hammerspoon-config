@@ -67,15 +67,6 @@ function obj:moveWindows()
 	end
 end
 
-function obj:setConfig(api_endpoint, api_key)
-	obj.api_endpoint = api_endpoint
-  obj.api_key = api_key
-end
-
-function obj:setWatchedApps(apps)
-  obj.watchedApps = apps
-end
-
 function obj:bindHotkeys(mapping)
   local def = {
 		switchLights = hs.fnutils.partial(self.switchLights, self),

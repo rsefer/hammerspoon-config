@@ -51,10 +51,6 @@ function obj:bindHotkeys(mapping)
   hs.spoons.bindHotkeysToSpec(def, mapping)
 end
 
-function obj:setConfig(dashHomeURL)
-  obj.dashWebviewHome = dashHomeURL
-end
-
 function obj:init()
   self.isShown = false
 end

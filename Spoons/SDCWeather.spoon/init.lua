@@ -60,18 +60,6 @@ function obj:openDarkSky()
   hs.urlevent.openURL('https://darksky.net/forecast/' .. obj.latitude .. ',' .. obj.longitude .. '/us12/en')
 end
 
-function obj:setConfig(darksky_api_key, user_latitude, user_longitude)
-  obj.apiKey = darksky_api_key
-  if hs.location.get() ~= nil then
-    loc = hs.location.get()
-    obj.latitude = loc.latitude
-    obj.longitude = loc.longitude
-  elseif user_latitude ~= nil and user_longitude ~= nil then
-    obj.latitude = user_latitude
-    obj.longitude = user_longitude
-  end
-end
-
 function obj:init()
   self.updateInterval = 60 * 15
   self.menuWeather = hs.menubar.new()
@@ -81,6 +69,11 @@ function obj:init()
 end
 
 function obj:start()
+	if hs.location.get() ~= nil then
+    loc = hs.location.get()
+    obj.latitude = loc.latitude
+		obj.longitude = loc.longitude
+	end
   obj:updateWeather()
   obj.weatherTimer:start()
 end

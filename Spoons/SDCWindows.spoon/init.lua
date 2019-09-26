@@ -90,18 +90,6 @@ function obj:resetWindows()
 	end
 end
 
-function obj:setSecondaryMonitor(secondaryName)
-  obj.secondaryMonitorName = secondaryName
-end
-
-function obj:setTertiaryMonitor(tertiaryName)
-  obj.tertiaryMonitorName = tertiaryName
-end
-
-function obj:setWatchedApps(apps)
-  obj.watchedApps = apps
-end
-
 function obj:bindHotkeys(mapping)
   local def = {
 		resetWindows										= function() obj:resetWindows() end,
@@ -136,9 +124,6 @@ function obj:init()
   if string.match(string.lower(self.computerName), 'macbook') then
     self.screenClass = 'small'
   end
-  self.secondaryMonitorName = nil
-	self.tertiaryMonitorName = nil
-  self.watchedApps = {}
   self.applicationWatcher = nil
 
 end
