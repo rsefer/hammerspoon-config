@@ -3,15 +3,10 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCSpotify"
 
-function script_path()
-  local str = debug.getinfo(2, 'S').source:sub(2)
-  return str:match("(.*/)")
-end
-
 local iconSize = 14.0
-local icon = hs.image.imageFromPath(script_path() .. 'images/spotify_green.pdf'):setSize({ w = iconSize, h = iconSize })
-local iconPlay = hs.image.imageFromPath(script_path() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
-local iconPause = hs.image.imageFromPath(script_path() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
+local icon = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/spotify_green.pdf'):setSize({ w = iconSize, h = iconSize })
+local iconPlay = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
+local iconPause = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
 
 function songString(artist, track)
   return artist .. ' - ' .. '"' .. track .. '"'

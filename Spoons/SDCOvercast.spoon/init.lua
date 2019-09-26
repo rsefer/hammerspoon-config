@@ -3,19 +3,14 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCOvercast"
 
-function script_path()
-  local str = debug.getinfo(2, 'S').source:sub(2)
-  return str:match("(.*/)")
-end
-
 local overcastWebviewHome = 'https://overcast.fm/podcasts'
 local viewWidth = 375
 local viewHeight = 400
 local iconSize = 14.0
-local iconFull = hs.image.imageFromPath(script_path() .. 'images/overcast_orange.pdf')
+local iconFull = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/overcast_orange.pdf')
 local icon = iconFull:setSize({ w = iconSize, h = iconSize })
-local iconPlay = hs.image.imageFromPath(script_path() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
-local iconPause = hs.image.imageFromPath(script_path() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
+local iconPlay = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
+local iconPause = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
 
 function round(num, numDecimalPlaces)
   local mult = 10^(numDecimalPlaces or 0)
@@ -63,7 +58,7 @@ function obj:init()
   self.overcastJS = hs.webview.usercontent.new('idhsovercastwebview')
 
   local injectFileResult = ''
-  for line in io.lines(script_path() .. "inject.js") do injectFileResult = injectFileResult .. line end
+  for line in io.lines(hs.spoons.scriptPath() .. "inject.js") do injectFileResult = injectFileResult .. line end
 
   localjsScript = "var thome = '" .. overcastWebviewHome .. "';" .. injectFileResult
   self.overcastJS:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'documentEnd' })

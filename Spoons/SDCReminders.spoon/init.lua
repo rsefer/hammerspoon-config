@@ -3,17 +3,12 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCReminders"
 
-function script_path()
-  local str = debug.getinfo(2, 'S').source:sub(2)
-  return str:match("(.*/)")
-end
-
 local viewWidth = 1000
 local viewHeight = 700
 
 function obj:setHTML()
 	local indexHTML = ''
-	for line in io.lines(script_path() .. "index.html") do indexHTML = indexHTML .. line .. "\n" end
+	for line in io.lines(hs.spoons.scriptPath() .. "index.html") do indexHTML = indexHTML .. line .. "\n" end
 	obj.remindersWebview:html(indexHTML)
 end
 
@@ -45,7 +40,7 @@ function obj:init()
   self.remindersJS = hs.webview.usercontent.new('idhsremindersWebview'):setCallback(function(message)
 		if message.body.reminder ~= nil then
 			local reminder = message.body.reminder
-			output, status, type, rc = hs.execute('osascript ' .. script_path() .. 'new-reminder.scpt "' .. reminder.name .. '" "' .. reminder.list .. '" "' .. reminder.date .. ' ' .. reminder.time .. '"')
+			output, status, type, rc = hs.execute('osascript ' .. hs.spoons.scriptPath() .. 'new-reminder.scpt "' .. reminder.name .. '" "' .. reminder.list .. '" "' .. reminder.date .. ' ' .. reminder.time .. '"')
 			if status then
 				obj:toggleWebview()
 			end

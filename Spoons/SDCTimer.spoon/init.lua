@@ -7,13 +7,8 @@ obj.alertStyle = {
 	atScreenEdge = 1
 }
 
-function script_path()
-  local str = debug.getinfo(2, 'S').source:sub(2)
-  return str:match("(.*/)")
-end
-
-local iconBlack = hs.image.imageFromPath(script_path() .. 'images/timer_black.pdf'):setSize({ w = 14.0, h = 14.0 })
-local iconGreen = hs.image.imageFromPath(script_path() .. 'images/timer_green.pdf'):setSize({ w = 14.0, h = 14.0 })
+local iconBlack = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_black.pdf'):setSize({ w = 14.0, h = 14.0 })
+local iconGreen = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_green.pdf'):setSize({ w = 14.0, h = 14.0 })
 
 function timeString()
 	local timeString = ''

@@ -3,11 +3,6 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCDash"
 
-function script_path()
-  local str = debug.getinfo(2, 'S').source:sub(2)
-  return str:match("(.*/)")
-end
-
 local viewWidth = 500
 local viewHeight = 700
 
@@ -18,7 +13,7 @@ function obj:toggleWebview()
   else
 
 		local injectFileResult = ''
-	  for line in io.lines(script_path() .. "inject.js") do injectFileResult = injectFileResult .. line end
+	  for line in io.lines(hs.spoons.scriptPath() .. "inject.js") do injectFileResult = injectFileResult .. line end
 		localjsScript = injectFileResult
 		obj.dashJS = hs.webview.usercontent.new('idhsdashwebview')
 	  obj.dashJS:injectScript({ source = localjsScript, mainFrame = true, injectionTime = 'documentEnd' })
