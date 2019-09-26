@@ -23,7 +23,7 @@ function obj:gridset(x1, y1, w1, h1, nickname, app)
 		for k, win in ipairs(windows) do
 	    local currentRect = hs.grid.get(win)
 	    local monitorName = win:screen():name()
-	    if nickname ~= nil and obj.secondaryMonitorName ~= nil and obj.secondaryMonitorName == monitorName then
+	    if nickname ~= nil and hs.settings.get('secondaryMonitorName') ~= nil and hs.settings.get('secondaryMonitorName') == monitorName then
 	      if nickname == '34ths' then
 	        x1 = 27
 	      elseif nickname == '14th' then
@@ -62,7 +62,7 @@ function obj:gridset(x1, y1, w1, h1, nickname, app)
 end
 
 function obj:resetWindows()
-	if obj.secondaryMonitorName ~= nil or obj.tertiaryMonitorName ~= nil then
+	if hs.settings.get('secondaryMonitorName') ~= nil or hs.settings.get('tertiaryMonitorName') ~= nil then
 		for k, appGroup in ipairs(obj.watchedApps) do
 			for k2, name in ipairs(appGroup.names) do
 				app = hs.application.find(name)
@@ -70,9 +70,9 @@ function obj:resetWindows()
 					windows = app:allWindows()
 					screenTarget = hs.screen.primaryScreen()
 					if appGroup.withMultipleMonitors == 'tertiary' then
-						screenTarget = hs.screen.find(obj.tertiaryMonitorName)
+						screenTarget = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
 					elseif appGroup.withMultipleMonitors == 'secondary' then
-						screenTarget = hs.screen.find(obj.secondaryMonitorName)
+						screenTarget = hs.screen.find(hs.settings.get('secondaryMonitorName'))
 					end
 					for k3, window in ipairs(windows) do
 						window:moveToScreen(screenTarget)
@@ -119,11 +119,6 @@ function obj:init()
   hs.grid.GRIDWIDTH = 100
   hs.grid.GRIDHEIGHT = 100
 
-  self.computerName = hs.host.localizedName()
-  self.screenClass = 'large' -- assumes large iMac
-  if string.match(string.lower(self.computerName), 'macbook') then
-    self.screenClass = 'small'
-  end
   self.applicationWatcher = nil
 
 end
@@ -146,7 +141,7 @@ function obj:start()
           end
           hs.timer.doAfter(delay, function()
 						local appDimensions = watchedApp.large
-						if obj.screenClass == 'small' or (watchedApp.withMultipleMonitors == 'tertiary') then
+						if hs.settings.get('screenClass') == 'small' or (watchedApp.withMultipleMonitors == 'tertiary') then
 							appDimensions = watchedApp.small
 						end
 

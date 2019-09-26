@@ -9,14 +9,14 @@ function script_path()
   return str:match("(.*/)")
 end
 
+hs.settings.set('secondaryMonitorName', 'DELL P2415Q')
+hs.settings.set('tertiaryMonitorName', 'Yam Display')
+
 local hotkeyCombo = {'cmd', 'alt', 'ctrl'}
-local computerName = hs.host.localizedName()
-local screenClass = 'large' -- assumes large iMac
-if string.match(string.lower(computerName), 'macbook') then
-  screenClass = 'small'
+hs.settings.set('screenClass', 'large') -- assumes large iMac
+if string.match(string.lower(hs.host.localizedName()), 'macbook') then
+  hs.settings.set('screenClass', 'small')
 end
-local secondaryMonitorName = 'DELL P2415Q'
-local tertiaryMonitorName = 'Yam Display'
 
 -- Spoons
 spoon = {} -- fixes global spoon loading issue
@@ -25,8 +25,6 @@ spoon = {} -- fixes global spoon loading issue
 
 hs.spoons.use('SDCWindows', {
 	config = {
-		secondaryMonitorName = secondaryMonitorName,
-		tertiaryMonitorName = tertiaryMonitorName,
 		watchedApps = {
 			{
 				names = {'Terminal'},
@@ -90,22 +88,22 @@ hs.spoons.use('SDCHomeAssistant', {
 		watchedApps = {
 			-- {
 			--   name = 'Terminal',
-			--   monitor = tertiaryMonitorName,
+			--   monitor = hs.settings.get('tertiaryMonitorName'),
 			-- 	large = { x1 = 73, y1 = 0, w1 = 27, h1 = 100, nickname = '14th' }
 			-- },
 			{
 				name = 'Visual Studio Code',
-				monitor = secondaryMonitorName,
+				monitor = hs.settings.get('secondaryMonitorName'),
 				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 }
 			},
 			{
 				name = 'Atom',
-				monitor = secondaryMonitorName,
+				monitor = hs.settings.get('secondaryMonitorName'),
 				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 }
 			},
 			{
 				name = 'GitHub Desktop',
-				monitor = secondaryMonitorName,
+				monitor = hs.settings.get('secondaryMonitorName'),
 				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 }
 			}
 		}

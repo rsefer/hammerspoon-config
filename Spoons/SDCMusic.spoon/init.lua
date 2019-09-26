@@ -159,7 +159,7 @@ function obj:setPlayerMenus()
 
     end
 
-    if obj.screenClass ~= 'small' and obj.showCurrentSongProgressBar then
+    if hs.settings.get('screenClass') ~= 'small' and obj.showCurrentSongProgressBar then
       currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
 
       fontCharacterWidth = 8
@@ -231,12 +231,6 @@ function obj:togglePlayer()
 end
 
 function obj:init()
-
-  self.computerName = hs.host.localizedName()
-  self.screenClass = 'large' -- assumes large iMac
-  if string.match(string.lower(self.computerName), 'macbook') then
-    self.screenClass = 'small'
-  end
 
   self.showCurrentSongProgressBar = true
   self.showNotifications = true
