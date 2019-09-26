@@ -230,11 +230,6 @@ function obj:togglePlayer()
   end
 end
 
-function obj:setConfig(discogs_key, discogs_secret)
-	obj.discogs_key = discogs_key
-	obj.discogs_secret = discogs_secret
-end
-
 function obj:init()
 
   self.computerName = hs.host.localizedName()

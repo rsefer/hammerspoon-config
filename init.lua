@@ -222,10 +222,12 @@ hs.hotkey.bind(hotkeyCombo, 'f14', nil, function() spoon.SDCTimer:toggleTimer() 
 
 hs.timer.doAfter(5, function()
 	hs.loadSpoon('SDCOvercast')
-	hs.loadSpoon('SDCMusic')
-	spoon.SDCMusic:setConfig(keys.discogs.key, keys.discogs.secret)
-	-- hs.loadSpoon('SDCSpotify')
-	-- spoon.SDCSpotify:start()
+	hs.spoons.use('SDCMusic', {
+		config = {
+			discogs_key = keys.discogs.key,
+			discogs_secret = keys.discogs.secret
+		}
+	})
 end)
 
 -- New Google Calendar Event
