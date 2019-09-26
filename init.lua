@@ -221,9 +221,9 @@ hs.hotkey.bind(hotkeyCombo, 'f14', nil, function() spoon.SDCTimer:toggleTimer() 
 -- end
 
 hs.timer.doAfter(5, function()
-	print('start')
 	hs.loadSpoon('SDCOvercast')
 	hs.loadSpoon('SDCMusic')
+	spoon.SDCMusic:setConfig(keys.discogs.key, keys.discogs.secret)
 	-- hs.loadSpoon('SDCSpotify')
 	-- spoon.SDCSpotify:start()
 end)

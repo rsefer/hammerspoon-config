@@ -17,6 +17,16 @@ function songString(artist, track)
   return artist .. ' - ' .. '"' .. track .. '"'
 end
 
+function urlencode(url)
+	-- https://gist.github.com/liukun/f9ce7d6d14fa45fe9b924a3eed5c3d99
+  if url == nil then
+    return
+  end
+  url = url:gsub("\n", "\r\n")
+  url = url:gsub(" ", "+")
+  return url
+end
+
 function round(num, numDecimalPlaces)
   local mult = 10^(numDecimalPlaces or 0)
   return math.floor(num * mult + 0.5) / mult
@@ -119,9 +129,21 @@ function obj:setPlayerMenus()
             atScreenEdge = 1
           }, 5)
         end
-        if obj.showNotifications then
+				if obj.showNotifications then
+					workingImage = hs.image.imageFromAppBundle('com.apple.Music')
+					if obj.discogs_key and obj.discogs_secret then
+						discogsURL = 'https://api.discogs.com/database/search?query=' .. urlencode(currentTrack.artist .. ' - ' .. currentTrack.album) .. '&per_page=1&page=1&key=' .. obj.discogs_key .. '&secret=' .. obj.discogs_secret
+						status, body, headers = hs.http.get(discogsURL)
+						if status == 200 then
+							json = hs.json.decode(body)
+							if json.results and json.results[1] and json.results[1].thumb then
+								workingImage = hs.image.imageFromURL(json.results[1].thumb)
+							end
+						end
+					end
+
           local notification = hs.notify.new({ title = currentTrack.name, subTitle = 'Artist: ' .. currentTrack.artist, informativeText = 'Album: ' .. currentTrack.album })
-          notification:setIdImage(hs.image.imageFromAppBundle('com.apple.Music'))
+          notification:setIdImage(workingImage)
           notification:send()
           hs.timer.doAfter(2.5, function() notification:withdraw() end)
         end
@@ -198,6 +220,11 @@ function obj:togglePlayer()
   else
     hs.application.launchOrFocus('Music')
   end
+end
+
+function obj:setConfig(discogs_key, discogs_secret)
+	obj.discogs_key = discogs_key
+	obj.discogs_secret = discogs_secret
 end
 
 function obj:init()
