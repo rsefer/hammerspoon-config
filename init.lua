@@ -114,9 +114,11 @@ hs.spoons.use('SDCHomeAssistant', {
 		switchLights = {hotkeyCombo, 'f19'},
 		turnOnSecondaryMonitor = {hotkeyCombo, 'S'}
 	},
+	fn = function(thisSpoon)
+		thisSpoon.toggleSecondaryMonitor('on')
+	end,
 	start = true
 })
-spoon.SDCHomeAssistant:toggleSecondaryMonitor('on')
 
 hs.spoons.use('SDCAudio', {
 	config = {
