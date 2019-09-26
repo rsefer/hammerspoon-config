@@ -119,7 +119,7 @@ function obj:init()
   hs.grid.GRIDWIDTH = 100
   hs.grid.GRIDHEIGHT = 100
 
-  self.applicationWatcher = nil
+	self.applicationWatcher = nil
 
 end
 

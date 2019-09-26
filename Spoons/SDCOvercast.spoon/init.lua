@@ -12,11 +12,6 @@ local icon = iconFull:setSize({ w = iconSize, h = iconSize })
 local iconPlay = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
 local iconPause = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
 
-function round(num, numDecimalPlaces)
-  local mult = 10^(numDecimalPlaces or 0)
-  return math.floor(num * mult + 0.5) / mult
-end
-
 function obj:togglePlayPause()
   obj.overcastWebview:evaluateJavaScript('togglePlayPause();')
 end

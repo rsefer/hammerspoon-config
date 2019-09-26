@@ -12,21 +12,6 @@ function songString(artist, track)
   return artist .. ' - ' .. '"' .. track .. '"'
 end
 
-function urlencode(url)
-	-- https://gist.github.com/liukun/f9ce7d6d14fa45fe9b924a3eed5c3d99
-  if url == nil then
-    return
-  end
-  url = url:gsub("\n", "\r\n")
-  url = url:gsub(" ", "+")
-  return url
-end
-
-function round(num, numDecimalPlaces)
-  local mult = 10^(numDecimalPlaces or 0)
-  return math.floor(num * mult + 0.5) / mult
-end
-
 function getMusicState()
 	asBool, asObject, asDesc = hs.applescript([[
 		tell application "Music"

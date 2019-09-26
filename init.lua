@@ -3,6 +3,7 @@
 -- 2) Press Command + Comma
 
 dofile('config.lua')
+dofile('common.lua')
 
 hs.settings.set('secondaryMonitorName', 'DELL P2415Q')
 hs.settings.set('tertiaryMonitorName', 'Yam Display')
