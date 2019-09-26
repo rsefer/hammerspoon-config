@@ -216,7 +216,7 @@ end)
 
 -- Dark Mode toggle
 hs.hotkey.bind(hotkeyCombo, 'f16', function()
-	hs.applescript([[
+	hs.osascript.applescript([[
 		tell application "System Events"
 			tell appearance preferences
 				set dark mode to not dark mode

@@ -13,7 +13,7 @@ function songString(artist, track)
 end
 
 function getMusicState()
-	asBool, asObject, asDesc = hs.applescript([[
+	asBool, asObject, asDesc = hs.osascript.applescript([[
 		tell application "Music"
 			return "" & player state
 		end tell
@@ -22,31 +22,31 @@ function getMusicState()
 end
 
 function musicPlayPause()
-	hs.applescript('tell application "Music" to playpause')
+	hs.osascript.applescript('tell application "Music" to playpause')
 end
 
 function musicCurrentTrack()
-	ok, artist = hs.applescript([[
+	ok, artist = hs.osascript.applescript([[
 		tell application "Music"
 			get artist of current track
 		end tell
 	]])
-	ok, album = hs.applescript([[
+	ok, album = hs.osascript.applescript([[
 		tell application "Music"
 			get album of current track
 		end tell
 	]])
-	ok, name = hs.applescript([[
+	ok, name = hs.osascript.applescript([[
 		tell application "Music"
 			get name of current track
 		end tell
 	]])
-	ok, duration = hs.applescript([[
+	ok, duration = hs.osascript.applescript([[
 		tell application "Music"
 			get duration of current track
 		end tell
 	]])
-	ok, playerPosition = hs.applescript([[
+	ok, playerPosition = hs.osascript.applescript([[
 		tell application "Music"
 			return player position
 		end tell

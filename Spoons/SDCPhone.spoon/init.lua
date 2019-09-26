@@ -5,7 +5,7 @@ obj.name = "SDCPhone"
 
 local function callNumber(number)
 	return function()
-		hs.applescript('open location "tel://' .. number .. '?audio=yes"')
+		hs.osascript.applescript('open location "tel://' .. number .. '?audio=yes"')
 		-- hs.urlevent.openURL('tel://' .. number ..'?audio=yes')
   end
 end
