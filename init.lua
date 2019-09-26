@@ -256,7 +256,7 @@ end)
 --end):start()
 
 -- Reload Hammerspoon
-local reloadWatcher = hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', hs.reload):start()
+-- local reloadWatcher = hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', hs.reload):start()
 hs.hotkey.bind(hotkeyCombo, '/', function()
   hs.reload()
 end)
