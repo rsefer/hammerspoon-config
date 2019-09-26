@@ -147,9 +147,13 @@ hs.spoons.use('SDCAudio', {
 	hotkeys = {
 		switchAudio = {hotkeyCombo, 'A'}
 	},
+	fn = function(thisSpoon)
+		hs.hotkey.bind(hotkeyCombo, 'f13', nil, function()
+			thisSpoon.switchAudio()
+		end)
+	end,
 	start = true
 })
-hs.hotkey.bind(hotkeyCombo, 'f13', nil, function() spoon.SDCAudio:switchAudio() end)
 
 hs.spoons.use('SDCDash', {
 	config = {
@@ -191,9 +195,13 @@ hs.spoons.use('SDCTimer', {
 	hotkeys = {
 		toggleTimer = {hotkeyCombo, '\\'}
 	},
+	fn = function(thisSpoon)
+		hs.hotkey.bind(hotkeyCombo, 'f14', nil, function()
+			thisSpoon.toggleTimer()
+		end)
+	end,
 	start = true
 })
-hs.hotkey.bind(hotkeyCombo, 'f14', nil, function() spoon.SDCTimer:toggleTimer() end)
 
 hs.timer.doAfter(5, function()
 	hs.spoons.use('SDCOvercast')
