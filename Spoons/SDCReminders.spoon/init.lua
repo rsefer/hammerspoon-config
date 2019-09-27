@@ -40,8 +40,32 @@ function obj:init()
   self.remindersJS = hs.webview.usercontent.new('idhsremindersWebview'):setCallback(function(message)
 		if message.body.reminder ~= nil then
 			local reminder = message.body.reminder
-			output, status, type, rc = hs.execute('osascript ' .. hs.spoons.scriptPath() .. 'new-reminder.scpt "' .. reminder.name .. '" "' .. reminder.list .. '" "' .. reminder.date .. ' ' .. reminder.time .. '"')
-			if status then
+			reminderScpt = [[
+				tell application "Reminders"
+					set currentDate to my convertDate("]] .. reminder.date .. ' ' .. reminder.time .. [[")
+					set mylist to list "]] .. reminder.list .. [["
+					tell mylist
+						make new reminder at end with properties {name: "]] .. reminder.name .. [[", due date:currentDate, remind me date:currentDate}
+					end tell
+				end tell
+
+				to convertDate(textDate)
+					-- YYYY-MM-DD HH:MM(am/pm)
+					set resultDate to the current date
+
+					set the year of resultDate to (text 1 thru 4 of textDate)
+					set the month of resultDate to (text 6 thru 7 of textDate)
+					set the day of resultDate to (text 9 thru 10 of textDate)
+					set the time of resultDate to 0
+
+					set the hours of resultDate to (text 12 thru 13 of textDate)
+					set the minutes of resultDate to (text 15 thru 16 of textDate)
+
+					return resultDate
+				end convertDate
+			]]
+			asBool, asObject, asDesc = hs.osascript.applescript(reminderScpt)
+			if asBool then
 				obj:toggleWebview()
 			end
 		end
