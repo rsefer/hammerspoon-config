@@ -101,11 +101,8 @@ button {
 	<input type="text" name="hidden" autocomplete="false" style="display:none;">
 	<input type="text" id="name" name="name" autocomplete="false" placeholder="Reminder" required="required" autofocus>
 	<select id="list" name="list">
-		<option selected>📗 To-Do</option>
-		<option>📅 Long Term</option>
-		<option>🔁 Recurring</option>
+		{{ lists }}
 	</select>
-	<!-- <input type="checkbox" id="date-toggle" name="date-toggle" checked> -->
 	<input type="text" id="date" autocomplete="false" name="date" required="required">
 	<input type="text" id="time-display" autocomplete="false" name="time-display" required="required">
 	<input type="hidden" id="time-actual" autocomplete="false" name="time-actual" required="required">

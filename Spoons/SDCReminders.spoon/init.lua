@@ -6,9 +6,37 @@ obj.name = "SDCReminders"
 local viewWidth = 1000
 local viewHeight = 700
 
+function getListNames()
+	asBool, asObject, asDesc = hs.osascript.applescript([[
+		tell application "Reminders"
+			set myLists to lists of default account
+			set listNames to {}
+			repeat with theList in myLists
+				copy name of theList to the end of the |listNames|
+			end repeat
+			listNames
+		end tell
+	]])
+	return asObject
+end
+
 function obj:setHTML()
 	local indexHTML = ''
-	for line in io.lines(hs.spoons.scriptPath() .. "index.html") do indexHTML = indexHTML .. line .. "\n" end
+	local optionsString = ''
+	for i,listName in ipairs(getListNames()) do
+		optionsString = optionsString .. '<option'
+		if i == 1 then
+			optionsString = optionsString .. ' selected'
+		end
+		optionsString = optionsString .. '>' .. listName .. '</option>'
+	end
+	for line in io.lines(hs.spoons.scriptPath() .. "index.html") do
+		workingLine = line
+		if string.match(line, '{{ lists }}') then
+			workingLine = optionsString
+		end
+		indexHTML = indexHTML .. workingLine .. "\n"
+	end
 	obj.remindersWebview:html(indexHTML)
 end
 
