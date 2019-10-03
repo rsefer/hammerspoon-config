@@ -255,6 +255,24 @@ end)
 --	end
 --end):start()
 
+-- Watch Terminal app when (un)plugging iPad as monitor
+hs.screen.watcher.new(function()
+	terminal = hs.application.find('Terminal')
+	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
+	if terminal:isRunning() then
+		if tertiaryMonitor then
+			terminal:mainWindow():setFullScreen(false):moveToScreen(tertiaryMonitor):setFullScreen(true)
+		else
+			terminal:mainWindow():setFullScreen(false)
+			hs.timer.doAfter(1, function()
+				terminal:mainWindow():focus()
+				spoon.SDCWindows:gridset(50, 0, 50, 100, nil, terminal)
+				terminal:hide()
+			end)
+		end
+	end
+end):start()
+
 -- Reload Hammerspoon
 -- local reloadWatcher = hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', hs.reload):start()
 hs.hotkey.bind(hotkeyCombo, '/', function()
