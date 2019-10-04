@@ -2,6 +2,9 @@
 -- 1) Run Hammerspoon from Spotlight or run `open -a Hammerspoon` in the Terminal
 -- 2) Press Command + Comma
 
+require('hs.ipc') -- commandline 'hs'
+hs.window.filter.setLogLevel(1)
+
 dofile('config.lua')
 dofile('common.lua')
 
@@ -274,6 +277,18 @@ hs.screen.watcher.new(function()
 		end
 	end
 end):start()
+
+local wf=hs.window.filter
+wf_terminal = wf.new(false):setAppFilter('Terminal'):subscribe(hs.window.filter.windowMoved, function()
+	terminal = hs.application.find('Terminal')
+	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
+	if tertiaryMonitor and terminal:mainWindow():screen() == tertiaryMonitor then
+		grid = hs.grid.get(terminal:mainWindow())
+		if (grid.w > 50 and grid.w < 100) or (grid.h > 50 and grid.h < 97) then
+			spoon.SDCWindows:gridset(0, 0, 100, 100, nil, terminal)
+		end
+	end
+end)
 
 -- Reload Hammerspoon
 -- local reloadWatcher = hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', hs.reload):start()
