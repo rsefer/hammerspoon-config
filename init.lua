@@ -28,8 +28,8 @@ hs.spoons.use('SDCWindows', {
 			{
 				names = {'Terminal'},
 				small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-				large = { x1 = 73, y1 = 0, w1 = 27, h1 = 100, nickname = '14th' },
-				withMultipleMonitors = hs.settings.get('tertiaryMonitorName')
+				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
+				withMultipleMonitors = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
 			},
 			{
 				names = {'TextEdit'},
@@ -42,7 +42,7 @@ hs.spoons.use('SDCWindows', {
 				delay = 1,
 				small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
 				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-				withMultipleMonitors = hs.settings.get('secondaryMonitorName')
+				withMultipleMonitors = hs.screen.find(hs.settings.get('secondaryMonitorName'))
 			},
 			{
 				names = {'Google Chrome'},
@@ -53,7 +53,7 @@ hs.spoons.use('SDCWindows', {
 			},
 			{
 				names = {'Tweetbot'},
-				small = { x1 = 50, y1 = 0, w1 = 50, h1 = 100 },
+				small = { x1 = 73, y1 = 0, w1 = 27, h1 = 55 },
 				large = { x1 = 73, y1 = 0, w1 = 27, h1 = 55 },
 				withMultipleMonitors = hs.screen.primaryScreen()
 			}

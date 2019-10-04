@@ -22,7 +22,7 @@ function obj:gridset(x1, y1, w1, h1, nickname, app)
   if windows ~= nil then
 		for k, win in ipairs(windows) do
 	    local currentRect = hs.grid.get(win)
-	    local monitorName = win:screen():name()
+			local monitorName = win:screen():name()
 	    if nickname ~= nil and hs.settings.get('secondaryMonitorName') ~= nil and hs.settings.get('secondaryMonitorName') == monitorName then
 	      if nickname == '34ths' then
 	        x1 = 27
@@ -62,26 +62,22 @@ function obj:gridset(x1, y1, w1, h1, nickname, app)
 end
 
 function obj:resetWindows()
-	if hs.settings.get('secondaryMonitorName') ~= nil or hs.settings.get('tertiaryMonitorName') ~= nil then
-		for k, appGroup in ipairs(obj.watchedApps) do
-			for k2, name in ipairs(appGroup.names) do
-				app = hs.application.find(name)
-				if app then
-					windows = app:allWindows()
-					screenTarget = hs.screen.primaryScreen()
-					if appGroup.withMultipleMonitors == hs.settings.get('tertiaryMonitorName') then
-						screenTarget = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
-					elseif appGroup.withMultipleMonitors == hs.settings.get('secondaryMonitorName') then
-						screenTarget = hs.screen.find(hs.settings.get('secondaryMonitorName'))
+	for k, appGroup in ipairs(obj.watchedApps) do
+		for k2, name in ipairs(appGroup.names) do
+			app = hs.application.find(name)
+			if app then
+				windows = app:allWindows()
+				screenTarget = hs.screen.primaryScreen()
+				if appGroup.withMultipleMonitors and appGroup.withMultipleMonitors ~= hs.screen.primaryScreen() then
+					screenTarget = appGroup.withMultipleMonitors
+				end
+				for k3, window in ipairs(windows) do
+					window:moveToScreen(screenTarget)
+					local appDimensions = appGroup.large
+					if appGroup.withMultipleMonitors == hs.screen.find(hs.settings.get('tertiaryMonitorName')) then
+						appDimensions = appGroup.small
 					end
-					for k3, window in ipairs(windows) do
-						window:moveToScreen(screenTarget)
-						local appDimensions = appGroup.large
-						if appGroup.withMultipleMonitors == hs.settings.get('tertiaryMonitorName') then
-							appDimensions = appGroup.small
-						end
-						obj:gridset(appDimensions.x1, appDimensions.y1, appDimensions.w1, appDimensions.h1, appDimensions.nickname, app)
-					end
+					obj:gridset(appDimensions.x1, appDimensions.y1, appDimensions.w1, appDimensions.h1, appDimensions.nickname, app)
 				end
 			end
 		end
