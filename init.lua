@@ -261,9 +261,11 @@ hs.screen.watcher.new(function()
 	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
 	if terminal:isRunning() then
 		if tertiaryMonitor then
-			terminal:mainWindow():setFullScreen(false):moveToScreen(tertiaryMonitor):setFullScreen(true)
+			hs.timer.doAfter(1, function()
+				terminal:mainWindow():moveToScreen(tertiaryMonitor)
+				spoon.SDCWindows:gridset(0, 0, 100, 100, nil, terminal)
+			end)
 		else
-			terminal:mainWindow():setFullScreen(false)
 			hs.timer.doAfter(1, function()
 				terminal:mainWindow():focus()
 				spoon.SDCWindows:gridset(50, 0, 50, 100, nil, terminal)
