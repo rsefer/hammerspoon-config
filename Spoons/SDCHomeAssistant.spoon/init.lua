@@ -21,7 +21,7 @@ function obj:switchLights(on)
 				['Authorization'] = 'Bearer ' .. obj.api_key,
 				['Content-Type'] = 'application/json'
 			}, function(cstatus, cbody, cheaders)
-				-- print(cstatus)
+				--
 			end)
 		end
 	end)
@@ -39,7 +39,7 @@ function obj:toggleSecondaryMonitor(action)
 		['Authorization'] = 'Bearer ' .. obj.api_key,
 		['Content-Type'] = 'application/json'
 	}, function(cstatus, cbody, cheaders)
-		-- print(cstatus)
+		--
 		if action == 'on' then
 			obj:moveWindows()
 		end

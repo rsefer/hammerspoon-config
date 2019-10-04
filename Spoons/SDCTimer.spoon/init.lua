@@ -68,7 +68,7 @@ function obj:timerStart()
 	obj.timerMenu:setIcon(iconGreen, false)
 	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
 	hs.alert.show(timeStringStart, obj.alertStyle, 5)
-	print(timeStringStart)
+	obj.logger:i('timeStringStart')
 end
 
 function obj:timerStop()
@@ -77,7 +77,7 @@ function obj:timerStop()
 	obj.timerMenu:setIcon(iconBlack, true)
 	local timeStringEnd = 'Timer stopped. Total time: ' .. timeString()
 	hs.alert.show(timeStringEnd, obj.alertStyle, 15)
-	print(timeStringEnd)
+	obj.logger:i(timeStringEnd)
 end
 
 function obj:bindHotkeys(mapping)
@@ -88,6 +88,7 @@ function obj:bindHotkeys(mapping)
 end
 
 function obj:init()
+	self.logger = hs.logger.new(self.name, 'info')
 	self.timerMenu = hs.menubar.new()
 		:setClickCallback(obj.toggleTimer)
 		:setIcon(iconBlack, true)
