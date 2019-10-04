@@ -68,7 +68,7 @@ function obj:timerStart()
 	obj.timerMenu:setIcon(iconGreen, false)
 	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
 	hs.alert.show(timeStringStart, obj.alertStyle, 5)
-	obj.logger:i('timeStringStart')
+	obj.logger:i(timeStringStart)
 end
 
 function obj:timerStop()
