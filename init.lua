@@ -29,35 +29,33 @@ hs.spoons.use('SDCWindows', {
 				names = {'Terminal'},
 				small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
 				large = { x1 = 73, y1 = 0, w1 = 27, h1 = 100, nickname = '14th' },
-				withMultipleMonitors = 'tertiary'
+				withMultipleMonitors = hs.settings.get('tertiaryMonitorName')
 			},
 			{
 				names = {'TextEdit'},
 				small = { x1 = 50, y1 = 0, w1 = 50, h1 = 100 },
 				large = { x1 = 73, y1 = 60, w1 = 27, h1 = 40 },
-				withMultipleMonitors = 'primary'
+				withMultipleMonitors = hs.screen.primaryScreen()
 			},
 			{
 				names = {'Visual Studio Code', 'Code', 'Atom', 'GitHub Desktop'},
 				delay = 1,
 				small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
 				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-				withMultipleMonitors = 'secondary'
+				withMultipleMonitors = hs.settings.get('secondaryMonitorName')
 			},
 			{
 				names = {'Google Chrome'},
 				delay = true,
 				small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
 				large = { x1 = 0, y1 = 0, w1 = 73, h1 = 100, nickname = '34ths' },
-				withMultipleMonitors = 'primary'
+				withMultipleMonitors = hs.screen.primaryScreen()
 			},
 			{
 				names = {'Tweetbot'},
-				small = { x1 = 50, y1 = 0, w1 = 50, h1 = 100, doAfter = {
-					x1 = 'opp', y1 = 'current', w1 = 'current', h1 = 'current'
-				} },
+				small = { x1 = 50, y1 = 0, w1 = 50, h1 = 100 },
 				large = { x1 = 73, y1 = 0, w1 = 27, h1 = 55 },
-				withMultipleMonitors = 'primary'
+				withMultipleMonitors = hs.screen.primaryScreen()
 			}
 		}
 	},

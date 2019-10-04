@@ -69,20 +69,18 @@ function obj:resetWindows()
 				if app then
 					windows = app:allWindows()
 					screenTarget = hs.screen.primaryScreen()
-					if appGroup.withMultipleMonitors == 'tertiary' then
+					if appGroup.withMultipleMonitors == hs.settings.get('tertiaryMonitorName') then
 						screenTarget = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
-					elseif appGroup.withMultipleMonitors == 'secondary' then
+					elseif appGroup.withMultipleMonitors == hs.settings.get('secondaryMonitorName') then
 						screenTarget = hs.screen.find(hs.settings.get('secondaryMonitorName'))
 					end
 					for k3, window in ipairs(windows) do
 						window:moveToScreen(screenTarget)
-						if appGroup.withMultipleMonitors == 'secondary' or appGroup.withMultipleMonitors == 'tertiary' then
-							local appDimensions = appGroup.large
-							if appGroup.withMultipleMonitors == 'tertiary' then
-								appDimensions = appGroup.small
-							end
-							obj:gridset(appDimensions.x1, appDimensions.y1, appDimensions.w1, appDimensions.h1, appDimensions.nickname, app)
+						local appDimensions = appGroup.large
+						if appGroup.withMultipleMonitors == hs.settings.get('tertiaryMonitorName') then
+							appDimensions = appGroup.small
 						end
+						obj:gridset(appDimensions.x1, appDimensions.y1, appDimensions.w1, appDimensions.h1, appDimensions.nickname, app)
 					end
 				end
 			end
@@ -125,10 +123,9 @@ end
 
 function obj:start()
 
-  self.applicationWatcher = hs.application.watcher.new(function(name, event, app)
-    if event == 1 or event == hs.application.watcher.launched then
-      for k, watchedApp in ipairs(self.watchedApps) do
-
+	self.applicationWatcher = hs.application.watcher.new(function(name, event, app)
+		if event == 1 or event == hs.application.watcher.launched then
+			for k, watchedApp in ipairs(self.watchedApps) do
         if contains(watchedApp.names, tostring(name)) then
           standardDelay = 0.5
           delay = 0
@@ -141,8 +138,18 @@ function obj:start()
           end
           hs.timer.doAfter(delay, function()
 						local appDimensions = watchedApp.large
-						if hs.settings.get('screenClass') == 'small' or (watchedApp.withMultipleMonitors == 'tertiary') then
+						if hs.settings.get('screenClass') == 'small' or watchedApp.withMultipleMonitors == hs.settings.get('tertiaryMonitorName') then
 							appDimensions = watchedApp.small
+						end
+
+						screenTarget = hs.screen.primaryScreen()
+						if watchedApp.withMultipleMonitors == hs.settings.get('tertiaryMonitorName') then
+							screenTarget = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
+						elseif watchedApp.withMultipleMonitors == hs.settings.get('secondaryMonitorName') then
+							screenTarget = hs.screen.find(hs.settings.get('secondaryMonitorName'))
+						end
+						for k2, window in ipairs(app:allWindows()) do
+							window:moveToScreen(screenTarget)
 						end
 
             obj:gridset(appDimensions.x1, appDimensions.y1, appDimensions.w1, appDimensions.h1, appDimensions.nickname, app)
