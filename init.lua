@@ -165,14 +165,14 @@ hs.spoons.use('SDCReminders', {
 	}
 })
 
--- hs.spoons.use('SDCWeather', {
--- 	config = {
--- 		apiKey = keys.darksky_api_key,
--- 		latitude = keys.latitude,
--- 		longitude = keys.longitude
--- 	},
--- 	start = true
--- })
+hs.spoons.use('SDCWeather', {
+	config = {
+		apiKey = keys.darksky_api_key,
+		latitude = keys.latitude,
+		longitude = keys.longitude
+	},
+	start = true
+})
 
 hs.spoons.use('SDCPhone', {
 	config = {
