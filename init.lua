@@ -257,7 +257,7 @@ end)
 --end):start()
 
 -- Watch Terminal app when (un)plugging iPad as monitor
-hs.screen.watcher.new(function()
+terminalWatcher = hs.screen.watcher.new(function()
 	terminal = hs.application.find('Terminal')
 	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
 	if terminal:isRunning() then
@@ -274,9 +274,10 @@ hs.screen.watcher.new(function()
 			end)
 		end
 	end
-end):start()
+end)
+terminalWatcher:start()
 
-local wf=hs.window.filter
+local wf = hs.window.filter
 wf_terminal = wf.new(false):setAppFilter('Terminal'):subscribe(hs.window.filter.windowMoved, function()
 	terminal = hs.application.find('Terminal')
 	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
