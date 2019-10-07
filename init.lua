@@ -293,4 +293,8 @@ end)
 hs.hotkey.bind(hotkeyCombo, '/', function()
   hs.reload()
 end)
-hs.alert.show('Configuration loaded.')
+if hs.updateAvailable() ~= false then
+	hs.alert.show('Hammerspoon update available: ' .. hs.updateAvailable())
+else
+	hs.alert.show('Configuration loaded.')
+end
