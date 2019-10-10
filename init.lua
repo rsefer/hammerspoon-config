@@ -9,7 +9,7 @@ dofile('config.lua')
 dofile('common.lua')
 
 hs.settings.set('secondaryMonitorName', 'DELL P2415Q')
-hs.settings.set('tertiaryMonitorName', 'Yam Display')
+hs.settings.set('tertiaryMonitorName', 4128836) -- Duet doesn't have a name so we use the ID
 
 local hotkeyCombo = {'cmd', 'alt', 'ctrl'}
 hs.settings.set('screenClass', 'large') -- assumes large iMac
