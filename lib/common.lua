@@ -12,3 +12,9 @@ function urlencode(url)
   url = url:gsub(" ", "+")
   return url
 end
+
+function tablelength(t)
+	local count = 0
+	for _ in pairs(t) do count = count + 1 end
+	return count
+end
