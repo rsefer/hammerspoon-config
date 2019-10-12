@@ -3,9 +3,26 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCPhone"
 
-local function callNumber(number)
+local function callNumber(number, protocol)
 	return function()
-		hs.osascript.applescript('open location "tel://' .. number .. '?audio=yes"')
+		workingProtocol = 'tel'
+		workingParam = '?audio=yes'
+		if protocol ~= nil then
+			workingProtocol = protocol
+			if protocol == 'facetime' then
+				workingParam = ''
+			end
+		end
+		hs.osascript.applescript([[
+			do shell script "open ]] .. protocol .. [[://" & quoted form of "]] .. number .. workingParam .. [["
+			tell application "System Events"
+				repeat while not (button "Call" of window 1 of application process "FaceTime" exists)
+					delay 1
+				end repeat
+				click button "Call" of window 1 of application process "FaceTime"
+			end tell
+		]])
+		-- hs.osascript.applescript('open location "tel://' .. number .. '?audio=yes"')
 		-- hs.urlevent.openURL('tel://' .. number ..'?audio=yes')
   end
 end
@@ -27,6 +44,7 @@ function obj:setShortcuts()
     choice = {}
     choice.text = shortcut.text
 		choice.number = shortcut.number
+		choice.protocol = shortcut.protocol
     table.insert(choices, choice)
     itemCount = itemCount + 1
   end
@@ -50,7 +68,7 @@ function obj:init()
 
 	self.chooser = hs.chooser.new(function(choice)
 		if choice then
-			callNumber(choice.number)()
+			callNumber(choice.number, choice.protocol)()
 		end
 	end)
 
