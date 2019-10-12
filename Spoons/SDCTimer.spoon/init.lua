@@ -41,11 +41,11 @@ function updateTimeElapsed()
 end
 
 function obj:toggleTimer()
-  if obj.timerMain:running() then
-    obj:timerStop()
+  if obj.timerMain and obj.timerMain:running() then
+    obj:stop()
   else
     obj:timerReset()
-		obj:timerStart()
+		obj:start()
   end
 end
 
@@ -60,26 +60,6 @@ function obj:timerReset()
 	end):stop()
 end
 
-function obj:timerStart()
-	local time = os.date('*t')
-	obj.timeStart = os.time()
-	obj.timerMain:start()
-	obj.timerCounter:start()
-	obj.timerMenu:setIcon(iconGreen, false)
-	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
-	hs.alert.show(timeStringStart, obj.alertStyle, 5)
-	obj.logger:i(timeStringStart)
-end
-
-function obj:timerStop()
-	obj.timerMain:stop()
-	obj.timerCounter:stop()
-	obj.timerMenu:setIcon(iconBlack, true)
-	local timeStringEnd = 'Timer stopped. Total time: ' .. timeString()
-	hs.alert.show(timeStringEnd, obj.alertStyle, 15)
-	obj.logger:i(timeStringEnd)
-end
-
 function obj:bindHotkeys(mapping)
   local def = {
     toggleTimer = hs.fnutils.partial(self.toggleTimer, self)
@@ -92,11 +72,29 @@ function obj:init()
 	self.timerMenu = hs.menubar.new()
 		:setClickCallback(obj.toggleTimer)
 		:setIcon(iconBlack, true)
+	self.timerMain = nil
+	self.timerCounter = nil
 end
 
 function obj:start()
-	obj.timerMain = nil
-	obj.timerCounter = nil
+	obj:timerReset()
+	local time = os.date('*t')
+	obj.timeStart = os.time()
+	obj.timerMain:start()
+	obj.timerCounter:start()
+	obj.timerMenu:setIcon(iconGreen, false)
+	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
+	hs.alert.show(timeStringStart, obj.alertStyle, 5)
+	obj.logger:i(timeStringStart)
+end
+
+function obj:stop()
+	obj.timerMain:stop()
+	obj.timerCounter:stop()
+	obj.timerMenu:setIcon(iconBlack, true)
+	local timeStringEnd = 'Timer stopped. Total time: ' .. timeString()
+	hs.alert.show(timeStringEnd, obj.alertStyle, 15)
+	obj.logger:i(timeStringEnd)
 	obj:timerReset()
 end
 

@@ -172,8 +172,7 @@ hs.spoons.use('SDCTimer', {
 		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f14', nil, function()
 			thisSpoon.toggleTimer()
 		end)
-	end,
-	start = true
+	end
 })
 
 hs.spoons.use('SDCOvercast')
