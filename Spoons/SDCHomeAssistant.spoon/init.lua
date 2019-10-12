@@ -3,6 +3,23 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCHomeAssistant"
 
+local viewWidth = 600
+local viewHeight = 500
+local iconSize = 14.0
+local iconFull = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/home-assistant.pdf')
+local icon = iconFull:setSize({ w = iconSize, h = iconSize })
+
+function obj:toggleWebview()
+  if obj.isShown then
+    obj.haWebview:hide()
+    obj.isShown = false
+  else
+    obj.haWebview:show():bringToFront(true)
+		obj.haWebview:hswindow():moveToScreen(hs.screen.primaryScreen()):focus()
+    obj.isShown = true
+  end
+end
+
 function obj:switchLights(on)
 
 	local groupLightsName = 'group.all_lights'
@@ -75,7 +92,30 @@ function obj:bindHotkeys(mapping)
   hs.spoons.bindHotkeysToSpec(def, mapping)
 end
 
+function obj:init()
+
+	self.isShown = false
+	self.haMenu = hs.menubar.new()
+    :setClickCallback(obj.toggleWebview)
+    :setIcon(icon, true)
+
+  self.haMenuFrame = self.haMenu:frame()
+
+	self.haWebview = hs.webview.newBrowser(hs.geometry.rect((self.haMenuFrame.x + self.haMenuFrame.w / 2) - (viewWidth / 2), self.haMenuFrame.y, viewWidth, viewHeight), { developerExtrasEnabled = true })
+    :allowTextEntry(true)
+		:shadow(true)
+		:windowCallback(function(action, webview, state)
+			if action == 'focusChange' and state ~= true then
+				self.haWebview:hide()
+				self.isShown = false
+			end
+		end)
+
+end
+
 function obj:start()
+
+	self.haWebview:url(obj.api_domain)
 
 	self.stateWatcher = hs.caffeinate.watcher.new(function(state)
 		if state == hs.caffeinate.watcher.systemDidWake or state == hs.caffeinate.watcher.systemWillSleep then

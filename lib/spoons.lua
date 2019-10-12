@@ -58,7 +58,8 @@ hs.spoons.use('SDCWindows', {
 
 hs.spoons.use('SDCHomeAssistant', {
 	config = {
-		api_endpoint = keys.homeassistant_api_endpoint,
+		api_domain = keys.homeassistant_api_domain,
+		api_endpoint = keys.homeassistant_api_domain .. '/api/',
 		api_key = keys.homeassistant_api_key,
 		watchedApps = {
 			-- {
