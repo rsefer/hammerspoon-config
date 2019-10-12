@@ -61,21 +61,21 @@ function obj:openDarkSky()
 end
 
 function obj:init()
-  self.updateInterval = 60 * 15
-  self.menuWeather = hs.menubar.new()
-  self.weatherTimer = hs.timer.doEvery(obj.updateInterval, function()
-    obj.updateWeather()
-  end):stop()
+	self.updateInterval = 60 * 15
+	self.menuWeather = hs.menubar.new()
+	self.weatherTimer = hs.timer.doEvery(obj.updateInterval, function()
+		obj.updateWeather()
+	end):stop()
 end
 
 function obj:start()
-	if hs.location.get() ~= nil then
-    loc = hs.location.get()
-    obj.latitude = loc.latitude
-		obj.longitude = loc.longitude
+	location = hs.location.get()
+	if location ~= nil then
+    obj.latitude = location.latitude
+		obj.longitude = location.longitude
 	end
   obj:updateWeather()
-  obj.weatherTimer:start()
+	obj.weatherTimer:start()
 end
 
 function obj:stop()
