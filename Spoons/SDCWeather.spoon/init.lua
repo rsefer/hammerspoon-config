@@ -27,7 +27,7 @@ function obj:updateWeather()
   status, data, headers = hs.http.get('https://api.darksky.net/forecast/' .. obj.apiKey .. '/' .. obj.latitude .. ',' .. obj.longitude, {})
   if status == 200 then
     json = hs.json.decode(data)
-    temperature = math.floor(json.currently.temperature)
+    temperature = math.floor(json.currently.apparentTemperature)
     icon = json.currently.icon
     menuIconLabel = getWeatherIcon(icon)
     menuTable = {
@@ -37,7 +37,11 @@ function obj:updateWeather()
       },
       {
         title = '-'
-      }
+			},
+			{
+				title = 'Feels like...',
+				fn = function() obj.openDarkSky() end
+			}
     }
     for i = 1, 8 do
       hour = json.hourly.data[i]
@@ -47,7 +51,7 @@ function obj:updateWeather()
         hourLabel = hourLabel .. ' '
       end
       table.insert(menuTable, {
-        title = hourLabel .. "\t" .. getWeatherIcon(hour.icon) .. "\t" .. math.floor(hour.temperature) .. '°',
+        title = hourLabel .. "\t" .. getWeatherIcon(hour.icon) .. "\t" .. math.floor(hour.apparentTemperature) .. '°',
         fn = function() obj.openDarkSky() end
       })
     end
