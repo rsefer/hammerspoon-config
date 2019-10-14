@@ -23,13 +23,7 @@ end)
 
 -- Dark Mode toggle
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f16', function()
-	hs.osascript.applescript([[
-		tell application "System Events"
-			tell appearance preferences
-				set dark mode to not dark mode
-			end tell
-		end tell
-	]])
+	hs.osascript.applescript('tell application "System Events" to tell appearance preferences to set dark mode to not dark mode')
 end)
 
 -- Mirror Display toggle
