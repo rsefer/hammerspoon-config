@@ -1,5 +1,3 @@
--- hs.spoons.use('SDCDesktopCapture')
-
 hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
@@ -147,3 +145,5 @@ hs.spoons.use('SDCMusic', {
 		discogs_secret = keys.discogs.secret
 	}
 })
+
+-- hs.spoons.use('SDCDesktopCapture')
