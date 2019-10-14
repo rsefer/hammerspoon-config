@@ -10,7 +10,7 @@ function obj:appFrameSet(layout, app)
 	hs.layout.apply({
 		{
 			app:name(),
-			nil,
+			app:focusedWindow(),
 			app:focusedWindow():screen(),
 			layout
 		}
