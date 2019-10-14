@@ -6,8 +6,8 @@ hs.spoons.use('SDCWindows', {
 			{ 'Google Chrome', nil, hs.screen.primaryScreen(), hs.geometry.unitrect(0.00, 0.00, 0.73, 1.00) },
 			{ 'Tweetbot', nil, hs.screen.primaryScreen(), hs.geometry.unitrect(0.73, 0.00, 0.27, 0.55) },
 			{ 'TextEdit', nil, hs.screen.primaryScreen(), hs.geometry.unitrect(0.73, 0.60, 0.27, 0.40) },
-			{ 'Code', nil, hs.settings.get('secondaryMonitorName'), hs.layout.maximized },
-			{ 'GitHub Desktop', nil, hs.settings.get('secondaryMonitorName'), hs.layout.maximized },
+			{ 'Code', nil, hs.screen.find(hs.settings.get('secondaryMonitorName')), hs.layout.maximized },
+			{ 'GitHub Desktop', nil, hs.screen.find(hs.settings.get('secondaryMonitorName')), hs.layout.maximized },
 			{ 'Terminal', nil, function()
 				if hs.screen.find(hs.settings.get('tertiaryMonitorName')) then
 					return hs.screen.find(hs.settings.get('tertiaryMonitorName'))
