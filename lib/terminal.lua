@@ -6,12 +6,12 @@ terminalWatcher = hs.screen.watcher.new(function()
 		if tertiaryMonitor then
 			hs.timer.doAfter(1, function()
 				terminal:mainWindow():moveToScreen(tertiaryMonitor)
-				spoon.SDCWindows:gridset(0, 0, 100, 100, nil, terminal)
+				terminal:mainWindow():moveToUnit(hs.layout.maximized)
 			end)
 		else
 			hs.timer.doAfter(1, function()
 				terminal:mainWindow():focus()
-				spoon.SDCWindows:gridset(50, 0, 50, 100, nil, terminal)
+				terminal:mainWindow():moveToUnit(hs.layout.right50)
 				terminal:hide()
 			end)
 		end
@@ -24,9 +24,10 @@ wf_terminal = wf.new(false):setAppFilter('Terminal'):subscribe(hs.window.filter.
 	terminal = hs.application.find('Terminal')
 	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
 	if tertiaryMonitor and terminal:mainWindow():screen() == tertiaryMonitor then
-		grid = hs.grid.get(terminal:mainWindow())
-		if (grid.w > 50 and grid.w < 100) or (grid.h > 50 and grid.h < 97) then
-			spoon.SDCWindows:gridset(0, 0, 100, 100, nil, terminal)
+		win = terminal:mainWindow()
+		winUR = win:frame():toUnitRect(win:screen():frame())
+		if (winUR.w > 0.51 and winUR.w < 1.00) or (winUR.h > 0.50 and winUR.h < 0.97) then
+			terminal:mainWindow():moveToUnit(hs.layout.maximized)
 		end
 	end
 end)

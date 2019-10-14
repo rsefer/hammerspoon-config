@@ -22,40 +22,6 @@ hs.spoons.use('SDCWindows', {
 				end
 			end }
 		},
-		watchedApps = {
-			{
-				names = {'Terminal'},
-				small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-				withMultipleMonitors = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
-			},
-			{
-				names = {'TextEdit'},
-				small = { x1 = 50, y1 = 0, w1 = 50, h1 = 100 },
-				large = { x1 = 73, y1 = 60, w1 = 27, h1 = 40 },
-				withMultipleMonitors = hs.screen.primaryScreen()
-			},
-			{
-				names = {'Visual Studio Code', 'Code', 'Atom', 'GitHub Desktop'},
-				delay = 1,
-				small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-				withMultipleMonitors = hs.screen.find(hs.settings.get('secondaryMonitorName'))
-			},
-			{
-				names = {'Google Chrome'},
-				delay = true,
-				small = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 },
-				large = { x1 = 0, y1 = 0, w1 = 73, h1 = 100, nickname = '34ths' },
-				withMultipleMonitors = hs.screen.primaryScreen()
-			},
-			{
-				names = {'Tweetbot'},
-				small = { x1 = 73, y1 = 0, w1 = 27, h1 = 55 },
-				large = { x1 = 73, y1 = 0, w1 = 27, h1 = 55 },
-				withMultipleMonitors = hs.screen.primaryScreen()
-			}
-		}
 	},
 	hotkeys = {
 		resetWindows										= {hs.settings.get('hotkeyCombo'), 'f18'},
@@ -80,29 +46,7 @@ hs.spoons.use('SDCHomeAssistant', {
 	config = {
 		api_domain = keys.homeassistant_api_domain,
 		api_endpoint = keys.homeassistant_api_domain .. '/api/',
-		api_key = keys.homeassistant_api_key,
-		watchedApps = {
-			-- {
-			--   name = 'Terminal',
-			--   monitor = hs.settings.get('tertiaryMonitorName'),
-			-- 	large = { x1 = 73, y1 = 0, w1 = 27, h1 = 100, nickname = '14th' }
-			-- },
-			{
-				name = 'Visual Studio Code',
-				monitor = hs.settings.get('secondaryMonitorName'),
-				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 }
-			},
-			{
-				name = 'Atom',
-				monitor = hs.settings.get('secondaryMonitorName'),
-				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 }
-			},
-			{
-				name = 'GitHub Desktop',
-				monitor = hs.settings.get('secondaryMonitorName'),
-				large = { x1 = 0, y1 = 0, w1 = 100, h1 = 100 }
-			}
-		}
+		api_key = keys.homeassistant_api_key
 	},
 	hotkeys = {
 		switchLights = {hs.settings.get('hotkeyCombo'), 'f19'},

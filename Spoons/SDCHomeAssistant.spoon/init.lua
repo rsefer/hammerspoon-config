@@ -58,30 +58,9 @@ function obj:toggleSecondaryMonitor(action)
 	}, function(cstatus, cbody, cheaders)
 		--
 		if action == 'on' then
-			obj:moveWindows()
+			hs.layout.apply(spoon.SDCWindows.windowLayout)
 		end
 	end)
-end
-
-function obj:moveWindows()
-	for k, watchedApp in ipairs(obj.watchedApps) do
-		app = hs.application.find(watchedApp.name)
-		if app ~= nil then
-			windows = app:allWindows()
-			screen = hs.screen.find(watchedApp.monitor)
-			delay = 6
-			for k2, window in ipairs(windows) do
-				hs.timer.doAfter(delay, function()
-					window:moveToScreen(screen)
-					if watchedApp.large ~= nil then
-						hs.timer.doAfter(1, function()
-							spoon.SDCWindows:gridset(watchedApp.large.x1, watchedApp.large.y1, watchedApp.large.w1, watchedApp.large.h1, watchedApp.large.nickname, app)
-						end)
-					end
-				end)
-			end
-		end
-	end
 end
 
 function obj:bindHotkeys(mapping)
