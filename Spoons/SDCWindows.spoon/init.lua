@@ -3,13 +3,18 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCWindows"
 
-local function contains(table, val)
-  for i = 1, #table do
-    if table[i] == val then
-      return true
-    end
-  end
-  return false
+function obj:appFrameSet(layout, app)
+	if app == nil then
+		app = hs.application.frontmostApplication()
+	end
+	hs.layout.apply({
+		{
+			app:name(),
+			nil,
+			app:focusedWindow():screen(),
+			layout
+		}
+	})
 end
 
 function obj:gridset(x1, y1, w1, h1, nickname, app)
@@ -61,45 +66,54 @@ function obj:gridset(x1, y1, w1, h1, nickname, app)
 	end
 end
 
-function obj:resetWindows()
-	for k, appGroup in ipairs(obj.watchedApps) do
-		for k2, name in ipairs(appGroup.names) do
-			app = hs.application.find(name)
-			if app then
-				windows = app:allWindows()
-				screenTarget = hs.screen.primaryScreen()
-				if appGroup.withMultipleMonitors and appGroup.withMultipleMonitors ~= hs.screen.primaryScreen() then
-					screenTarget = appGroup.withMultipleMonitors
-				end
-				for k3, window in ipairs(windows) do
-					window:moveToScreen(screenTarget)
-					local appDimensions = appGroup.large
-					if appGroup.withMultipleMonitors == hs.screen.find(hs.settings.get('tertiaryMonitorName')) then
-						appDimensions = appGroup.small
-					end
-					obj:gridset(appDimensions.x1, appDimensions.y1, appDimensions.w1, appDimensions.h1, appDimensions.nickname, app)
-				end
-			end
-		end
-	end
-end
-
 function obj:bindHotkeys(mapping)
   local def = {
-		resetWindows										= function() obj:resetWindows() end,
-    sizeLeftHalf                    = function() obj:gridset(0, 0, 50, 100) end,
-    sizeRightHalf                   = function() obj:gridset(50, 0, 50, 100) end,
-    sizeFull                        = function() obj:gridset(0, 0, 100, 100) end,
-    sizeCentered                    = function() obj:gridset(12.5, 12.5, 75, 75) end,
-    sizeLeft34ths                   = function() obj:gridset(0, 0, 73, 100, '34ths') end,
-    size34thsCentered               = function() obj:gridset(12.5, 0, 75, 100) end,
-    sizeRight14th                   = function() obj:gridset(73, 0, 27, 100, '14th') end,
-    sizeRight14thTopHalfish         = function() obj:gridset(73, 0, 27, 55) end,
-    sizeRight14thBottomHalfish      = function() obj:gridset(73, 60, 27, 40) end,
-    sizeHalfHeightTopEdge           = function() obj:gridset('current', 0, 'current', 50) end,
-    sizeHalfHeightBottomEdge        = function() obj:gridset('current', 50, 'current', 50) end,
-    moveLeftEdge                    = function() obj:gridset(0, 'current', 'current', 'current') end,
-    moveRightEdge                   = function() obj:gridset('opp', 'current', 'current', 'current') end
+		resetWindows = function()
+			hs.layout.apply(obj.windowLayout)
+		end,
+		sizeLeftHalf = function()
+			obj:appFrameSet(hs.layout.left50)
+		end,
+		sizeRightHalf = function()
+			obj:appFrameSet(hs.layout.right50)
+		end,
+		sizeFull = function()
+			obj:appFrameSet(hs.layout.maximized)
+		end,
+		sizeCentered = function()
+			obj:appFrameSet(hs.geometry.unitrect(0.125, 0.125, 0.75, 0.75))
+		end,
+		sizeLeft34ths = function()
+			obj:appFrameSet(hs.geometry.unitrect(0.00, 0.00, 0.73, 1.00))
+		end,
+		size34thsCentered = function()
+			obj:appFrameSet(hs.geometry.unitrect(0.125, 0.00, 0.73, 1.00))
+		end,
+		sizeRight14th = function()
+			obj:appFrameSet(hs.geometry.unitrect(0.73, 0.00, 0.27, 1.00))
+		end,
+		sizeRight14thTopHalfish = function()
+			obj:appFrameSet(hs.geometry.unitrect(0.73, 0.00, 0.27, 0.55))
+		end,
+		sizeRight14thBottomHalfish = function()
+			obj:appFrameSet(hs.geometry.unitrect(0.73, 0.60, 0.27, 0.40))
+		end,
+		sizeHalfHeightTopEdge = function()
+			win = hs.window:focusedWindow()
+			win:setFrame(hs.geometry.rect(win:frame().x, 0.00, win:frame().w, win:screen():frame().h / 2))
+		end,
+		sizeHalfHeightBottomEdge = function()
+			win = hs.window:focusedWindow()
+			win:setFrame(hs.geometry.rect(win:frame().x, win:screen():fullFrame().h / 2, win:frame().w, win:screen():fullFrame().h / 2))
+		end,
+		moveLeftEdge = function()
+			win = hs.window:focusedWindow()
+			win:setFrame(hs.geometry.rect(win:screen():frame().x, win:frame().y, win:frame().w, win:frame().h))
+		end,
+		moveRightEdge = function()
+			win = hs.window:focusedWindow()
+			win:setFrame(hs.geometry.rect(win:screen():fullFrame().w - win:frame().w, win:frame().y, win:frame().w, win:frame().h))
+		end
   }
   hs.spoons.bindHotkeysToSpec(def, mapping)
 end
@@ -110,8 +124,8 @@ function obj:init()
   hs.window.setFrameCorrectness = true
   hs.grid.MARGINX = 0
   hs.grid.MARGINY = 0
-  hs.grid.GRIDWIDTH = 100
-  hs.grid.GRIDHEIGHT = 100
+  hs.grid.GRIDWIDTH = 1
+  hs.grid.GRIDHEIGHT = 1
 
 	self.applicationWatcher = nil
 

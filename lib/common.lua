@@ -18,3 +18,12 @@ function tablelength(t)
 	for _ in pairs(t) do count = count + 1 end
 	return count
 end
+
+function contains(table, val)
+  for i = 1, #table do
+    if table[i] == val then
+      return true
+    end
+  end
+  return false
+end
