@@ -50,9 +50,6 @@ hs.spoons.use('SDCHomeAssistant', {
 		switchLights = {hs.settings.get('hotkeyCombo'), 'f19'},
 		turnOnSecondaryMonitor = {hs.settings.get('hotkeyCombo'), 'S'}
 	},
-	fn = function(thisSpoon)
-		thisSpoon.toggleSecondaryMonitor('on')
-	end,
 	start = true
 })
 
