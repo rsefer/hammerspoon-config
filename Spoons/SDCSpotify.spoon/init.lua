@@ -50,7 +50,9 @@ function obj:setSpotifyMenus()
           }, 5)
         end
         if obj.showNotifications then
-          local notification = hs.notify.new({ title = hs.spotify.getCurrentTrack(), subTitle = 'Artist: ' .. hs.spotify.getCurrentArtist(), informativeText = 'Album: ' .. hs.spotify.getCurrentAlbum() })
+					local notification = hs.notify.new({ title = hs.spotify.getCurrentTrack(), subTitle = 'Artist: ' .. hs.spotify.getCurrentArtist(), informativeText = 'Album: ' .. hs.spotify.getCurrentAlbum() })
+					-- TODO: Incorporate current album artwork like:
+					-- tell application "Spotify" to return artwork url of the current track
           notification:setIdImage(hs.image.imageFromAppBundle('com.spotify.client'))
           notification:send()
           hs.timer.doAfter(2.5, function() notification:withdraw() end)
