@@ -5,10 +5,11 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '/', function() hs.reload() end)
 -- Force Quit Hammerspoon
 -- (in Settings > Keyboard > Shortcuts)
 -- {'cmd', 'alt', 'ctrl'}, -
-
 -- Launch Hammerspoon
 -- (in Settings > Keyboard > Shortcuts)
 -- {'cmd', 'alt', 'ctrl'}, +
+-- The above are not included in the Hammerspoon config because they won't
+-- work if Hammerspoon is not running (launch) or frozen (force quit)
 
 -- New Google Calendar Event
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '8', function()
