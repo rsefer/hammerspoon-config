@@ -41,6 +41,9 @@ function obj:updateWeather()
 			{
 				title = 'Feels like...',
 				fn = function() obj.openDarkSky() end
+			},
+			{
+        title = '-'
 			}
     }
     for i = 1, 8 do
