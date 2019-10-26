@@ -14,4 +14,3 @@ hs.settings.set('windowSizes', {
 	sizeRight14thTopHalfish         = {0.730, 0.000, 0.270, 0.550},
 	sizeRight14thBottomHalfish      = {0.730, 0.600, 0.270, 0.400}
 })
-print(hs.settings.get('windowSizes').sizeRight14thBottomHalfish)
