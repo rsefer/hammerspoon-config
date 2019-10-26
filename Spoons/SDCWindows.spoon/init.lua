@@ -32,22 +32,22 @@ function obj:bindHotkeys(mapping)
 			obj:appFrameSet(hs.layout.maximized)
 		end,
 		sizeCentered = function()
-			obj:appFrameSet(hs.geometry.unitrect(0.125, 0.125, 0.75, 0.75))
+			obj:appFrameSet(hs.geometry.unitrect(hs.settings.get('windowSizes').sizeCentered))
 		end,
 		sizeLeft34ths = function()
-			obj:appFrameSet(hs.geometry.unitrect(0.00, 0.00, 0.73, 1.00))
+			obj:appFrameSet(hs.geometry.unitrect(hs.settings.get('windowSizes').sizeLeft34ths))
 		end,
 		size34thsCentered = function()
-			obj:appFrameSet(hs.geometry.unitrect(0.125, 0.00, 0.73, 1.00))
+			obj:appFrameSet(hs.geometry.unitrect(hs.settings.get('windowSizes').size34thsCentered))
 		end,
 		sizeRight14th = function()
-			obj:appFrameSet(hs.geometry.unitrect(0.73, 0.00, 0.27, 1.00))
+			obj:appFrameSet(hs.geometry.unitrect(hs.settings.get('windowSizes').sizeRight14th))
 		end,
 		sizeRight14thTopHalfish = function()
-			obj:appFrameSet(hs.geometry.unitrect(0.73, 0.00, 0.27, 0.55))
+			obj:appFrameSet(hs.geometry.unitrect(hs.settings.get('windowSizes').sizeRight14thTopHalfish))
 		end,
 		sizeRight14thBottomHalfish = function()
-			obj:appFrameSet(hs.geometry.unitrect(0.73, 0.60, 0.27, 0.40))
+			obj:appFrameSet(hs.geometry.unitrect(hs.settings.get('windowSizes').sizeRight14thBottomHalfish))
 		end,
 		sizeHalfHeightTopEdge = function()
 			win = hs.window:focusedWindow()

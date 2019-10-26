@@ -1,10 +1,10 @@
 hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
-			{ 'Google Chrome', nil, hs.screen.primaryScreen(), hs.geometry.unitrect(0.00, 0.00, 0.73, 1.00) },
-			{ 'Tweetbot', nil, hs.screen.primaryScreen(), hs.geometry.unitrect(0.73, 0.00, 0.27, 0.55) },
-			{ 'TextEdit', nil, hs.screen.primaryScreen(), hs.geometry.unitrect(0.73, 0.60, 0.27, 0.40) },
-			{ 'Notes', nil, hs.screen.primaryScreen(), hs.geometry.unitrect(0.73, 0.60, 0.27, 0.40) },
+			{ 'Google Chrome', nil, hs.screen.primaryScreen(), hs.settings.get('windowSizes').sizeLeft34ths },
+			{ 'Tweetbot', nil, hs.screen.primaryScreen(), hs.settings.get('windowSizes').sizeRight14thTopHalfish },
+			{ 'TextEdit', nil, hs.screen.primaryScreen(), hs.settings.get('windowSizes').sizeRight14thBottomHalfish },
+			{ 'Notes', nil, hs.screen.primaryScreen(), hs.settings.get('windowSizes').sizeRight14thBottomHalfish },
 			{ 'Code', nil, hs.screen.find(hs.settings.get('secondaryMonitorName')), hs.layout.maximized },
 			{ 'GitHub Desktop', nil, hs.screen.find(hs.settings.get('secondaryMonitorName')), hs.layout.maximized },
 			{ 'Terminal', nil, function()
