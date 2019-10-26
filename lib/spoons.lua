@@ -23,7 +23,7 @@ hs.spoons.use('SDCWindows', {
 		},
 	},
 	hotkeys = {
-		resetWindows										= {hs.settings.get('hotkeyCombo'), 'f18'},
+		resetWindows                    = {hs.settings.get('hotkeyCombo'), 'f18'},
 		sizeLeftHalf                    = {hs.settings.get('hotkeyCombo'), 'L'},
 		sizeRightHalf                   = {hs.settings.get('hotkeyCombo'), 'R'},
 		sizeFull                        = {hs.settings.get('hotkeyCombo'), 'F'},
