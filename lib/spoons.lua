@@ -3,6 +3,7 @@ hs.spoons.use('SDCWindows', {
 		windowLayout = {
 			{ 'Google Chrome', nil, hs.screen.primaryScreen(), hs.settings.get('windowSizes').sizeLeft34ths },
 			{ 'Tweetbot', nil, hs.screen.primaryScreen(), hs.settings.get('windowSizes').sizeRight14thTopHalfish },
+			{ 'Reminders', nil, hs.screen.primaryScreen(), hs.settings.get('windowSizes').sizeRight14thTopHalfish },
 			{ 'TextEdit', nil, hs.screen.primaryScreen(), hs.settings.get('windowSizes').sizeRight14thBottomHalfish },
 			{ 'Notes', nil, hs.screen.primaryScreen(), hs.settings.get('windowSizes').sizeRight14thBottomHalfish },
 			{ 'Code', nil, hs.screen.find(hs.settings.get('secondaryMonitorName')), hs.layout.maximized },
