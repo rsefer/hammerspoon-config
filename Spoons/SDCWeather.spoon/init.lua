@@ -33,14 +33,14 @@ function obj:updateWeather()
     menuTable = {
       {
         title = 'darksky.net',
-        fn = function() obj.openDarkSky() end
+        fn = function() obj.openDarkSkyForecast() end
       },
       {
         title = '-'
 			},
 			{
 				title = 'Feels like...',
-				fn = function() obj.openDarkSky() end
+				fn = function() obj.openDarkSkyDetails() end
 			},
 			{
         title = '-'
@@ -55,7 +55,7 @@ function obj:updateWeather()
       end
       table.insert(menuTable, {
         title = hourLabel .. "\t" .. getWeatherIcon(hour.icon) .. "\t" .. math.floor(hour.apparentTemperature) .. '°',
-        fn = function() obj.openDarkSky() end
+        fn = function() obj.openDarkSkyDetails() end
       })
     end
     obj.menuWeather:setTitle(menuIconLabel .. ' ' .. temperature .. '°')
@@ -63,8 +63,12 @@ function obj:updateWeather()
   end
 end
 
-function obj:openDarkSky()
+function obj:openDarkSkyForecast()
   hs.urlevent.openURL('https://darksky.net/forecast/' .. obj.latitude .. ',' .. obj.longitude .. '/us12/en')
+end
+
+function obj:openDarkSkyDetails()
+  hs.urlevent.openURL('https://darksky.net/details/' .. obj.latitude .. ',' .. obj.longitude .. '/' .. os.date('%Y-%m-%d') .. '/us12/en')
 end
 
 function obj:init()
