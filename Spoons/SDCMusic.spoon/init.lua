@@ -178,9 +178,8 @@ function obj:playerTogglePlayPause()
 end
 
 function obj:togglePlayer()
-  playerApp = hs.application.find('Music')
-  if hs.application.find('Music'):isRunning() and playerApp:isFrontmost() then
-    playerApp:hide()
+  if obj.playerApp ~= nil and obj.playerApp:isRunning() and obj.playerApp:isFrontmost() then
+    obj.playerApp:hide()
   else
     hs.application.launchOrFocus('Music')
   end
@@ -188,6 +187,7 @@ end
 
 function obj:init()
 
+	self.playerApp = hs.application.get('Music')
   self.showCurrentSongProgressBar = true
   self.showNotifications = true
   self.showAlerts = false
@@ -203,7 +203,7 @@ function obj:init()
 	self.lastTimePlayed = os.time()
 
   self.playerTimer = hs.timer.doEvery(0.5, function()
-		if hs.application.find('Music'):isRunning() then
+		if obj.playerApp ~= nil and obj.playerApp:isRunning() then
 			if (os.time() - obj.lastTimePlayed) > 5 * 60 then
 				obj.isDormant = true
 			else

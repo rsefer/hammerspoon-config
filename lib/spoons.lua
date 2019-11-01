@@ -72,7 +72,7 @@ hs.spoons.use('SDCAudio', {
 			},
 			{
 				order = 3,
-				name = 'AirPods',
+				name = 'Robert’s AirPods Pro',
 				menuIcon = '🎧',
 				alertIcon = '',
 				overrides = 2
