@@ -170,6 +170,9 @@ function obj:stop()
 	local timeStringEnd = 'Timer stopped. Total time: ' .. timeString()
 	if obj.activeClient ~= nil then
 		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
+		name = obj.activeClient.name:gsub('%W', '')
+		local ltstring = 'lt ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. math.ceil(obj.timeAccrued / 60)
+		hs.execute(ltstring, true)
 	end
 	hs.alert.show(timeStringEnd, obj.alertStyle, 15)
 	obj.logger:i(timeStringEnd)
