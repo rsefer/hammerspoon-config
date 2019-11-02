@@ -107,7 +107,9 @@ function obj:setPlayerMenus()
 						subTitle = 'Artist: ' .. currentTrack.artist,
 						informativeText = 'Album: ' .. currentTrack.album
 					})
-          notification:setIdImage(workingImage)
+					if workingImage ~= nil then
+						notification:setIdImage(workingImage)
+					end
           notification:send()
           hs.timer.doAfter(2.5, function() notification:withdraw() end)
         end
