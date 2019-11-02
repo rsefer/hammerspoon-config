@@ -132,10 +132,18 @@ function obj:init()
 				end
 				obj:start()
 			end
+			obj.clientChooser:query(nil)
 		end)
 			:width(30)
 			:rows(6)
 			:searchSubText(true)
+			:attachedToolbar(hs.webview.toolbar.new('clientChooserToolbar', {{
+				id = 'clientRefresh',
+				label = 'Refresh',
+				selectable = true,
+				fn = function() obj.clientChooser:choices(obj:getClients()) end
+			}}
+			):sizeMode('small'):displayMode('label'))
 			:choices(self:getClients())
 	end)
 
