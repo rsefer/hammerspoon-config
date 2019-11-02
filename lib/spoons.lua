@@ -127,6 +127,10 @@ hs.spoons.use('SDCPhone', {
 })
 
 hs.spoons.use('SDCTimer', {
+	config = {
+		biz_api_key = keys.biz_api_key,
+		biz_api_client_endpoint = keys.biz_api_client_endpoint
+	},
 	hotkeys = {
 		toggleTimer = {hs.settings.get('hotkeyCombo'), '\\'}
 	},

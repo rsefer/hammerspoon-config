@@ -32,8 +32,23 @@ function timeString()
 	return timeString
 end
 
+function clientNameFromID(ID)
+	local name = nil
+	for i, client in ipairs(obj.clients) do
+		if client.uuid == ID then
+			name = client.name
+			break
+		end
+	end
+	return name
+end
+
 function updateTimeElapsedAlert()
-	hs.alert.show(timeString(), obj.alertStyle, 9)
+	local elapsedString = timeString()
+	if obj.activeClient ~= nil then
+		elapsedString = obj.activeClient.name .. ': ' .. elapsedString
+	end
+	hs.alert.show(elapsedString, obj.alertStyle, 9)
 end
 
 function updateTimeElapsed()
@@ -44,12 +59,13 @@ function obj:toggleTimer()
   if obj.timerMain and obj.timerMain:running() then
     obj:stop()
   else
-    obj:timerReset()
-		obj:start()
+		obj:timerReset()
+		obj:showChooser()
   end
 end
 
 function obj:timerReset()
+	obj.activeClient = nil
 	obj.timeAccrued = 0
 	obj.timeStart = nil
 	obj.timerMain = hs.timer.doEvery(obj.timeIntervalSeconds, function()
@@ -60,6 +76,35 @@ function obj:timerReset()
 	end):stop()
 end
 
+function obj:showChooser()
+	obj.clientChooser:show()
+end
+
+function obj:getClients()
+	status, body, headers = hs.http.get(self.biz_api_client_endpoint .. '?access_token=' .. self.biz_api_key .. '&sortBy=recentActivityDate')
+	if status == 200 then
+		clientsRaw = hs.json.decode(body)
+		clients = {
+			{
+				uuid = 0,
+				text = '---',
+				name = '---'
+			}
+		}
+		for i, client in ipairs(clientsRaw) do
+			table.insert(clients, {
+				uuid = client.id,
+				text = client.name,
+				name = client.name
+			})
+		end
+		self.clients = clients
+		return clients
+	else
+		return {}
+	end
+end
+
 function obj:bindHotkeys(mapping)
   local def = {
     toggleTimer = hs.fnutils.partial(self.toggleTimer, self)
@@ -68,22 +113,42 @@ function obj:bindHotkeys(mapping)
 end
 
 function obj:init()
+
 	self.logger = hs.logger.new(self.name, 'info')
 	self.timerMenu = hs.menubar.new()
 		:setClickCallback(obj.toggleTimer)
 		:setIcon(iconBlack, true)
 	self.timerMain = nil
 	self.timerCounter = nil
+
+	self:timerReset()
+
+	hs.timer.doAfter(1, function()
+		obj.clientChooser = hs.chooser.new(function(choice)
+			if choice then
+				if choice.uuid ~= 0 then
+					obj.activeClient = choice
+				end
+				obj:start()
+			end
+		end)
+			:width(30)
+			:rows(6)
+			:choices(self:getClients())
+	end)
+
 end
 
 function obj:start()
-	obj:timerReset()
 	local time = os.date('*t')
 	obj.timeStart = os.time()
 	obj.timerMain:start()
 	obj.timerCounter:start()
 	obj.timerMenu:setIcon(iconGreen, false)
 	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
+	if obj.activeClient ~= nil then
+		timeStringStart = obj.activeClient.name .. ': ' .. timeStringStart
+	end
 	hs.alert.show(timeStringStart, obj.alertStyle, 5)
 	obj.logger:i(timeStringStart)
 end
@@ -93,6 +158,9 @@ function obj:stop()
 	obj.timerCounter:stop()
 	obj.timerMenu:setIcon(iconBlack, true)
 	local timeStringEnd = 'Timer stopped. Total time: ' .. timeString()
+	if obj.activeClient ~= nil then
+		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
+	end
 	hs.alert.show(timeStringEnd, obj.alertStyle, 15)
 	obj.logger:i(timeStringEnd)
 	obj:timerReset()
