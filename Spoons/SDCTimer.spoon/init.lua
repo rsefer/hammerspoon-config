@@ -95,7 +95,8 @@ function obj:getClients()
 			table.insert(clients, {
 				uuid = client.id,
 				text = client.name,
-				name = client.name
+				name = client.name,
+				subText = client.contact
 			})
 		end
 		self.clients = clients
@@ -134,6 +135,7 @@ function obj:init()
 		end)
 			:width(30)
 			:rows(6)
+			:searchSubText(true)
 			:choices(self:getClients())
 	end)
 
