@@ -3,8 +3,6 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCWeather"
 
--- TODO: Consider switching to wttr.in
-
 local function getWeatherIcon(iconSlug)
   iconLabel = '☁️'
   if iconSlug == 'partly-cloudy-day' or iconSlug == 'partly-cloudy-night' then
