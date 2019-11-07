@@ -7,10 +7,10 @@ if string.match(string.lower(hs.host.localizedName()), 'macbook') then
   hs.settings.set('screenClass', 'small')
 end
 hs.settings.set('windowSizes', {
-	sizeCentered                    = {0.125, 0.125, 0.750, 0.750},
-	sizeLeft34ths                   = {0.000, 0.000, 0.730, 1.000},
-	size34thsCentered               = {0.125, 0.000, 0.730, 1.000},
-	sizeRight14th                   = {0.730, 0.000, 0.270, 1.000},
-	sizeRight14thTopHalfish         = {0.730, 0.000, 0.270, 0.550},
-	sizeRight14thBottomHalfish      = {0.730, 0.600, 0.270, 0.400}
+	sizeCentered                    = {01.25, 01.25, 07.50, 07.50},
+	sizeLeft34ths                   = {00.00, 00.00, 07.30, 10.00},
+	size34thsCentered               = {01.25, 00.00, 07.30, 10.00},
+	sizeRight14th                   = {07.30, 00.00, 02.70, 10.00},
+	sizeRight14thTopHalfish         = {07.30, 00.00, 02.70, 05.50},
+	sizeRight14thBottomHalfish      = {07.30, 06.00, 02.70, 04.00}
 })

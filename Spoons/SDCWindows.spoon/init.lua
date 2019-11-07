@@ -75,8 +75,8 @@ function obj:init()
   hs.window.setFrameCorrectness = true
   hs.grid.MARGINX = 0
   hs.grid.MARGINY = 0
-  hs.grid.GRIDWIDTH = 1
-  hs.grid.GRIDHEIGHT = 1
+  hs.grid.GRIDWIDTH = 10
+  hs.grid.GRIDHEIGHT = 10
 
 	self.applicationWatcher = nil
 
