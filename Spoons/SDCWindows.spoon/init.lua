@@ -22,6 +22,18 @@ function obj:bindHotkeys(mapping)
 		resetWindows = function()
 			hs.layout.apply(obj.windowLayout)
 		end,
+		moveWindowRightScreen = function()
+			hs.window.focusedWindow():moveOneScreenEast(false, true)
+		end,
+		moveWindowLeftScreen = function()
+			hs.window.focusedWindow():moveOneScreenWest(false, true)
+		end,
+		moveWindowUpScreen = function()
+			hs.window.focusedWindow():moveOneScreenNorth(false, true)
+		end,
+		moveWindowDownScreen = function()
+			hs.window.focusedWindow():moveOneScreenSouth(false, true)
+		end,
 		sizeLeftHalf = function()
 			obj:appFrameSet(hs.layout.left50)
 		end,

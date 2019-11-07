@@ -25,6 +25,10 @@ hs.spoons.use('SDCWindows', {
 	},
 	hotkeys = {
 		resetWindows                    = {hs.settings.get('hotkeyCombo'), 'f18'},
+		moveWindowRightScreen           = {hs.settings.get('hotkeyCombo'), 'right'},
+		moveWindowLeftScreen            = {hs.settings.get('hotkeyCombo'), 'left'},
+		moveWindowUpScreen              = {hs.settings.get('hotkeyCombo'), 'up'},
+		moveWindowDownScreen            = {hs.settings.get('hotkeyCombo'), 'down'},
 		sizeLeftHalf                    = {hs.settings.get('hotkeyCombo'), 'L'},
 		sizeRightHalf                   = {hs.settings.get('hotkeyCombo'), 'R'},
 		sizeFull                        = {hs.settings.get('hotkeyCombo'), 'F'},
