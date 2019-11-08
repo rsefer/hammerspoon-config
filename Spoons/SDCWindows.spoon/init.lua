@@ -27,7 +27,9 @@ end
 
 function obj:resetAllApps()
 	for i, item in ipairs(obj.windowLayout) do
-		obj:appMove(item[1], item[2], item[3])
+		for a, app in ipairs(item.apps) do
+			obj:appMove(app, item.screen, item.size)
+		end
 	end
 end
 
@@ -48,8 +50,8 @@ function obj:bindHotkeys(mapping)
 		sizeCentered = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').center)
 		end,
-		sizeLeft23rds = function()
-			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.left2)
+		sizeRight23rds = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.right2)
 		end,
 		sizeRight13rd = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.right)
@@ -113,9 +115,9 @@ function obj:start()
 	self.applicationWatcher = hs.application.watcher.new(function(name, event, app)
 		if event == 1 or event == hs.application.watcher.launched then
 			for k, ao in ipairs(self.windowLayout) do
-				if name == ao[1] then
+				if contains(ao.apps, name) then
 					hs.timer.doAfter(2, function()
-						obj:appMove(ao[1], ao[2], ao[3])
+						obj:appMove(name, ao.screen, ao.size)
 					end)
 					break
 				end

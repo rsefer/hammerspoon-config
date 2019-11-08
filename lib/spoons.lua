@@ -1,15 +1,32 @@
 hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
-			{ 'Google Chrome', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.right2 },
-			{ 'Tweetbot', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.leftTop },
-			{ 'Reminders', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.leftTop },
-			{ 'TextEdit', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.leftBottom },
-			{ 'Notes', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.leftBottom },
-			{ 'Code', hs.screen.find(hs.settings.get('secondaryMonitorName')), hs.settings.get('windowSizes').full },
-			{ 'GitHub Desktop', hs.screen.find(hs.settings.get('secondaryMonitorName')), hs.settings.get('windowSizes').full },
-			{ 'Terminal', screenChooser(hs.settings.get('tertiaryMonitorName'), hs.screen.primaryScreen()), windowScreenSizeChooser(hs.settings.get('tertiaryMonitorName'), hs.settings.get('windowSizes').full, hs.settings.get('windowSizes').thirds.leftTop) }
-		},
+			{
+				apps = { 'Google Chrome', 'Safari', 'Firefox' },
+				screen = hs.screen.primaryScreen(),
+				size = hs.settings.get('windowSizes').thirds.right2
+			},
+			{
+				apps = { 'Messages', 'Slack', 'Tweetbot', 'Reminders' },
+				screen = hs.screen.primaryScreen(),
+				size = hs.settings.get('windowSizes').thirds.leftTop
+			},
+			{
+				apps = { 'TextEdit', 'Notes' },
+				screen = hs.screen.primaryScreen(),
+				size = hs.settings.get('windowSizes').thirds.leftBottom
+			},
+			{
+				apps = { 'Code', 'GitHub Desktop' },
+				screen = screenChooser(hs.settings.get('secondaryMonitorName'), hs.screen.primaryScreen()),
+				size = hs.settings.get('windowSizes').full
+			},
+			{
+				apps = { 'Terminal' },
+				screen = screenChooser(hs.settings.get('tertiaryMonitorName'), hs.screen.primaryScreen()),
+				size = windowScreenSizeChooser(hs.settings.get('tertiaryMonitorName'), hs.settings.get('windowSizes').full, hs.settings.get('windowSizes').thirds.leftTop)
+			}
+		}
 	},
 	hotkeys = {
 		resetWindows                    = {hs.settings.get('hotkeyCombo'), 'f18'},
@@ -21,7 +38,7 @@ hs.spoons.use('SDCWindows', {
 		sizeRightHalf                   = {hs.settings.get('hotkeyCombo'), 'R'},
 		sizeFull                        = {hs.settings.get('hotkeyCombo'), 'F'},
 		sizeCentered                    = {hs.settings.get('hotkeyCombo'), 'C'},
-		sizeLeft23rds                   = {hs.settings.get('hotkeyCombo'), 'N'},
+		sizeRight23rds                   = {hs.settings.get('hotkeyCombo'), 'N'},
 		sizeRight13rd                   = {hs.settings.get('hotkeyCombo'), 'M'},
 		sizeRight13rdTopHalfish         = {hs.settings.get('hotkeyCombo'), ','},
 		sizeRight13rdBottomHalfish      = {hs.settings.get('hotkeyCombo'), '.'},
