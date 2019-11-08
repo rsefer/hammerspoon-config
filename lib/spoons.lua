@@ -1,14 +1,14 @@
 hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
-			{ 'Google Chrome', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.left2 },
-			{ 'Tweetbot', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.rightTop },
-			{ 'Reminders', hs.screen.find(hs.settings.get('secondaryMonitorName')), hs.settings.get('windowSizes').halves.left },
-			{ 'TextEdit', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.rightBottom },
-			{ 'Notes', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.rightBottom },
+			{ 'Google Chrome', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.right2 },
+			{ 'Tweetbot', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.leftTop },
+			{ 'Reminders', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.leftTop },
+			{ 'TextEdit', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.leftBottom },
+			{ 'Notes', hs.screen.primaryScreen(), hs.settings.get('windowSizes').thirds.leftBottom },
 			{ 'Code', hs.screen.find(hs.settings.get('secondaryMonitorName')), hs.settings.get('windowSizes').full },
 			{ 'GitHub Desktop', hs.screen.find(hs.settings.get('secondaryMonitorName')), hs.settings.get('windowSizes').full },
-			{ 'Terminal', screenChooser(hs.settings.get('tertiaryMonitorName'), hs.screen.primaryScreen()), windowScreenSizeChooser(hs.settings.get('tertiaryMonitorName'), hs.settings.get('windowSizes').full, hs.settings.get('windowSizes').thirds.rightTop) }
+			{ 'Terminal', screenChooser(hs.settings.get('tertiaryMonitorName'), hs.screen.primaryScreen()), windowScreenSizeChooser(hs.settings.get('tertiaryMonitorName'), hs.settings.get('windowSizes').full, hs.settings.get('windowSizes').thirds.leftTop) }
 		},
 	},
 	hotkeys = {

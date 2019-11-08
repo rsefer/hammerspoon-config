@@ -12,7 +12,7 @@ function gr(x, y, w, h)
 end
 
 fullWidth = 100
-thirdCenterR = 72
+thirdCenterR = 66.6
 thirdLeftR = fullWidth - thirdCenterR
 thirdWidthRight = fullWidth - thirdCenterR
 
@@ -33,10 +33,12 @@ hs.settings.set('windowSizes', {
 		left            = gr(0, 0, thirdLeftR, fullHeight),
 		center          = gr(thirdLeftR, 0, thirdLeftR, fullHeight),
 		right           = gr(thirdCenterR, 0, thirdWidthRight, fullHeight),
+		leftTop         = gr(0, 0, thirdWidthRight, halfHeightTop),
+		leftBottom      = gr(0, halfHeightTop, thirdWidthRight, halfHeightBottom),
 		rightTop        = gr(thirdCenterR, 0, thirdWidthRight, halfHeightTop),
 		rightBottom     = gr(thirdCenterR, halfHeightTop, thirdWidthRight, halfHeightBottom),
 		left2           = gr(0, 0, thirdCenterR, fullHeight),
-		right2          = gr(fullWidth - thirdLeftR , 0, thirdCenterR, fullHeight)
+		right2          = gr(fullWidth - thirdCenterR , 0, thirdCenterR, fullHeight)
 	},
 	quadrants = {
 		one             = gr(fullWidth / 2, 0, fullWidth / 2, fullHeight / 2),
