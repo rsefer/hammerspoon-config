@@ -68,6 +68,18 @@ function obj:bindHotkeys(mapping)
 			screenFrame = win:screen():frame()
 			win:setFrame(hs.geometry(winGridFrame.x, screenFrame.h + screenFrame.y - hs.settings.get('windowSizes').margin - winGridFrame.h, winGridFrame.w, (screenFrame.h - (hs.settings.get('windowSizes').margin * 3)) / 2))
 		end,
+		sizeQ1 = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').quadrants.one)
+		end,
+		sizeQ2 = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').quadrants.two)
+		end,
+		sizeQ3 = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').quadrants.three)
+		end,
+		sizeQ4 = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').quadrants.four)
+		end,
 		moveLeftEdge = function()
 			win = hs.window:focusedWindow()
 			winGridFrame = hs.grid.getCell(hs.grid.get(win), win:screen())

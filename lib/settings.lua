@@ -11,12 +11,12 @@ function gr(x, y, w, h)
 	return x .. ',' .. y .. ', ' .. w .. 'x' .. h
 end
 
-fullWidth = 108
+fullWidth = 100
 thirdCenterR = 72
 thirdLeftR = fullWidth - thirdCenterR
 thirdWidthRight = fullWidth - thirdCenterR
 
-fullHeight = 54
+fullHeight = 56
 halfHeightTop = fullHeight * 0.65
 halfHeightBottom = fullHeight - halfHeightTop
 
@@ -37,10 +37,19 @@ hs.settings.set('windowSizes', {
 		rightBottom     = gr(thirdCenterR, halfHeightTop, thirdWidthRight, halfHeightBottom),
 		left2           = gr(0, 0, thirdCenterR, fullHeight),
 		right2          = gr(fullWidth - thirdLeftR , 0, thirdCenterR, fullHeight)
+	},
+	quadrants = {
+		one             = gr(fullWidth / 2, 0, fullWidth / 2, fullHeight / 2),
+		two             = gr(0, 0, fullWidth / 2, fullHeight / 2),
+		three           = gr(0, fullHeight / 2, fullWidth / 2, fullHeight / 2),
+		four            = gr(fullWidth / 2, fullHeight / 2, fullWidth / 2, fullHeight / 2)
 	}
 })
 hs.grid.setGrid(fullWidth .. 'x' .. fullHeight)
-hs.grid.setMargins({ x = hs.settings.get('windowSizes').margin, y = hs.settings.get('windowSizes').margin })
+hs.grid.setMargins({
+	x = hs.settings.get('windowSizes').margin,
+	y = hs.settings.get('windowSizes').margin
+})
 hs.window.animationDuration = 0
 -- hs.window.setFrameCorrectness = true
 hs.grid.ui.textSize = 50
