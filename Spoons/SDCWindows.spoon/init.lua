@@ -25,12 +25,16 @@ function obj:windowMove(window, screen, size)
 	hs.grid.set(window, size, workingScreen)
 end
 
+function obj:resetAllApps()
+	for i, item in ipairs(obj.windowLayout) do
+		obj:appMove(item[1], item[2], item[3])
+	end
+end
+
 function obj:bindHotkeys(mapping)
   local def = {
 		resetWindows = function()
-			for i, item in ipairs(obj.windowLayout) do
-				obj:appMove(item[1], item[2], item[3])
-			end
+			obj:resetAllApps()
 		end,
 		sizeLeftHalf = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').halves.left)
@@ -119,7 +123,7 @@ function obj:start()
 			for k, ao in ipairs(self.windowLayout) do
 				if name == ao[1] then
 					hs.timer.doAfter(2, function()
-						hs.layout.apply({ ao })
+						obj:appMove(ao[1], ao[2], ao[3])
 					end)
 					break
 				end

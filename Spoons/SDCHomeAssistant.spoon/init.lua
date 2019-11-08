@@ -58,7 +58,7 @@ function obj:toggleSecondaryMonitor(action)
 	}, function(cstatus, cbody, cheaders)
 		--
 		if action == 'on' then
-			hs.layout.apply(spoon.SDCWindows.windowLayout)
+			spoon.SDCWindows:resetAllApps()
 		end
 	end)
 end
