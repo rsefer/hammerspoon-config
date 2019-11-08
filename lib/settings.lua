@@ -6,11 +6,41 @@ hs.settings.set('screenClass', 'large') -- assumes large iMac
 if string.match(string.lower(hs.host.localizedName()), 'macbook') then
   hs.settings.set('screenClass', 'small')
 end
+
+function gr(x, y, w, h)
+	return x .. ',' .. y .. ', ' .. w .. 'x' .. h
+end
+
+fullWidth = 108
+thirdCenterR = 72
+thirdLeftR = fullWidth - thirdCenterR
+thirdWidthRight = fullWidth - thirdCenterR
+
+fullHeight = 54
+halfHeightTop = fullHeight * 0.65
+halfHeightBottom = fullHeight - halfHeightTop
+
 hs.settings.set('windowSizes', {
-	sizeCentered                    = {01.25, 01.25, 07.50, 07.50},
-	sizeLeft34ths                   = {00.00, 00.00, 07.30, 10.00},
-	size34thsCentered               = {01.25, 00.00, 07.30, 10.00},
-	sizeRight14th                   = {07.30, 00.00, 02.70, 10.00},
-	sizeRight14thTopHalfish         = {07.30, 00.00, 02.70, 05.50},
-	sizeRight14thBottomHalfish      = {07.30, 06.00, 02.70, 04.00}
+	margin            = 24,
+	full              = gr(0, 0, fullWidth, fullHeight),
+	center            = gr(fullWidth / 5, fullHeight / 5, fullWidth * 3 / 5, fullHeight * 3 / 5),
+	halves = {
+		left            = gr(0, 0, fullWidth / 2, fullHeight),
+		right           = gr(fullWidth / 2, 0, fullWidth / 2, fullHeight),
+		leftTop         = gr(0, 0, fullWidth / 2, fullHeight)
+	},
+	thirds = {
+		left            = gr(0, 0, thirdLeftR, fullHeight),
+		center          = gr(thirdLeftR, 0, thirdLeftR, fullHeight),
+		right           = gr(thirdCenterR, 0, thirdWidthRight, fullHeight),
+		rightTop        = gr(thirdCenterR, 0, thirdWidthRight, halfHeightTop),
+		rightBottom     = gr(thirdCenterR, halfHeightTop, thirdWidthRight, halfHeightBottom),
+		left2           = gr(0, 0, thirdCenterR, fullHeight),
+		right2          = gr(fullWidth - thirdLeftR , 0, thirdCenterR, fullHeight)
+	}
 })
+hs.grid.setGrid(fullWidth .. 'x' .. fullHeight)
+hs.grid.setMargins({ x = hs.settings.get('windowSizes').margin, y = hs.settings.get('windowSizes').margin })
+hs.window.animationDuration = 0
+-- hs.window.setFrameCorrectness = true
+hs.grid.ui.textSize = 50

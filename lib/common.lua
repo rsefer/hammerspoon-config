@@ -27,3 +27,27 @@ function contains(table, val)
   end
   return false
 end
+
+function screenIsConnected(screenName)
+	if hs.screen.find(screenName) ~= nil then
+		return true
+	else
+		return false
+	end
+end
+
+function screenChooser(desiredScreenName, fallbackScreen)
+	if screenIsConnected(desiredScreenName) then
+		return hs.screen.find(desiredScreenName)
+	else
+		return fallbackScreen
+	end
+end
+
+function windowScreenSizeChooser(desiredScreenName, desiredSize, fallbackSize)
+	if screenIsConnected(desiredScreenName) then
+		return desiredSize
+	else
+		return fallbackSize
+	end
+end
