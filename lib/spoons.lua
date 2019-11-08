@@ -37,19 +37,19 @@ hs.spoons.use('SDCWindows', {
 		sizeLeftHalf                    = {hs.settings.get('hotkeyCombo'), 'L'},
 		sizeRightHalf                   = {hs.settings.get('hotkeyCombo'), 'R'},
 		sizeFull                        = {hs.settings.get('hotkeyCombo'), 'F'},
-		sizeCentered                    = {hs.settings.get('hotkeyCombo'), 'C'},
 		sizeRight23rds                  = {hs.settings.get('hotkeyCombo'), 'N'},
 		sizeRight13rd                   = {hs.settings.get('hotkeyCombo'), 'M'},
 		sizeRight13rdTopHalfish         = {hs.settings.get('hotkeyCombo'), ','},
 		sizeRight13rdBottomHalfish      = {hs.settings.get('hotkeyCombo'), '.'},
-		sizeHalfHeightTopEdge           = {hs.settings.get('hotkeyCombo'), 'T'},
-		sizeHalfHeightBottomEdge        = {hs.settings.get('hotkeyCombo'), 'B'},
+		sizeCentered                    = {hs.settings.get('hotkeyCombo'), 'pad5'},
+		sizeHalfHeightTopEdge           = {hs.settings.get('hotkeyCombo'), 'pad8'},
+		sizeHalfHeightBottomEdge        = {hs.settings.get('hotkeyCombo'), 'pad2'},
+		moveLeftEdge                    = {hs.settings.get('hotkeyCombo'), 'pad4'},
+		moveRightEdge                   = {hs.settings.get('hotkeyCombo'), 'pad6'}
 		sizeQ1                          = {hs.settings.get('hotkeyCombo'), 'pad9'},
 		sizeQ2                          = {hs.settings.get('hotkeyCombo'), 'pad7'},
 		sizeQ3                          = {hs.settings.get('hotkeyCombo'), 'pad1'},
 		sizeQ4                          = {hs.settings.get('hotkeyCombo'), 'pad3'},
-		moveLeftEdge                    = {hs.settings.get('hotkeyCombo'), ';'},
-		moveRightEdge                   = {hs.settings.get('hotkeyCombo'), "'"}
 	},
 	start = true
 })
