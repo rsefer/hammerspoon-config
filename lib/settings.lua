@@ -20,8 +20,8 @@ fullHeight = 56
 halfHeightTop = fullHeight * 0.65
 halfHeightBottom = fullHeight - halfHeightTop
 
+hs.settings.set('windowMargin', 24)
 hs.settings.set('windowSizes', {
-	margin            = 24,
 	full              = gr(0, 0, fullWidth, fullHeight),
 	center            = gr(fullWidth / 5, fullHeight / 5, fullWidth * 3 / 5, fullHeight * 3 / 5),
 	halves = {
@@ -49,8 +49,8 @@ hs.settings.set('windowSizes', {
 })
 hs.grid.setGrid(fullWidth .. 'x' .. fullHeight)
 hs.grid.setMargins({
-	x = hs.settings.get('windowSizes').margin,
-	y = hs.settings.get('windowSizes').margin
+	x = hs.settings.get('windowMargin'),
+	y = hs.settings.get('windowMargin')
 })
 hs.window.animationDuration = 0
 -- hs.window.setFrameCorrectness = true
