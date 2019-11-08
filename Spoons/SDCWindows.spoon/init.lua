@@ -64,11 +64,11 @@ function obj:bindHotkeys(mapping)
 		end,
 		sizeHalfHeightTopEdge = function()
 			winGrid = hs.grid.get(hs.window:focusedWindow())
-			obj:windowMove(nil, nil, gr(winGrid.x, 0, winGrid.w + 1, hs.grid.getGrid().h / 2))
+			obj:windowMove(nil, nil, {winGrid.x, 0, winGrid.w + 1, hs.grid.getGrid().h / 2})
 		end,
 		sizeHalfHeightBottomEdge = function()
 			winGrid = hs.grid.get(hs.window:focusedWindow())
-			obj:windowMove(nil, nil, gr(winGrid.x, hs.grid.getGrid().h / 2, winGrid.w + 1, hs.grid.getGrid().h / 2))
+			obj:windowMove(nil, nil, {winGrid.x, hs.grid.getGrid().h / 2, winGrid.w + 1, hs.grid.getGrid().h / 2})
 		end,
 		sizeQ1 = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').quadrants.one)
@@ -84,11 +84,11 @@ function obj:bindHotkeys(mapping)
 		end,
 		moveLeftEdge = function()
 			winGrid = hs.grid.get(hs.window:focusedWindow())
-			obj:windowMove(nil, nil, gr(0, winGrid.y, winGrid.w + 1, winGrid.h + 1))
+			obj:windowMove(nil, nil, {0, winGrid.y, winGrid.w + 1, winGrid.h + 1})
 		end,
 		moveRightEdge = function()
 			winGrid = hs.grid.get(hs.window:focusedWindow())
-			obj:windowMove(nil, nil, gr(hs.grid.getGrid().w - winGrid.w - 1, winGrid.y, winGrid.w + 1, winGrid.h + 1))
+			obj:windowMove(nil, nil, {hs.grid.getGrid().w - winGrid.w - 1, winGrid.y, winGrid.w + 1, winGrid.h + 1})
 		end,
 		moveWindowRightScreen = function()
 			hs.window.focusedWindow():moveOneScreenEast(false, true)
