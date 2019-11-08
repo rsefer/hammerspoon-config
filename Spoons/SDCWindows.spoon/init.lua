@@ -113,7 +113,11 @@ end
 function obj:start()
 
 	self.applicationWatcher = hs.application.watcher.new(function(name, event, app)
-		if event == 1 or event == hs.application.watcher.launched then
+		if event == 5 and name == 'Finder' and tablelength(app:allWindows()) == 0 then
+			hs.timer.doAfter(0.25, function()
+				obj:windowMove(hs.window.focusedWindow(), nil, hs.settings.get('windowSizes').center)
+			end)
+		elseif event == 1 or event == hs.application.watcher.launched then
 			for k, ao in ipairs(self.windowLayout) do
 				if contains(ao.apps, name) then
 					hs.timer.doAfter(2, function()
