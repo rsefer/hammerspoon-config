@@ -22,7 +22,7 @@ hs.spoons.use('SDCWindows', {
 				size = hs.settings.get('windowSizes').full
 			},
 			{
-				apps = { 'Terminal' },
+				apps = { 'Terminal', 'Hyper' },
 				screen = screenChooser(hs.settings.get('tertiaryMonitorName'), hs.screen.primaryScreen()),
 				size = windowScreenSizeChooser(hs.settings.get('tertiaryMonitorName'), hs.settings.get('windowSizes').full, hs.settings.get('windowSizes').thirds.leftTop)
 			}
