@@ -75,13 +75,13 @@ function obj:bindHotkeys(mapping)
 		sizeRight23rds = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.right2)
 		end,
-		sizeRight13rd = function()
-			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.right)
+		sizeLeft13rd = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.left)
 		end,
-		sizeRight13rdTopHalfish = function()
+		sizeLeft13rdTopHalfish = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.leftTop)
 		end,
-		sizeRight13rdBottomHalfish = function()
+		sizeLeft13rdBottomHalfish = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.leftBottom)
 		end,
 		sizeHalfHeightTopEdge = function()
