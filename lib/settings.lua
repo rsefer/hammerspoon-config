@@ -7,12 +7,14 @@ if string.match(string.lower(hs.host.localizedName()), 'macbook') then
   hs.settings.set('screenClass', 'small')
 end
 
+-- If gaps are not sized properly, it is likely due to windows
+-- falling in between cells. Adjust dimensions accordingly
 fullWidth = 100
 thirdCenterY2 = 67
 thirdLeftY2 = fullWidth - thirdCenterY2
 thirdWidthRight = fullWidth - thirdCenterY2
 
-fullHeight = 56
+fullHeight = 60
 halfHeightTop = fullHeight * 0.65
 halfHeightBottom = fullHeight - halfHeightTop
 
