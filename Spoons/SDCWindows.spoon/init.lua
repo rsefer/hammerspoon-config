@@ -15,6 +15,9 @@ end
 function obj:appMove(appName, screen, size)
 	if appName ~= nil then
 		app = hs.application.get(appName)
+		if app == nil then
+			app = hs.application.find(appName)
+		end
 	end
 	if app then
 		for x, window in ipairs(app:allWindows()) do

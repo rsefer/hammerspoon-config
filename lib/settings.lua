@@ -15,7 +15,7 @@ halfHeightTop = fullHeight * 0.65
 halfHeightBottom = fullHeight - halfHeightTop
 
 hs.settings.set('windowMargin', {
-	large = 24,
+	large = 18,
 	medium = 12,
 	small = 0
 })

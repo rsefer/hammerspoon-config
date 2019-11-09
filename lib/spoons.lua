@@ -2,12 +2,12 @@ hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
 			{
-				apps = { 'Google Chrome', 'Safari', 'Firefox' },
+				apps = { 'Google Chrome', 'Safari', 'Firefox', 'Music', 'Photos', 'App Store', 'Coda' },
 				screen = hs.screen.primaryScreen(),
 				size = hs.settings.get('windowSizes').thirds.right2
 			},
 			{
-				apps = { 'Messages', 'Slack', 'Tweetbot', 'Reminders' },
+				apps = { 'Messages', 'Slack', 'Tweetbot', 'Reminders', 'Hammerspoon' },
 				screen = hs.screen.primaryScreen(),
 				size = hs.settings.get('windowSizes').thirds.leftTop
 			},
@@ -15,6 +15,16 @@ hs.spoons.use('SDCWindows', {
 				apps = { 'TextEdit', 'Notes' },
 				screen = hs.screen.primaryScreen(),
 				size = hs.settings.get('windowSizes').thirds.leftBottom
+			},
+			{
+				apps = { 'Photoshop', 'Illustrator', 'Sketch' },
+				screen = hs.screen.primaryScreen(),
+				size = hs.settings.get('windowSizes').full
+			},
+			{
+				apps = { 'Local' },
+				screen = hs.screen.primaryScreen(),
+				size = hs.settings.get('windowSizes').center
 			},
 			{
 				apps = { 'Code', 'GitHub Desktop' },
