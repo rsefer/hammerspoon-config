@@ -8,7 +8,7 @@ if string.match(string.lower(hs.host.localizedName()), 'macbook') then
 end
 
 fullWidth = 100
-thirdCenterY2 = 66.6
+thirdCenterY2 = 67
 thirdLeftY2 = fullWidth - thirdCenterY2
 thirdWidthRight = fullWidth - thirdCenterY2
 
