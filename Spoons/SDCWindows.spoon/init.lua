@@ -3,6 +3,15 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCWindows"
 
+function screenSizeCategory(screen, large, medium, small)
+	if screen:fullFrame().w > 1920 then
+    return large
+	elseif screen:fullFrame().w > 1440 then
+		return medium
+	end
+	return small
+end
+
 function obj:appMove(appName, screen, size)
 	if appName ~= nil then
 		app = hs.application.get(appName)
@@ -22,6 +31,16 @@ function obj:windowMove(window, screen, size)
 	if screen ~= nil then
 		workingScreen = screen
 	end
+	hs.grid.setMargins(screenSizeCategory(workingScreen, {
+		x = hs.settings.get('windowMargin').large,
+		y = hs.settings.get('windowMargin').large
+	}, {
+		x = hs.settings.get('windowMargin').medium,
+		y = hs.settings.get('windowMargin').medium
+	}, {
+		x = hs.settings.get('windowMargin').small,
+		y = hs.settings.get('windowMargin').small
+	}))
 	hs.grid.set(window, size, workingScreen)
 end
 

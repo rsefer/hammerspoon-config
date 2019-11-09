@@ -2,10 +2,6 @@ hs.settings.set('hotkeyCombo', {'cmd', 'alt', 'ctrl'})
 hs.settings.set('secondaryMonitorName', 'DELL P2415Q')
 -- hs.settings.set('tertiaryMonitorName', 4128836) -- Duet doesn't have a name so we use the ID
 hs.settings.set('tertiaryMonitorName', 'Yam Display')
-hs.settings.set('screenClass', 'large') -- assumes large iMac
-if string.match(string.lower(hs.host.localizedName()), 'macbook') then
-  hs.settings.set('screenClass', 'small')
-end
 
 -- If gaps are not sized properly, it is likely due to windows
 -- falling in between cells. Adjust dimensions accordingly
@@ -18,7 +14,11 @@ fullHeight = 60
 halfHeightTop = fullHeight * 0.65
 halfHeightBottom = fullHeight - halfHeightTop
 
-hs.settings.set('windowMargin', 24)
+hs.settings.set('windowMargin', {
+	large = 24,
+	medium = 12,
+	small = 0
+})
 hs.settings.set('windowSizes', {
 	full              = {0, 0, fullWidth, fullHeight},
 	center            = {fullWidth / 5, fullHeight / 5, fullWidth * 3 / 5, fullHeight * 3 / 5},
@@ -46,10 +46,7 @@ hs.settings.set('windowSizes', {
 	}
 })
 hs.grid.setGrid(fullWidth .. 'x' .. fullHeight)
-hs.grid.setMargins({
-	x = hs.settings.get('windowMargin'),
-	y = hs.settings.get('windowMargin')
-})
+
 hs.window.animationDuration = 0
 -- hs.window.setFrameCorrectness = true
 hs.grid.ui.textSize = 50
