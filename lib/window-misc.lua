@@ -32,8 +32,6 @@
 -- 	end
 -- end)
 
-hs.hotkey.setLogLevel(1)
-
 function sizeAdd(modal, key, size, size2)
 	modal:bind('', key, nil, function()
 		if size2 ~= nil then

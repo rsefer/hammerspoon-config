@@ -159,7 +159,7 @@ function obj:start()
 	if obj.activeClient ~= nil then
 		timeStringStart = obj.activeClient.name .. ': ' .. timeStringStart
 	end
-	hs.alert.show(timeStringStart, obj.alertStyle, 5)
+	hs.alert.show(timeStringStart, obj.alertStyle, 3)
 	obj.logger:i(timeStringStart)
 end
 
@@ -174,7 +174,7 @@ function obj:stop()
 		local ltstring = 'lt add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. math.ceil(obj.timeAccrued / 60)
 		hs.execute(ltstring, true)
 	end
-	hs.alert.show(timeStringEnd, obj.alertStyle, 15)
+	hs.alert.show(timeStringEnd, obj.alertStyle, 7)
 	obj.logger:i(timeStringEnd)
 	obj:timerReset()
 end

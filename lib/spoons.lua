@@ -51,7 +51,7 @@ hs.spoons.use('SDCWindows', {
 		sizeLeft13rd                    = {hs.settings.get('hotkeyCombo'), 'M'},
 		sizeLeft13rdTopHalfish          = {hs.settings.get('hotkeyCombo'), ','},
 		sizeLeft13rdBottomHalfish       = {hs.settings.get('hotkeyCombo'), '.'},
-		sizeCentered                    = {hs.settings.get('hotkeyCombo'), 'pad5'},
+		sizeCentered                    = {hs.settings.get('hotkeyCombo'), 'C'},
 		sizeHalfHeightTopEdge           = {hs.settings.get('hotkeyCombo'), 'pad8'},
 		sizeHalfHeightBottomEdge        = {hs.settings.get('hotkeyCombo'), 'pad2'},
 		moveLeftEdge                    = {hs.settings.get('hotkeyCombo'), 'pad4'},

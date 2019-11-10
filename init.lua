@@ -4,6 +4,8 @@
 
 spoon = {} -- fixes global spoon loading issue
 hs.window.filter.setLogLevel(1)
+hs.hotkey.setLogLevel(1)
+hs.alert.defaultStyle.textSize = 60
 
 require('hs.ipc') -- commandline 'hs'
 require('config')
