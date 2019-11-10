@@ -32,6 +32,27 @@
 -- 	end
 -- end)
 
+hs.hotkey.setLogLevel(1)
+
+function sizeAdd(modal, key, size, size2)
+	modal:bind('', key, nil, function()
+		if size2 ~= nil then
+			spoon.SDCWindows:windowMove(nil, nil, hs.settings.get('windowSizes')[size][size2])
+		else
+			spoon.SDCWindows:windowMove(nil, nil, hs.settings.get('windowSizes')[size])
+		end
+		modal:exit()
+	end)
+end
+
+m = hs.hotkey.modal.new(hs.settings.get('hotkeyCombo'), 'pad0')
+function m:entered() hs.timer.doAfter(3, function() m:exit() end) end
+
+sizeAdd(m, 'pad.', 'thirds', 'right2')
+sizeAdd(m, 'padenter', 'full')
+sizeAdd(m, 'pad5', 'center')
+sizeAdd(m, 'pad1', 'quadrants', 'three')
+
 local wf = hs.window.filter
 wf_chrome = wf.new(false):setAppFilter('Google Chrome'):subscribe(hs.window.filter.windowCreated, function(window, appName, event)
 	spoon.SDCWindows:windowMove(window, nil, hs.settings.get('windowSizes').thirds.right2)
