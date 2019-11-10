@@ -171,7 +171,7 @@ function obj:stop()
 	if obj.activeClient ~= nil then
 		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
 		name = obj.activeClient.name:gsub('%W', '')
-		local ltstring = 'lt ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. math.ceil(obj.timeAccrued / 60)
+		local ltstring = 'lt add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. math.ceil(obj.timeAccrued / 60)
 		hs.execute(ltstring, true)
 	end
 	hs.alert.show(timeStringEnd, obj.alertStyle, 15)
