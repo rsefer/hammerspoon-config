@@ -11,7 +11,7 @@ require('lib/common')
 require('lib/settings')
 require('lib/spoons')
 require('lib/shortcuts')
-require('lib/terminal')
+require('lib/window-misc')
 
 if hs.updateAvailable() ~= false then
 	hs.alert.show('Hammerspoon update available: ' .. hs.updateAvailable())

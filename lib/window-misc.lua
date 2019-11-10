@@ -31,3 +31,8 @@
 -- 		end
 -- 	end
 -- end)
+
+local wf = hs.window.filter
+wf_chrome = wf.new(false):setAppFilter('Google Chrome'):subscribe(hs.window.filter.windowCreated, function(window, appName, event)
+	spoon.SDCWindows:windowMove(window, nil, hs.settings.get('windowSizes').thirds.right2)
+end)
