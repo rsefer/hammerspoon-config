@@ -2,12 +2,12 @@ hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
 			{
-				apps = { 'Google Chrome', 'Safari', 'Firefox', 'Music', 'Photos', 'App Store', 'Coda' },
+				apps = { 'Google Chrome', 'Safari', 'Firefox', 'Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman' },
 				screen = hs.screen.primaryScreen(),
 				size = hs.settings.get('windowSizes').thirds.right2
 			},
 			{
-				apps = { 'Messages', 'Slack', 'Tweetbot', 'Reminders', 'Hammerspoon' },
+				apps = { 'Messages', 'Slack', 'Tweetbot', 'Reminders', 'Hammerspoon', 'Home' },
 				screen = hs.screen.primaryScreen(),
 				size = hs.settings.get('windowSizes').thirds.leftTop
 			},
