@@ -3,22 +3,32 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCWorkspace"
 
-local function activateWorkspace(itemTitle, softToggleOpen, softToggleClose, hardToggle)
-  return function()
-    obj:hideApps(softToggleClose)
-    obj:openApps(softToggleOpen)
-    obj:openApps(hardToggle)
-    hs.alert.show(itemTitle)
+local function activateWorkspace(itemTitle, show, focus, hide, quit)
+	return function()
+		obj:quitApps(quit)
+    obj:hideApps(hide)
+		obj:openApps(show)
+		obj:focusApps(focus)
+    hs.alert.show(itemTitle, 0.5)
   end
 end
 
 function obj:openApps(apps)
+	if apps == nil then return end
+  for i, app in ipairs(apps) do
+    hs.application.launchOrFocus(app)
+  end
+end
+
+function obj:focusApps(apps)
+	if apps == nil then return end
   for i, app in ipairs(apps) do
     hs.application.launchOrFocus(app)
   end
 end
 
 function obj:hideApps(apps)
+	if apps == nil then return end
   for i, app in ipairs(apps) do
     thisApp = hs.application.find(app)
     if thisApp ~= nil then
@@ -27,7 +37,8 @@ function obj:hideApps(apps)
   end
 end
 
-function obj:closeApps(apps)
+function obj:quitApps(apps)
+	if apps == nil then return end
   for i, app in ipairs(apps) do
     thisApp = hs.application.find(app)
     if thisApp ~= nil then
@@ -36,26 +47,26 @@ function obj:closeApps(apps)
   end
 end
 
-function obj:setWorkspaces(workspaces)
-  obj.workspaces = workspaces
-  menuItems = {}
+function obj:setWorkspaces()
+	obj.chooser = hs.chooser.new(function(choice)
+		if choice then
+			activateWorkspace(choice.text, choice.show, choice.focus, choice.hide, choice.quit)()
+		end
+	end)
   choices = {}
   itemCount = 0
-  for i, workspace in ipairs(workspaces) do
-    menuItem = {}
+  for i, workspace in ipairs(obj.workspaces) do
     choice = {}
-    menuItem.title = workspace.title
     choice.text = workspace.title
-    menuItem.fn = activateWorkspace(menuItem.title, workspace.softToggleOpen, workspace.softToggleClose, workspace.hardToggle)
-    choice.softToggleOpen = workspace.softToggleOpen
-    choice.softToggleClose = workspace.softToggleClose
-    choice.hardToggle = workspace.hardToggle
-    table.insert(menuItems, menuItem)
+		choice.show = workspace.show
+		choice.focus = workspace.focus
+    choice.hide = workspace.hide
+    choice.quit = workspace.quit
     table.insert(choices, choice)
     itemCount = itemCount + 1
   end
-  obj.menuWorkspace:setMenu(menuItems)
-  if itemCount == 0 then
+	if itemCount == 0 then
+		print('none')
     obj.chooser:cancel()
   else
     obj.chooser:width(30)
@@ -82,12 +93,9 @@ function obj:bindHotkeys(mapping)
 end
 
 function obj:init()
-
-  self.menuWorkspace = hs.menubar.new():setTitle('🏢')
-  self.chooser = hs.chooser.new(function(choice)
-    activateWorkspace(choice.text, choice.softToggleOpen, choice.softToggleClose, choice.hardToggle)()
-  end)
-
+	hs.timer.doAfter(1, function()
+		self:setWorkspaces()
+	end)
 end
 
 return obj

@@ -64,6 +64,30 @@ hs.spoons.use('SDCWindows', {
 	start = true
 })
 
+hs.spoons.use('SDCWorkspace', {
+	config = {
+		workspaces = {
+			{
+				title = '⌨️ Code',
+				show = { 'Google Chrome', 'GitHub Desktop', 'Visual Studio Code', 'Hyper', 'TextEdit' },
+				focus = { 'Visual Studio Code' },
+				hide = { 'Tweetbot', 'Messages', 'Slack' },
+				quit = {}
+			},
+			{
+				title = '😁 Browse',
+				show = { 'Google Chrome', 'Tweetbot', 'Messages', 'Slack' },
+				focus = { 'Google Chrome' },
+				hide = { 'GitHub Desktop', 'Code', 'Hyper' },
+				quit = {}
+			}
+		}
+	},
+	hotkeys = {
+		toggleChooser = {hs.settings.get('hotkeyCombo'), 'pad.'}
+	}
+})
+
 hs.spoons.use('SDCHomeAssistant', {
 	config = {
 		api_domain = keys.homeassistant_api_domain,
