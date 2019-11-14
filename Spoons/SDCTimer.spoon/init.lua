@@ -171,6 +171,10 @@ function obj:stop()
 	if obj.activeClient ~= nil then
 		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
 		name = obj.activeClient.name:gsub('%W', '')
+		lengthlimit = 15
+		if string.len(name) > lengthlimit then
+			name = string.sub(name, 1, lengthlimit)
+		end
 		local ltstring = 'lt add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. math.ceil(obj.timeAccrued / 60)
 		hs.execute(ltstring, true)
 	end
