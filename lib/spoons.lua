@@ -76,7 +76,7 @@ hs.spoons.use('SDCWorkspace', {
 			},
 			{
 				title = '😁 Browse',
-				show = { 'Google Chrome', 'Tweetbot', 'Messages', 'Slack' },
+				show = { 'Google Chrome', 'Tweetbot' },
 				focus = { 'Google Chrome' },
 				hide = { 'GitHub Desktop', 'Code', 'Hyper' },
 				quit = {}
@@ -134,15 +134,6 @@ hs.spoons.use('SDCAudio', {
 		end)
 	end,
 	start = true
-})
-
-hs.spoons.use('SDCDash', {
-	config = {
-		dashWebviewHome = keys.dashHomeURL
-	},
-	hotkeys = {
-		toggleWebview = {hs.settings.get('hotkeyCombo'), 'f15'}
-	}
 })
 
 hs.spoons.use('SDCReminders', {
