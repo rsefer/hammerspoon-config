@@ -179,11 +179,11 @@ hs.spoons.use('SDCTimer', {
 })
 
 hs.spoons.use('SDCOvercast')
-hs.spoons.use('SDCMusic', {
-	config = {
-		discogs_key = keys.discogs.key,
-		discogs_secret = keys.discogs.secret
-	}
-})
+-- hs.spoons.use('SDCMusic', {
+-- 	config = {
+-- 		discogs_key = keys.discogs.key,
+-- 		discogs_secret = keys.discogs.secret
+-- 	}
+-- })
 
 -- hs.spoons.use('SDCDesktopCapture')
