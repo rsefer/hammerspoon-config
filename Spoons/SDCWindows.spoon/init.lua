@@ -84,7 +84,7 @@ function obj:windowMove(window, screen, size)
 		'Terminal'
 	}
 
-	if workingScreen == hs.screen.primaryScreen() and size[1] == 0 and size[2] == 0 and contains(finickyApps, window:application():name()) then -- if is finicky app and top left of primary screen
+	if contains(finickyApps, window:application():name()) then
 		cell = hs.grid.getCell(size, workingScreen)
 		margin = screenSizeCategory(workingScreen, {
 			x = hs.settings.get('windowMargin').large,
