@@ -19,19 +19,6 @@
 -- end)
 -- terminalWatcher:start()
 
--- local wf = hs.window.filter
--- wf_terminal = wf.new(false):setAppFilter('Terminal'):subscribe(hs.window.filter.windowMoved, function()
--- 	terminal = hs.application.find('Terminal')
--- 	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
--- 	if tertiaryMonitor and terminal:mainWindow():screen() == tertiaryMonitor then
--- 		win = terminal:mainWindow()
--- 		winUR = win:frame():toUnitRect(win:screen():frame())
--- 		if (winUR.w > 0.51 and winUR.w < 1.00) or (winUR.h > 0.50 and winUR.h < 0.97) then
--- 			terminal:mainWindow():moveToUnit(hs.layout.maximized)
--- 		end
--- 	end
--- end)
-
 function sizeAdd(modal, key, size, size2)
 	modal:bind('', key, nil, function()
 		if size2 ~= nil then
@@ -52,6 +39,33 @@ sizeAdd(m, 'pad5', 'center')
 sizeAdd(m, 'pad1', 'quadrants', 'three')
 
 local wf = hs.window.filter
-wf_chrome = wf.new(false):setAppFilter('Google Chrome'):subscribe(hs.window.filter.windowCreated, function(window, appName, event)
-	spoon.SDCWindows:windowMove(window, nil, hs.settings.get('windowSizes').thirds.right2)
-end)
+wf_chrome = wf.new(false):setAppFilter('Google Chrome')
+	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
+		spoon.SDCWindows:windowMove(window, nil, hs.settings.get('windowSizes').thirds.right2)
+	end)
+wf_terminal = wf.new(false):setAppFilter('Terminal')
+	:subscribe({
+		hs.window.filter.windowCreated,
+		hs.window.filter.windowDestroyed
+	}, function(window, appName, event)
+		grid = hs.grid.get(window)
+		print('existing window placement')
+		print(hs.inspect(grid))
+		if grid.x <= 1 and grid.y <= 1 then
+			spoon.SDCWindows:appMove(appName, window:screen(), hs.settings.get('windowSizes').thirds.leftTop)
+			grid = hs.grid.get(window)
+			print('new window placement')
+			print(hs.inspect(grid))
+		end
+	end)
+	-- :subscribe(hs.window.filter.windowMoved, function()
+	-- 	terminal = hs.application.find('Terminal')
+	-- 	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
+	-- 	if tertiaryMonitor and terminal:mainWindow():screen() == tertiaryMonitor then
+	-- 		win = terminal:mainWindow()
+	-- 		winUR = win:frame():toUnitRect(win:screen():frame())
+	-- 		if (winUR.w > 0.51 and winUR.w < 1.00) or (winUR.h > 0.50 and winUR.h < 0.97) then
+	-- 			terminal:mainWindow():moveToUnit(hs.layout.maximized)
+	-- 		end
+	-- 	end
+	-- end)

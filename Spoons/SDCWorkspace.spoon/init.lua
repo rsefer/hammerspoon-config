@@ -51,6 +51,7 @@ function obj:setWorkspaces()
 	obj.chooser = hs.chooser.new(function(choice)
 		if choice then
 			activateWorkspace(choice.text, choice.show, choice.focus, choice.hide, choice.quit)()
+			spoon.SDCWindows:resetAllApps()
 		end
 	end)
   choices = {}

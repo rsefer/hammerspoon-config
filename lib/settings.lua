@@ -3,22 +3,27 @@ hs.settings.set('secondaryMonitorName', 'DELL P2415Q')
 -- hs.settings.set('tertiaryMonitorName', 4128836) -- Duet doesn't have a name so we use the ID
 hs.settings.set('tertiaryMonitorName', 'Yam Display')
 
--- If gaps are not sized properly, it is likely due to windows
--- falling in between cells. Adjust dimensions accordingly
-fullWidth = 100
-thirdCenterY2 = 67
-thirdLeftY2 = fullWidth - thirdCenterY2
-thirdWidthRight = fullWidth - thirdCenterY2
-
-fullHeight = 60
-halfHeightTop = fullHeight * 0.65
-halfHeightBottom = fullHeight - halfHeightTop
-
+hs.settings.set('windowGridFull', {
+	width = 100,
+	height = 60
+})
 hs.settings.set('windowMargin', {
 	large = 18,
 	medium = 12,
 	small = 0
 })
+
+-- If gaps are not sized properly, it is likely due to windows
+-- falling in between cells. Adjust dimensions accordingly
+fullWidth = hs.settings.get('windowGridFull').width
+thirdCenterY2 = 67
+thirdLeftY2 = fullWidth - thirdCenterY2
+thirdWidthRight = fullWidth - thirdCenterY2
+
+fullHeight = hs.settings.get('windowGridFull').height
+halfHeightTop = fullHeight * 0.65
+halfHeightBottom = fullHeight - halfHeightTop
+
 hs.settings.set('windowSizes', {
 	full              = {0, 0, fullWidth, fullHeight},
 	center            = {fullWidth / 5, fullHeight / 5, fullWidth * 3 / 5, fullHeight * 3 / 5},

@@ -44,7 +44,33 @@ function obj:windowMove(window, screen, size)
 		x = hs.settings.get('windowMargin').small,
 		y = hs.settings.get('windowMargin').small
 	}))
-	hs.grid.set(window, size, workingScreen)
+
+	local finickyApps = {
+		'Terminal'
+	}
+
+	if workingScreen == hs.screen.primaryScreen() and size[1] == 0 and size[2] == 0 and contains(finickyApps, window:application():name()) then -- if is finicky app and top left of primary screen
+		cell = hs.grid.getCell(size, workingScreen)
+		margin = screenSizeCategory(workingScreen, {
+			x = hs.settings.get('windowMargin').large,
+			y = hs.settings.get('windowMargin').large
+		}, {
+			x = hs.settings.get('windowMargin').medium,
+			y = hs.settings.get('windowMargin').medium
+		}, {
+			x = hs.settings.get('windowMargin').small,
+			y = hs.settings.get('windowMargin').small
+		})
+		hs.osascript.applescript([[
+			set front_app to (path to frontmost application as Unicode text)
+			tell application front_app
+				set the bounds of the first window to {]] .. (cell.x + margin.x) .. [[, ]] .. (cell.y + margin.y) .. [[, ]] .. (cell.w + cell.x - (margin.x / 2)) .. [[, ]] .. (cell.h + cell.y - (margin.y / 2)) .. [[}
+			end tell
+		]])
+	else
+		hs.grid.set(window, size, workingScreen)
+	end
+
 end
 
 function obj:resetAllApps()
