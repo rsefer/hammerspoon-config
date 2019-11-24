@@ -48,15 +48,11 @@ wf_terminal = wf.new(false):setAppFilter('Terminal')
 		hs.window.filter.windowCreated,
 		hs.window.filter.windowDestroyed
 	}, function(window, appName, event)
-		grid = hs.grid.get(window)
-		print('existing window placement')
-		print(hs.inspect(grid))
-		if grid.x <= 1 and grid.y <= 1 then
-			spoon.SDCWindows:appMove(appName, window:screen(), hs.settings.get('windowSizes').thirds.leftTop)
-			grid = hs.grid.get(window)
-			print('new window placement')
-			print(hs.inspect(grid))
+		workingWindow = window
+		if event == 'windowDestroyed' then
+			workingWindow = hs.application.find(appName):focusedWindow()
 		end
+		spoon.SDCWindows:moveWindowIfClose(workingWindow)
 	end)
 	-- :subscribe(hs.window.filter.windowMoved, function()
 	-- 	terminal = hs.application.find('Terminal')

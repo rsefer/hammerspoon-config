@@ -12,6 +12,41 @@ function screenSizeCategory(screen, large, medium, small)
 	return small
 end
 
+function isCloseSize(window, size)
+	errorMargin = 5
+	grid = hs.grid.get(window)
+	if math.abs(grid.x - size[1]) <= errorMargin and math.abs(grid.y - size[2]) <= errorMargin and math.abs(grid.w - size[3]) <= errorMargin and math.abs(grid.h - size[4]) <= errorMargin then
+		return true
+	end
+	return false
+end
+
+function obj:getClosestPresetSize(window)
+	for k, size in pairs(hs.settings.get('windowSizes')) do
+		if size[1] then -- checks for size vs sub-key
+			if isCloseSize(window, size) then
+				return size
+			end
+		else
+			for k2, size2 in pairs(size) do
+				if size2[1] then
+					if isCloseSize(window, size2) then
+						return size2
+					end
+				end
+			end
+		end
+	end
+	return nil
+end
+
+function obj:moveWindowIfClose(window)
+	suggestedSize = obj:getClosestPresetSize(indow)
+	if suggestedSize ~= nil then
+		obj:windowMove(window, window:screen(), suggestedSize)
+	end
+end
+
 function obj:appMove(appName, screen, size)
 	if appName ~= nil then
 		app = hs.application.get(appName)
