@@ -49,10 +49,11 @@ wf_terminal = wf.new(false):setAppFilter('Terminal')
 		hs.window.filter.windowDestroyed
 	}, function(window, appName, event)
 		workingWindow = window
-		if event == 'windowDestroyed' then
-			workingWindow = hs.application.find(appName):focusedWindow()
+		app = hs.application.get(appName)
+		if event == 'windowDestroyed' and app ~= nil and app:isRunning() then
+			workingWindow = app:focusedWindow()
 		end
-		spoon.SDCWindows:moveWindowIfClose(workingWindow)
+		spoon.SDCWindows:moveWindowIfCloseToPreset(workingWindow)
 	end)
 	-- :subscribe(hs.window.filter.windowMoved, function()
 	-- 	terminal = hs.application.find('Terminal')

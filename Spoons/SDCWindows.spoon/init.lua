@@ -40,8 +40,8 @@ function obj:getClosestPresetSize(window)
 	return nil
 end
 
-function obj:moveWindowIfClose(window)
-	suggestedSize = obj:getClosestPresetSize(indow)
+function obj:moveWindowIfCloseToPreset(window)
+	suggestedSize = obj:getClosestPresetSize(window)
 	if suggestedSize ~= nil then
 		obj:windowMove(window, window:screen(), suggestedSize)
 	end
@@ -97,8 +97,7 @@ function obj:windowMove(window, screen, size)
 			y = hs.settings.get('windowMargin').small
 		})
 		hs.osascript.applescript([[
-			set front_app to (path to frontmost application as Unicode text)
-			tell application front_app
+			tell application "]] .. window:application():name() .. [["
 				set the bounds of the first window to {]] .. (cell.x + margin.x) .. [[, ]] .. (cell.y + margin.y) .. [[, ]] .. (cell.w + cell.x - (margin.x / 2)) .. [[, ]] .. (cell.h + cell.y - (margin.y / 2)) .. [[}
 			end tell
 		]])
