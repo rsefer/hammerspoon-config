@@ -69,7 +69,7 @@ hs.spoons.use('SDCWorkspace', {
 		workspaces = {
 			{
 				title = '⌨️ Code',
-				show = { 'Google Chrome', 'GitHub Desktop', 'Visual Studio Code', 'Hyper', 'TextEdit' },
+				show = { 'Google Chrome', 'GitHub Desktop', 'Visual Studio Code', 'Terminal', 'TextEdit' },
 				focus = { 'Visual Studio Code' },
 				hide = { 'Tweetbot', 'Messages', 'Slack' },
 				quit = {}
@@ -78,7 +78,7 @@ hs.spoons.use('SDCWorkspace', {
 				title = '😁 Browse',
 				show = { 'Google Chrome', 'Tweetbot' },
 				focus = { 'Google Chrome' },
-				hide = { 'GitHub Desktop', 'Code', 'Hyper' },
+				hide = { 'GitHub Desktop', 'Code', 'Terminal' },
 				quit = {}
 			}
 		}
