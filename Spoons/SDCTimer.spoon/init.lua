@@ -81,7 +81,7 @@ function obj:showChooser()
 end
 
 function obj:getClients()
-	status, body, headers = hs.http.get(self.biz_api_client_endpoint .. '?access_token=' .. self.biz_api_key .. '&sortBy=recentActivityDate')
+	status, body, headers = hs.http.get(hs.settings.get('biz_api_client_endpoint') .. '?access_token=' .. hs.settings.get('biz_api_key') .. '&sortBy=recentActivityDate')
 	if status == 200 then
 		clientsRaw = hs.json.decode(body)
 		clients = {
@@ -114,6 +114,9 @@ function obj:bindHotkeys(mapping)
 end
 
 function obj:init()
+
+	setupSetting('biz_api_client_endpoint')
+	setupSetting('biz_api_key')
 
 	self.logger = hs.logger.new(self.name, 'info')
 	self.timerMenu = hs.menubar.new()

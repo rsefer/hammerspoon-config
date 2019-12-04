@@ -24,7 +24,7 @@ local function getWeatherIcon(iconSlug)
 end
 
 function obj:updateWeather()
-  status, data, headers = hs.http.get('https://api.darksky.net/forecast/' .. obj.apiKey .. '/' .. obj.latitude .. ',' .. obj.longitude, {})
+  status, data, headers = hs.http.get('https://api.darksky.net/forecast/' .. hs.settings.get('darksky_api_key') .. '/' .. hs.settings.get('latitude') .. ',' .. hs.settings.get('longitude'), {})
   if status == 200 then
     json = hs.json.decode(data)
     temperature = math.floor(json.currently.apparentTemperature)
@@ -64,29 +64,34 @@ function obj:updateWeather()
 end
 
 function obj:openDarkSkyForecast()
-  hs.urlevent.openURL('https://darksky.net/forecast/' .. obj.latitude .. ',' .. obj.longitude .. '/us12/en')
+  hs.urlevent.openURL('https://darksky.net/forecast/' .. hs.settings.get('latitude') .. ',' .. hs.settings.get('longitude') .. '/us12/en')
 end
 
 function obj:openDarkSkyDetails()
-  hs.urlevent.openURL('https://darksky.net/details/' .. obj.latitude .. ',' .. obj.longitude .. '/' .. os.date('%Y-%m-%d') .. '/us12/en')
+  hs.urlevent.openURL('https://darksky.net/details/' .. hs.settings.get('latitude') .. ',' .. hs.settings.get('longitude') .. '/' .. os.date('%Y-%m-%d') .. '/us12/en')
 end
 
 function obj:init()
+
 	self.updateInterval = 60 * 15
 	self.menuWeather = hs.menubar.new()
 	self.weatherTimer = hs.timer.doEvery(obj.updateInterval, function()
 		obj.updateWeather()
 	end):stop()
+
+	if setupSetting('darksky_api_key') then
+		obj:start()
+	end
+
 end
 
 function obj:start()
-	location = hs.location.get()
-	if location ~= nil then
-    obj.latitude = location.latitude
-		obj.longitude = location.longitude
+	if settingExists('latitude') and settingExists('longitude') then
+		obj:updateWeather()
+		obj.weatherTimer:start()
+	else
+		hs.alert.show('⛅️Cannot start weather timer - lat/lng not set')
 	end
-  obj:updateWeather()
-	obj.weatherTimer:start()
 end
 
 function obj:stop()

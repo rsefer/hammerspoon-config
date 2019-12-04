@@ -3,6 +3,7 @@
 -- 2) Press Command + Comma
 
 spoon = {} -- fixes global spoon loading issue
+hs.location.start()
 hs.window.filter.setLogLevel(1)
 hs.hotkey.setLogLevel(1)
 hs.alert.defaultStyle.textSize = 60

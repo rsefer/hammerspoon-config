@@ -28,6 +28,19 @@ function contains(table, val)
   return false
 end
 
+function settingExists(key)
+	return contains(hs.settings.getKeys(), key) and string.len(hs.settings.get(key)) > 0
+end
+
+function setupSetting(key, message, informativeText, force)
+	if not key then return false end
+	if force or not settingExists(key) then
+		button, text = hs.dialog.textPrompt(message or key, informativeText or '')
+		hs.settings.set(key, text)
+	end
+	return hs.settings.get(key)
+end
+
 function screenIsConnected(screenName)
 	if hs.screen.find(screenName) ~= nil then
 		return true

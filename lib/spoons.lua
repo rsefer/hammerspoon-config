@@ -89,11 +89,6 @@ hs.spoons.use('SDCWorkspace', {
 })
 
 hs.spoons.use('SDCHomeAssistant', {
-	config = {
-		api_domain = keys.homeassistant_api_domain,
-		api_endpoint = keys.homeassistant_api_domain .. '/api/',
-		api_key = keys.homeassistant_api_key
-	},
 	hotkeys = {
 		switchLights = {hs.settings.get('hotkeyCombo'), 'f19'},
 		turnOnSecondaryMonitor = {hs.settings.get('hotkeyCombo'), 'S'}
@@ -142,14 +137,7 @@ hs.spoons.use('SDCReminders', {
 	}
 })
 
-hs.spoons.use('SDCWeather', {
-	config = {
-		apiKey = keys.darksky_api_key,
-		latitude = keys.latitude,
-		longitude = keys.longitude
-	},
-	start = true
-})
+hs.spoons.use('SDCWeather')
 
 hs.spoons.use('SDCPhone', {
 	config = {
@@ -164,10 +152,6 @@ hs.spoons.use('SDCPhone', {
 })
 
 hs.spoons.use('SDCTimer', {
-	config = {
-		biz_api_key = keys.biz_api_key,
-		biz_api_client_endpoint = keys.biz_api_client_endpoint
-	},
 	hotkeys = {
 		toggleTimer = {hs.settings.get('hotkeyCombo'), '\\'}
 	},
@@ -179,11 +163,6 @@ hs.spoons.use('SDCTimer', {
 })
 
 hs.spoons.use('SDCOvercast')
--- hs.spoons.use('SDCMusic', {
--- 	config = {
--- 		discogs_key = keys.discogs.key,
--- 		discogs_secret = keys.discogs.secret
--- 	}
--- })
+-- hs.spoons.use('SDCMusic')
 
 -- hs.spoons.use('SDCDesktopCapture')

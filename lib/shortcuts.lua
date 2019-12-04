@@ -11,6 +11,19 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '/', function() hs.reload() end)
 -- The above are not included in the Hammerspoon config because they won't
 -- work if Hammerspoon is not running (launch) or frozen (force quit)
 
+-- Location
+if hs.location.servicesEnabled() and hs.location.authorizationStatus() == 'authorized' and hs.location.start() and hs.location.get() then
+	location = hs.location.get()
+	hs.settings.set('latitude', location.latitude)
+	hs.settings.set('longitude', location.longitude)
+	hs.location.register('updateLocationTag', function(locationTable)
+		hs.settings.set('latitude', location.latitude)
+		hs.settings.set('longitude', location.longitude)
+	end)
+else
+	hs.alert.show('⛅️Cannot retrieve lat/lng')
+end
+
 -- Google Query Suggestions
 -- Based heavily on Andrew Hampton's "autocomplete"
 -- https://github.com/andrewhampton/dotfiles/blob/8136fafe8aabee49f8cea0ab3da6c9e7be472e62/hammerspoon/.hammerspoon/anycomplete.lua

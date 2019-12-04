@@ -25,7 +25,7 @@ function obj:switchLights(on)
 	local groupLightsName = 'group.all_lights'
 
 	status, data, headers = hs.http.asyncGet(obj.api_endpoint .. 'states/' .. groupLightsName, {
-		['Authorization'] = 'Bearer ' .. obj.api_key,
+		['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
 		['Content-Type'] = 'application/json'
 	}, function(cstatus, cbody, cheaders)
 		local json = hs.json.decode(cbody)
@@ -35,7 +35,7 @@ function obj:switchLights(on)
 				action = 'off'
 			end
 			status, data, headers = hs.http.asyncPost(obj.api_endpoint .. 'services/light/turn_' .. action, '{"entity_id":"' .. groupLightsName .. '"}', {
-				['Authorization'] = 'Bearer ' .. obj.api_key,
+				['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
 				['Content-Type'] = 'application/json'
 			}, function(cstatus, cbody, cheaders)
 				--
@@ -53,7 +53,7 @@ function obj:toggleSecondaryMonitor(action)
 		action = 'on'
 	end
 	status, data, headers = hs.http.asyncPost(obj.api_endpoint .. 'services/switch/turn_' .. action, '{"entity_id":"' .. secondaryMonitorEntityID .. '"}', {
-		['Authorization'] = 'Bearer ' .. obj.api_key,
+		['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
 		['Content-Type'] = 'application/json'
 	}, function(cstatus, cbody, cheaders)
 		--
@@ -72,6 +72,11 @@ function obj:bindHotkeys(mapping)
 end
 
 function obj:init()
+
+	if setupSetting('homeassistant_api_domain') then
+		hs.settings.set('homeassistant_api_endpoint', hs.settings.get('homeassistant_api_domain') .. '/api/')
+	end
+	setupSetting('homeassistant_api_key')
 
 	self.isShown = false
 	self.haMenu = hs.menubar.new()
@@ -94,7 +99,7 @@ end
 
 function obj:start()
 
-	self.haWebview:url(obj.api_domain)
+	self.haWebview:url(hs.settings.get('homeassistant_api_domain'))
 
 	self.stateWatcher = hs.caffeinate.watcher.new(function(state)
 		if state == hs.caffeinate.watcher.systemDidWake or state == hs.caffeinate.watcher.systemWillSleep then

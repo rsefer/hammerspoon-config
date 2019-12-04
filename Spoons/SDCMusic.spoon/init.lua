@@ -87,8 +87,9 @@ function obj:setPlayerMenus()
         end
 				if obj.showNotifications then
 					workingImage = hs.image.imageFromAppBundle('com.apple.Music')
-					if obj.discogs_key and obj.discogs_secret then
-						discogsURL = 'https://api.discogs.com/database/search?query=' .. urlencode(currentTrack.artist .. ' - ' .. currentTrack.album) .. '&per_page=1&page=1&key=' .. obj.discogs_key .. '&secret=' .. obj.discogs_secret
+
+					if setupSetting('discogs_key') and setupSetting('discogs_secret') then
+						discogsURL = 'https://api.discogs.com/database/search?query=' .. urlencode(currentTrack.artist .. ' - ' .. currentTrack.album) .. '&per_page=1&page=1&key=' .. hs.settings.get('discogs_key') .. '&secret=' .. hs.settings.get('discogs_secret')
 						status, body, headers = hs.http.get(discogsURL)
 						if status == 200 then
 							json = hs.json.decode(body)
