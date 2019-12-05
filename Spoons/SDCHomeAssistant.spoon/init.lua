@@ -24,7 +24,7 @@ function obj:switchLights(on)
 
 	local groupLightsName = 'group.all_lights'
 
-	status, data, headers = hs.http.asyncGet(obj.api_endpoint .. 'states/' .. groupLightsName, {
+	status, data, headers = hs.http.asyncGet(hs.settings.get('homeassistant_api_endpoint') .. 'states/' .. groupLightsName, {
 		['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
 		['Content-Type'] = 'application/json'
 	}, function(cstatus, cbody, cheaders)
@@ -34,7 +34,7 @@ function obj:switchLights(on)
 			if json.state == 'on' then
 				action = 'off'
 			end
-			status, data, headers = hs.http.asyncPost(obj.api_endpoint .. 'services/light/turn_' .. action, '{"entity_id":"' .. groupLightsName .. '"}', {
+			status, data, headers = hs.http.asyncPost(hs.settings.get('homeassistant_api_endpoint') .. 'services/light/turn_' .. action, '{"entity_id":"' .. groupLightsName .. '"}', {
 				['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
 				['Content-Type'] = 'application/json'
 			}, function(cstatus, cbody, cheaders)
@@ -52,7 +52,7 @@ function obj:toggleSecondaryMonitor(action)
 	if action == nil then
 		action = 'on'
 	end
-	status, data, headers = hs.http.asyncPost(obj.api_endpoint .. 'services/switch/turn_' .. action, '{"entity_id":"' .. secondaryMonitorEntityID .. '"}', {
+	status, data, headers = hs.http.asyncPost(hs.settings.get('homeassistant_api_endpoint') .. 'services/switch/turn_' .. action, '{"entity_id":"' .. secondaryMonitorEntityID .. '"}', {
 		['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
 		['Content-Type'] = 'application/json'
 	}, function(cstatus, cbody, cheaders)
