@@ -54,7 +54,7 @@ function obj:appMove(appName, screen, size)
 			app = hs.application.find(appName)
 		end
 	end
-	if app then
+	if app and tablelength(app:allWindows()) > 0 then
 		for x, window in ipairs(app:allWindows()) do
 			obj:windowMove(window, screen, size)
 		end
@@ -63,7 +63,7 @@ end
 
 function obj:windowMove(window, screen, size)
 	if window == nil then
-		window = hs.window:focusedWindow()
+		window = hs.window.focusedWindow()
 	end
 	local workingScreen = window:screen()
 	if screen ~= nil then
