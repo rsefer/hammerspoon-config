@@ -64,30 +64,6 @@ hs.spoons.use('SDCWindows', {
 	start = true
 })
 
-hs.spoons.use('SDCWorkspace', {
-	config = {
-		workspaces = {
-			{
-				title = '⌨️ Code',
-				show = { 'Google Chrome', 'GitHub Desktop', 'Visual Studio Code', 'Terminal', 'TextEdit' },
-				focus = { 'Visual Studio Code' },
-				hide = { 'Tweetbot', 'Messages', 'Slack' },
-				quit = {}
-			},
-			{
-				title = '😁 Browse',
-				show = { 'Google Chrome', 'Tweetbot' },
-				focus = { 'Google Chrome' },
-				hide = { 'GitHub Desktop', 'Code', 'Terminal' },
-				quit = {}
-			}
-		}
-	},
-	hotkeys = {
-		toggleChooser = {hs.settings.get('hotkeyCombo'), 'pad.'}
-	}
-})
-
 hs.spoons.use('SDCHomeAssistant', {
 	hotkeys = {
 		switchLights = {hs.settings.get('hotkeyCombo'), 'f19'},
@@ -131,25 +107,7 @@ hs.spoons.use('SDCAudio', {
 	start = true
 })
 
-hs.spoons.use('SDCReminders', {
-	hotkeys = {
-		toggleWebview = {hs.settings.get('hotkeyCombo'), '9'}
-	}
-})
-
 hs.spoons.use('SDCWeather')
-
-hs.spoons.use('SDCPhone', {
-	config = {
-		phoneNumbers = keys.phoneNumbers
-	},
-	hotkeys = {
-		toggleChooser = {hs.settings.get('hotkeyCombo'), 'P'}
-	},
-	fn = function(thisSpoon)
-		thisSpoon.setShortcuts()
-	end
-})
 
 hs.spoons.use('SDCTimer', {
 	hotkeys = {
@@ -164,5 +122,47 @@ hs.spoons.use('SDCTimer', {
 
 hs.spoons.use('SDCOvercast')
 hs.spoons.use('SDCMusic')
+
+hs.spoons.use('SDCWorkspace', {
+	config = {
+		workspaces = {
+			{
+				title = '⌨️ Code',
+				show = { 'Google Chrome', 'GitHub Desktop', 'Visual Studio Code', 'Terminal', 'TextEdit' },
+				focus = { 'Visual Studio Code' },
+				hide = { 'Tweetbot', 'Messages', 'Slack' },
+				quit = {}
+			},
+			{
+				title = '😁 Browse',
+				show = { 'Google Chrome', 'Tweetbot' },
+				focus = { 'Google Chrome' },
+				hide = { 'GitHub Desktop', 'Code', 'Terminal' },
+				quit = {}
+			}
+		}
+	},
+	hotkeys = {
+		toggleChooser = {hs.settings.get('hotkeyCombo'), 'pad.'}
+	}
+})
+
+hs.spoons.use('SDCPhone', {
+	config = {
+		phoneNumbers = keys.phoneNumbers
+	},
+	hotkeys = {
+		toggleChooser = {hs.settings.get('hotkeyCombo'), 'P'}
+	},
+	fn = function(thisSpoon)
+		thisSpoon.setShortcuts()
+	end
+})
+
+hs.spoons.use('SDCReminders', {
+	hotkeys = {
+		toggleWebview = {hs.settings.get('hotkeyCombo'), '9'}
+	}
+})
 
 -- hs.spoons.use('SDCDesktopCapture')
