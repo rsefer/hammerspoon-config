@@ -1,3 +1,4 @@
+hs.settings.set('menuIconSize', 14.0)
 hs.settings.set('musicPlayerName', 'Spotify')
 hs.settings.set('hotkeyCombo', {'cmd', 'alt', 'ctrl'})
 hs.settings.set('secondaryMonitorName', 'DELL P2415Q')

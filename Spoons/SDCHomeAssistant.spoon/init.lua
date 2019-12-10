@@ -5,9 +5,8 @@ obj.name = "SDCHomeAssistant"
 
 local viewWidth = 600
 local viewHeight = 500
-local iconSize = 14.0
 local iconFull = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/home-assistant.pdf')
-local icon = iconFull:setSize({ w = iconSize, h = iconSize })
+local icon = iconFull:setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 
 function obj:toggleWebview()
   if obj.isShown then

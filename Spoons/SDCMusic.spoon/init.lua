@@ -59,9 +59,9 @@ function obj:setPlayerMenus()
 
 
 	if currentState == 'playing' then
-    obj.playerControlMenu:setIcon(hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/pause.pdf'):setSize({ w = obj.iconSize, h = obj.iconSize }))
+    obj.playerControlMenu:setIcon(hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/pause.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') }))
 	else
-		obj.playerControlMenu:setIcon(hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/play.pdf'):setSize({ w = obj.iconSize, h = obj.iconSize }))
+		obj.playerControlMenu:setIcon(hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/play.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') }))
 	end
 
 	currentTrack = getCurrentTrackInfo()
@@ -221,15 +221,13 @@ function obj:init()
   self.showNotifications = true
 	self.showAlerts = false
 
-	self.iconSize = 14.0
-
 	workingIcon = hs.spoons.scriptPath() .. 'images/music_red.pdf'
 	if self.playerName == 'Spotify' then
 		workingIcon = hs.spoons.scriptPath() .. 'images/spotify_green.pdf'
 	elseif self.playerName == 'Music' then
 		workingIcon = hs.spoons.scriptPath() .. 'images/music_red.pdf'
 	end
-	self.icon = hs.image.imageFromPath(workingIcon):setSize({ w = self.iconSize, h = self.iconSize })
+	self.icon = hs.image.imageFromPath(workingIcon):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 
   self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.togglePlayer)
   self.playerControlMenu = hs.menubar.new():setClickCallback(obj.playerTogglePlayPause)

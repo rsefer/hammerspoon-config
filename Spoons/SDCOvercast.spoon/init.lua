@@ -6,11 +6,10 @@ obj.name = "SDCOvercast"
 local overcastWebviewHome = 'https://overcast.fm/podcasts'
 local viewWidth = 375
 local viewHeight = 400
-local iconSize = 14.0
 local iconFull = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/overcast_orange.pdf')
-local icon = iconFull:setSize({ w = iconSize, h = iconSize })
-local iconPlay = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
-local iconPause = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
+local icon = iconFull:setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
+local iconPlay = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/play.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
+local iconPause = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/pause.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 
 function obj:togglePlayPause()
   obj.overcastWebview:evaluateJavaScript('togglePlayPause();')
