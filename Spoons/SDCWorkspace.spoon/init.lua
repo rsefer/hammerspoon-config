@@ -67,7 +67,6 @@ function obj:setWorkspaces()
     itemCount = itemCount + 1
   end
 	if itemCount == 0 then
-		print('none')
     obj.chooser:cancel()
   else
     obj.chooser:width(30)

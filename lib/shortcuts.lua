@@ -76,17 +76,6 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '0', function()
 	end)
 end)
 
--- Eject key puts computer to sleep
--- hs.eventtap.new({ hs.eventtap.event.types.NSSystemDefined }, function(event)
---	event = event:systemKey()
---	local next = next
---	if next(event) then
---		if event.key == 'EJECT' and event.down then
---			hs.caffeinate.systemSleep()
---		end
---	end
---end):start()
-
 -- Fixes constrast adjustment issue with Duet
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '=', function()
 	hs.osascript.applescript([[
