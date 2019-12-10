@@ -120,7 +120,7 @@ hs.spoons.use('SDCTimer', {
 	end
 })
 
-hs.spoons.use('SDCOvercast')
+-- hs.spoons.use('SDCOvercast')
 hs.spoons.use('SDCMusic')
 
 hs.spoons.use('SDCWorkspace', {

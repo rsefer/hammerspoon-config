@@ -68,7 +68,11 @@ function obj:setPlayerMenus()
 	currentTrack = getCurrentTrackInfo()
 	if obj.playerTitleMenu and currentTrack.artist and currentTrack.name then
 
-		newSongString = songString(currentTrack.artist, currentTrack.name)
+		workingArtist = currentTrack.artist
+		if workingArtist == nil or string.len(workingArtist) < 1 then
+			workingArtist = currentTrack.album
+		end
+		newSongString = songString(workingArtist, currentTrack.name)
     obj.currentSongPosition = currentTrack.playerPosition
 
 		if newSongString ~= obj.currentSong then
@@ -121,7 +125,7 @@ function obj:setPlayerMenus()
 						hasActionButton = true,
 						actionButtonTitle = 'Open',
 						title = currentTrack.name,
-						subTitle = 'Artist: ' .. currentTrack.artist,
+						subTitle = 'Artist: ' .. workingArtist,
 						informativeText = 'Album: ' .. currentTrack.album
 					})
 					if workingImage ~= nil then
