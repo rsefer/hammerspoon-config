@@ -1,3 +1,4 @@
+hs.settings.set('musicPlayerName', 'Spotify')
 hs.settings.set('hotkeyCombo', {'cmd', 'alt', 'ctrl'})
 hs.settings.set('secondaryMonitorName', 'DELL P2415Q')
 -- hs.settings.set('tertiaryMonitorName', 4128836) -- Duet doesn't have a name so we use the ID

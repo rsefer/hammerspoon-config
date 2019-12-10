@@ -3,37 +3,50 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCMusic"
 
-local iconSize = 14.0
-local icon = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/music_red.pdf'):setSize({ w = iconSize, h = iconSize })
-local iconPlay = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/play.pdf'):setSize({ w = iconSize, h = iconSize })
-local iconPause = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/pause.pdf'):setSize({ w = iconSize, h = iconSize })
-
 function songString(artist, track)
   return artist .. ' - ' .. '"' .. track .. '"'
 end
 
-function getMusicState()
-	asBool, asObject, asDesc = hs.osascript.applescript('tell application "Music" to return "" & player state')
-	return asObject
-end
-
-function musicPlayPause()
-	hs.osascript.applescript('tell application "Music" to playpause')
-end
-
-function musicCurrentTrack()
-	ok, asProps = hs.osascript.applescript('tell application "Music" to return {artist of current track, album of current track, name of current track, duration of current track, player position}')
-	if asProps ~= nil then
-		return {
-			artist = asProps[1],
-			album = asProps[2],
-			name = asProps[3],
-			duration = asProps[4],
-			playerPosition = asProps[5]
-		}
-	else
-		return {}
+function getCurrentPlayerState()
+	if obj.playerName == 'Spotify' then
+		spotifyPlaybackState = hs.spotify:getPlaybackState()
+		workingState = 'paused'
+		if spotifyPlaybackState == hs.spotify.state_paused then
+			workingState = 'paused'
+		elseif spotifyPlaybackState == hs.spotify.state_playing then
+			workingState = 'playing'
+		elseif spotifyPlaybackState == hs.spotify.state_stopped then
+			workingState = 'stopped'
+		end
+		return workingState
+	elseif obj.playerName == 'Music' then
+		asBool, asObject, asDesc = hs.osascript.applescript('tell application "Music" to return "" & player state')
+		return asObject
 	end
+end
+
+function getCurrentTrackInfo()
+	if obj.playerName == 'Spotify' and hs.spotify:getCurrentTrack() then
+		return {
+			artist = hs.spotify:getCurrentArtist(),
+			album = hs.spotify:getCurrentAlbum(),
+			name = hs.spotify:getCurrentTrack(),
+			duration = hs.spotify:getDuration(),
+			playerPosition = hs.spotify:getPosition()
+		}
+	elseif obj.playerName == 'Music' then
+		ok, asProps = hs.osascript.applescript('tell application "Music" to return {artist of current track, album of current track, name of current track, duration of current track, player position}')
+		if asProps ~= nil then
+			return {
+				artist = asProps[1],
+				album = asProps[2],
+				name = asProps[3],
+				duration = asProps[4],
+				playerPosition = asProps[5]
+			}
+		end
+	end
+	return {}
 end
 
 function obj:setPlayerMenus()
@@ -42,15 +55,16 @@ function obj:setPlayerMenus()
 		obj.playerTitleMenu:setIcon(nil)
 		do return end
 	end
-	currentState = getMusicState()
+	currentState = getCurrentPlayerState()
+
 
 	if currentState == 'playing' then
-    obj.playerControlMenu:setIcon(iconPause)
+    obj.playerControlMenu:setIcon(hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/pause.pdf'):setSize({ w = obj.iconSize, h = obj.iconSize }))
 	else
-		obj.playerControlMenu:setIcon(iconPlay)
+		obj.playerControlMenu:setIcon(hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/play.pdf'):setSize({ w = obj.iconSize, h = obj.iconSize }))
 	end
 
-	currentTrack = musicCurrentTrack()
+	currentTrack = getCurrentTrackInfo()
 	if obj.playerTitleMenu and currentTrack.artist and currentTrack.name then
 
 		newSongString = songString(currentTrack.artist, currentTrack.name)
@@ -86,7 +100,8 @@ function obj:setPlayerMenus()
           }, 5)
         end
 				if obj.showNotifications then
-					workingImage = hs.image.imageFromAppBundle('com.apple.Music')
+
+					workingImage = hs.image.imageFromAppBundle(obj.playerApp:bundleID())
 
 					if setupSetting('discogs_key') and setupSetting('discogs_secret') then
 						discogsURL = 'https://api.discogs.com/database/search?query=' .. urlencode(currentTrack.artist .. ' - ' .. currentTrack.album) .. '&per_page=1&page=1&key=' .. hs.settings.get('discogs_key') .. '&secret=' .. hs.settings.get('discogs_secret')
@@ -100,7 +115,7 @@ function obj:setPlayerMenus()
 					end
 
 					local notification = hs.notify.new(function()
-						hs.application.launchOrFocus('Music')
+						hs.application.launchOrFocus(obj.playerName)
 					end, {
 						hasActionButton = true,
 						actionButtonTitle = 'Open',
@@ -118,7 +133,7 @@ function obj:setPlayerMenus()
 
     end
 
-    if hs.settings.get('screenClass') ~= 'small' and obj.showCurrentSongProgressBar then
+		if hs.settings.get('screenClass') ~= 'small' and obj.showCurrentSongProgressBar then
       currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
 
       fontCharacterWidth = 8
@@ -131,6 +146,12 @@ function obj:setPlayerMenus()
 			end
 
 			textColor = '000000'
+			fillColor = '1db954'
+			if obj.playerName == 'Spotify' then
+				fillColor = '1db954'
+			elseif obj.playerName == 'Music' then
+				fillColor = 'f46060'
+			end
 
 			if hs.host.interfaceStyle() == 'Dark' then
 				textColor = 'ffffff'
@@ -147,7 +168,7 @@ function obj:setPlayerMenus()
 						h = 2,
 						w = round(currentSongPositionPercentage * 100, 2) .. '%'
 					},
-					fillColor = { ['hex'] = 'f46060' }
+					fillColor = { ['hex'] = fillColor }
 				},
         {
           id = 'songText',
@@ -176,7 +197,11 @@ function obj:unloadPlayerMenus()
 end
 
 function obj:playerTogglePlayPause()
-  musicPlayPause()
+	if obj.playerName == 'Spotify' then
+		hs.spotify.playpause()
+	elseif obj.playerName == 'Music' then
+		hs.osascript.applescript('tell application "Music" to playpause')
+	end
   obj:setPlayerMenus()
 end
 
@@ -184,23 +209,34 @@ function obj:togglePlayer()
   if obj.playerApp ~= nil and obj.playerApp:isRunning() and obj.playerApp:isFrontmost() then
     obj.playerApp:hide()
   else
-    hs.application.launchOrFocus('Music')
+    hs.application.launchOrFocus(obj.playerName)
   end
 end
 
 function obj:init()
 
-	self.playerApp = hs.application.get('Music')
+	self.playerName = hs.settings.get('musicPlayerName')
+	self.playerApp = hs.application.get(self.playerName)
   self.showCurrentSongProgressBar = true
   self.showNotifications = true
-  self.showAlerts = false
+	self.showAlerts = false
+
+	self.iconSize = 14.0
+
+	workingIcon = hs.spoons.scriptPath() .. 'images/music_red.pdf'
+	if self.playerName == 'Spotify' then
+		workingIcon = hs.spoons.scriptPath() .. 'images/spotify_green.pdf'
+	elseif self.playerName == 'Music' then
+		workingIcon = hs.spoons.scriptPath() .. 'images/music_red.pdf'
+	end
+	self.icon = hs.image.imageFromPath(workingIcon):setSize({ w = self.iconSize, h = self.iconSize })
 
   self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.togglePlayer)
   self.playerControlMenu = hs.menubar.new():setClickCallback(obj.playerTogglePlayPause)
 
   self.playerMenu = hs.menubar.new()
     :setClickCallback(obj.togglePlayer)
-		:setIcon(icon, true)
+		:setIcon(self.icon, true)
 
 	self.isDormant = true
 	self.lastTimePlayed = os.time()
@@ -213,7 +249,7 @@ function obj:init()
 				obj.isDormant = false
 			end
       obj:setPlayerMenus()
-			if getMusicState() == 'playing' then
+			if getCurrentPlayerState() == 'playing' then
 				obj.lastTimePlayed = os.time()
       end
     end
@@ -224,11 +260,11 @@ function obj:init()
 	self.currentSongPosition = 0
 
   self.watcher = hs.application.watcher.new(function(name, event, app)
-    if name == 'Music' then
+    if name == self.playerName then
       if event == 2 or event == hs.application.watcher.terminated then
         obj.playerTimer:stop()
         obj:unloadPlayerMenus()
-        obj.playerMenu:setIcon(icon, true)
+        obj.playerMenu:setIcon(self.icon, true)
       elseif event == 1 or event == hs.application.watcher.launched then
         obj.playerTimer:start()
       end

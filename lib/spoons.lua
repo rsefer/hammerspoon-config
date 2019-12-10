@@ -163,6 +163,6 @@ hs.spoons.use('SDCTimer', {
 })
 
 hs.spoons.use('SDCOvercast')
--- hs.spoons.use('SDCMusic')
+hs.spoons.use('SDCMusic')
 
 -- hs.spoons.use('SDCDesktopCapture')
