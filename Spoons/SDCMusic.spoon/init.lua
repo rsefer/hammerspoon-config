@@ -51,18 +51,19 @@ end
 
 function obj:setPlayerMenus()
 	if obj.isDormant == true then
+		obj.playerMenu:setIcon(obj.icon, true)
 		obj.playerControlMenu:setIcon(nil)
 		obj.playerTitleMenu:setIcon(nil)
 		do return end
 	end
 	currentState = getCurrentPlayerState()
 
-
 	if currentState == 'playing' then
     obj.playerControlMenu:setIcon(hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/pause.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') }))
 	else
 		obj.playerControlMenu:setIcon(hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/play.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') }))
 	end
+	obj.playerMenu:setIcon(obj.icon, currentState ~= 'playing')
 
 	currentTrack = getCurrentTrackInfo()
 	if obj.playerTitleMenu and currentTrack.artist and currentTrack.name then
@@ -77,7 +78,7 @@ function obj:setPlayerMenus()
 				obj.currentSongDuration = 300
 			end
 
-      if currentState == 'playing' then
+			if currentState == 'playing' then
         if obj.showAlerts then
           hs.alert.closeSpecific(obj.currentSongAlertUUID, 0)
           obj.currentSongAlertUUID = hs.alert.show("🎵 " .. newSongString, {
@@ -129,7 +130,7 @@ function obj:setPlayerMenus()
           notification:send()
           hs.timer.doAfter(2.5, function() notification:withdraw() end)
         end
-      end
+			end
 
     end
 
