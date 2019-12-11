@@ -39,7 +39,7 @@ sizeAdd(m, 'pad5', 'center')
 sizeAdd(m, 'pad1', 'quadrants', 'three')
 
 local wf = hs.window.filter
-wf_browsers = wf.new({ 'Google Chrome', 'Safari', 'Firefox' })
+wf_browsers = wf.new({ 'Google Chrome', 'Firefox'--[[, 'Safari' --]]})
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
 		spoon.SDCWindows:windowMove(window, nil, hs.settings.get('windowSizes').thirds.right2)
 	end)
