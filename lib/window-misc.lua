@@ -1,6 +1,6 @@
 -- -- Watch Terminal app when (un)plugging iPad as monitor
 -- terminalWatcher = hs.screen.watcher.new(function()
--- 	terminal = hs.application.find('Terminal')
+-- 	terminal = hs.application.get('Terminal')
 -- 	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
 -- 	if terminal:isRunning() then
 -- 		if tertiaryMonitor then
@@ -56,7 +56,7 @@ wf_terminal = wf.new(false):setAppFilter('Terminal')
 		spoon.SDCWindows:moveWindowIfCloseToPreset(workingWindow)
 	end)
 	-- :subscribe(hs.window.filter.windowMoved, function()
-	-- 	terminal = hs.application.find('Terminal')
+	-- 	terminal = hs.application.get('Terminal')
 	-- 	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
 	-- 	if tertiaryMonitor and terminal:mainWindow():screen() == tertiaryMonitor then
 	-- 		win = terminal:mainWindow()

@@ -30,7 +30,7 @@ end
 function obj:hideApps(apps)
 	if apps == nil then return end
   for i, app in ipairs(apps) do
-    thisApp = hs.application.find(app)
+    thisApp = hs.application.get(app)
     if thisApp ~= nil then
       thisApp:hide()
     end
@@ -40,7 +40,7 @@ end
 function obj:quitApps(apps)
 	if apps == nil then return end
   for i, app in ipairs(apps) do
-    thisApp = hs.application.find(app)
+    thisApp = hs.application.get(app)
     if thisApp ~= nil then
       thisApp:kill()
     end
