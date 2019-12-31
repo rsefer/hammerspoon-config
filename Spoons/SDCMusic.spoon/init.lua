@@ -20,8 +20,16 @@ function getCurrentPlayerState()
 		end
 		return workingState
 	elseif obj.playerName == 'Music' then
-		asBool, asObject, asDesc = hs.osascript.applescript('tell application "Music" to return "" & player state')
-		return asObject
+		musicPlaybackState = hs.itunes:getPlaybackState()
+		workingState = 'paused'
+		if musicPlaybackState == hs.itunes.state_paused then
+			workingState = 'paused'
+		elseif musicPlaybackState == hs.itunes.state_playing then
+			workingState = 'playing'
+		elseif musicPlaybackState == hs.itunes.state_stopped then
+			workingState = 'stopped'
+		end
+		return workingState
 	end
 end
 
@@ -34,17 +42,14 @@ function getCurrentTrackInfo()
 			duration = hs.spotify:getDuration(),
 			playerPosition = hs.spotify:getPosition()
 		}
-	elseif obj.playerName == 'Music' then
-		ok, asProps = hs.osascript.applescript('tell application "Music" to return {artist of current track, album of current track, name of current track, duration of current track, player position}')
-		if asProps ~= nil then
-			return {
-				artist = asProps[1],
-				album = asProps[2],
-				name = asProps[3],
-				duration = asProps[4],
-				playerPosition = asProps[5]
-			}
-		end
+	elseif obj.playerName == 'Music' and hs.itunes:getCurrentTrack() then
+		return {
+			artist = hs.itunes:getCurrentArtist(),
+			album = hs.itunes:getCurrentAlbum(),
+			name = hs.itunes:getCurrentTrack(),
+			duration = hs.itunes:getDuration(),
+			playerPosition = hs.itunes:getPosition()
+		}
 	end
 	return {}
 end
@@ -205,7 +210,7 @@ function obj:playerTogglePlayPause()
 	if obj.playerName == 'Spotify' then
 		hs.spotify.playpause()
 	elseif obj.playerName == 'Music' then
-		hs.osascript.applescript('tell application "Music" to playpause')
+		hs.itunes.playpause()
 	end
   obj:setPlayerMenus()
 end
