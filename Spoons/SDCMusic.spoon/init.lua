@@ -109,11 +109,16 @@ function obj:setPlayerMenus()
             atScreenEdge = 1
           }, 5)
         end
-				if obj.showNotifications then
+				if obj.showNotifications and currentTrack.artist ~= '' and currentTrack.name ~= '' then
 
 					workingImage = hs.image.imageFromAppBundle(obj.playerApp:bundleID())
 
-					if setupSetting('discogs_key') and setupSetting('discogs_secret') then
+					if obj.playerName == 'Spotify' then
+						asBool, asObject, asDesc = hs.osascript.applescript('tell application "Spotify" to return artwork url of the current track')
+						if string.len(asObject) > 0 then
+							workingImage = hs.image.imageFromURL(asObject)
+						end
+					elseif setupSetting('discogs_key') and setupSetting('discogs_secret') then
 						discogsURL = 'https://api.discogs.com/database/search?query=' .. urlencode(currentTrack.artist .. ' - ' .. currentTrack.album) .. '&per_page=1&page=1&key=' .. hs.settings.get('discogs_key') .. '&secret=' .. hs.settings.get('discogs_secret')
 						status, body, headers = hs.http.get(discogsURL)
 						if status == 200 then
