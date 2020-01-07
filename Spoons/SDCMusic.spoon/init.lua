@@ -149,7 +149,11 @@ function obj:setPlayerMenus()
     end
 
 		if hs.settings.get('screenClass') ~= 'small' and obj.showCurrentSongProgressBar then
-      currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
+			currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
+
+			if currentTrack.artist == '' and currentTrack.name == '' then
+				newSongString = '[Playing on device]'
+			end
 
       fontCharacterWidth = 8
       menubarHeight = 22
