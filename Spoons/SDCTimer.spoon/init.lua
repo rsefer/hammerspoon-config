@@ -106,6 +106,21 @@ function obj:getClients()
 	end
 end
 
+function obj:logTime(timeMinutes)
+	if timeMinutes == nil then
+		obj.isManualLog = true
+		obj:showChooser()
+		return true
+	end
+	name = obj.activeClient.name:gsub('%W', '')
+	lengthlimit = 15
+	if string.len(name) > lengthlimit then
+		name = string.sub(name, 1, lengthlimit)
+	end
+	local ltstring = 'lt add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. timeMinutes
+	hs.execute(ltstring, true)
+end
+
 function obj:bindHotkeys(mapping)
   local def = {
     toggleTimer = hs.fnutils.partial(self.toggleTimer, self)
@@ -124,6 +139,7 @@ function obj:init()
 		:setIcon(iconBlack, true)
 	self.timerMain = nil
 	self.timerCounter = nil
+	self.isManualLog = false
 
 	self:timerReset()
 
@@ -133,7 +149,16 @@ function obj:init()
 				if choice.uuid ~= 0 then
 					obj.activeClient = choice
 				end
-				obj:start()
+				if obj.isManualLog == true then
+					button, timeMinutes = hs.dialog.textPrompt('Log Minutes:', 'For ' .. obj.activeClient.name, '15', 'Log', 'Cancel')
+					obj.isManualLog = false
+					if button ~= 'Log' or timeMinutes == nil then
+						return
+					end
+					obj:logTime(timeMinutes)
+				else
+					obj:start()
+				end
 			end
 			obj.clientChooser:query(nil)
 		end)
@@ -173,13 +198,7 @@ function obj:stop()
 	local timeStringEnd = 'Timer stopped. Total time: ' .. timeString()
 	if obj.activeClient ~= nil then
 		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
-		name = obj.activeClient.name:gsub('%W', '')
-		lengthlimit = 15
-		if string.len(name) > lengthlimit then
-			name = string.sub(name, 1, lengthlimit)
-		end
-		local ltstring = 'lt add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. math.ceil(obj.timeAccrued / 60)
-		hs.execute(ltstring, true)
+		obj:logTime(math.ceil(obj.timeAccrued / 60))
 	end
 	hs.alert.show(timeStringEnd, obj.alertStyle, 7)
 	obj.logger:i(timeStringEnd)

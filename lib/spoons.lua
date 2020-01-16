@@ -111,11 +111,15 @@ hs.spoons.use('SDCWeather')
 
 hs.spoons.use('SDCTimer', {
 	hotkeys = {
-		toggleTimer = {hs.settings.get('hotkeyCombo'), '\\'}
+		toggleTimer = {hs.settings.get('hotkeyCombo'), '\\'},
+		logTime = {hs.settings.get('hotkeyCombo'), ']'}
 	},
 	fn = function(thisSpoon)
 		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f14', nil, function()
 			thisSpoon.toggleTimer()
+		end)
+		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f15', nil, function()
+			thisSpoon.logTime()
 		end)
 	end
 })
