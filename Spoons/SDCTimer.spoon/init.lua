@@ -123,7 +123,8 @@ end
 
 function obj:bindHotkeys(mapping)
   local def = {
-    toggleTimer = hs.fnutils.partial(self.toggleTimer, self)
+		toggleTimer = hs.fnutils.partial(self.toggleTimer, self),
+		logTime = hs.fnutils.partial(self.logTime, self)
   }
   hs.spoons.bindHotkeysToSpec(def, mapping)
 end
