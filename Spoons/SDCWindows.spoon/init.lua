@@ -104,6 +104,10 @@ function obj:windowMove(window, screen, size)
 
 end
 
+function obj:toggleDock()
+	hs.osascript.applescript('tell application "System Events" to tell dock preferences to set autohide to not autohide')
+end
+
 function obj:resetAllApps()
 	for i, item in ipairs(obj.windowLayout) do
 		for a, app in ipairs(item.apps) do
