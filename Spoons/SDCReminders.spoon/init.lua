@@ -95,6 +95,15 @@ function obj:init()
 			asBool, asObject, asDesc = hs.osascript.applescript(reminderScpt)
 			if asBool then
 				obj:toggleWebview()
+				hs.notify.new(function()
+					hs.application.launchOrFocus('Reminders')
+				end, {
+					hasActionButton = true,
+					actionButtonTitle = 'Open',
+					title = 'Reminder added:',
+					subTitle = reminder.name,
+					informativeText = 'For: ' .. reminder.date .. ' @ ' .. reminder.time
+				}):setIdImage(hs.image.imageFromAppBundle(hs.application.find('Reminders'):bundleID())):send()
 			end
 		end
   end)
