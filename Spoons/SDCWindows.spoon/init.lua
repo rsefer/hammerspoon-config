@@ -189,11 +189,31 @@ function obj:bindHotkeys(mapping)
   hs.spoons.bindHotkeysToSpec(def, mapping)
 end
 
+function obj:handleScreenChange()
+	for k, screen in ipairs(hs.screen.allScreens()) do
+		if screen:name() == hs.settings.get('secondaryMonitorName') then
+			hs.settings.set('deskSizeClass', 'large')
+			return
+		end
+	end
+	hs.settings.set('deskSizeClass', 'small')
+end
+
 function obj:init()
+	self.screenWatcher = nil
 	self.applicationWatcher = nil
 end
 
 function obj:start()
+
+	self.screenWatcher = hs.screen.watcher.newWithActiveScreen(function(activeScreenChange)
+		if not activeScreenChange then
+			hs.timer.doAfter(1, function()
+				self:handleScreenChange()
+			end)
+		end
+
+	end):start()
 
 	self.applicationWatcher = hs.application.watcher.new(function(name, event, app)
 		if event == 5 and name == 'Finder' and tablelength(app:allWindows()) == 0 then
@@ -216,6 +236,7 @@ function obj:start()
 end
 
 function obj:stop()
+	self.screenWatcher:stop()
   self.applicationWatcher:stop()
   return self
 end

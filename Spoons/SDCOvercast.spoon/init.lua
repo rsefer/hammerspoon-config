@@ -95,7 +95,7 @@ function obj:init()
           obj.overcastMenu:setIcon(icon, true)
         end
 
-        if hs.settings.get('screenClass') ~= 'small' and obj.showProgressBar and message.body.podcast.episodeTitle then
+        if hs.settings.get('deskSizeClass') ~= 'small' and obj.showProgressBar and message.body.podcast.episodeTitle then
 
           local episodeString = message.body.podcast.name .. ' - ' .. message.body.podcast.episodeTitle
 

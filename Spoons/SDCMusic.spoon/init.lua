@@ -241,7 +241,7 @@ function obj:setPlayerMenus()
 
     end
 
-		if hs.settings.get('screenClass') ~= 'small' and obj.showCurrentSongProgressBar then
+		if hs.settings.get('deskSizeClass') ~= 'small' and obj.showCurrentSongProgressBar then
 			currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
 
 			if currentTrack.artist == '' and currentTrack.name == '' then

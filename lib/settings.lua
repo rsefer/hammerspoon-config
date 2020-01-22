@@ -5,6 +5,10 @@ hs.settings.set('secondaryMonitorName', 'DELL P2415Q')
 -- hs.settings.set('tertiaryMonitorName', 4128836) -- Duet doesn't have a name so we use the ID
 hs.settings.set('tertiaryMonitorName', 'Yam Display')
 
+hs.settings.watchKey('settings_deskSizeClass_watcher', 'deskSizeClass', function()
+	hs.alert.show('Desk Size: ' .. hs.settings.get('deskSizeClass'), { atScreenEdge = 1 })
+end)
+
 hs.settings.set('windowGridFull', {
 	width = 100,
 	height = 60
