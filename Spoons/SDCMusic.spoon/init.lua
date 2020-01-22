@@ -54,6 +54,99 @@ function getCurrentTrackInfo()
 	return {}
 end
 
+function obj:spotifyGetCode(code)
+
+	if not settingExists('spotify_client_id') then
+		setupSetting('spotify_client_id', 'Spotify Client ID')
+	end
+	if not settingExists('spotify_client_secret') then
+		setupSetting('spotify_client_secret', 'Spotify Client Secret')
+	end
+
+	if not code then
+		hs.urlevent.openURL('https://accounts.spotify.com/authorize?client_id=' .. hs.settings.get('spotify_client_id') .. '&response_type=code&redirect_uri=https://rsefer.com/&scope=user-read-private%20user-read-playback-state%20streaming%20app-remote-control&state=rsefer')
+		newCode = setupSetting('spotify_authorization_code', 'Spotify Authorization Code', '', true)
+		if newCode ~= nil then
+			return obj:spotifyGetCode(newCode)
+		end
+	end
+
+	getTokenStatus, getTokenBody, getTokenHeaders = hs.http.post('https://accounts.spotify.com/api/token', 'client_id=' .. hs.settings.get('spotify_client_id') .. '&client_secret=' .. hs.settings.get('spotify_client_secret') .. '&grant_type=authorization_code&code=' .. code .. '&redirect_uri=https://rsefer.com/')
+	decodedGetTokenBody = hs.json.decode(getTokenBody)
+
+	if getTokenStatus == 400 then
+		return obj:spotifyGetCode()
+	elseif decodedGetTokenBody['access_token'] ~= nil and decodedGetTokenBody['refresh_token'] ~= nil then
+		hs.settings.set('spotify_access_token', decodedGetTokenBody['access_token'])
+		hs.settings.set('spotify_refresh_token', decodedGetTokenBody['refresh_token'])
+	end
+
+	return decodedGetTokenBody
+end
+
+function obj:spotifyGetAccessToken(refreshToken)
+	if not refreshToken or refreshToken == nil then
+		return hs.alert('Could not obtain access token.')
+	end
+
+	getTokenStatus, getTokenBody, getTokenHeaders = hs.http.post('https://accounts.spotify.com/api/token', 'client_id=' .. hs.settings.get('spotify_client_id') .. '&client_secret=' .. hs.settings.get('spotify_client_secret') .. '&grant_type=refresh_token&refresh_token=' .. refreshToken)
+	decodedGetTokenBody = hs.json.decode(getTokenBody)
+
+	if getTokenStatus == 400 then
+		return obj:spotifyGetCode()
+	elseif decodedGetTokenBody['access_token'] ~= nil then
+		hs.settings.set('spotify_access_token', decodedGetTokenBody['access_token'])
+		if decodedGetTokenBody['refresh_token'] ~= nil then
+			hs.settings.set('spotify_refresh_token', decodedGetTokenBody['refresh_token'])
+		end
+	end
+
+	return decodedGetTokenBody
+end
+
+function obj:spotifySwitchPlayer()
+	obj:spotifyGetAccessToken(hs.settings.get('spotify_refresh_token'))
+
+	devicesHeaders = {}
+	devicesHeaders['Authorization'] = 'Bearer ' .. hs.settings.get('spotify_access_token')
+	devicesStatus, devicesBody, devicesReturnHeaders = hs.http.get('https://api.spotify.com/v1/me/player/devices', devicesHeaders)
+
+	if devicesStatus ~= 200 then
+		obj:spotifyGetAccessToken(hs.settings.get('spotify_refresh_token'))
+		hs.alert('Had to get new token. Try again.')
+		return
+	end
+
+	decodedDevicesBody = hs.json.decode(devicesBody)
+
+	if decodedDevicesBody['devices'] ~= nil then
+		devices = {}
+		for x, device in ipairs(decodedDevicesBody['devices']) do
+			if string.match(string.lower(device['name']), 'bed') then
+				device['name'] = '🛏 ' .. device['name']
+			elseif string.match(string.lower(device['name']), 'bath') then
+				device['name'] = '🚽 ' .. device['name']
+			end
+			if not string.match(string.lower(device['name']), 'everywhere') then
+				table.insert(devices, {
+					uuid = device['id'],
+					text = device['name']
+				})
+			end
+		end
+		hs.chooser.new(function(choice)
+			if choice then
+				if choice.uuid ~= 0 then
+					-- using cURL because hammerspoon is unable to execute PUT command
+					string = 'curl -X "PUT" "https://api.spotify.com/v1/me/player" --data "{\\\"play\\\":\\\"true\\\",\\\"device_ids\\\":[\\\"' .. choice.uuid .. '\\\"]}" -H "Accept: application/json" -H "Authorization: Bearer ' .. hs.settings.get('spotify_access_token') .. '"'
+					hs.execute(string)
+				end
+			end
+		end):choices(devices):show()
+	end
+
+end
+
 function obj:setPlayerMenus()
 	if obj.isDormant == true then
 		obj.playerMenu:setIcon(obj.icon, true)
@@ -230,6 +323,13 @@ function obj:togglePlayer()
   else
     hs.application.launchOrFocus(obj.playerName)
   end
+end
+
+function obj:bindHotkeys(mapping)
+  local def = {
+		spotifySwitchPlayer = hs.fnutils.partial(self.spotifySwitchPlayer, self)
+  }
+  hs.spoons.bindHotkeysToSpec(def, mapping)
 end
 
 function obj:init()

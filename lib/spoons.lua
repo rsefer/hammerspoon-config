@@ -125,7 +125,16 @@ hs.spoons.use('SDCTimer', {
 })
 
 hs.spoons.use('SDCOvercast')
-hs.spoons.use('SDCMusic')
+hs.spoons.use('SDCMusic', {
+	hotkeys = {
+		spotifySwitchPlayer = {hs.settings.get('hotkeyCombo'), 'D'}
+	},
+	fn = function(thisSpoon)
+		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad*', nil, function()
+			thisSpoon.spotifySwitchPlayer()
+		end)
+	end
+})
 
 hs.spoons.use('SDCWorkspace', {
 	config = {
