@@ -124,7 +124,7 @@ hs.spoons.use('SDCTimer', {
 	end
 })
 
-hs.spoons.use('SDCOvercast')
+-- hs.spoons.use('SDCOvercast')
 hs.spoons.use('SDCMusic', {
 	hotkeys = {
 		spotifySwitchPlayer = {hs.settings.get('hotkeyCombo'), 'D'}
