@@ -78,27 +78,27 @@ function obj:init()
 	setupSetting('homeassistant_api_key')
 
 	self.isShown = false
-	self.haMenu = hs.menubar.new()
-    :setClickCallback(obj.toggleWebview)
-    :setIcon(icon, true)
+	-- self.haMenu = hs.menubar.new()
+  --   :setClickCallback(obj.toggleWebview)
+  --   :setIcon(icon, true)
 
-  self.haMenuFrame = self.haMenu:frame()
+  -- self.haMenuFrame = self.haMenu:frame()
 
-	self.haWebview = hs.webview.newBrowser(hs.geometry.rect((self.haMenuFrame.x + self.haMenuFrame.w / 2) - (viewWidth / 2), self.haMenuFrame.y, viewWidth, viewHeight), { developerExtrasEnabled = true })
-    :allowTextEntry(true)
-		:shadow(true)
-		:windowCallback(function(action, webview, state)
-			if action == 'focusChange' and state ~= true then
-				self.haWebview:hide()
-				self.isShown = false
-			end
-		end)
+	-- self.haWebview = hs.webview.newBrowser(hs.geometry.rect((self.haMenuFrame.x + self.haMenuFrame.w / 2) - (viewWidth / 2), self.haMenuFrame.y, viewWidth, viewHeight), { developerExtrasEnabled = true })
+  --   :allowTextEntry(true)
+	-- 	:shadow(true)
+	-- 	:windowCallback(function(action, webview, state)
+	-- 		if action == 'focusChange' and state ~= true then
+	-- 			self.haWebview:hide()
+	-- 			self.isShown = false
+	-- 		end
+	-- 	end)
 
 end
 
 function obj:start()
 
-	self.haWebview:url(hs.settings.get('homeassistant_api_domain'))
+	-- self.haWebview:url(hs.settings.get('homeassistant_api_domain'))
 
 	self.stateWatcher = hs.caffeinate.watcher.new(function(state)
 		if state == hs.caffeinate.watcher.systemDidWake or state == hs.caffeinate.watcher.systemWillSleep then
