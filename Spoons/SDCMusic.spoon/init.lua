@@ -120,29 +120,48 @@ function obj:spotifySwitchPlayer()
 	decodedDevicesBody = hs.json.decode(devicesBody)
 
 	if decodedDevicesBody['devices'] ~= nil then
-		devices = {}
+		allDevices = {}
 		for x, device in ipairs(decodedDevicesBody['devices']) do
-			if string.match(string.lower(device['name']), 'bed') then
-				device['name'] = '🛏 ' .. device['name']
-			elseif string.match(string.lower(device['name']), 'bath') then
-				device['name'] = '🚽 ' .. device['name']
-			end
-			if not string.match(string.lower(device['name']), 'everywhere') then
-				table.insert(devices, {
-					uuid = device['id'],
-					text = device['name']
-				})
+			if device['type'] == 'Computer' then table.insert(allDevices, device) end
+		end
+		for x, device in ipairs(decodedDevicesBody['devices']) do
+			if device['type'] == 'Speaker' then table.insert(allDevices, device) end
+		end
+		for x, device in ipairs(decodedDevicesBody['devices']) do
+			if device['type'] ~= 'Computer' and device['type'] ~= 'Speaker' then table.insert(allDevices, device) end
+		end
+
+		finalDevices = {}
+		for x, device in ipairs(allDevices) do
+			if device['name'] ~= nil then
+				if string.match(string.lower(device['name']), 'mac') then
+					device['name'] = '💻 ' .. device['name']
+				elseif string.match(string.lower(device['name']), 'phone') then
+					device['name'] = '📱 ' .. device['name']
+				elseif string.match(string.lower(device['name']), 'pad') then
+					device['name'] = '⌨️ ' .. device['name']
+				elseif string.match(string.lower(device['name']), 'bed') then
+					device['name'] = '🛏 ' .. device['name']
+				elseif string.match(string.lower(device['name']), 'bath') then
+					device['name'] = '🚽 ' .. device['name']
+				end
+				if not string.match(string.lower(device['name']), 'everywhere') then
+					table.insert(finalDevices, {
+						uuid = device['id'],
+						text = device['name']
+					})
+				end
 			end
 		end
 		hs.chooser.new(function(choice)
 			if choice then
 				if choice.uuid ~= 0 then
 					-- using cURL because hammerspoon is unable to execute PUT command
-					string = 'curl -X "PUT" "https://api.spotify.com/v1/me/player" --data "{\\\"play\\\":\\\"true\\\",\\\"device_ids\\\":[\\\"' .. choice.uuid .. '\\\"]}" -H "Accept: application/json" -H "Authorization: Bearer ' .. hs.settings.get('spotify_access_token') .. '"'
+					string = 'curl -X "PUT" "https://api.spotify.com/v1/me/player" --data "{\\\"device_ids\\\":[\\\"' .. choice.uuid .. '\\\"]}" -H "Accept: application/json" -H "Authorization: Bearer ' .. hs.settings.get('spotify_access_token') .. '"'
 					hs.execute(string)
 				end
 			end
-		end):choices(devices):show()
+		end):choices(finalDevices):show()
 	end
 
 end
@@ -245,7 +264,7 @@ function obj:setPlayerMenus()
 			currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
 
 			if currentTrack.artist == '' and currentTrack.name == '' then
-				newSongString = '[Playing on device]'
+				newSongString = '📱[Playing on device]'
 			end
 
       fontCharacterWidth = 8
