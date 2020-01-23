@@ -263,6 +263,14 @@ function obj:setPlayerMenus()
 		if hs.settings.get('deskSizeClass') ~= 'small' and obj.showCurrentSongProgressBar then
 			currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
 
+			timeCharacters = 0
+
+			if obj.currentSongDuration > 15 * 60 then -- if long, show time remaining
+				timeString = '[' .. math.floor((obj.currentSongDuration - obj.currentSongPosition) / 60) .. 'm] '
+				timeCharacters = timeCharacters + string.len(timeString)
+				newSongString = timeString .. newSongString
+			end
+
 			if currentTrack.artist == '' and currentTrack.name == '' then
 				newSongString = '📱[Playing on device]'
 			end
@@ -270,10 +278,14 @@ function obj:setPlayerMenus()
       fontCharacterWidth = 8
       menubarHeight = 22
 			titleWidth = (string.len(newSongString)) * fontCharacterWidth
-      if titleWidth > 250 then
-        barWidth = 250
+			maxWidth = 350
+			if hs.settings.get('deskSizeClass') == 'large' then
+				maxWidth = 550
+			end
+      if titleWidth > maxWidth then
+        barWidth = maxWidth
 			else
-        barWidth = titleWidth + 1 * fontCharacterWidth
+        barWidth = titleWidth + 2 * fontCharacterWidth
 			end
 
 			textColor = '000000'
