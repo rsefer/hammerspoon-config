@@ -56,7 +56,11 @@ function obj:recordSource(newSource)
 	obj.activeAlertTitle = newSource.alertIcon
 	obj.activeOrder = newSource.order
 	obj.audioSwitcherMenu:setTitle('🔈' .. obj.activeMenuTitle)
-	hs.alert.show(obj.activeAlertTitle .. ' ' .. obj.activeAudioName)
+	for i, alert in pairs(obj.alerts) do
+		hs.alert.closeSpecific(alert)
+	end
+	obj.alerts = {}
+	table.insert(obj.alerts, hs.alert.show(obj.activeAlertTitle .. ' ' .. obj.activeAudioName))
 end
 
 function obj:bindHotkeys(mapping)
@@ -67,7 +71,7 @@ function obj:bindHotkeys(mapping)
 end
 
 function obj:init()
-	--
+	obj.alerts = {}
 end
 
 function obj:start()
