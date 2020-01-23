@@ -266,9 +266,17 @@ function obj:setPlayerMenus()
 			timeCharacters = 0
 
 			if obj.currentSongDuration > 15 * 60 then -- if long, show time remaining
-				timeString = '[' .. math.floor((obj.currentSongDuration - obj.currentSongPosition) / 60) .. 'm] '
+				minutesRemaining = math.floor((obj.currentSongDuration - obj.currentSongPosition) / 60)
+				timeString = ' ['
+				if minutesRemaining > 59 then
+					hours = minutesRemaining / 60
+					hoursWhole = math.floor(hours)
+					timeString = timeString .. hoursWhole .. 'h'
+					minutesRemaining = math.floor((hours - hoursWhole) * 60)
+				end
+				timeString = timeString  .. minutesRemaining .. 'm]'
 				timeCharacters = timeCharacters + string.len(timeString)
-				newSongString = timeString .. newSongString
+				newSongString = newSongString .. timeString
 			end
 
 			if currentTrack.artist == '' and currentTrack.name == '' then
@@ -285,8 +293,9 @@ function obj:setPlayerMenus()
       if titleWidth > maxWidth then
         barWidth = maxWidth
 			else
-        barWidth = titleWidth + 2 * fontCharacterWidth
+        barWidth = titleWidth
 			end
+			barWidth = barWidth + timeCharacters * fontCharacterWidth / 3
 
 			textColor = '000000'
 			fillColor = '1db954'
@@ -318,7 +327,7 @@ function obj:setPlayerMenus()
           type = 'text',
           text = newSongString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
           textSize = 14,
-					textLineBreak = 'truncateTail',
+					textLineBreak = 'truncateMiddle',
 					textColor = { ['hex'] = textColor },
 					textFont = 'Courier',
 					frame = { x = '0%', y = 1, h = '100%', w = '100%' }
