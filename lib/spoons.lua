@@ -78,8 +78,8 @@ hs.spoons.use('SDCAudio', {
 			{
 				order = 1,
 				name = 'Built-in Output',
-				menuIcon = '🖥',
-				alertIcon = '🖥'
+				menuIcon = '📻',
+				alertIcon = '📻'
 			},
 			{
 				order = 2,
