@@ -77,9 +77,9 @@ function obj:windowMove(window, screen, size)
 		y = hs.settings.get('windowMargin').small
 	}))
 
-	-- local finickyApps = {
-	-- 	'Terminal'
-	-- }
+	local finickyApps = {
+		-- 'Terminal'
+	}
 
 	if contains(finickyApps, window:application():name()) then
 		cell = hs.grid.getCell(size, workingScreen)
