@@ -3,37 +3,72 @@ hs.spoons.use('SDCWindows', {
 		windowLayout = {
 			{
 				apps = { 'Google Chrome', 'Safari', 'Firefox', 'Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman' },
-				screen = hs.screen.primaryScreen(),
+				screens = {
+					deskWithiPad = hs.screen.primaryScreen(),
+					desk = hs.screen.primaryScreen(),
+					laptopWithiPad = hs.screen.primaryScreen(),
+					laptop = hs.screen.primaryScreen()
+				},
 				size = hs.settings.get('windowSizes').thirds.right2
 			},
 			{
-				apps = { 'Messages', 'Slack', 'Tweetbot', 'Reminders', 'Hammerspoon', 'Home' },
-				screen = hs.screen.primaryScreen(),
+				apps = { 'Messages', 'Slack', 'Tweetbot', 'Reminders', 'Home'--[[, 'Hammerspoon']] },
+				screens = {
+					deskWithiPad = hs.screen.primaryScreen(),
+					desk = hs.screen.primaryScreen(),
+					laptopWithiPad = hs.screen.primaryScreen(),
+					laptop = hs.screen.primaryScreen()
+				},
 				size = hs.settings.get('windowSizes').thirds.leftTop
 			},
 			{
 				apps = { 'TextEdit', 'Notes' },
-				screen = hs.screen.primaryScreen(),
+				screens = {
+					deskWithiPad = hs.screen.primaryScreen(),
+					desk = hs.screen.primaryScreen(),
+					laptopWithiPad = hs.screen.primaryScreen(),
+					laptop = hs.screen.primaryScreen()
+				},
 				size = hs.settings.get('windowSizes').thirds.leftBottom
 			},
 			{
 				apps = { 'Photoshop', 'Illustrator', 'Sketch' },
-				screen = hs.screen.primaryScreen(),
+				screens = {
+					deskWithiPad = hs.screen.primaryScreen(),
+					desk = hs.screen.primaryScreen(),
+					laptopWithiPad = hs.screen.primaryScreen(),
+					laptop = hs.screen.primaryScreen()
+				},
 				size = hs.settings.get('windowSizes').full
 			},
 			{
 				apps = { 'Local' },
-				screen = hs.screen.primaryScreen(),
+				screens = {
+					deskWithiPad = hs.screen.primaryScreen(),
+					desk = hs.screen.primaryScreen(),
+					laptopWithiPad = hs.screen.primaryScreen(),
+					laptop = hs.screen.primaryScreen()
+				},
 				size = hs.settings.get('windowSizes').center
 			},
 			{
 				apps = { 'Code', 'GitHub Desktop' },
-				screen = screenChooser(hs.settings.get('secondaryMonitorName'), hs.screen.primaryScreen()),
+				screens = {
+					deskWithiPad = hs.settings.get('primaryMonitorName'),
+					desk = hs.settings.get('primaryMonitorName'),
+					laptopWithiPad = hs.settings.get('tertiaryMonitorName'),
+					laptop = hs.settings.get('primaryMonitorName')
+				},
 				size = hs.settings.get('windowSizes').full
 			},
 			{
 				apps = { 'Terminal', 'Hyper' },
-				screen = screenChooser(hs.settings.get('tertiaryMonitorName'), hs.screen.primaryScreen()),
+				screens = screenChooser({
+					deskWithiPad = hs.settings.get('tertiaryMonitorName'),
+					desk = hs.settings.get('secondaryMonitorName'),
+					laptopWithiPad = hs.settings.get('tertiaryMonitorName'),
+					laptop = hs.settings.get('primaryMonitorName')
+				}),
 				size = windowScreenSizeChooser(hs.settings.get('tertiaryMonitorName'), hs.settings.get('windowSizes').full, hs.settings.get('windowSizes').thirds.leftTop)
 			}
 		}

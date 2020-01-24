@@ -109,9 +109,10 @@ function obj:toggleDock()
 end
 
 function obj:resetAllApps()
+	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
 	for i, item in ipairs(obj.windowLayout) do
 		for a, app in ipairs(item.apps) do
-			obj:appMove(app, item.screen, item.size)
+			obj:appMove(app, screenChooser(item.screens), item.size)
 		end
 	end
 end
@@ -190,13 +191,25 @@ function obj:bindHotkeys(mapping)
 end
 
 function obj:handleScreenChange()
-	for k, screen in ipairs(hs.screen.allScreens()) do
-		if screen:name() == hs.settings.get('secondaryMonitorName') then
-			hs.settings.set('deskSizeClass', 'large')
-			return
+	screenNames = hs.fnutils.imap(hs.screen.allScreens(), function(screen)
+		if not screen:name() and screen:id() == hs.settings.get('tertiaryMonitorName') then return 'iPad' end
+		return screen:name()
+	end)
+	if contains(screenNames, hs.settings.get('secondaryMonitorName')) then
+		hs.settings.set('deskSizeClass', 'large')
+		if contains(screenNames, 'iPad') then
+			hs.settings.set('deskSetup', 'deskWithiPad')
+		else
+			hs.settings.set('deskSetup', 'desk')
+		end
+	else
+		hs.settings.set('deskSizeClass', 'small')
+		if contains(screenNames, 'iPad') then
+			hs.settings.set('deskSetup', 'laptopWithiPad')
+		else
+			hs.settings.set('deskSetup', 'laptop')
 		end
 	end
-	hs.settings.set('deskSizeClass', 'small')
 end
 
 function obj:init()
@@ -205,6 +218,8 @@ function obj:init()
 end
 
 function obj:start()
+
+	self:handleScreenChange()
 
 	self.screenWatcher = hs.screen.watcher.newWithActiveScreen(function(activeScreenChange)
 		if not activeScreenChange then
@@ -223,8 +238,9 @@ function obj:start()
 		elseif event == 1 or event == hs.application.watcher.launched then
 			for k, ao in ipairs(self.windowLayout) do
 				if contains(ao.apps, name) then
+					print('found ' .. name)
 					hs.timer.doAfter(2, function()
-						obj:appMove(name, ao.screen, ao.size)
+						obj:appMove(name, screenChooser(ao.screens), ao.size)
 					end)
 					break
 				end

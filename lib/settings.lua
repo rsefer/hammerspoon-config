@@ -1,13 +1,27 @@
 hs.settings.set('menuIconSize', 14.0)
 hs.settings.set('musicPlayerName', 'Spotify')
 hs.settings.set('hotkeyCombo', {'cmd', 'alt', 'ctrl'})
+hs.settings.set('primaryMonitorName', 'Color LCD') -- MacBook Pro screen
 hs.settings.set('secondaryMonitorName', 'DELL P2415Q')
+hs.settings.set('tertiaryMonitorName', 4128829) -- Sidecar Display doesn't have a name so we use the ID
 -- hs.settings.set('tertiaryMonitorName', 4128836) -- Duet doesn't have a name so we use the ID
 -- hs.settings.set('tertiaryMonitorName', 'Yam Display')
-hs.settings.set('tertiaryMonitorName', 4128829) -- Sidecar Display doesn't have a name so we use the ID
 
-hs.settings.watchKey('settings_deskSizeClass_watcher', 'deskSizeClass', function()
-	hs.alert.show('Desk Size: ' .. hs.settings.get('deskSizeClass'), { atScreenEdge = 1 })
+hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
+	value = hs.settings.get('deskSetup')
+	label = nil
+	if value == 'deskWithiPad' then
+		label = 'Desk with iPad'
+	elseif value == 'desk' then
+		label = 'Desk'
+	elseif value == 'laptopWithiPad' then
+		label = 'Laptop with iPad'
+	else
+		label = 'Laptop'
+	end
+	hs.settings.set('deskSetupLabel', label)
+	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
+	spoon.SDCWindows:resetAllApps()
 end)
 
 hs.settings.set('windowGridFull', {

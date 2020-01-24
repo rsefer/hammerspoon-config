@@ -49,11 +49,12 @@ function screenIsConnected(screenName)
 	end
 end
 
-function screenChooser(desiredScreenName, fallbackScreen)
-	if screenIsConnected(desiredScreenName) then
+function screenChooser(options)
+	desiredScreenName = options[hs.settings.get('deskSetup')]
+	if desiredScreenName ~= nil and screenIsConnected(desiredScreenName) then
 		return hs.screen.find(desiredScreenName)
 	else
-		return fallbackScreen
+		return hs.screen.primaryScreen()
 	end
 end
 
