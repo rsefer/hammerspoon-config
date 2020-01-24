@@ -6,7 +6,7 @@ obj.name = "SDCReminders"
 local viewWidth = 1000
 local viewHeight = 700
 
-function getListNames()
+function obj:getListNames()
 	asBool, asObject, asDesc = hs.osascript.applescript([[
 		tell application "Reminders"
 			set myLists to lists of default account
@@ -23,7 +23,8 @@ end
 function obj:setHTML()
 	local indexHTML = ''
 	local optionsString = ''
-	for i,listName in ipairs(getListNames()) do
+	if not obj:getListNames() then return end
+	for i,listName in ipairs(obj:getListNames()) do
 		optionsString = optionsString .. '<option'
 		if i == 1 then
 			optionsString = optionsString .. ' selected'

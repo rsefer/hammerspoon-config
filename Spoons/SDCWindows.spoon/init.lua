@@ -6,7 +6,7 @@ obj.name = "SDCWindows"
 function screenSizeCategory(screen, large, medium, small)
 	if screen:fullFrame().w > 1920 then
     return large
-	elseif screen:fullFrame().w > 1440 then
+	elseif screen:fullFrame().w > 1200 then
 		return medium
 	end
 	return small

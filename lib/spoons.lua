@@ -77,7 +77,7 @@ hs.spoons.use('SDCAudio', {
 		devices = {
 			{
 				order = 1,
-				name = 'Built-in Output',
+				name = 'MacBook Pro Speakers',
 				menuIcon = '📻',
 				alertIcon = '📻'
 			},
