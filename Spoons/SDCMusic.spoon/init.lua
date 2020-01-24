@@ -161,7 +161,7 @@ function obj:spotifySwitchPlayer()
 					hs.execute(string)
 				end
 			end
-		end):choices(finalDevices):show()
+		end):choices(finalDevices):width(30):rows(tablelength(finalDevices)):show()
 	end
 
 end
