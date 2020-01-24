@@ -4,7 +4,7 @@ obj.__index = obj
 obj.name = "SDCWindows"
 
 function screenSizeCategory(screen, large, medium, small)
-	if screen:fullFrame().w > 1920 then
+	if screen:fullFrame().w >= 1920 then
     return large
 	elseif screen:fullFrame().w > 1200 then
 		return medium
@@ -78,10 +78,11 @@ function obj:windowMove(window, screen, size)
 	}))
 
 	local finickyApps = {
-		-- 'Terminal'
+		'Terminal'
 	}
 
 	if contains(finickyApps, window:application():name()) then
+		window:moveToScreen(workingScreen)
 		cell = hs.grid.getCell(size, workingScreen)
 		margin = screenSizeCategory(workingScreen, {
 			x = hs.settings.get('windowMargin').large,
@@ -93,34 +94,23 @@ function obj:windowMove(window, screen, size)
 			x = hs.settings.get('windowMargin').small,
 			y = hs.settings.get('windowMargin').small
 		})
-		gridFrame = hs.grid.getGridFrame(workingScreen)
-		print(window:application():name())
-		print('workingScreen')
-		print(workingScreen)
-		print('grid frame')
-		print(hs.inspect(gridFrame))
-		print('size')
-		print(hs.inspect(size))
-		print('cell')
-		print(hs.inspect(cell))
-
 		newCoords = {
 			x1 = cell.x + margin.x,
-			y1 = (cell.y - gridFrame.y) + margin.y
+			y1 = cell.y + margin.y
 		}
-		newCoords.x2 = newCoords.x1 + cell.w
-		newCoords.y2 = newCoords.y1 + cell.h
+		newCoords.x2 = cell.w + cell.x - (margin.x / 2)
+		newCoords.y2 = cell.h + cell.y - (margin.y / 2)
 
-		print('new coords')
-		print(hs.inspect(newCoords))
+		localCoords = workingScreen:absoluteToLocal(cell)
 
-		if workingScreen == hs.screen.primaryScreen() then
-			newCoords.y1 = newCoords.y1 + 23
-			newCoords.x2 = newCoords.x2 - (margin.y * 2)
-			newCoords.y2 = newCoords.y1 + cell.h - margin.y
+		if window:application():name() == 'Terminal' and workingScreen:id() == hs.settings.get('tertiaryMonitorName') then
+			newCoords = {
+				x1 = cell.x + localCoords.x + margin.x,
+				y1 = localCoords.y + margin.y
+			}
+			newCoords.x2 = newCoords.x1 + localCoords.w - (margin.x * 2)
+			newCoords.y2 = newCoords.y1 + localCoords.h - (margin.y * 2)
 		end
-		-- print('local')
-		-- print(workingScreen:absoluteToLocal(cell))
 		hs.osascript.applescript([[
 			tell application "]] .. window:application():name() .. [["
 				set the bounds of the first window to {]] .. newCoords.x1 .. [[, ]] .. newCoords.y1 .. [[, ]] .. newCoords.x2 .. [[, ]] .. newCoords.y2 .. [[}
@@ -266,7 +256,6 @@ function obj:start()
 		elseif event == 1 or event == hs.application.watcher.launched then
 			for k, ao in ipairs(self.windowLayout) do
 				if contains(ao.apps, name) then
-					print('found ' .. name)
 					hs.timer.doAfter(2, function()
 						obj:appMove(name, screenChooser(ao.screens), ao.size)
 					end)
