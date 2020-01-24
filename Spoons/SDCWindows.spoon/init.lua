@@ -77,9 +77,9 @@ function obj:windowMove(window, screen, size)
 		y = hs.settings.get('windowMargin').small
 	}))
 
-	local finickyApps = {
-		'Terminal'
-	}
+	-- local finickyApps = {
+	-- 	'Terminal'
+	-- }
 
 	if contains(finickyApps, window:application():name()) then
 		cell = hs.grid.getCell(size, workingScreen)
@@ -93,9 +93,37 @@ function obj:windowMove(window, screen, size)
 			x = hs.settings.get('windowMargin').small,
 			y = hs.settings.get('windowMargin').small
 		})
+		gridFrame = hs.grid.getGridFrame(workingScreen)
+		print(window:application():name())
+		print('workingScreen')
+		print(workingScreen)
+		print('grid frame')
+		print(hs.inspect(gridFrame))
+		print('size')
+		print(hs.inspect(size))
+		print('cell')
+		print(hs.inspect(cell))
+
+		newCoords = {
+			x1 = cell.x + margin.x,
+			y1 = (cell.y - gridFrame.y) + margin.y
+		}
+		newCoords.x2 = newCoords.x1 + cell.w
+		newCoords.y2 = newCoords.y1 + cell.h
+
+		print('new coords')
+		print(hs.inspect(newCoords))
+
+		if workingScreen == hs.screen.primaryScreen() then
+			newCoords.y1 = newCoords.y1 + 23
+			newCoords.x2 = newCoords.x2 - (margin.y * 2)
+			newCoords.y2 = newCoords.y1 + cell.h - margin.y
+		end
+		-- print('local')
+		-- print(workingScreen:absoluteToLocal(cell))
 		hs.osascript.applescript([[
 			tell application "]] .. window:application():name() .. [["
-				set the bounds of the first window to {]] .. (cell.x + margin.x) .. [[, ]] .. (cell.y + margin.y) .. [[, ]] .. (cell.w + cell.x - (margin.x / 2)) .. [[, ]] .. (cell.h + cell.y - (margin.y / 2)) .. [[}
+				set the bounds of the first window to {]] .. newCoords.x1 .. [[, ]] .. newCoords.y1 .. [[, ]] .. newCoords.x2 .. [[, ]] .. newCoords.y2 .. [[}
 			end tell
 		]])
 	else
