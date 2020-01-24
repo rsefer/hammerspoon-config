@@ -140,7 +140,7 @@ function obj:resetAllApps()
 	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
 	for i, item in ipairs(obj.windowLayout) do
 		for a, app in ipairs(item.apps) do
-			obj:appMove(app, screenChooser(item.screens), item.size)
+			obj:appMove(app, screenChooser(item.screens), windowSizeChooser(item.sizes))
 		end
 	end
 end

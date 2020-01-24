@@ -9,7 +9,12 @@ hs.spoons.use('SDCWindows', {
 					laptopWithiPad = hs.screen.primaryScreen(),
 					laptop = hs.screen.primaryScreen()
 				},
-				size = hs.settings.get('windowSizes').thirds.right2
+				sizes = {
+					deskWithiPad = hs.settings.get('windowSizes').thirds.right2,
+					desk = hs.settings.get('windowSizes').thirds.right2,
+					laptopWithiPad = hs.settings.get('windowSizes').full,
+					laptop = hs.settings.get('windowSizes').full,
+				}
 			},
 			{
 				apps = { 'Messages', 'Slack', 'Tweetbot', 'Reminders', 'Home'--[[, 'Hammerspoon']] },
@@ -19,7 +24,12 @@ hs.spoons.use('SDCWindows', {
 					laptopWithiPad = hs.screen.primaryScreen(),
 					laptop = hs.screen.primaryScreen()
 				},
-				size = hs.settings.get('windowSizes').thirds.leftTop
+				sizes = {
+					deskWithiPad = hs.settings.get('windowSizes').thirds.leftTop,
+					desk = hs.settings.get('windowSizes').thirds.leftTop,
+					laptopWithiPad = hs.settings.get('windowSizes').halves.left,
+					laptop = hs.settings.get('windowSizes').halves.left
+				}
 			},
 			{
 				apps = { 'TextEdit', 'Notes' },
@@ -29,7 +39,12 @@ hs.spoons.use('SDCWindows', {
 					laptopWithiPad = hs.screen.primaryScreen(),
 					laptop = hs.screen.primaryScreen()
 				},
-				size = hs.settings.get('windowSizes').thirds.leftBottom
+				sizes = {
+					deskWithiPad = hs.settings.get('windowSizes').thirds.leftBottom,
+					desk = hs.settings.get('windowSizes').thirds.leftBottom,
+					laptopWithiPad = hs.settings.get('windowSizes').halves.left,
+					laptop = hs.settings.get('windowSizes').halves.left
+				}
 			},
 			{
 				apps = { 'Photoshop', 'Illustrator', 'Sketch' },
@@ -39,7 +54,12 @@ hs.spoons.use('SDCWindows', {
 					laptopWithiPad = hs.screen.primaryScreen(),
 					laptop = hs.screen.primaryScreen()
 				},
-				size = hs.settings.get('windowSizes').full
+				sizes = {
+					deskWithiPad = hs.settings.get('windowSizes').full,
+					desk = hs.settings.get('windowSizes').full,
+					laptopWithiPad = hs.settings.get('windowSizes').full,
+					laptop = hs.settings.get('windowSizes').full
+				}
 			},
 			{
 				apps = { 'Local' },
@@ -49,7 +69,12 @@ hs.spoons.use('SDCWindows', {
 					laptopWithiPad = hs.screen.primaryScreen(),
 					laptop = hs.screen.primaryScreen()
 				},
-				size = hs.settings.get('windowSizes').center
+				sizes = {
+					deskWithiPad = hs.settings.get('windowSizes').center,
+					desk = hs.settings.get('windowSizes').center,
+					laptopWithiPad = hs.settings.get('windowSizes').center,
+					laptop = hs.settings.get('windowSizes').full
+				}
 			},
 			{
 				apps = { 'Code', 'GitHub Desktop' },
@@ -59,17 +84,27 @@ hs.spoons.use('SDCWindows', {
 					laptopWithiPad = hs.settings.get('tertiaryMonitorName'),
 					laptop = hs.settings.get('primaryMonitorName')
 				},
-				size = hs.settings.get('windowSizes').full
+				sizes = {
+					deskWithiPad = hs.settings.get('windowSizes').full,
+					desk = hs.settings.get('windowSizes').full,
+					laptopWithiPad = hs.settings.get('windowSizes').full,
+					laptop = hs.settings.get('windowSizes').full
+				}
 			},
 			{
 				apps = { 'Terminal', 'Hyper' },
-				screens = screenChooser({
+				screens = {
 					deskWithiPad = hs.settings.get('tertiaryMonitorName'),
 					desk = hs.settings.get('secondaryMonitorName'),
 					laptopWithiPad = hs.settings.get('tertiaryMonitorName'),
 					laptop = hs.settings.get('primaryMonitorName')
-				}),
-				size = windowScreenSizeChooser(hs.settings.get('tertiaryMonitorName'), hs.settings.get('windowSizes').full, hs.settings.get('windowSizes').thirds.leftTop)
+				},
+				sizes = {
+					deskWithiPad = hs.settings.get('windowSizes').full,
+					desk = hs.settings.get('windowSizes').thirds.leftTop,
+					laptopWithiPad = hs.settings.get('windowSizes').full,
+					laptop = hs.settings.get('windowSizes').halves.left
+				}
 			}
 		}
 	},

@@ -58,10 +58,11 @@ function screenChooser(options)
 	end
 end
 
-function windowScreenSizeChooser(desiredScreenName, desiredSize, fallbackSize)
-	if screenIsConnected(desiredScreenName) then
+function windowSizeChooser(options)
+	desiredSize = options[hs.settings.get('deskSetup')]
+	if desiredSize ~= nil then
 		return desiredSize
 	else
-		return fallbackSize
+		return hs.settings.get('windowSizes').center
 	end
 end
