@@ -4,6 +4,8 @@ obj.__index = obj
 obj.name = "SDCMusic"
 
 function songString(artist, track)
+	track = track:gsub(artist, '')
+	track = track:gsub(' | ', '')
   return artist .. ' - ' .. '"' .. track .. '"'
 end
 
