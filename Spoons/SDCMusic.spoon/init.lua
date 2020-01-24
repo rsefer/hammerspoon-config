@@ -145,6 +145,9 @@ function obj:spotifySwitchPlayer()
 				elseif string.match(string.lower(device['name']), 'bath') then
 					device['name'] = '🚽 ' .. device['name']
 				end
+				if device['is_active'] then
+					device['name'] = '→ ' .. device['name']
+				end
 				if not string.match(string.lower(device['name']), 'everywhere') then
 					table.insert(finalDevices, {
 						uuid = device['id'],
