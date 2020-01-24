@@ -65,6 +65,19 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f16', function()
 	hs.osascript.applescript('tell application "System Events" to tell appearance preferences to set dark mode to not dark mode')
 end)
 
+-- Toggle Sidecar for iPad
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'padenter', function()
+	hs.osascript.applescript([[
+		tell application "System Events"
+			tell process "SystemUIServer"
+				click (menu bar item 1 of menu bar 1 whose description contains "Displays")
+				set displaymenu to menu 1 of result
+				click ((menu item 1 where its name contains "iPad") of displaymenu)
+			end tell
+		end tell
+	]])
+end)
+
 -- Mirror Display toggle
 -- hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '0', function()
 -- 	hs.application.launchOrFocus('System Preferences')
