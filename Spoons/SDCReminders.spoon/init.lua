@@ -3,10 +3,12 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCReminders"
 
-local viewWidth = 1000
-local viewHeight = 700
+local viewWidth = 800
+local viewHeight = 450
 
 function obj:getListNames()
+	-- if permissions won't enable, run the following:
+	-- hs.execute('osascript -e \'tell application "Reminders" to return default account\'')
 	asBool, asObject, asDesc = hs.osascript.applescript([[
 		tell application "Reminders"
 			set myLists to lists of default account
@@ -23,8 +25,9 @@ end
 function obj:setHTML()
 	local indexHTML = ''
 	local optionsString = ''
-	if not obj:getListNames() then return end
-	for i,listName in ipairs(obj:getListNames()) do
+	listNames = obj:getListNames()
+	if not listNames then return end
+	for i, listName in ipairs(listNames) do
 		optionsString = optionsString .. '<option'
 		if i == 1 then
 			optionsString = optionsString .. ' selected'
