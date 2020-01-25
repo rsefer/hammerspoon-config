@@ -1,3 +1,5 @@
+touchbar = require("hs._asm.undocumented.touchbar")
+
 -- -- Watch Terminal app when (un)plugging iPad as monitor
 -- terminalWatcher = hs.screen.watcher.new(function()
 -- 	terminal = hs.application.get('Terminal')
