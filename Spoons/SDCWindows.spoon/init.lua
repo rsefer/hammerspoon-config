@@ -103,13 +103,18 @@ function obj:windowMove(window, screen, size)
 
 		localCoords = workingScreen:absoluteToLocal(cell)
 
-		if window:application():name() == 'Terminal' and workingScreen:id() == hs.settings.get('tertiaryMonitorName') then
-			newCoords = {
-				x1 = cell.x + localCoords.x + margin.x,
-				y1 = localCoords.y + margin.y
-			}
-			newCoords.x2 = newCoords.x1 + localCoords.w - (margin.x * 2)
-			newCoords.y2 = newCoords.y1 + localCoords.h - (margin.y * 2)
+		if window:application():name() == 'Terminal' then
+			terminalFontSize = 14
+			if workingScreen:id() == hs.settings.get('tertiaryMonitorName') then
+				newCoords = {
+					x1 = cell.x + localCoords.x + margin.x,
+					y1 = localCoords.y + margin.y
+				}
+				newCoords.x2 = newCoords.x1 + localCoords.w - (margin.x * 2)
+				newCoords.y2 = newCoords.y1 + localCoords.h - (margin.y * 2)
+				terminalFontSize = 20
+			end
+			hs.osascript.applescript('tell application "' .. window:application():name() .. '" to set the font size of window 1 to ' .. terminalFontSize)
 		end
 		hs.osascript.applescript([[
 			tell application "]] .. window:application():name() .. [["
