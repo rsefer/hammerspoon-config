@@ -218,6 +218,7 @@ function obj:handleScreenChange()
 		if not screen:name() and screen:id() == hs.settings.get('tertiaryMonitorName') then return 'iPad' end
 		return screen:name()
 	end)
+	existingDeskSetup = hs.settings.get('deskSetup')
 	if contains(screenNames, hs.settings.get('secondaryMonitorName')) then
 		hs.settings.set('deskSizeClass', 'large')
 		if contains(screenNames, 'iPad') then

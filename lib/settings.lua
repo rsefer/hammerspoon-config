@@ -9,6 +9,11 @@ hs.settings.set('tertiaryMonitorName', 4128829) -- Sidecar Display doesn't have 
 
 hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 	value = hs.settings.get('deskSetup')
+	oldLabel = hs.settings.get('deskSetupLabel')
+	if oldLabel == 'deskWithiPad' and value == 'laptopWithiPad' then
+		hs.settings.set('deskSetup', 'laptop')
+		return
+	end
 	label = nil
 	if value == 'deskWithiPad' then
 		label = 'Desk with iPad'

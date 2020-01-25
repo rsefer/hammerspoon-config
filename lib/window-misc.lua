@@ -55,14 +55,13 @@ wf_terminal = wf.new(false):setAppFilter('Terminal')
 		end
 		spoon.SDCWindows:moveWindowIfCloseToPreset(workingWindow)
 	end)
-	-- :subscribe(hs.window.filter.windowMoved, function()
-	-- 	terminal = hs.application.get('Terminal')
-	-- 	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
-	-- 	if tertiaryMonitor and terminal:mainWindow():screen() == tertiaryMonitor then
-	-- 		win = terminal:mainWindow()
-	-- 		winUR = win:frame():toUnitRect(win:screen():frame())
-	-- 		if (winUR.w > 0.51 and winUR.w < 1.00) or (winUR.h > 0.50 and winUR.h < 0.97) then
-	-- 			terminal:mainWindow():moveToUnit(hs.layout.maximized)
-	-- 		end
-	-- 	end
-	-- end)
+	:subscribe(hs.window.filter.windowMoved, function()
+		terminal = hs.application.get('Terminal')
+		if tertiaryMonitor and terminal:mainWindow():screen() == hs.screen.find(hs.settings.get('tertiaryMonitorName')) then
+			win = terminal:mainWindow()
+			winUR = win:frame():toUnitRect(win:screen():frame())
+			if (winUR.w > 0.51 and winUR.w < 1.00) or (winUR.h > 0.50 and winUR.h < 0.97) then
+				terminal:mainWindow():moveToUnit(hs.layout.maximized)
+			end
+		end
+	end)

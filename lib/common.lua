@@ -66,3 +66,15 @@ function windowSizeChooser(options)
 		return hs.settings.get('windowSizes').center
 	end
 end
+
+function toggleSidecariPad()
+	hs.osascript.applescript([[
+		tell application "System Events"
+			tell process "SystemUIServer"
+				click (menu bar item 1 of menu bar 1 whose description contains "Displays")
+				set displaymenu to menu 1 of result
+				click ((menu item 1 where its name contains "iPad") of displaymenu)
+			end tell
+		end tell
+	]])
+end
