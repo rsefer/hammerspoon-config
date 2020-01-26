@@ -258,6 +258,16 @@ function obj:start()
 
 	end):start()
 
+	self.batteryWatcher = hs.battery.watcher.new(function()
+		if hs.wifi.currentNetwork() == 'Sefer Ubee 5G' then
+			action = 'off'
+			if hs.battery.powerSource() == 'AC Power' then
+				action = 'on'
+			end
+			spoon.SDCHomeAssistant:toggleSecondaryMonitor(action)
+		end
+	end):start()
+
 	self.applicationWatcher = hs.application.watcher.new(function(name, event, app)
 		if event == 5 and name == 'Finder' and tablelength(app:allWindows()) == 0 then
 			hs.timer.doAfter(0.25, function()
