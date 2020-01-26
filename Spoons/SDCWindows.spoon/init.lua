@@ -238,6 +238,8 @@ end
 
 function obj:init()
 	self.screenWatcher = nil
+	self.batteryWatcher = nil
+	self.batteryPowerSource = hs.battery.powerSource()
 	self.applicationWatcher = nil
 end
 
@@ -259,12 +261,13 @@ function obj:start()
 	end):start()
 
 	self.batteryWatcher = hs.battery.watcher.new(function()
-		if hs.wifi.currentNetwork() == 'Sefer Ubee 5G' then -- 'home'
+		if hs.wifi.currentNetwork() == 'Sefer Ubee 5G' and self.batteryPowerSource ~= hs.battery.powerSource() then -- 'home'
 			action = 'off'
 			if hs.battery.powerSource() == 'AC Power' then
 				action = 'on'
 			end
 			spoon.SDCHomeAssistant:toggleSecondaryMonitor(action)
+			self.batteryPowerSource = hs.battery.powerSource()
 		end
 	end):start()
 
