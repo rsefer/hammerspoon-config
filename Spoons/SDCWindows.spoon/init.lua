@@ -226,6 +226,11 @@ function obj:handleScreenChange()
 		else
 			hs.settings.set('deskSetup', 'desk')
 		end
+		for i = 1, 16, 1 do
+			hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_DOWN', true):post()
+			-- hs.timer.usleep(5000)
+			hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_DOWN', false):post()
+		end
 	else
 		hs.settings.set('deskSizeClass', 'medium')
 		if contains(screenNames, 'iPad') then
