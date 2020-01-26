@@ -142,6 +142,10 @@ function obj:init()
 	self.timerCounter = nil
 	self.isManualLog = false
 
+	hs.urlevent.bind('toggleTimer', function(event, params)
+		self:toggleTimer()
+	end)
+
 	self:timerReset()
 
 	hs.timer.doAfter(1, function()
