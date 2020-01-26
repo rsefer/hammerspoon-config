@@ -41,8 +41,12 @@ function obj:setShortcuts()
 	choices = {}
 	itemCount = 0
   for i, shortcut in ipairs(obj.phoneNumbers) do
-    choice = {}
-    choice.text = shortcut.text
+		choice = {}
+		pre = '☎️'
+		if shortcut.protocol == 'facetime' then
+			pre = '📽'
+		end
+    choice.text = pre .. ' ' .. shortcut.text
 		choice.number = shortcut.number
 		choice.protocol = shortcut.protocol
     table.insert(choices, choice)
