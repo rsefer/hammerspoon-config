@@ -27,6 +27,19 @@ local function callNumber(number, protocol)
   end
 end
 
+local function textNumber(number, text, protocol)
+	return function()
+		button, message = hs.dialog.textPrompt('Message to ' .. text, '')
+		if message ~= nil then
+			if protocol == 'imessage' then
+				hs.messages.iMessage(number, message)
+			else
+				hs.messages.SMS(number, message)
+			end
+		end
+	end
+end
+
 function obj:toggleChooser()
   if obj.chooser then
     if obj.chooser:isVisible() then
@@ -45,6 +58,8 @@ function obj:setShortcuts()
 		pre = '☎️'
 		if shortcut.protocol == 'facetime' then
 			pre = '📽'
+		elseif shortcut.protocol == 'imessage' or shortcut.protocol == 'sms' then
+			pre = '✉️'
 		end
     choice.text = pre .. ' ' .. shortcut.text
 		choice.number = shortcut.number
@@ -72,7 +87,11 @@ function obj:init()
 
 	self.chooser = hs.chooser.new(function(choice)
 		if choice then
-			callNumber(choice.number, choice.protocol)()
+			if choice.protocol == 'imessage' then
+				textNumber(choice.number, choice.text, choice.protocol)()
+			else
+				callNumber(choice.number, choice.protocol)()
+			end
 		end
 	end)
 
