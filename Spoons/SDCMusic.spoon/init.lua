@@ -403,7 +403,7 @@ function obj:init()
 	self.isDormant = true
 	self.lastTimePlayed = os.time()
 
-  self.playerTimer = hs.timer.doEvery(0.5, function()
+  self.playerTimer = hs.timer.doEvery(4, function()
 		if obj.playerApp ~= nil and obj.playerApp:isRunning() then
 			if (os.time() - obj.lastTimePlayed) > 5 * 60 then
 				obj.isDormant = true
