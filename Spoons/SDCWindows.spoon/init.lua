@@ -227,7 +227,7 @@ function obj:handleScreenChange()
 			hs.settings.set('deskSetup', 'desk')
 		end
 	else
-		hs.settings.set('deskSizeClass', 'small')
+		hs.settings.set('deskSizeClass', 'medium')
 		if contains(screenNames, 'iPad') then
 			hs.settings.set('deskSetup', 'laptopWithiPad')
 		else
