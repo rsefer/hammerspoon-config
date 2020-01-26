@@ -259,7 +259,7 @@ function obj:start()
 	end):start()
 
 	self.batteryWatcher = hs.battery.watcher.new(function()
-		if hs.wifi.currentNetwork() == 'Sefer Ubee 5G' then
+		if hs.wifi.currentNetwork() == 'Sefer Ubee 5G' then -- 'home'
 			action = 'off'
 			if hs.battery.powerSource() == 'AC Power' then
 				action = 'on'
@@ -290,6 +290,7 @@ end
 
 function obj:stop()
 	self.screenWatcher:stop()
+	self.batteryWatcher:stop()
   self.applicationWatcher:stop()
   return self
 end
