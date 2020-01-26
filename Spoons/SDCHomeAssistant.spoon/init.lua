@@ -106,6 +106,9 @@ function obj:start()
 			if state == hs.caffeinate.watcher.systemDidWake then
 				action = 'on'
 			end
+			if action == 'on' and hs.battery.powerSource() == 'Battery Power' then
+				return
+			end
 			self:toggleSecondaryMonitor(action)
 		end
 
