@@ -245,6 +245,10 @@ function obj:start()
 
 	self:handleScreenChange()
 
+	hs.urlevent.bind('resetAllApps', function(event, params)
+		self:resetAllApps()
+	end)
+
 	self.screenWatcher = hs.screen.watcher.newWithActiveScreen(function(activeScreenChange)
 		if not activeScreenChange then
 			hs.timer.doAfter(1, function()
