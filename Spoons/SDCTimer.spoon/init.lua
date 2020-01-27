@@ -10,7 +10,7 @@ obj.alertStyle = {
 local iconBlack = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_black.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 local iconGreen = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_green.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 
-function timeString()
+local function getTimeString()
 	local timeString = ''
 	local remainingTime = obj.timeAccrued
 	local timeAccruedHoursR = math.floor(obj.timeAccrued / 60 / 60)
@@ -44,7 +44,7 @@ function clientNameFromID(ID)
 end
 
 function updateTimeElapsedAlert()
-	local elapsedString = timeString()
+	local elapsedString = getTimeString()
 	if obj.activeClient ~= nil then
 		elapsedString = obj.activeClient.name .. ': ' .. elapsedString
 	end
@@ -200,7 +200,7 @@ function obj:stop()
 	obj.timerMain:stop()
 	obj.timerCounter:stop()
 	obj.timerMenu:setIcon(iconBlack, true)
-	local timeStringEnd = 'Timer stopped. Total time: ' .. timeString()
+	local timeStringEnd = 'Timer stopped. Total time: ' .. getTimeString()
 	if obj.activeClient ~= nil then
 		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
 		obj:logTime(math.ceil(obj.timeAccrued / 60))
