@@ -1,6 +1,12 @@
 -- Reload Hammerspoon
 -- local reloadWatcher = hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', hs.reload):start()
-hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '/', function() hs.reload() end)
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '/', function()
+	if spoon.SDCTimer.timerMain:running() then
+		spoon.SDCTimer:toggleTimer()
+		hs.timer.usleep(2000000)
+	end
+	hs.reload()
+end)
 
 -- Force Quit Hammerspoon
 -- (in Settings > Keyboard > Shortcuts)

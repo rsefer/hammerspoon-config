@@ -140,7 +140,9 @@ function obj:init()
 		:setIcon(iconBlack, true)
 	self.timerMain = nil
 	self.timerCounter = nil
+	self.clientChooser = nil
 	self.isManualLog = false
+	self.clients = self:getClients()
 
 	hs.urlevent.bind('toggleTimer', function(event, params)
 		self:toggleTimer()
