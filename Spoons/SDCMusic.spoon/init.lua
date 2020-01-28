@@ -288,17 +288,19 @@ function obj:setPlayerMenus()
 				newSongString = '📱[Playing on device]'
 			end
 
-      fontCharacterWidth = 8
-      menubarHeight = 22
+			textLineBreak = 'wordWrap'
+			fontCharacterWidth = 8
+			menubarHeight = 22
 			titleWidth = (string.len(newSongString)) * fontCharacterWidth
 			maxWidth = 250
 			if hs.settings.get('deskSizeClass') == 'large' then
-				maxWidth = 550
+				maxWidth = 500
 			end
       if titleWidth > maxWidth then
-        barWidth = maxWidth
+				barWidth = maxWidth
+				textLineBreak = 'truncateMiddle'
 			else
-        barWidth = titleWidth
+				barWidth = titleWidth + fontCharacterWidth * 2
 			end
 			barWidth = barWidth + timeCharacters * fontCharacterWidth / 3
 
@@ -332,7 +334,7 @@ function obj:setPlayerMenus()
           type = 'text',
           text = newSongString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
           textSize = 14,
-					textLineBreak = 'truncateMiddle',
+					textLineBreak = textLineBreak,
 					textColor = { ['hex'] = textColor },
 					textFont = 'Courier',
 					frame = { x = '0%', y = 1, h = '100%', w = '100%' }
