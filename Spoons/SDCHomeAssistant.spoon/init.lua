@@ -100,6 +100,10 @@ function obj:start()
 
 	-- self.haWebview:url(hs.settings.get('homeassistant_api_domain'))
 
+	hs.urlevent.bind('switchLights', function(event, params)
+		self:switchLights()
+	end)
+
 	self.stateWatcher = hs.caffeinate.watcher.new(function(state)
 		if state == hs.caffeinate.watcher.systemDidWake or state == hs.caffeinate.watcher.systemWillSleep then
 			action = 'off'
