@@ -26,6 +26,7 @@ hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 	end
 	hs.settings.set('deskSetupLabel', label)
 	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
+	resetGrid()
 	spoon.SDCWindows:resetAllApps()
 end)
 
@@ -49,6 +50,12 @@ thirdWidthRight = fullWidth - thirdCenterY2
 fullHeight = hs.settings.get('windowGridFull').height
 halfHeightTop = fullHeight * 0.65
 halfHeightBottom = fullHeight - halfHeightTop
+
+function resetGrid(width, height)
+	hs.grid.setGrid((width or hs.settings.get('windowGridFull').width) .. 'x' .. (height or hs.settings.get('windowGridFull').height))
+end
+
+resetGrid()
 
 hs.settings.set('windowSizes', {
 	full              = {0, 0, fullWidth, fullHeight},
@@ -76,7 +83,7 @@ hs.settings.set('windowSizes', {
 		four            = {fullWidth / 2, fullHeight / 2, fullWidth / 2, fullHeight / 2}
 	}
 })
-hs.grid.setGrid(fullWidth .. 'x' .. fullHeight)
+
 
 hs.window.animationDuration = 0
 -- hs.window.setFrameCorrectness = true
