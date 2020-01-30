@@ -435,6 +435,13 @@ function obj:init()
     end
 	end):start()
 
+	self.mediaKeyCapture = hs.eventtap.new({ hs.eventtap.event.types.NSSystemDefined }, function(event)
+		local keyPressed = event:systemKey().key
+		if keyPressed == 'PLAY' or keyPressed == 'REWIND' or keyPressed == 'FAST' then
+			obj:setPlayerMenus()
+		end
+	end):start()
+
 end
 
 return obj
