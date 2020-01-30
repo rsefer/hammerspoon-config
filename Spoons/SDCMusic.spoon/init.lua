@@ -289,7 +289,8 @@ function obj:setPlayerMenus()
 			end
 
 			textLineBreak = 'wordWrap'
-			fontCharacterWidth = 8
+			textSize = 11
+			fontCharacterWidth = textSize * .57
 			menubarHeight = 22
 			titleWidth = (string.len(newSongString)) * fontCharacterWidth
 			maxWidth = 250
@@ -302,7 +303,7 @@ function obj:setPlayerMenus()
 			else
 				barWidth = titleWidth + fontCharacterWidth * 2
 			end
-			barWidth = barWidth + timeCharacters * fontCharacterWidth / 3
+			barWidth = round(barWidth + fontCharacterWidth * 2)
 
 			textColor = '000000'
 			fillColor = '1db954'
@@ -333,11 +334,11 @@ function obj:setPlayerMenus()
           id = 'songText',
           type = 'text',
           text = newSongString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
-          textSize = 14,
+          textSize = textSize,
 					textLineBreak = textLineBreak,
 					textColor = { ['hex'] = textColor },
 					textFont = 'Courier',
-					frame = { x = '0%', y = 1, h = '100%', w = '100%' }
+					frame = { x = '0%', y = 3, h = '100%', w = '100%' }
         })
 
       obj.playerTitleMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
