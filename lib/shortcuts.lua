@@ -14,6 +14,10 @@ end)
 -- The above is not included in the Hammerspoon config because they won't
 -- work if Hammerspoon is not running (launch) or frozen (force quit)
 
+-- Do Not Disturb toggle
+-- (in Settings > Keyboard > Shortcuts)
+-- {'cmd', 'alt', 'ctrl'}, f17
+
 -- Location
 if hs.location.servicesEnabled() and hs.location.authorizationStatus() == 'authorized' and hs.location.start() and hs.location.get() then
 	location = hs.location.get()
@@ -59,10 +63,6 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '8', function()
 	hs.urlevent.openURL('https://calendar.google.com/calendar/r/eventedit')
 end)
 
--- Do Not Disturb toggle
--- (in Settings > Keyboard > Shortcuts)
--- {'cmd', 'alt', 'ctrl'}, f17
-
 -- Dark Mode toggle
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f16', function()
 	hs.osascript.applescript('tell application "System Events" to tell appearance preferences to set dark mode to not dark mode')
@@ -75,33 +75,3 @@ end)
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'I', function()
 	toggleSidecariPad()
 end)
-
--- Mirror Display toggle
--- hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '0', function()
--- 	hs.application.launchOrFocus('System Preferences')
--- 	hs.timer.doAfter(3, function()
--- 		hs.application.get('System Preferences'):selectMenuItem({'View', 'Displays'})
--- 		hs.timer.doAfter(1, function()
--- 			hs.window.focusedWindow():focusTab(2)
--- 		end)
--- 	end)
--- end)
-
--- Fixes constrast adjustment issue with Duet
--- hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '=', function()
--- 	hs.osascript.applescript([[
--- 		tell application "System Preferences"
--- 			activate
--- 			reveal pane id "com.apple.preference.universalaccess"
--- 			delay 0.5
--- 		end tell
--- 		tell application "System Events"
--- 			select UI element 5 of table 1 of scroll area 1 of window 1 of application process "System Preferences"
--- 			delay 0.5
--- 			tell slider 1 of tab group 1 of group 1 of window 1 of application process "System Preferences" to set value to 0
--- 		end tell
--- 		tell application "System Preferences"
--- 			quit
--- 		end tell
--- 	]])
--- end)
