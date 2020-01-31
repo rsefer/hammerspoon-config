@@ -290,7 +290,8 @@ function obj:setPlayerMenus()
 
 			textLineBreak = 'wordWrap'
 			textSize = 11
-			fontCharacterWidth = textSize * .57
+			fontCharacterWidth = textSize * .58
+			textVerticalOffset = 1.5
 			menubarHeight = 22
 			titleWidth = (string.len(newSongString)) * fontCharacterWidth
 			maxWidth = 250
@@ -337,8 +338,8 @@ function obj:setPlayerMenus()
           textSize = textSize,
 					textLineBreak = textLineBreak,
 					textColor = { ['hex'] = textColor },
-					textFont = 'Courier',
-					frame = { x = '0%', y = 3, h = '100%', w = '100%' }
+					textFont = 'SF Mono',
+					frame = { x = '0%', y = textVerticalOffset, h = '100%', w = '100%' }
         })
 
       obj.playerTitleMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
