@@ -302,9 +302,9 @@ function obj:setPlayerMenus()
 				barWidth = maxWidth
 				textLineBreak = 'truncateMiddle'
 			else
-				barWidth = titleWidth + fontCharacterWidth * 2
+				barWidth = titleWidth + fontCharacterWidth * 4
 			end
-			barWidth = round(barWidth + fontCharacterWidth * 2)
+			barWidth = round(barWidth)
 
 			textColor = '000000'
 			fillColor = '1db954'
