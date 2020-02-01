@@ -134,6 +134,7 @@ function obj:spotifySwitchPlayer()
 		end
 
 		finalDevices = {}
+		everywhereDevice = nil
 		for x, device in ipairs(allDevices) do
 			if device['name'] ~= nil then
 				if string.match(string.lower(device['name']), 'mac') then
@@ -146,17 +147,25 @@ function obj:spotifySwitchPlayer()
 					device['name'] = '🛏 ' .. device['name']
 				elseif string.match(string.lower(device['name']), 'bath') then
 					device['name'] = '🚽 ' .. device['name']
+				elseif string.match(string.lower(device['name']), 'everywhere') then
+					device['name'] = '🌎 ' .. device['name']
 				end
 				if device['is_active'] then
 					device['name'] = '→ ' .. device['name']
 				end
-				if not string.match(string.lower(device['name']), 'everywhere') then
-					table.insert(finalDevices, {
-						uuid = device['id'],
-						text = device['name']
-					})
+				deviceTable = {
+					uuid = device['id'],
+					text = device['name']
+				}
+				if string.match(string.lower(device['name']), 'everywhere') then
+					everywhereDevice = deviceTable
+				else
+					table.insert(finalDevices, deviceTable)
 				end
 			end
+		end
+		if everywhereDevice ~= nil then
+			table.insert(finalDevices, everywhereDevice)
 		end
 		hs.chooser.new(function(choice)
 			if choice then
