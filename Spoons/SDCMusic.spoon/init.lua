@@ -170,12 +170,12 @@ function obj:spotifySwitchPlayer()
 		hs.chooser.new(function(choice)
 			if choice then
 				if choice.uuid ~= 0 then
-					-- using cURL because hammerspoon is unable to execute PUT command
+					-- using cURL because hammerspoon is unable to execute PUT commands
 					string = 'curl -X "PUT" "https://api.spotify.com/v1/me/player" --data "{\\\"device_ids\\\":[\\\"' .. choice.uuid .. '\\\"]}" -H "Accept: application/json" -H "Authorization: Bearer ' .. hs.settings.get('spotify_access_token') .. '"'
 					hs.execute(string)
 				end
 			end
-		end):choices(finalDevices):width(30):rows(tablelength(finalDevices)):show()
+		end):choices(finalDevices):width(30):rows(tablelength(finalDevices)):placeholderText('Spotify Devices'):show()
 	end
 
 end
