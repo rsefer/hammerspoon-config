@@ -206,7 +206,11 @@ function obj:setPlayerMenus()
 
 			if currentState == 'playing' then
         if obj.showAlerts then
-          hs.alert.closeSpecific(obj.currentSongAlertUUID, 0)
+					hs.alert.closeSpecific(obj.currentSongAlertUUID, 0)
+					alertColorWhite = 0
+					if hs.host.interfaceStyle() == 'Dark' then
+						alertColorWhite = 1
+					end
           obj.currentSongAlertUUID = hs.alert.show("🎵 " .. newSongString, {
             fillColor = {
               white = 0,
@@ -218,7 +222,7 @@ function obj:setPlayerMenus()
             },
             strokeWidth = 0,
             textColor = {
-              white = 0,
+              white = alertColorWhite,
               alpha = 1
             },
             textSize = 10,

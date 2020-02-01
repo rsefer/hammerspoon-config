@@ -91,7 +91,6 @@ function obj:start()
   self.audioSwitcherMenu = hs.menubar.new()
 		:setClickCallback(obj.switchAudio)
 	self:recordSource(self:getSourceByName(hs.audiodevice.defaultOutputDevice():name()))
-	-- self:switchAudio(1)
 
 end
 
