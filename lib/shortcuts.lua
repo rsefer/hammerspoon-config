@@ -28,7 +28,7 @@ if hs.location.servicesEnabled() and hs.location.authorizationStatus() == 'autho
 		hs.settings.set('longitude', locationTable.longitude)
 	end, 400)
 else
-	hs.alert.show('⛅️Cannot retrieve lat/lng')
+	-- hs.alert.show('⛅️Cannot retrieve lat/lng')
 end
 
 -- Google Query Suggestions
