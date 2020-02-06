@@ -35,16 +35,13 @@ end
 -- Based heavily on Andrew Hampton's "autocomplete"
 -- https://github.com/andrewhampton/dotfiles/blob/8136fafe8aabee49f8cea0ab3da6c9e7be472e62/hammerspoon/.hammerspoon/anycomplete.lua
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'G', function()
-	local GOOGLE_ENDPOINT = 'https://suggestqueries.google.com/complete/search?client=chrome&num=5&q=%s'
-	local current = hs.application.frontmostApplication()
 	local chooser = hs.chooser.new(function(choice)
 		if not choice then return end
-		current:activate()
+		hs.application.frontmostApplication():activate()
 		hs.eventtap.keyStrokes(choice.text)
 	end)
 	chooser:queryChangedCallback(function(string)
-		local query = hs.http.encodeForQuery(string)
-		hs.http.asyncGet(string.format(GOOGLE_ENDPOINT, query), nil, function(status, data)
+		hs.http.asyncGet(string.format('https://suggestqueries.google.com/complete/search?client=chrome&num=5&q=%s', hs.http.encodeForQuery(string)), nil, function(status, data)
 			if not data then return end
 			local ok, results = pcall(function() return hs.json.decode(data) end)
 			if not ok then return end
@@ -53,9 +50,7 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'G', function()
 			end)
 			chooser:choices(choices)
 		end)
-	end)
-	chooser:searchSubText(false)
-	chooser:show()
+	end):searchSubText(false):show()
 end)
 
 -- New Google Calendar Event
