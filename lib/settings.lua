@@ -7,29 +7,6 @@ hs.settings.set('tertiaryMonitorName', 4128829) -- Sidecar Display doesn't have 
 -- hs.settings.set('tertiaryMonitorName', 4128836) -- Duet doesn't have a name so we use the ID
 -- hs.settings.set('tertiaryMonitorName', 'Yam Display')
 
-hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
-	value = hs.settings.get('deskSetup')
-	oldLabel = hs.settings.get('deskSetupLabel')
-	if oldLabel == 'deskWithiPad' and value == 'laptopWithiPad' then
-		hs.settings.set('deskSetup', 'laptop')
-		return
-	end
-	label = nil
-	if value == 'deskWithiPad' then
-		label = 'Desk with iPad'
-	elseif value == 'desk' then
-		label = 'Desk'
-	elseif value == 'laptopWithiPad' then
-		label = 'Laptop with iPad'
-	else
-		label = 'Laptop'
-	end
-	hs.settings.set('deskSetupLabel', label)
-	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
-	resetGrid()
-	spoon.SDCWindows:resetAllApps()
-end)
-
 hs.settings.set('windowGridFull', {
 	width = 100,
 	height = 60
@@ -56,6 +33,29 @@ function resetGrid(width, height)
 end
 
 resetGrid()
+
+hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
+	value = hs.settings.get('deskSetup')
+	oldLabel = hs.settings.get('deskSetupLabel')
+	if oldLabel == 'deskWithiPad' and value == 'laptopWithiPad' then
+		hs.settings.set('deskSetup', 'laptop')
+		return
+	end
+	label = nil
+	if value == 'deskWithiPad' then
+		label = 'Desk with iPad'
+	elseif value == 'desk' then
+		label = 'Desk'
+	elseif value == 'laptopWithiPad' then
+		label = 'Laptop with iPad'
+	else
+		label = 'Laptop'
+	end
+	hs.settings.set('deskSetupLabel', label)
+	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
+	resetGrid()
+	spoon.SDCWindows:resetAllApps()
+end)
 
 hs.settings.set('windowSizes', {
 	full              = {0, 0, fullWidth, fullHeight},
