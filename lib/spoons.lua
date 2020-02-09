@@ -4,10 +4,10 @@ hs.spoons.use('SDCWindows', {
 			{
 				apps = { 'Google Chrome', 'Safari', 'Firefox', 'Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman' },
 				screens = {
-					deskWithiPad = hs.screen.primaryScreen(),
-					desk = hs.screen.primaryScreen(),
-					laptopWithiPad = hs.screen.primaryScreen(),
-					laptop = hs.screen.primaryScreen()
+					deskWithiPad = nil,
+					desk = nil,
+					laptopWithiPad = nil,
+					laptop = nil
 				},
 				sizes = {
 					deskWithiPad = hs.settings.get('windowSizes').thirds.right2,
@@ -19,10 +19,10 @@ hs.spoons.use('SDCWindows', {
 			{
 				apps = { 'Messages', 'Slack', 'Tweetbot', 'Reminders', 'Home'--[[, 'Hammerspoon']] },
 				screens = {
-					deskWithiPad = hs.screen.primaryScreen(),
-					desk = hs.screen.primaryScreen(),
-					laptopWithiPad = hs.screen.primaryScreen(),
-					laptop = hs.screen.primaryScreen()
+					deskWithiPad = nil,
+					desk = nil,
+					laptopWithiPad = nil,
+					laptop = nil
 				},
 				sizes = {
 					deskWithiPad = hs.settings.get('windowSizes').thirds.leftTop,
@@ -34,10 +34,10 @@ hs.spoons.use('SDCWindows', {
 			{
 				apps = { 'TextEdit', 'Notes' },
 				screens = {
-					deskWithiPad = hs.screen.primaryScreen(),
-					desk = hs.screen.primaryScreen(),
-					laptopWithiPad = hs.screen.primaryScreen(),
-					laptop = hs.screen.primaryScreen()
+					deskWithiPad = nil,
+					desk = nil,
+					laptopWithiPad = nil,
+					laptop = nil
 				},
 				sizes = {
 					deskWithiPad = hs.settings.get('windowSizes').thirds.leftBottom,
@@ -49,10 +49,10 @@ hs.spoons.use('SDCWindows', {
 			{
 				apps = { 'Photoshop', 'Illustrator', 'Sketch' },
 				screens = {
-					deskWithiPad = hs.screen.primaryScreen(),
-					desk = hs.screen.primaryScreen(),
-					laptopWithiPad = hs.screen.primaryScreen(),
-					laptop = hs.screen.primaryScreen()
+					deskWithiPad = nil,
+					desk = nil,
+					laptopWithiPad = nil,
+					laptop = nil
 				},
 				sizes = {
 					deskWithiPad = hs.settings.get('windowSizes').full,
@@ -64,10 +64,10 @@ hs.spoons.use('SDCWindows', {
 			{
 				apps = { 'Local' },
 				screens = {
-					deskWithiPad = hs.screen.primaryScreen(),
-					desk = hs.screen.primaryScreen(),
-					laptopWithiPad = hs.screen.primaryScreen(),
-					laptop = hs.screen.primaryScreen()
+					deskWithiPad = nil,
+					desk = nil,
+					laptopWithiPad = nil,
+					laptop = nil
 				},
 				sizes = {
 					deskWithiPad = hs.settings.get('windowSizes').center,
@@ -92,7 +92,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Terminal', 'Hyper' },
+				apps = { 'Terminal' },
 				screens = {
 					deskWithiPad = hs.settings.get('tertiaryMonitorName'),
 					desk = hs.settings.get('secondaryMonitorName'),

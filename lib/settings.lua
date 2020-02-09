@@ -3,8 +3,8 @@ hs.settings.set('musicPlayerName', 'Spotify')
 hs.settings.set('hotkeyCombo', {'cmd', 'alt', 'ctrl'})
 hs.settings.set('primaryMonitorName', 'Color LCD') -- MacBook Pro screen
 hs.settings.set('secondaryMonitorName', 'DELL P2415Q')
-hs.settings.set('tertiaryMonitorName', 4128829) -- Sidecar Display doesn't have a name so we use the ID
--- hs.settings.set('tertiaryMonitorName', 4128836) -- Duet doesn't have a name so we use the ID
+hs.settings.set('tertiaryMonitorName', 4128829) -- Sidecar Display
+-- hs.settings.set('tertiaryMonitorName', 4128836) -- Duet
 -- hs.settings.set('tertiaryMonitorName', 'Yam Display')
 
 hs.settings.set('windowGridFull', {
@@ -28,8 +28,10 @@ fullHeight = hs.settings.get('windowGridFull').height
 halfHeightTop = fullHeight * 0.65
 halfHeightBottom = fullHeight - halfHeightTop
 
-function resetGrid(width, height)
-	hs.grid.setGrid((width or hs.settings.get('windowGridFull').width) .. 'x' .. (height or hs.settings.get('windowGridFull').height))
+function resetGrid()
+	for x, screen in ipairs(hs.screen.allScreens()) do
+		hs.grid.setGrid(hs.settings.get('windowGridFull').width .. 'x' .. hs.settings.get('windowGridFull').height, screen)
+	end
 end
 
 resetGrid()
