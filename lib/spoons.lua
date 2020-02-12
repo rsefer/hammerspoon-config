@@ -17,7 +17,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Messages', 'Slack', 'Tweetbot', 'Reminders', 'Home'--[[, 'Hammerspoon']] },
+				apps = { 'Messages', 'Slack', 'Tweetbot', 'Home'--[[, 'Hammerspoon']] },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -27,6 +27,21 @@ hs.spoons.use('SDCWindows', {
 				sizes = {
 					deskWithiPad = hs.settings.get('windowSizes').thirds.leftTop,
 					desk = hs.settings.get('windowSizes').thirds.leftTop,
+					laptopWithiPad = hs.settings.get('windowSizes').halves.left,
+					laptop = hs.settings.get('windowSizes').halves.left
+				}
+			},
+			{
+				apps = { 'Reminders' },
+				screens = {
+					deskWithiPad = nil,
+					desk = nil,
+					laptopWithiPad = nil,
+					laptop = nil
+				},
+				sizes = {
+					deskWithiPad = hs.settings.get('windowSizes').halves.left,
+					desk = hs.settings.get('windowSizes').halves.left,
 					laptopWithiPad = hs.settings.get('windowSizes').halves.left,
 					laptop = hs.settings.get('windowSizes').halves.left
 				}
