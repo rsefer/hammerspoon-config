@@ -28,6 +28,10 @@ fullHeight = hs.settings.get('windowGridFull').height
 halfHeightTop = fullHeight * 0.65
 halfHeightBottom = fullHeight - halfHeightTop
 
+function resetMacBookProScreen(sizing)
+	hs.screen.find(hs.settings.get('primaryMonitorName')):setMode(sizing.width, sizing.height, sizing.scale)
+end
+
 function resetGrid()
 	for x, screen in ipairs(hs.screen.allScreens()) do
 		hs.grid.setGrid(hs.settings.get('windowGridFull').width .. 'x' .. hs.settings.get('windowGridFull').height, screen)
@@ -46,13 +50,18 @@ hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 	label = nil
 	if value == 'deskWithiPad' then
 		label = 'Desk with iPad'
+		sizing = { width = 1792, height = 1120, scale = 2 }
 	elseif value == 'desk' then
 		label = 'Desk'
+		sizing = { width = 1792, height = 1120, scale = 2 }
 	elseif value == 'laptopWithiPad' then
 		label = 'Laptop with iPad'
+		sizing = { width = 2048, height = 1280, scale = 2 }
 	else
 		label = 'Laptop'
+		sizing = { width = 2048, height = 1280, scale = 2 }
 	end
+	resetMacBookProScreen(sizing)
 	hs.settings.set('deskSetupLabel', label)
 	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
 	resetGrid()
