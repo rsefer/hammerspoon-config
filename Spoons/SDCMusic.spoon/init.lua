@@ -309,7 +309,7 @@ function obj:setPlayerMenus()
 			textVerticalOffset = 1
 			menubarHeight = 22
 			titleWidth = (string.len(newSongString)) * fontCharacterWidth
-			maxWidth = 250
+			maxWidth = 375
 			if hs.settings.get('deskSizeClass') == 'large' then
 				maxWidth = 500
 			end
