@@ -62,7 +62,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Photoshop', 'Illustrator', 'Sketch' },
+				apps = { 'Photoshop', 'Illustrator', 'XD', 'Sketch' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
