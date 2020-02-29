@@ -96,6 +96,7 @@ function obj:init()
 					return resultDate
 				end convertDate
 			]]
+			-- Fantastical -- tell application "Fantastical" to parse sentence "Remind ']] .. reminder.name .. [[' at ]] .. reminder.time .. [[ on ]] .. reminder.date .. [[ /]] .. reminder.list .. [[" with add immediately
 			asBool, asObject, asDesc = hs.osascript.applescript(reminderScpt)
 			if asBool then
 				obj:toggleWebview()
