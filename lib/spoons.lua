@@ -79,16 +79,16 @@ hs.spoons.use('SDCWindows', {
 			{
 				apps = { 'Local' },
 				screens = {
-					deskWithiPad = nil,
-					desk = nil,
-					laptopWithiPad = nil,
-					laptop = nil
+					deskWithiPad = hs.settings.get('primaryMonitorName'),
+					desk = hs.settings.get('primaryMonitorName'),
+					laptopWithiPad = hs.settings.get('primaryMonitorName'),
+					laptop = hs.settings.get('primaryMonitorName')
 				},
 				sizes = {
-					deskWithiPad = hs.settings.get('windowSizes').center,
-					desk = hs.settings.get('windowSizes').center,
-					laptopWithiPad = hs.settings.get('windowSizes').center,
-					laptop = hs.settings.get('windowSizes').full
+					deskWithiPad = hs.settings.get('windowSizes').full,
+					desk = hs.settings.get('windowSizes').full,
+					laptopWithiPad = hs.settings.get('windowSizes').full,
+					laptop = hs.settings.get('windowSizes').full,
 				}
 			},
 			{
