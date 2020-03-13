@@ -155,7 +155,11 @@ function obj:bindHotkeys(mapping)
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').full)
 		end,
 		sizeCentered = function()
-			obj:windowMove(nil, nil, hs.settings.get('windowSizes').center)
+			if hs.window.focusedWindow():title() == 'FaceTime' then
+				hs.window.focusedWindow():centerOnScreen()
+			else
+				obj:windowMove(nil, nil, hs.settings.get('windowSizes').center)
+			end
 		end,
 		sizeRight23rds = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.right2)
