@@ -140,7 +140,35 @@ function obj:init()
 		:setIcon(iconBlack, true)
 	self.timerMain = nil
 	self.timerCounter = nil
-	self.clientChooser = nil
+	self.clientChooser = hs.chooser.new(function(choice)
+		if choice then
+			if choice.uuid ~= 0 then
+				obj.activeClient = choice
+			end
+			if obj.isManualLog == true then
+				button, timeMinutes = hs.dialog.textPrompt('Log Minutes:', 'For ' .. obj.activeClient.name, '15', 'Log', 'Cancel')
+				obj.isManualLog = false
+				if button ~= 'Log' or timeMinutes == nil then
+					return
+				end
+				obj:logTime(timeMinutes)
+			else
+				obj:start()
+			end
+		end
+		obj.clientChooser:query(nil)
+	end)
+		:width(30)
+		:rows(6)
+		:searchSubText(true)
+		:attachedToolbar(hs.webview.toolbar.new('clientChooserToolbar', {{
+			id = 'clientRefresh',
+			label = 'Refresh',
+			selectable = true,
+			fn = function() obj.clientChooser:choices(obj:getClients()) end
+		}}
+		):sizeMode('small'):displayMode('label'))
+		:choices(self:getClients())
 	self.isManualLog = false
 	self.clients = self:getClients()
 
@@ -149,38 +177,6 @@ function obj:init()
 	end)
 
 	self:timerReset()
-
-	hs.timer.doAfter(1, function()
-		obj.clientChooser = hs.chooser.new(function(choice)
-			if choice then
-				if choice.uuid ~= 0 then
-					obj.activeClient = choice
-				end
-				if obj.isManualLog == true then
-					button, timeMinutes = hs.dialog.textPrompt('Log Minutes:', 'For ' .. obj.activeClient.name, '15', 'Log', 'Cancel')
-					obj.isManualLog = false
-					if button ~= 'Log' or timeMinutes == nil then
-						return
-					end
-					obj:logTime(timeMinutes)
-				else
-					obj:start()
-				end
-			end
-			obj.clientChooser:query(nil)
-		end)
-			:width(30)
-			:rows(6)
-			:searchSubText(true)
-			:attachedToolbar(hs.webview.toolbar.new('clientChooserToolbar', {{
-				id = 'clientRefresh',
-				label = 'Refresh',
-				selectable = true,
-				fn = function() obj.clientChooser:choices(obj:getClients()) end
-			}}
-			):sizeMode('small'):displayMode('label'))
-			:choices(self:getClients())
-	end)
 
 end
 
