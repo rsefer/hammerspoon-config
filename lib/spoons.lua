@@ -17,7 +17,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Messages', 'Slack', 'Tweetbot', 'Home'--[[, 'Hammerspoon']] },
+				apps = { 'Messages', 'Tweetbot', 'Home'--[[, 'Hammerspoon']] },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -32,7 +32,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Reminders' },
+				apps = { 'Reminders', 'Slack' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
