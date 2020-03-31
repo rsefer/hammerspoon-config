@@ -192,8 +192,6 @@ hs.spoons.use('SDCAudio', {
 	start = true
 })
 
-hs.spoons.use('SDCWeather')
-
 hs.spoons.use('SDCTimer', {
 	hotkeys = {
 		toggleTimer = {hs.settings.get('hotkeyCombo'), '\\'},
