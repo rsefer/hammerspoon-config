@@ -27,8 +27,8 @@ hs.spoons.use('SDCWindows', {
 				sizes = {
 					deskWithiPad = hs.settings.get('windowSizes').thirds.leftTop,
 					desk = hs.settings.get('windowSizes').thirds.leftTop,
-					laptopWithiPad = hs.settings.get('windowSizes').halves.left,
-					laptop = hs.settings.get('windowSizes').halves.left
+					laptopWithiPad = hs.settings.get('windowSizes').thirds.left,
+					laptop = hs.settings.get('windowSizes').thirds.left
 				}
 			},
 			{
