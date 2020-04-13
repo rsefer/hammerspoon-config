@@ -60,11 +60,11 @@ hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 	if value == 'deskWithiPad' then
 		label = 'Desk with iPad'
 		sizing = { width = 1792, height = 1120, scale = 2 }
-		alertSize = 60
+		alertSize = 45
 	elseif value == 'desk' then
 		label = 'Desk'
 		sizing = { width = 1792, height = 1120, scale = 2 }
-		alertSize = 60
+		alertSize = 45
 	elseif value == 'laptopWithiPad' then
 		label = 'Laptop with iPad'
 		sizing = { width = 2048, height = 1280, scale = 2 }
