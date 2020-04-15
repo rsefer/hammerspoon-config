@@ -212,7 +212,8 @@ function obj:bindHotkeys(mapping)
 		end,
 		moveWindowDownScreen = function()
 			hs.window.focusedWindow():moveOneScreenSouth(false, true)
-		end
+		end,
+		turnOnSecondaryMonitor = hs.fnutils.partial(self.toggleSecondaryMonitor, self)
   }
   hs.spoons.bindHotkeysToSpec(def, mapping)
 end
@@ -241,6 +242,21 @@ function obj:handleScreenChange()
 			hs.settings.set('deskSetup', 'laptopWithiPad')
 		else
 			hs.settings.set('deskSetup', 'laptop')
+		end
+	end
+end
+
+function obj:toggleSecondaryMonitor(action)
+	if action == nil then
+		action = 'on'
+	end
+
+	if setupSetting('secondary_monitor_plug_ip') then
+		local khstring = 'kasa-helper ' .. hs.settings.get('secondary_monitor_plug_ip') .. ' ' .. action
+		hs.execute(khstring, true)
+
+		if action == 'on' then
+			self:resetAllApps()
 		end
 	end
 end
@@ -276,7 +292,7 @@ function obj:start()
 			if hs.battery.powerSource() == 'AC Power' then
 				action = 'on'
 			end
-			spoon.SDCHomeAssistant:toggleSecondaryMonitor(action)
+			self:toggleSecondaryMonitor(action)
 			self.batteryPowerSource = hs.battery.powerSource()
 		end
 	end):start()

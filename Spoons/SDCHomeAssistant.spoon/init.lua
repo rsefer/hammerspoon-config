@@ -46,26 +46,26 @@ function obj:switchLights(on)
 
 end
 
-function obj:toggleSecondaryMonitor(action)
-	local secondaryMonitorEntityID = 'switch.secondary_monitor'
-	if action == nil then
-		action = 'on'
-	end
-	status, data, headers = hs.http.asyncPost(hs.settings.get('homeassistant_api_endpoint') .. 'services/switch/turn_' .. action, '{"entity_id":"' .. secondaryMonitorEntityID .. '"}', {
-		['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
-		['Content-Type'] = 'application/json'
-	}, function(cstatus, cbody, cheaders)
-		--
-		if action == 'on' then
-			spoon.SDCWindows:resetAllApps()
-		end
-	end)
-end
+-- function obj:toggleSecondaryMonitor(action)
+-- 	local secondaryMonitorEntityID = 'switch.secondary_monitor'
+-- 	if action == nil then
+-- 		action = 'on'
+-- 	end
+-- 	status, data, headers = hs.http.asyncPost(hs.settings.get('homeassistant_api_endpoint') .. 'services/switch/turn_' .. action, '{"entity_id":"' .. secondaryMonitorEntityID .. '"}', {
+-- 		['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
+-- 		['Content-Type'] = 'application/json'
+-- 	}, function(cstatus, cbody, cheaders)
+-- 		--
+-- 		if action == 'on' then
+-- 			spoon.SDCWindows:resetAllApps()
+-- 		end
+-- 	end)
+-- end
 
 function obj:bindHotkeys(mapping)
   local def = {
 		switchLights = hs.fnutils.partial(self.switchLights, self),
-		turnOnSecondaryMonitor = hs.fnutils.partial(self.toggleSecondaryMonitor, self)
+		-- turnOnSecondaryMonitor = hs.fnutils.partial(self.toggleSecondaryMonitor, self)
   }
   hs.spoons.bindHotkeysToSpec(def, mapping)
 end

@@ -144,7 +144,8 @@ hs.spoons.use('SDCWindows', {
 		sizeQ1                          = {hs.settings.get('hotkeyCombo'), 'pad9'},
 		sizeQ2                          = {hs.settings.get('hotkeyCombo'), 'pad7'},
 		sizeQ3                          = {hs.settings.get('hotkeyCombo'), 'pad1'},
-		sizeQ4                          = {hs.settings.get('hotkeyCombo'), 'pad3'}
+		sizeQ4                          = {hs.settings.get('hotkeyCombo'), 'pad3'},
+		turnOnSecondaryMonitor          = {hs.settings.get('hotkeyCombo'), 'S'}
 	},
 	start = true
 })
@@ -152,7 +153,7 @@ hs.spoons.use('SDCWindows', {
 hs.spoons.use('SDCHomeAssistant', {
 	hotkeys = {
 		switchLights = {hs.settings.get('hotkeyCombo'), 'f19'},
-		turnOnSecondaryMonitor = {hs.settings.get('hotkeyCombo'), 'S'}
+		-- turnOnSecondaryMonitor = {hs.settings.get('hotkeyCombo'), 'S'}
 	},
 	start = true
 })
