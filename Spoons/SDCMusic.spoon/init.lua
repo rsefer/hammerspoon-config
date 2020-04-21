@@ -145,6 +145,8 @@ function obj:spotifySwitchPlayer()
 					device['name'] = '⌨️ ' .. device['name']
 				elseif string.match(string.lower(device['name']), 'bed') then
 					device['name'] = '🛏 ' .. device['name']
+				elseif string.match(string.lower(device['name']), 'dining') then
+					device['name'] = '🍛 ' .. device['name']
 				elseif string.match(string.lower(device['name']), 'bath') then
 					device['name'] = '🚽 ' .. device['name']
 				elseif string.match(string.lower(device['name']), 'appletv') then
