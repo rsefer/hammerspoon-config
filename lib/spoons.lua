@@ -10,8 +10,8 @@ hs.spoons.use('SDCWindows', {
 					laptop = nil
 				},
 				sizes = {
-					deskWithiPad = hs.settings.get('windowSizes').thirds.right2,
-					desk = hs.settings.get('windowSizes').thirds.right2,
+					deskWithiPad = hs.settings.get('windowSizes').thirds.left2,
+					desk = hs.settings.get('windowSizes').thirds.left2,
 					laptopWithiPad = hs.settings.get('windowSizes').full,
 					laptop = hs.settings.get('windowSizes').full,
 				}
@@ -25,10 +25,10 @@ hs.spoons.use('SDCWindows', {
 					laptop = nil
 				},
 				sizes = {
-					deskWithiPad = hs.settings.get('windowSizes').thirds.leftTop,
-					desk = hs.settings.get('windowSizes').thirds.leftTop,
-					laptopWithiPad = hs.settings.get('windowSizes').thirds.left,
-					laptop = hs.settings.get('windowSizes').thirds.left
+					deskWithiPad = hs.settings.get('windowSizes').thirds.rightTop,
+					desk = hs.settings.get('windowSizes').thirds.rightTop,
+					laptopWithiPad = hs.settings.get('windowSizes').thirds.right,
+					laptop = hs.settings.get('windowSizes').thirds.right
 				}
 			},
 			{
@@ -40,10 +40,10 @@ hs.spoons.use('SDCWindows', {
 					laptop = nil
 				},
 				sizes = {
-					deskWithiPad = hs.settings.get('windowSizes').halves.left,
-					desk = hs.settings.get('windowSizes').halves.left,
-					laptopWithiPad = hs.settings.get('windowSizes').halves.left,
-					laptop = hs.settings.get('windowSizes').halves.left
+					deskWithiPad = hs.settings.get('windowSizes').halves.right,
+					desk = hs.settings.get('windowSizes').halves.right,
+					laptopWithiPad = hs.settings.get('windowSizes').halves.right,
+					laptop = hs.settings.get('windowSizes').halves.right
 				}
 			},
 			{
@@ -55,10 +55,10 @@ hs.spoons.use('SDCWindows', {
 					laptop = nil
 				},
 				sizes = {
-					deskWithiPad = hs.settings.get('windowSizes').thirds.leftBottom,
-					desk = hs.settings.get('windowSizes').thirds.leftBottom,
-					laptopWithiPad = hs.settings.get('windowSizes').halves.left,
-					laptop = hs.settings.get('windowSizes').halves.left
+					deskWithiPad = hs.settings.get('windowSizes').thirds.rightBottom,
+					desk = hs.settings.get('windowSizes').thirds.rightBottom,
+					laptopWithiPad = hs.settings.get('windowSizes').halves.right,
+					laptop = hs.settings.get('windowSizes').halves.right
 				}
 			},
 			{
@@ -116,9 +116,9 @@ hs.spoons.use('SDCWindows', {
 				},
 				sizes = {
 					deskWithiPad = hs.settings.get('windowSizes').full,
-					desk = hs.settings.get('windowSizes').thirds.leftTop,
+					desk = hs.settings.get('windowSizes').thirds.rightTop,
 					laptopWithiPad = hs.settings.get('windowSizes').full,
-					laptop = hs.settings.get('windowSizes').halves.left
+					laptop = hs.settings.get('windowSizes').halves.right
 				}
 			}
 		}
