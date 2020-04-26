@@ -161,8 +161,8 @@ function obj:bindHotkeys(mapping)
 				obj:windowMove(nil, nil, hs.settings.get('windowSizes').center)
 			end
 		end,
-		sizeRight23rds = function()
-			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.right2)
+		sizeLeft23rds = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.left2)
 		end,
 		sizeLeft13rd = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.left)
@@ -172,6 +172,18 @@ function obj:bindHotkeys(mapping)
 		end,
 		sizeLeft13rdBottomHalfish = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.leftBottom)
+		end,
+		sizeRight23rds = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.right2)
+		end,
+		sizeRight13rd = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.right)
+		end,
+		sizeRight13rdTopHalfish = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.rightTop)
+		end,
+		sizeRight13rdBottomHalfish = function()
+			obj:windowMove(nil, nil, hs.settings.get('windowSizes').thirds.rightBottom)
 		end,
 		sizeHalfHeightTopEdge = function()
 			winGrid = hs.grid.get(hs.window:focusedWindow())
