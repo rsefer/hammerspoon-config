@@ -104,21 +104,6 @@ function obj:start()
 		self:switchLights()
 	end)
 
-	self.stateWatcher = hs.caffeinate.watcher.new(function(state)
-		if state == hs.caffeinate.watcher.systemDidWake or state == hs.caffeinate.watcher.systemWillSleep then
-			action = 'off'
-			if state == hs.caffeinate.watcher.systemDidWake then
-				action = 'on'
-			end
-			if action == 'on' and hs.battery.powerSource() == 'Battery Power' then
-				return
-			end
-			self:toggleSecondaryMonitor(action)
-		end
-
-	end)
-	self.stateWatcher:start()
-
 end
 
 return obj

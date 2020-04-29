@@ -299,7 +299,7 @@ function obj:start()
 	end):start()
 
 	self.batteryWatcher = hs.battery.watcher.new(function()
-		if hs.wifi.currentNetwork() == 'Sefer Ubee 5G' and self.batteryPowerSource ~= hs.battery.powerSource() then -- 'home'
+		if hs.wifi.currentNetwork() == 'Kathryn' and self.batteryPowerSource ~= hs.battery.powerSource() then -- 'home'
 			action = 'off'
 			if hs.battery.powerSource() == 'AC Power' then
 				action = 'on'
