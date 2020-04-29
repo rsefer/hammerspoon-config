@@ -10,8 +10,8 @@ hs.spoons.use('SDCWindows', {
 					laptop = nil
 				},
 				sizes = {
-					deskWithiPad = hs.settings.get('windowSizes').thirds.left2,
-					desk = hs.settings.get('windowSizes').thirds.left2,
+					deskWithiPad = hs.settings.get('mainWindowDefaultSize'),
+					desk = hs.settings.get('mainWindowDefaultSize'),
 					laptopWithiPad = hs.settings.get('windowSizes').full,
 					laptop = hs.settings.get('windowSizes').full,
 				}

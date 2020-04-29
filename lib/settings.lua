@@ -109,6 +109,7 @@ hs.settings.set('windowSizes', {
 	}
 })
 
+hs.settings.set('mainWindowDefaultSize', hs.settings.get('windowSizes').thirds.left2)
 
 hs.window.animationDuration = 0
 -- hs.window.setFrameCorrectness = true
