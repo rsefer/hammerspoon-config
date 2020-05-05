@@ -127,7 +127,7 @@ function obj:init()
               textSize = 14,
               textLineBreak = 'truncateTail',
               textColor = { ['hex'] = textColor },
-              textFont = 'Courier',
+              textFont = 'SF Mono',
               frame = { x = '0%', y = 1, h = '100%', w = '100%' }
             })
 
