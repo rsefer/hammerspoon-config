@@ -287,6 +287,9 @@ function obj:setPlayerMenus()
 
 			timeCharacters = 0
 
+			timeString = ''
+			hasTrackInfo = true
+
 			if obj.currentSongDuration > 15 * 60 then -- if long, show time remaining
 				minutesRemaining = math.ceil((obj.currentSongDuration - obj.currentSongPosition) / 60)
 				timeString = ' ['
@@ -302,7 +305,8 @@ function obj:setPlayerMenus()
 			end
 
 			if currentTrack.artist == '' and currentTrack.name == '' then
-				newSongString = '📱[Playing on device]'
+				hasTrackInfo = false
+				newSongString = '📱' .. timeString
 			end
 
 			textLineBreak = 'wordWrap'
@@ -319,7 +323,11 @@ function obj:setPlayerMenus()
 				barWidth = maxWidth
 				textLineBreak = 'truncateMiddle'
 			else
-				barWidth = titleWidth + fontCharacterWidth * 4
+				if hasTrackInfo then
+					barWidth = titleWidth + fontCharacterWidth * 4
+				else
+					barWidth = titleWidth
+				end
 			end
 			barWidth = round(barWidth)
 
