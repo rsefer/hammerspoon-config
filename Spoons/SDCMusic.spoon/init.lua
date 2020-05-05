@@ -311,7 +311,7 @@ function obj:setPlayerMenus()
 
 			textLineBreak = 'wordWrap'
 			textSize = 12
-			fontCharacterWidth = textSize * .58
+			fontCharacterWidth = textSize * .7
 			textVerticalOffset = 1
 			menubarHeight = 22
 			titleWidth = (string.len(newSongString)) * fontCharacterWidth
