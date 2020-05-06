@@ -2,7 +2,7 @@
 local obj = {}
 obj.__index = obj
 obj.name = "SDCTimer"
-obj.timeIntervalSeconds = 15 * 60
+obj.timeIntervalSeconds = 30 * 60
 obj.alertStyle = {
 	atScreenEdge = 1
 }
@@ -53,6 +53,7 @@ end
 
 function updateTimeElapsed()
 	obj.timeAccrued = os.time() - obj.timeStart
+	obj.timerTimeMenu:setTitle(hs.styledtext.new(math.floor(obj.timeAccrued / 60) .. 'm', { textFont = 'SF Mono' }))
 end
 
 function obj:toggleTimer()
@@ -135,7 +136,10 @@ function obj:init()
 	setupSetting('biz_api_key')
 
 	self.logger = hs.logger.new(self.name, 'info')
-	self.timerMenu = hs.menubar.new()
+	self.timerTimeMenu = hs.menubar.new()
+		:setClickCallback(obj.toggleTimer)
+		:setTitle()
+	self.timerIconMenu = hs.menubar.new()
 		:setClickCallback(obj.toggleTimer)
 		:setIcon(iconBlack, true)
 	self.timerMain = nil
@@ -186,7 +190,7 @@ function obj:start()
 	obj.timeStart = os.time()
 	obj.timerMain:start()
 	obj.timerCounter:start()
-	obj.timerMenu:setIcon(iconGreen, false)
+	obj.timerIconMenu:setIcon(iconGreen, false)
 	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
 	if obj.activeClient ~= nil then
 		timeStringStart = obj.activeClient.name .. ': ' .. timeStringStart
@@ -198,7 +202,8 @@ end
 function obj:stop()
 	obj.timerMain:stop()
 	obj.timerCounter:stop()
-	obj.timerMenu:setIcon(iconBlack, true)
+	obj.timerTimeMenu:setTitle()
+	obj.timerIconMenu:setIcon(iconBlack, true)
 	local timeStringEnd = 'Timer stopped. Total time: ' .. getTimeString()
 	if obj.activeClient ~= nil then
 		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
