@@ -41,7 +41,7 @@ sizeAdd(m, 'pad1', 'quadrants', 'three')
 local wf = hs.window.filter
 wf_browsers = wf.new({ 'Google Chrome', 'Firefox', 'Safari' })
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
-		spoon.SDCWindows:windowMove(window, nil, hs.settings.get('mainWindowDefaultSize'))
+		spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
 	end)
 wf_terminal = wf.new(false):setAppFilter('Terminal')
 	:subscribe({
