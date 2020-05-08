@@ -63,8 +63,7 @@ function obj:windowMove(window, screen, size)
 		window = hs.window.focusedWindow()
 	end
 	if window == nil then
-		print('no window! aborting')
-		hs.alert('no window! aborting')
+		-- occurs when there are no focusable windows (usually when all apps are hidden)
 		return
 	end
 	local workingScreen = window:screen()
