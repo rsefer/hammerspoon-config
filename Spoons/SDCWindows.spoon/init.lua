@@ -62,6 +62,11 @@ function obj:windowMove(window, screen, size)
 	if window == nil then
 		window = hs.window.focusedWindow()
 	end
+	if window == nil then
+		print('no window! aborting')
+		hs.alert('no window! aborting')
+		return
+	end
 	local workingScreen = window:screen()
 	if screen ~= nil then
 		workingScreen = screen
@@ -326,10 +331,12 @@ function obj:start()
 		elseif event == 1 or event == hs.application.watcher.launched then
 			for k, ao in ipairs(self.windowLayout) do
 				if contains(ao.apps, name) then
-					hs.timer.doAfter(2, function()
-						obj:appMove(name, screenChooser(ao.screens), windowSizeChooser(ao.sizes))
-					end)
-					break
+					if tablelength(app:allWindows()) ~= 1 or (tablelength(app:allWindows()) == 1 and app:allWindows()[1]:title() ~= 'Open') then
+						hs.timer.doAfter(2, function()
+							obj:appMove(name, screenChooser(ao.screens), windowSizeChooser(ao.sizes))
+						end)
+						break
+					end
 				end
 			end
 		end
