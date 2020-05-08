@@ -51,7 +51,14 @@ wf_terminal = wf.new(false):setAppFilter('Terminal')
 		workingWindow = window
 		app = hs.application.get(appName)
 		if event == 'windowDestroyed' and app ~= nil and app:isRunning() then
+			if (tablelength(app:allWindows()) < 1) then
+				return
+			end
 			workingWindow = app:focusedWindow()
+		elseif event == 'windowCreated' and app ~= nil and app:isRunning() then
+			if string.find(workingWindow:title(), '⌥⌘1') then -- hack to determine if window has only 1 tab
+				spoon.SDCWindows:windowMove(workingWindow, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings('Terminal').sizes))
+			end
 		end
 		spoon.SDCWindows:moveWindowIfCloseToPreset(workingWindow)
 	end)

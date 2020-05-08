@@ -273,6 +273,15 @@ function obj:toggleSecondaryMonitor(action)
 	end
 end
 
+function obj:getAppLayoutSettings(appName)
+	for k, ao in ipairs(obj.windowLayout) do
+		if contains(ao.apps, appName) then
+			return ao
+		end
+	end
+	return nil
+end
+
 function obj:init()
 	self.screenWatcher = nil
 	self.batteryWatcher = nil
