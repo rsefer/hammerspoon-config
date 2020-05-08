@@ -117,7 +117,7 @@ function obj:windowMove(window, screen, size)
 		end
 		asString = [[
 			tell application "]] .. window:application():name() .. [["
-				set the bounds of the first window to {]] .. newCoords.x1 .. [[, ]] .. newCoords.y1 .. [[, ]] .. newCoords.x2 .. [[, ]] .. newCoords.y2 .. [[}
+				set the bounds of window 1 to {]] .. newCoords.x1 .. [[, ]] .. newCoords.y1 .. [[, ]] .. newCoords.x2 .. [[, ]] .. newCoords.y2 .. [[}
 			end tell
 		]]
 		hs.osascript.applescript(asString)
