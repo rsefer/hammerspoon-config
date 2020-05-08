@@ -155,13 +155,13 @@ hs.spoons.use('SDCWindows', {
 	start = true
 })
 
-hs.spoons.use('SDCHomeAssistant', {
-	hotkeys = {
-		switchLights = {hs.settings.get('hotkeyCombo'), 'f19'},
-		-- turnOnSecondaryMonitor = {hs.settings.get('hotkeyCombo'), 'S'}
-	},
-	start = true
-})
+-- hs.spoons.use('SDCHomeAssistant', {
+-- 	hotkeys = {
+-- 		switchLights = {hs.settings.get('hotkeyCombo'), 'f19'},
+-- 		-- turnOnSecondaryMonitor = {hs.settings.get('hotkeyCombo'), 'S'}
+-- 	},
+-- 	start = true
+-- })
 
 hs.spoons.use('SDCAudio', {
 	config = {
