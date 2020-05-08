@@ -318,7 +318,7 @@ function obj:start()
 			for k, ao in ipairs(self.windowLayout) do
 				if contains(ao.apps, name) then
 					hs.timer.doAfter(2, function()
-						obj:appMove(name, screenChooser(ao.screens), ao.size)
+						obj:appMove(name, screenChooser(ao.screens), windowSizeChooser(ao.sizes))
 					end)
 					break
 				end
