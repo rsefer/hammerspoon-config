@@ -101,9 +101,10 @@ function obj:getClients()
 			})
 		end
 		self.clients = clients
+		hs.settings.set('clients', clients)
 		return clients
 	else
-		return {}
+		return hs.settings.get('clients', clients)
 	end
 end
 
@@ -196,6 +197,7 @@ function obj:start()
 		timeStringStart = obj.activeClient.name .. ': ' .. timeStringStart
 	end
 	hs.alert.show(timeStringStart, obj.alertStyle, 3)
+	updateTimeElapsed()
 	obj.logger:i(timeStringStart)
 end
 
