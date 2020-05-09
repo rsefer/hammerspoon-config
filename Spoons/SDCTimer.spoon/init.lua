@@ -120,7 +120,13 @@ function obj:logTime(timeMinutes)
 		name = string.sub(name, 1, lengthlimit)
 	end
 	local ltstring = 'lt add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. timeMinutes
-	hs.execute(ltstring, true)
+	output, status = hs.execute(ltstring, true)
+	if status then
+		output, status = hs.execute('lt ct ' .. obj.activeClient.uuid, true)
+		clientTotalMinutes = output:gsub("[\n\r]", "")
+		hs.alert.show('Total time for ' .. obj.activeClient.name .. ': ' .. clientTotalMinutes .. ' minutes', { atScreenEdge = 2 }, 5)
+	end
+
 end
 
 function obj:bindHotkeys(mapping)
@@ -203,12 +209,12 @@ function obj:stop()
 	obj.timerCounter:stop()
 	obj.timerMenu:setIcon(iconBlack, true)
 		:setTitle()
-	local timeStringEnd = 'Timer stopped. Total time: ' .. getTimeString()
+	local timeStringEnd = 'Timer stopped. Logged time: ' .. getTimeString()
 	if obj.activeClient ~= nil then
 		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
 		obj:logTime(math.ceil(obj.timeAccrued / 60))
 	end
-	hs.alert.show(timeStringEnd, obj.alertStyle, 7)
+	hs.alert.show(timeStringEnd, obj.alertStyle, 5)
 	obj.logger:i(timeStringEnd)
 	obj:timerReset()
 end
