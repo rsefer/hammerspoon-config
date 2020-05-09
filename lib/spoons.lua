@@ -2,7 +2,7 @@ hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
 			{
-				apps = { 'Google Chrome', 'Safari', 'Firefox', 'Music', 'Spotify', 'Fantastical', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman' },
+				apps = { 'Google Chrome', 'Safari', 'Firefox', 'Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -132,15 +132,14 @@ hs.spoons.use('SDCWindows', {
 		sizeLeftHalf                    = {hs.settings.get('hotkeyCombo'), 'L'},
 		sizeRightHalf                   = {hs.settings.get('hotkeyCombo'), 'R'},
 		sizeFull                        = {hs.settings.get('hotkeyCombo'), 'F'},
-		sizeLeft23rds                   = {hs.settings.get('hotkeyCombo'), 'N'},
 		-- sizeLeft13rd                    = {hs.settings.get('hotkeyCombo'), 'M'},
 		-- sizeLeft13rdTopHalfish          = {hs.settings.get('hotkeyCombo'), ','},
 		-- sizeLeft13rdBottomHalfish       = {hs.settings.get('hotkeyCombo'), '.'},
 		-- sizeRight23rds                  = {hs.settings.get('hotkeyCombo'), 'N'},
-		-- sizeRight23rds                  = {hs.settings.get('hotkeyCombo'), 'N'},
 		sizeRight13rd                   = {hs.settings.get('hotkeyCombo'), 'M'},
 		sizeRight13rdTopHalfish         = {hs.settings.get('hotkeyCombo'), ','},
 		sizeRight13rdBottomHalfish      = {hs.settings.get('hotkeyCombo'), '.'},
+		sizeLeft23rds                   = {hs.settings.get('hotkeyCombo'), 'N'},
 		sizeCentered                    = {hs.settings.get('hotkeyCombo'), 'C'},
 		sizeHalfHeightTopEdge           = {hs.settings.get('hotkeyCombo'), 'pad8'},
 		sizeHalfHeightBottomEdge        = {hs.settings.get('hotkeyCombo'), 'pad2'},
