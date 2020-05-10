@@ -29,7 +29,7 @@ function contains(table, val)
 end
 
 function settingExists(key)
-	return contains(hs.settings.getKeys(), key) and string.len(hs.settings.get(key)) > 0
+	return contains(hs.settings.getKeys(), key) and type(hs.settings.get(key)) ~= nil
 end
 
 function setupSetting(key, message, informativeText, force)

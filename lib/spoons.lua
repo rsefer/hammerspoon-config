@@ -249,15 +249,9 @@ hs.spoons.use('SDCWorkspace', {
 })
 
 hs.spoons.use('SDCPhone', {
-	config = {
-		phoneNumbers = keys.phoneNumbers
-	},
 	hotkeys = {
 		toggleChooser = {hs.settings.get('hotkeyCombo'), 'P'}
-	},
-	fn = function(thisSpoon)
-		thisSpoon.setShortcuts()
-	end
+	}
 })
 
 hs.spoons.use('SDCReminders', {
