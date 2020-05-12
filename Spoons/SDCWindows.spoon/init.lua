@@ -288,8 +288,6 @@ end
 
 function obj:init()
 	self.screenWatcher = nil
-	self.batteryWatcher = nil
-	self.batteryPowerSource = hs.battery.powerSource()
 	self.applicationWatcher = nil
 end
 
@@ -309,27 +307,6 @@ function obj:start()
 			end)
 		end
 
-	end):start()
-
-	self.caffeinateScreenWatcher = hs.caffeinate.watcher.new(function(event)
-		if isHome() and hs.battery.powerSource() == 'AC Power' then
-			if event == 1 or event == 2 then -- systemWillSleep (1) or systemWillPowerOff (2)
-				self:toggleSecondaryMonitor('off')
-			elseif event == 0 then -- systemDidWake (0)
-				self:toggleSecondaryMonitor('on')
-			end
-		end
-	end):start()
-
-	self.batteryWatcher = hs.battery.watcher.new(function()
-		if isHome() and self.batteryPowerSource ~= hs.battery.powerSource() then
-			action = 'off'
-			if hs.battery.powerSource() == 'AC Power' then
-				action = 'on'
-			end
-			self:toggleSecondaryMonitor(action)
-			self.batteryPowerSource = hs.battery.powerSource()
-		end
 	end):start()
 
 	self.applicationWatcher = hs.application.watcher.new(function(name, event, app)
@@ -355,9 +332,7 @@ function obj:start()
 end
 
 function obj:stop()
-	self.caffeinateScreenWatcher:stop()
 	self.screenWatcher:stop()
-	self.batteryWatcher:stop()
   self.applicationWatcher:stop()
   return self
 end

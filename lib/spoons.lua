@@ -1,3 +1,7 @@
+hs.spoons.use('SDCPower', {
+	start = true
+})
+
 hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
