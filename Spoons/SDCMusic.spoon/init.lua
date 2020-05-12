@@ -292,14 +292,7 @@ function obj:setPlayerMenus()
 
 			if obj.currentSongDuration > 15 * 60 then -- if long, show time remaining
 				minutesRemaining = math.ceil((obj.currentSongDuration - obj.currentSongPosition) / 60)
-				timeString = ' ['
-				if minutesRemaining > 59 then
-					hours = minutesRemaining / 60
-					hoursWhole = math.floor(hours)
-					timeString = timeString .. hoursWhole .. 'h'
-					minutesRemaining = math.floor((hours - hoursWhole) * 60)
-				end
-				timeString = timeString  .. minutesRemaining .. 'm]'
+				timeString = ' [' .. minutesToClock(minutesRemaining, false, false) .. ']'
 				timeCharacters = timeCharacters + string.len(timeString)
 				newSongString = newSongString .. timeString
 			end

@@ -10,28 +10,6 @@ obj.alertStyle = {
 local iconBlack = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_black.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 local iconGreen = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_green.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 
-local function getTimeString()
-	local timeString = ''
-	local remainingTime = obj.timeAccrued
-	local timeAccruedHoursR = math.floor(obj.timeAccrued / 60 / 60)
-	if (timeAccruedHoursR > 0) then
-		timeString = timeAccruedHoursR .. ' hour'
-		if timeAccruedHoursR ~= 1 then
-			timeString = timeString .. 's'
-		end
-		remainingTime = remainingTime - (timeAccruedHoursR * 60 * 60)
-	end
-	local timeAccruedMinutesR = math.ceil(remainingTime / 60)
-	if timeAccruedHoursR > 0 and timeAccruedMinutesR > 0 then
-		timeString = timeString .. ', '
-	end
-	timeString = timeString .. timeAccruedMinutesR .. ' minute'
-	if timeAccruedMinutesR ~= 1 then
-		timeString = timeString .. 's'
-	end
-	return timeString
-end
-
 function clientNameFromID(ID)
 	local name = nil
 	for i, client in ipairs(obj.clients) do
@@ -44,7 +22,7 @@ function clientNameFromID(ID)
 end
 
 function updateTimeElapsedAlert()
-	local elapsedString = getTimeString()
+	local elapsedString = minutesToClock(obj.timeAccrued / 60, false, true)
 	if obj.activeClient ~= nil then
 		elapsedString = obj.activeClient.name .. ': ' .. elapsedString
 	end
@@ -53,7 +31,7 @@ end
 
 function updateTimeElapsed()
 	obj.timeAccrued = os.time() - obj.timeStart
-	obj.timerMenu:setTitle(hs.styledtext.new(' ' .. math.floor(obj.timeAccrued / 60) .. 'm', { textFont = 'SF Mono' }))
+	obj.timerMenu:setTitle(hs.styledtext.new(' ' .. minutesToClock(obj.timeAccrued / 60, false, false), { textFont = 'SF Mono' }))
 end
 
 function obj:toggleTimer()
@@ -209,7 +187,7 @@ function obj:stop()
 	obj.timerCounter:stop()
 	obj.timerMenu:setIcon(iconBlack, true)
 		:setTitle()
-	local timeStringEnd = 'Timer stopped. Logged time: ' .. getTimeString()
+	local timeStringEnd = 'Timer stopped. Logged time: ' .. minutesToClock(obj.timeAccrued / 60, false, true)
 	if obj.activeClient ~= nil then
 		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
 		obj:logTime(math.ceil(obj.timeAccrued / 60))

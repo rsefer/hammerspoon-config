@@ -79,6 +79,40 @@ function toggleSidecariPad()
 	]])
 end
 
+function minutesToClock(minutesGiven, includeZeroes, prettify)
+	hours = math.floor(minutesGiven / 60)
+	minutes = math.floor(minutesGiven - hours * 60)
+	hoursAppend = 'h'
+	minutesAppend = 'm'
+	if prettify then
+		hoursAppend = ' hour'
+		if hours ~= 1 then
+			hoursAppend = hoursAppend .. 's'
+		end
+		minutesAppend = ' minute'
+		if minutes ~= 1 then
+			minutesAppend = minutesAppend .. 's'
+		end
+	end
+	hoursString = string.format("%01.f" .. hoursAppend, hours)
+	minutesString = string.format("%01.f" .. minutesAppend, minutes)
+	if includeZeroes then
+		minutesString = string.format("%02.f" .. minutesAppend, minutes)
+	end
+	clockString = ''
+	if hours > 0 or includeZeroes then
+		clockString = clockString .. hoursString
+	end
+	if minutes > 0 or includeZeroes or hours < 1 then
+		spacer = ''
+		if prettify and (hours > 0 or includeZeroes) then
+			spacer = ' '
+		end
+		clockString = clockString .. spacer .. minutesString
+	end
+	return clockString
+end
+
 function isHome()
 	if contains({ 'Kathryn', 'Kathryn-2' }, hs.wifi.currentNetwork()) then
 		return true
