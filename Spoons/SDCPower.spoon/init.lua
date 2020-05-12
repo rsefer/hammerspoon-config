@@ -12,8 +12,11 @@ function obj:updateBatteryMenu()
 			obj.batteryMenu:setTitle(nil)
 			return
 		end
+		batteryTooltipString = 'Charging'
 		if hs.battery.timeToFullCharge() > 0 then
-			batteryTooltipString = 'Charging (' .. minutesToClock(hs.battery.timeToFullCharge()) .. ' remaining)'
+			batteryTooltipString = batteryTooltipString .. ' (' .. minutesToClock(hs.battery.timeToFullCharge()) .. ' remaining)'
+		else
+			batteryTooltipString = batteryTooltipString .. ' (Calculating...)'
 		end
 	end
 	batteryDisplayString = batteryDisplayString .. math.floor(hs.battery.percentage()) .. '%'
@@ -31,9 +34,6 @@ function obj:init()
 
 	self.batteryMenu = hs.menubar:new()
 	self.batteryPowerSource = hs.battery.powerSource()
-	self.batteryUpdateTimer = hs.timer.doEvery(5, function()
-		obj:updateBatteryMenu()
-	end):stop()
 
 	self.batteryWatcher = hs.battery.watcher.new(function()
 		if isHome() and obj.batteryPowerSource ~= hs.battery.powerSource() then
@@ -44,9 +44,7 @@ function obj:init()
 			spoon.SDCWindows:toggleSecondaryMonitor(action)
 			obj.batteryPowerSource = hs.battery.powerSource()
 		end
-		if obj.batteryPowerSource ~= hs.battery.powerSource() then
-			obj:updateBatteryMenu()
-		end
+		obj:updateBatteryMenu()
 	end)
 
 	self.caffeinateScreenWatcher = hs.caffeinate.watcher.new(function(event)
@@ -64,13 +62,11 @@ end
 function obj:start()
 	obj.batteryWatcher:start()
 	obj:updateBatteryMenu()
-	obj.batteryUpdateTimer:start()
 	obj.caffeinateScreenWatcher:start()
 end
 
 function obj:stop()
 	obj.batteryWatcher:stop()
-	obj.batteryUpdateTimer:stop()
 	obj.caffeinateScreenWatcher:stop()
 end
 
