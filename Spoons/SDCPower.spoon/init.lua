@@ -37,6 +37,7 @@ function obj:updateBatteryMenu()
 end
 
 function asciiBattery(batteryPercentage)
+
 	-- example:
 	-- ....................
 	-- 1==================4
@@ -45,11 +46,12 @@ function asciiBattery(batteryPercentage)
 	-- ==.............=...=
 	-- ==.............=...=
 	-- ==.............=...=
+	-- ==.............=...=
 	-- =b=============c...=
 	-- 2==================3
 	-- ....................
 
-	totalInnerRows = 6
+	totalInnerRows = 7
 	totalCols = 20
 
 	lastFilledCol = math.ceil(batteryPercentage / 100 * (totalCols - 2))
@@ -93,7 +95,7 @@ function asciiBattery(batteryPercentage)
 		batteryOutlineStrokeColor = { red = 1, green = 1, blue = 1 }
 	end
 
-	batteryFillColor = { green = 1 }
+	batteryFillColor = { red = 0.114, green = 0.725, blue = 0.329 }
 	if batteryPercentage < 25 then
 		batteryFillColor = { red = 1 }
 	elseif batteryPercentage < 60 then
