@@ -90,9 +90,9 @@ function asciiBattery(batteryPercentage)
 
 	batteryFillColor = { red = 0.114, green = 0.725, blue = 0.329 } -- green
 	if batteryPercentage < 25 then
-		batteryFillColor = { red = 1 }
+		batteryFillColor = { red = 1 } -- red
 	elseif batteryPercentage < 60 then
-		batteryFillColor = { red = 1, green = 1 }
+		batteryFillColor = { red = 1, green = 1 } -- yellow
 	end
 
 	return hs.image.imageFromASCII(asciiString, {
