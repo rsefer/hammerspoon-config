@@ -214,11 +214,11 @@ function obj:stop()
 	obj.timerMenu:setIcon(iconBlack, true)
 		:setTitle()
 
-	minutesLogged = obj.timeAccrued / 60
-	local timeStringEnd = 'Timer stopped. Logged time: ' .. minutesToClock(minutesLogged, false, true)
+	minutesTimed = math.ceil(obj.timeAccrued / 60)
+	local timeStringEnd = 'Timer stopped. Logged time: ' .. minutesToClock(minutesTimed, false, true)
 	if obj.activeClient ~= nil then
 		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
-		obj:logTime(math.ceil(obj.timeAccrued / 60))
+		obj:logTime(minutesTimed)
 	end
 
 	notificationSubTitle = nil
@@ -228,7 +228,7 @@ function obj:stop()
 	hs.notify.new({
 		title = 'Logged Time',
 		subTitle = notificationSubTitle,
-		informativeText = minutesToClock(minutesLogged, false, true),
+		informativeText = minutesToClock(minutesTimed, false, true),
 		withdrawAfter = 15,
 		setIdImage = iconGreenLarge
 	}):send()
