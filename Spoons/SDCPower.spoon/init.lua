@@ -60,25 +60,27 @@ function asciiBattery(batteryPercentage)
 	asciiString = ''
 	for r = 1, totalRows do
 		for c = 1, totalCols do
+			character = ''
 			if r == 2 and c == 1 then
-				asciiString = asciiString .. '1'
+				character = '1'
 			elseif r == 2 and c == totalCols then
-				asciiString = asciiString .. '4'
+				character = '4'
 			elseif r == totalRows - 1 and c == 1 then
-				asciiString = asciiString .. '2'
+				character = '2'
 			elseif r == totalRows - 1 and c == totalCols then
-				asciiString = asciiString .. '3'
+				character = '3'
 			elseif r == 3 and c == 2 then
-				asciiString = asciiString .. 'a'
+				character = 'a'
 			elseif r == 3 and c == lastFilledCol then
-				asciiString = asciiString .. 'd'
+				character = 'd'
 			elseif r == totalRows - 2 and c == 2 then
-				asciiString = asciiString .. 'b'
+				character = 'b'
 			elseif r == totalRows - 2 and c == lastFilledCol then
-				asciiString = asciiString .. 'c'
+				character = 'c'
 			else
-				asciiString = asciiString .. '.'
+				character = '.'
 			end
+			asciiString = asciiString .. character
 		end
 		asciiString = asciiString .. "\n"
 	end
