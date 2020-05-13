@@ -7,6 +7,7 @@ function obj:updateBatteryMenu()
 	batteryDisplayIcon = '🔌 '
 	batteryDisplayString = ''
 	batteryTooltipString = ''
+
 	if hs.battery.powerSource() == 'AC Power' then
 		if hs.battery.isCharged() then
 			obj.batteryMenu:setIcon(nil):setTitle(nil)
@@ -18,8 +19,11 @@ function obj:updateBatteryMenu()
 		else
 			batteryTooltipString = batteryTooltipString .. ' (Calculating...)'
 		end
+		obj.batteryMenu:setIcon(nil)
 	end
+
 	batteryDisplayString = batteryDisplayString .. math.floor(hs.battery.percentage()) .. '%'
+
 	if hs.battery.powerSource() ~= 'AC Power' then
 		batteryDisplayIcon = ' '
 		if hs.battery.timeRemaining() > 0 then
@@ -27,6 +31,7 @@ function obj:updateBatteryMenu()
 		end
 		obj.batteryMenu:setIcon(asciiBattery(hs.battery.percentage()), false)
 	end
+
 	obj.batteryMenu:setTitle(hs.styledtext.new(batteryDisplayIcon, { font = { size = 12 } }) .. hs.styledtext.new(batteryDisplayString, { font = { name = 'SF Mono', size = 12 } }))
 	obj.batteryMenu:setTooltip(batteryTooltipString)
 end
