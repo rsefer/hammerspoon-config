@@ -53,7 +53,7 @@ function asciiBattery(batteryPercentage)
 	-- ....................
 
 	totalRows = 11
-	totalCols = 20
+	totalCols = 25
 
 	lastFilledCol = math.ceil(batteryPercentage / 100 * (totalCols - 1))
 
