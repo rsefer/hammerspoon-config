@@ -41,15 +41,15 @@ function asciiBattery(batteryPercentage)
 	-- example, where 1-2-3-4 is battery outline
 	-- and a-b-c-d is battery charge:
 	-- ....................
-	-- 1==================4
-	-- =a==========d......=
-	-- ==..........=......=
-	-- ==..........=......=
-	-- ==..........=......=
-	-- ==..........=......=
-	-- ==..........=......=
-	-- =b==========c......=
-	-- 2==================3
+	-- 1..................4
+	-- .a..........d.......
+	-- ....................
+	-- ....................
+	-- ....................
+	-- ....................
+	-- ....................
+	-- .b..........c.......
+	-- 2..................3
 	-- ....................
 
 	totalRows = 11
@@ -60,52 +60,28 @@ function asciiBattery(batteryPercentage)
 	asciiString = ''
 	for r = 1, totalRows do
 		for c = 1, totalCols do
-			if r == 1 or r == totalRows then
-				asciiString = asciiString .. '.'
-			elseif r == 2 or r == totalRows - 1 then
-				if r == 2 and c == 1 then
-					asciiString = asciiString .. '1'
-				elseif r == 2 and c == totalCols then
-					asciiString = asciiString .. '4'
-				elseif r == totalRows - 1 and c == 1 then
-					asciiString = asciiString .. '2'
-				elseif r == totalRows - 1 and c == totalCols then
-					asciiString = asciiString .. '3'
-				else
-					asciiString = asciiString .. '.'
-				end
+			if r == 2 and c == 1 then
+				asciiString = asciiString .. '1'
+			elseif r == 2 and c == totalCols then
+				asciiString = asciiString .. '4'
+			elseif r == totalRows - 1 and c == 1 then
+				asciiString = asciiString .. '2'
+			elseif r == totalRows - 1 and c == totalCols then
+				asciiString = asciiString .. '3'
+			elseif r == 3 and c == 2 then
+				asciiString = asciiString .. 'a'
+			elseif r == 3 and c == lastFilledCol then
+				asciiString = asciiString .. 'd'
+			elseif r == totalRows - 2 and c == 2 then
+				asciiString = asciiString .. 'b'
+			elseif r == totalRows - 2 and c == lastFilledCol then
+				asciiString = asciiString .. 'c'
 			else
-				if c == 1 or c == totalCols then
-					asciiString = asciiString .. '.'
-				else
-					if c == 2 then
-						if r == 3 then
-							asciiString = asciiString .. 'a'
-						elseif r == totalRows - 2 then
-							asciiString = asciiString .. 'b'
-						else
-							asciiString = asciiString .. '.'
-						end
-					elseif c == lastFilledCol then
-						if r == 3 then
-							asciiString = asciiString .. 'd'
-						elseif r == totalRows - 2 then
-							asciiString = asciiString .. 'c'
-						else
-							asciiString = asciiString .. '.'
-						end
-					-- elseif c == 1 or c == totalCols then
-					-- 	asciiString = asciiString .. '='
-					elseif c ~= lastFilledCol then
-						asciiString = asciiString .. '.'
-					end
-				end
+				asciiString = asciiString .. '.'
 			end
 		end
 		asciiString = asciiString .. "\n"
 	end
-
-	print(asciiString)
 
 	batteryOutlineStrokeColor = { red = 0, green = 0, blue = 0 }
 	if hs.host.interfaceStyle() == 'Dark' then
