@@ -38,16 +38,17 @@ end
 
 function asciiBattery(batteryPercentage)
 
-	-- example:
+	-- example, where 1-2-3-4 is battery outline
+	-- and a-b-c-d is battery charge:
 	-- ....................
 	-- 1==================4
-	-- =a=============d...=
-	-- ==.............=...=
-	-- ==.............=...=
-	-- ==.............=...=
-	-- ==.............=...=
-	-- ==.............=...=
-	-- =b=============c...=
+	-- =a==========d......=
+	-- ==..........=......=
+	-- ==..........=......=
+	-- ==..........=......=
+	-- ==..........=......=
+	-- ==..........=......=
+	-- =b==========c......=
 	-- 2==================3
 	-- ....................
 
@@ -95,7 +96,7 @@ function asciiBattery(batteryPercentage)
 		batteryOutlineStrokeColor = { red = 1, green = 1, blue = 1 }
 	end
 
-	batteryFillColor = { red = 0.114, green = 0.725, blue = 0.329 }
+	batteryFillColor = { red = 0.114, green = 0.725, blue = 0.329 } -- green
 	if batteryPercentage < 25 then
 		batteryFillColor = { red = 1 }
 	elseif batteryPercentage < 60 then
