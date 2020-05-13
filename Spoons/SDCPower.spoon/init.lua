@@ -52,44 +52,60 @@ function asciiBattery(batteryPercentage)
 	-- 2==================3
 	-- ....................
 
-	totalInnerRows = 7
+	totalRows = 11
 	totalCols = 20
 
-	lastFilledCol = math.ceil(batteryPercentage / 100 * (totalCols - 2))
+	lastFilledCol = math.ceil(batteryPercentage / 100 * (totalCols - 1))
 
 	asciiString = ''
-	asciiString = asciiString .. '....................' .. "\n"
-	asciiString = asciiString .. '1==================4' .. "\n"
-	for r = 1, totalInnerRows do
+	for r = 1, totalRows do
 		for c = 1, totalCols do
-			if c == 1 or c == totalCols then
-				asciiString = asciiString .. '='
-			else
-				if c == 2 then
-					if r == 1 then
-						asciiString = asciiString .. 'a'
-					elseif r == totalInnerRows then
-						asciiString = asciiString .. 'b'
-					else
-						asciiString = asciiString .. '='
-					end
-				elseif c == lastFilledCol then
-					if r == 1 then
-						asciiString = asciiString .. 'd'
-					elseif r == totalInnerRows then
-						asciiString = asciiString .. 'c'
-					else
-						asciiString = asciiString .. '='
-					end
-				elseif c ~= lastFilledCol then
+			if r == 1 or r == totalRows then
+				asciiString = asciiString .. '.'
+			elseif r == 2 or r == totalRows - 1 then
+				if r == 2 and c == 1 then
+					asciiString = asciiString .. '1'
+				elseif r == 2 and c == totalCols then
+					asciiString = asciiString .. '4'
+				elseif r == totalRows - 1 and c == 1 then
+					asciiString = asciiString .. '2'
+				elseif r == totalRows - 1 and c == totalCols then
+					asciiString = asciiString .. '3'
+				else
 					asciiString = asciiString .. '.'
+				end
+			else
+				if c == 1 or c == totalCols then
+					asciiString = asciiString .. '.'
+				else
+					if c == 2 then
+						if r == 3 then
+							asciiString = asciiString .. 'a'
+						elseif r == totalRows - 2 then
+							asciiString = asciiString .. 'b'
+						else
+							asciiString = asciiString .. '.'
+						end
+					elseif c == lastFilledCol then
+						if r == 3 then
+							asciiString = asciiString .. 'd'
+						elseif r == totalRows - 2 then
+							asciiString = asciiString .. 'c'
+						else
+							asciiString = asciiString .. '.'
+						end
+					-- elseif c == 1 or c == totalCols then
+					-- 	asciiString = asciiString .. '='
+					elseif c ~= lastFilledCol then
+						asciiString = asciiString .. '.'
+					end
 				end
 			end
 		end
 		asciiString = asciiString .. "\n"
 	end
-	asciiString = asciiString .. '2==================3' .. "\n"
-	asciiString = asciiString .. '....................' .. "\n"
+
+	print(asciiString)
 
 	batteryOutlineStrokeColor = { red = 0, green = 0, blue = 0 }
 	if hs.host.interfaceStyle() == 'Dark' then
