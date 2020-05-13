@@ -11,9 +11,8 @@ function obj:getListNames()
 	-- hs.execute('osascript -e \'tell application "Reminders" to return default account\'')
 	asBool, asObject, asDesc = hs.osascript.applescript([[
 		tell application "Reminders"
-			set myLists to lists of default account
 			set listNames to {}
-			repeat with theList in myLists
+			repeat with theList in lists of default account
 				copy name of theList to the end of the |listNames|
 			end repeat
 			listNames
