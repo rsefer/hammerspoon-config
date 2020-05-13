@@ -3,9 +3,6 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCTimer"
 obj.timeIntervalSeconds = 15 * 60
-obj.alertStyle = {
-	atScreenEdge = 1
-}
 
 local iconBlack = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_black.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 local iconGreen = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_green.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
