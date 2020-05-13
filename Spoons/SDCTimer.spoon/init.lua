@@ -2,13 +2,14 @@
 local obj = {}
 obj.__index = obj
 obj.name = "SDCTimer"
-obj.timeIntervalSeconds = 30 * 60
+obj.timeIntervalSeconds = 15 * 60
 obj.alertStyle = {
 	atScreenEdge = 1
 }
 
 local iconBlack = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_black.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 local iconGreen = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_green.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
+local iconGreenLarge = iconGreen:setSize({ w = 300, h = 300 })
 
 function clientNameFromID(ID)
 	local name = nil
@@ -22,11 +23,17 @@ function clientNameFromID(ID)
 end
 
 function updateTimeElapsedAlert()
-	local elapsedString = minutesToClock(obj.timeAccrued / 60, false, true)
+	notificationSubTitle = nil
 	if obj.activeClient ~= nil then
-		elapsedString = obj.activeClient.name .. ': ' .. elapsedString
+		notificationSubTitle = obj.activeClient.name
 	end
-	hs.alert.show(elapsedString, obj.alertStyle, 9)
+	hs.notify.new({
+		title = 'Tracking Time',
+		subTitle = notificationSubTitle,
+		informativeText = minutesToClock(obj.timeAccrued / 60, false, true),
+		withdrawAfter = 5,
+		setIdImage = iconGreenLarge
+	}):send()
 end
 
 function updateTimeElapsed()
@@ -102,7 +109,18 @@ function obj:logTime(timeMinutes)
 	if status then
 		output, status = hs.execute('lt ct ' .. obj.activeClient.uuid, true)
 		clientTotalMinutes = output:gsub("[\n\r]", "")
-		hs.alert.show('Total time for ' .. obj.activeClient.name .. ': ' .. clientTotalMinutes .. ' minutes', { atScreenEdge = 2 }, 5)
+
+		notificationSubTitle = nil
+		if obj.activeClient ~= nil then
+			notificationSubTitle = obj.activeClient.name
+		end
+		hs.notify.new({
+			title = 'Total Client Time',
+			subTitle = notificationSubTitle,
+			informativeText = minutesToClock(clientTotalMinutes, false, true),
+			withdrawAfter = 15,
+			setIdImage = iconGreenLarge
+		}):send()
 	end
 
 end
@@ -177,7 +195,18 @@ function obj:start()
 	if obj.activeClient ~= nil then
 		timeStringStart = obj.activeClient.name .. ': ' .. timeStringStart
 	end
-	hs.alert.show(timeStringStart, obj.alertStyle, 3)
+
+	notificationSubTitle = nil
+	if obj.activeClient ~= nil then
+		notificationSubTitle = obj.activeClient.name
+	end
+	hs.notify.new({
+		title = 'Starting Timer',
+		subTitle = notificationSubTitle,
+		withdrawAfter = 3,
+		setIdImage = iconGreenLarge
+	}):send()
+
 	updateTimeElapsed()
 	obj.logger:i(timeStringStart)
 end
@@ -187,12 +216,26 @@ function obj:stop()
 	obj.timerCounter:stop()
 	obj.timerMenu:setIcon(iconBlack, true)
 		:setTitle()
-	local timeStringEnd = 'Timer stopped. Logged time: ' .. minutesToClock(obj.timeAccrued / 60, false, true)
+
+	minutesLogged = obj.timeAccrued / 60
+	local timeStringEnd = 'Timer stopped. Logged time: ' .. minutesToClock(minutesLogged, false, true)
 	if obj.activeClient ~= nil then
 		timeStringEnd = obj.activeClient.name .. ': ' .. timeStringEnd
 		obj:logTime(math.ceil(obj.timeAccrued / 60))
 	end
-	hs.alert.show(timeStringEnd, obj.alertStyle, 5)
+
+	notificationSubTitle = nil
+	if obj.activeClient ~= nil then
+		notificationSubTitle = obj.activeClient.name
+	end
+	hs.notify.new({
+		title = 'Logged Time',
+		subTitle = notificationSubTitle,
+		informativeText = minutesToClock(minutesLogged, false, true),
+		withdrawAfter = 15,
+		setIdImage = iconGreenLarge
+	}):send()
+
 	obj.logger:i(timeStringEnd)
 	obj:timerReset()
 end
