@@ -2,6 +2,7 @@ hs.notify.withdrawAll()
 hs.location.start()
 hs.window.filter.setLogLevel(1)
 hs.hotkey.setLogLevel(1)
+hs.console.darkMode(hs.host.interfaceStyle() == 'Dark')
 hs.alert.defaultStyle.textSize = 40
 
 if hs.updateAvailable() ~= false then
