@@ -91,7 +91,7 @@ function obj:getClients()
 end
 
 function obj:logTime(timeMinutes)
-	if timeMinutes == nil then
+	if not timeMinutes then
 		obj.isManualLog = true
 		obj:showChooser()
 		return true
@@ -150,7 +150,7 @@ function obj:init()
 				hs.application.get('Hammerspoon'):activate()
 				button, timeMinutes = hs.dialog.textPrompt('Log Minutes:', 'For ' .. obj.activeClient.name, '15', 'Log', 'Cancel')
 				obj.isManualLog = false
-				if button ~= 'Log' or timeMinutes == nil then
+				if button ~= 'Log' or not timeMinutes then
 					return
 				end
 				obj:logTime(timeMinutes)

@@ -39,7 +39,7 @@ function resetGrid()
 end
 
 function setAlertSize(size)
-	if size == nil then
+	if not size then
 		size = 30
 	end
 	hs.alert.defaultStyle.textSize = size

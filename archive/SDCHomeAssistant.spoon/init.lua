@@ -48,7 +48,7 @@ end
 
 -- function obj:toggleSecondaryMonitor(action)
 -- 	local secondaryMonitorEntityID = 'switch.secondary_monitor'
--- 	if action == nil then
+-- 	if not action then
 -- 		action = 'on'
 -- 	end
 -- 	status, data, headers = hs.http.asyncPost(hs.settings.get('homeassistant_api_endpoint') .. 'services/switch/turn_' .. action, '{"entity_id":"' .. secondaryMonitorEntityID .. '"}', {

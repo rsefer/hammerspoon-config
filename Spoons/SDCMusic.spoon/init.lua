@@ -87,7 +87,7 @@ function obj:spotifyGetCode(code)
 end
 
 function obj:spotifyGetAccessToken(refreshToken)
-	if not refreshToken or refreshToken == nil then
+	if not refreshToken then
 		return hs.alert('Could not obtain access token.')
 	end
 
@@ -204,7 +204,7 @@ function obj:setPlayerMenus()
 	if obj.playerTitleMenu and currentTrack.artist and currentTrack.name then
 
 		workingArtist = currentTrack.artist
-		if workingArtist == nil or string.len(workingArtist) < 1 then
+		if not workingArtist or string.len(workingArtist) < 1 then
 			workingArtist = currentTrack.album
 		end
 		newSongString = songString(workingArtist, currentTrack.name)

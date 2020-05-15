@@ -19,7 +19,7 @@ function nextAudioSource(current)
   end
 	for i = workingStart, 1, -1 do
 		thisDevice = obj.devices[i]
-		if hs.audiodevice.findOutputByName(thisDevice.name) and (obj.devices[current].overrides == nil or obj.devices[current].overrides ~= i) then
+		if hs.audiodevice.findOutputByName(thisDevice.name) and (not obj.devices[current].overrides or obj.devices[current].overrides ~= i) then
       return thisDevice
     end
 	end
@@ -51,7 +51,7 @@ function obj:getSourceByName(name)
 end
 
 function obj:recordSource(newSource)
-	if newSource == nil then return end
+	if not newSource then return end
 	obj.activeAudioName = newSource.name
 	obj.activeMenuTitle = newSource.menuIcon
 	obj.activeAlertTitle = newSource.alertIcon

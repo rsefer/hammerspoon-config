@@ -59,10 +59,10 @@ function obj:appMove(appName, screen, size)
 end
 
 function obj:windowMove(window, screen, size)
-	if window == nil then
+	if not window then
 		window = hs.window.focusedWindow()
 	end
-	if window == nil then
+	if not window then
 		-- occurs when there are no focusable windows (usually when all apps are hidden)
 		return
 	end
@@ -263,7 +263,7 @@ function obj:handleScreenChange()
 end
 
 function obj:toggleSecondaryMonitor(action)
-	if action == nil then
+	if not action then
 		action = 'on'
 	end
 

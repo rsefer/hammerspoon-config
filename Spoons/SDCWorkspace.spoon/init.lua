@@ -14,21 +14,21 @@ local function activateWorkspace(itemTitle, show, focus, hide, quit)
 end
 
 function obj:openApps(apps)
-	if apps == nil then return end
+	if not apps then return end
   for i, app in ipairs(apps) do
     hs.application.launchOrFocus(app)
   end
 end
 
 function obj:focusApps(apps)
-	if apps == nil then return end
+	if not apps then return end
   for i, app in ipairs(apps) do
     hs.application.launchOrFocus(app)
   end
 end
 
 function obj:hideApps(apps)
-	if apps == nil then return end
+	if not apps then return end
   for i, app in ipairs(apps) do
     thisApp = hs.application.get(app)
     if thisApp ~= nil then
@@ -38,7 +38,7 @@ function obj:hideApps(apps)
 end
 
 function obj:quitApps(apps)
-	if apps == nil then return end
+	if not apps then return end
   for i, app in ipairs(apps) do
     thisApp = hs.application.get(app)
     if thisApp ~= nil then

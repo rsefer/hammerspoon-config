@@ -81,7 +81,7 @@ function obj:setContacts()
 end
 
 function obj:setShortcuts()
-	if settingExists('contacts') == nil then
+	if not settingExists('contacts') then
 		obj:setContacts()
 	end
 	choices = {}
