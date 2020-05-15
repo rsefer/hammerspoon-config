@@ -51,6 +51,7 @@ function obj:getSourceByName(name)
 end
 
 function obj:recordSource(newSource)
+	if newSource == nil then return end
 	obj.activeAudioName = newSource.name
 	obj.activeMenuTitle = newSource.menuIcon
 	obj.activeAlertTitle = newSource.alertIcon
