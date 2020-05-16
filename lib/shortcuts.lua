@@ -64,12 +64,8 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f16', function()
 end)
 
 -- Toggle Sidecar for iPad
-hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'padenter', function()
-	toggleSidecariPad()
-end)
-hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'I', function()
-	toggleSidecariPad()
-end)
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'padenter', toggleSidecariPad)
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'i', toggleSidecariPad)
 
 -- Select note/text file to open
 function promptForNote()
