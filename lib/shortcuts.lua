@@ -72,7 +72,7 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'I', function()
 end)
 
 -- Select note/text file to open
-hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad9', function()
+function promptForNote()
 	if not settingExists('notes_directory') then
 		directories = hs.dialog.chooseFileOrFolder('Choose the Notes directory', '', false, true)
 		if directories['1'] then
@@ -106,4 +106,7 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad9', function()
 		if not choice then return end
 		hs.execute('open ' .. choice.filePath:gsub(" ", "\\ "), true)
 	end):width(30):choices(choices):show()
-end)
+end
+
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), ';', promptForNote)
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad9', promptForNote)
