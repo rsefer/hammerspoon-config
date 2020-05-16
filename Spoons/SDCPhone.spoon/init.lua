@@ -85,7 +85,6 @@ function obj:setShortcuts()
 		obj:setContacts()
 	end
 	choices = {}
-	itemCount = 0
   for i, shortcut in ipairs(hs.settings.get('contacts')) do
 		for x = 1, 2 do
 			skip = false
@@ -104,15 +103,14 @@ function obj:setShortcuts()
 					phone = shortcut.phone,
 					protocol = workingProtocol
 				})
-				itemCount = itemCount + 1
 			end
 		end
   end
-  if itemCount == 0 then
+  if tablelength(choices) == 0 then
     obj.chooser:cancel()
   else
     obj.chooser:width(30)
-    obj.chooser:rows(itemCount)
+    obj.chooser:rows(tablelength(choices))
     obj.chooser:choices(choices)
   end
 end
