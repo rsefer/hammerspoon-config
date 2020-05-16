@@ -84,18 +84,24 @@ function promptForNote()
 	if not iterFn then return end
 	for file in iterFn, dirObj do
 		if string.sub(file, 1, 1) ~= '.' then
-			table.insert(files, file)
+			table.insert(files, {
+				fileName = file,
+				filePath = hs.settings.get('notes_directory') .. '/' .. file,
+				lastChange = hs.fs.attributes(hs.settings.get('notes_directory') .. '/' .. file, 'change')
+			})
 		end
 	end
 	if tablelength(files) == 0 then return end
 
-	table.sort(files)
+	table.sort(files, function(a, b)
+		return b.fileName > a.fileName -- alphabetical
+		-- return a.lastChange > b.lastChange -- recently modified
+	end)
 	choices = {}
 	for i, file in ipairs(files) do
-		choice = {}
-		choice.text = '📄 ' .. file:gsub('.txt', '')
-		choice.filePath = hs.settings.get('notes_directory') .. '/' .. file
-		choice.subText = 'Last edited ' .. os.date('%B %d, %Y', hs.fs.attributes(choice.filePath, 'change'))
+		choice = file
+		choice.text = '📄 ' .. file.fileName:gsub('.txt', '')
+		choice.subText = 'Last edited ' .. os.date('%B %d, %Y', file.lastChange)
 		table.insert(choices, choice)
 	end
 	local chooser = hs.chooser.new(function(choice)
