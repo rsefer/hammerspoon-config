@@ -4,9 +4,31 @@ obj.__index = obj
 obj.name = "SDCTimer"
 obj.timeIntervalSeconds = 15 * 60
 
-local iconBlack = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_black.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
-local iconGreen = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/timer_green.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
-local iconGreenLarge = iconGreen:setSize({ w = 300, h = 300 })
+local asciiClock = [[
+	......1......
+	.............
+	......a......
+	.............
+	.............
+	.............
+	1.....b.....1
+	.............
+	.............
+	........c....
+	.............
+	.............
+	......1......
+]]
+
+local iconClockOpen = hs.image.imageFromASCII(asciiClock, {
+	{ lineWidth = 1, fillColor = { alpha = 0 } },
+	{ lineWidth = 1, fillColor = { alpha = 0 }, shouldClose = false }
+}):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
+local iconClockClosed = hs.image.imageFromASCII(asciiClock, {
+	{ lineWidth = 1, strokeColor = { red = 0.114, green = 0.725, blue = 0.329 }, fillColor = { red = 0.114, green = 0.725, blue = 0.329 } },
+	{ lineWidth = 1, strokeColor = { white = 1 }, fillColor = { alpha = 0 }, shouldClose = false }
+}):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
+local iconClockClosedLarge = iconClockClosed:setSize({ w = 300, h = 300 })
 
 function clientNameFromID(ID)
 	local name = nil
@@ -29,7 +51,7 @@ function updateTimeElapsedAlert()
 		subTitle = notificationSubTitle,
 		informativeText = minutesToClock(obj.timeAccrued / 60, false, true),
 		withdrawAfter = 5,
-		setIdImage = iconGreenLarge
+		setIdImage = iconClockClosedLarge
 	}):send()
 end
 
@@ -116,7 +138,7 @@ function obj:logTime(timeMinutes)
 			subTitle = notificationSubTitle,
 			informativeText = minutesToClock(clientTotalMinutes, false, true),
 			withdrawAfter = 15,
-			setIdImage = iconGreenLarge
+			setIdImage = iconClockClosedLarge
 		}):send()
 	end
 
@@ -138,7 +160,7 @@ function obj:init()
 	self.logger = hs.logger.new(self.name, 'info')
 	self.timerMenu = hs.menubar.new()
 		:setClickCallback(obj.toggleTimer)
-		:setIcon(iconBlack, true)
+		:setIcon(iconClockOpen, true)
 	self.timerMain = nil
 	self.timerCounter = nil
 	self.clientChooser = hs.chooser.new(function(choice)
@@ -187,7 +209,7 @@ function obj:start()
 	obj.timeStart = os.time()
 	obj.timerMain:start()
 	obj.timerCounter:start()
-	obj.timerMenu:setIcon(iconGreen, false)
+	obj.timerMenu:setIcon(iconClockClosed, false)
 	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
 	if obj.activeClient ~= nil then
 		timeStringStart = obj.activeClient.name .. ': ' .. timeStringStart
@@ -201,7 +223,7 @@ function obj:start()
 		title = 'Starting Timer',
 		subTitle = notificationSubTitle,
 		withdrawAfter = 3,
-		setIdImage = iconGreenLarge
+		setIdImage = iconClockClosedLarge
 	}):send()
 
 	updateTimeElapsed()
@@ -211,7 +233,7 @@ end
 function obj:stop()
 	obj.timerMain:stop()
 	obj.timerCounter:stop()
-	obj.timerMenu:setIcon(iconBlack, true)
+	obj.timerMenu:setIcon(iconClockOpen, true)
 		:setTitle()
 
 	minutesTimed = math.ceil(obj.timeAccrued / 60)
@@ -230,7 +252,7 @@ function obj:stop()
 		subTitle = notificationSubTitle,
 		informativeText = minutesToClock(minutesTimed, false, true),
 		withdrawAfter = 15,
-		setIdImage = iconGreenLarge
+		setIdImage = iconClockClosedLarge
 	}):send()
 
 	obj.logger:i(timeStringEnd)
