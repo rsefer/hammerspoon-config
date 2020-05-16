@@ -416,10 +416,9 @@ function obj:togglePlayer()
 end
 
 function obj:bindHotkeys(mapping)
-  local def = {
+  hs.spoons.bindHotkeysToSpec({
 		spotifySwitchPlayer = hs.fnutils.partial(self.spotifySwitchPlayer, self)
-  }
-  hs.spoons.bindHotkeysToSpec(def, mapping)
+  }, mapping)
 end
 
 function obj:init()

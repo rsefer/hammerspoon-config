@@ -118,10 +118,9 @@ function obj:setShortcuts()
 end
 
 function obj:bindHotkeys(mapping)
-  local def = {
+  hs.spoons.bindHotkeysToSpec({
     toggleChooser = hs.fnutils.partial(self.toggleChooser, self)
-  }
-  hs.spoons.bindHotkeysToSpec(def, mapping)
+  }, mapping)
 end
 
 function obj:init()

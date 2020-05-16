@@ -57,10 +57,9 @@ function obj:toggleWebview()
 end
 
 function obj:bindHotkeys(mapping)
-  local def = {
+  hs.spoons.bindHotkeysToSpec({
     toggleWebview = hs.fnutils.partial(self.toggleWebview, self)
-  }
-  hs.spoons.bindHotkeysToSpec(def, mapping)
+  }, mapping)
 end
 
 function obj:init()

@@ -65,10 +65,9 @@ function obj:recordSource(newSource)
 end
 
 function obj:bindHotkeys(mapping)
-  local def = {
+  hs.spoons.bindHotkeysToSpec({
     switchAudio = hs.fnutils.partial(self.switchAudio, self)
-  }
-  hs.spoons.bindHotkeysToSpec(def, mapping)
+  }, mapping)
 end
 
 function obj:init()

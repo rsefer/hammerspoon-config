@@ -145,11 +145,10 @@ function obj:logTime(timeMinutes)
 end
 
 function obj:bindHotkeys(mapping)
-  local def = {
+  hs.spoons.bindHotkeysToSpec({
 		toggleTimer = hs.fnutils.partial(self.toggleTimer, self),
 		logTime = hs.fnutils.partial(self.logTime, self)
-  }
-  hs.spoons.bindHotkeysToSpec(def, mapping)
+  }, mapping)
 end
 
 function obj:init()

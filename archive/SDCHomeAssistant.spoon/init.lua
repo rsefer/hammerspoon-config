@@ -63,11 +63,10 @@ end
 -- end
 
 function obj:bindHotkeys(mapping)
-  local def = {
+  hs.spoons.bindHotkeysToSpec({
 		switchLights = hs.fnutils.partial(self.switchLights, self),
 		-- turnOnSecondaryMonitor = hs.fnutils.partial(self.toggleSecondaryMonitor, self)
-  }
-  hs.spoons.bindHotkeysToSpec(def, mapping)
+  }, mapping)
 end
 
 function obj:init()

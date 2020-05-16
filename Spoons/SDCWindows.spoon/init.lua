@@ -145,7 +145,7 @@ function obj:resetAllApps()
 end
 
 function obj:bindHotkeys(mapping)
-  local def = {
+  hs.spoons.bindHotkeysToSpec({
 		resetWindows = function()
 			obj:resetAllApps()
 		end,
@@ -230,8 +230,7 @@ function obj:bindHotkeys(mapping)
 			hs.window.focusedWindow():moveOneScreenSouth(false, true)
 		end,
 		turnOnSecondaryMonitor = hs.fnutils.partial(self.toggleSecondaryMonitor, self)
-  }
-  hs.spoons.bindHotkeysToSpec(def, mapping)
+  }, mapping)
 end
 
 function obj:handleScreenChange()
