@@ -26,7 +26,7 @@ local iconClockOpen = hs.image.imageFromASCII(asciiClock, {
 }):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 local iconClockClosed = hs.image.imageFromASCII(asciiClock, {
 	{ lineWidth = 1, strokeColor = { red = 0.114, green = 0.725, blue = 0.329 }, fillColor = { red = 0.114, green = 0.725, blue = 0.329 } },
-	{ lineWidth = 1.5, strokeColor = { black = 1 }, fillColor = { alpha = 0 }, shouldClose = false }
+	{ lineWidth = 1.5, fillColor = { alpha = 0 }, shouldClose = false }
 }):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
 local iconClockClosedLarge = iconClockClosed:setSize({ w = 300, h = 300 })
 
