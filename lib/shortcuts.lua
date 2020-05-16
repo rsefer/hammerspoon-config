@@ -97,7 +97,7 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad9', function()
 	choices = {}
 	for i, file in ipairs(files) do
 		choice = {}
-		choice.text = file:gsub('.txt', '')
+		choice.text = '📄 ' .. file:gsub('.txt', '')
 		choice.filePath = hs.settings.get('notes_directory') .. '/' .. file
 		choice.subText = 'Last edited ' .. os.date('%B %d, %Y', hs.fs.attributes(choice.filePath, 'change'))
 		table.insert(choices, choice)
