@@ -84,11 +84,6 @@ function obj:start()
 	end)
 	hs.audiodevice.watcher.start()
 
-	count = 0
-  for i, v in pairs(self.devices) do
-    count = count + 1
-	end
-
   self.audioSwitcherMenu = hs.menubar.new()
 		:setClickCallback(obj.switchAudio)
 	self:recordSource(self:getSourceByName(hs.audiodevice.defaultOutputDevice():name()))

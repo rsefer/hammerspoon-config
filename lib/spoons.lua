@@ -249,7 +249,13 @@ hs.spoons.use('SDCWorkspace', {
 	},
 	hotkeys = {
 		toggleChooser = {hs.settings.get('hotkeyCombo'), 'pad.'}
-	}
+	},
+	fn = function(thisSpoon)
+		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'w', nil, function()
+			thisSpoon.toggleChooser()
+		end)
+	end,
+	start = true
 })
 
 hs.spoons.use('SDCPhone', {

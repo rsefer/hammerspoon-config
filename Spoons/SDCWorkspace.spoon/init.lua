@@ -3,59 +3,36 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCWorkspace"
 
-local function activateWorkspace(itemTitle, show, focus, hide, quit)
+function activateWorkspace(itemTitle, show, focus, hide, quit)
 	return function()
-		obj:quitApps(quit)
-    obj:hideApps(hide)
-		obj:openApps(show)
-		obj:focusApps(focus)
+		obj:actionOnApps(quit, 'quit')
+		obj:actionOnApps(hide, 'hide')
+		obj:actionOnApps(show, 'show')
+		obj:actionOnApps(focus, 'focus')
     hs.alert.show(itemTitle, 0.5)
   end
 end
 
-function obj:openApps(apps)
+function obj:actionOnApps(apps, action)
 	if not apps then return end
-  for i, app in ipairs(apps) do
-    hs.application.launchOrFocus(app)
-  end
-end
-
-function obj:focusApps(apps)
-	if not apps then return end
-  for i, app in ipairs(apps) do
-    hs.application.launchOrFocus(app)
-  end
-end
-
-function obj:hideApps(apps)
-	if not apps then return end
-  for i, app in ipairs(apps) do
-    thisApp = hs.application.get(app)
-    if thisApp ~= nil then
-      thisApp:hide()
-    end
-  end
-end
-
-function obj:quitApps(apps)
-	if not apps then return end
-  for i, app in ipairs(apps) do
-    thisApp = hs.application.get(app)
-    if thisApp ~= nil then
-      thisApp:kill()
-    end
-  end
+	for i, app in ipairs(apps) do
+		if action == 'open' or action == 'focus' then
+			hs.application.launchOrFocus(app)
+		elseif action == 'hide' or action == 'quit' then
+			thisApp = hs.application.get(app)
+			if thisApp ~= nil then
+				if action == 'hide' then
+					thisApp:hide()
+				elseif action == 'quit' then
+					thisApp:kill()
+				end
+			end
+		end
+	end
 end
 
 function obj:setWorkspaces()
-	obj.chooser = hs.chooser.new(function(choice)
-		if choice then
-			activateWorkspace(choice.text, choice.show, choice.focus, choice.hide, choice.quit)()
-			spoon.SDCWindows:resetAllApps()
-		end
-	end)
   choices = {}
-  itemCount = 0
   for i, workspace in ipairs(obj.workspaces) do
     choice = {}
     choice.text = workspace.title
@@ -64,15 +41,14 @@ function obj:setWorkspaces()
     choice.hide = workspace.hide
     choice.quit = workspace.quit
     table.insert(choices, choice)
-    itemCount = itemCount + 1
   end
-	if itemCount == 0 then
+	if tablelength(choices) == 0 then
     obj.chooser:cancel()
   else
     obj.chooser:width(30)
-    obj.chooser:rows(itemCount)
+    obj.chooser:rows(tablelength(choices))
     obj.chooser:choices(choices)
-  end
+	end
 end
 
 function obj:toggleChooser()
@@ -86,16 +62,23 @@ function obj:toggleChooser()
 end
 
 function obj:bindHotkeys(mapping)
-  local def = {
+  hs.spoons.bindHotkeysToSpec({
     toggleChooser = hs.fnutils.partial(self.toggleChooser, self)
-  }
-  hs.spoons.bindHotkeysToSpec(def, mapping)
+  }, mapping)
 end
 
 function obj:init()
-	hs.timer.doAfter(1, function()
-		self:setWorkspaces()
+
+	self.chooser = hs.chooser.new(function(choice)
+		if not choice then return end
+		activateWorkspace(choice.text, choice.show, choice.focus, choice.hide, choice.quit)()
+		spoon.SDCWindows:resetAllApps()
 	end)
+
+end
+
+function obj:start()
+	self:setWorkspaces()
 end
 
 return obj
