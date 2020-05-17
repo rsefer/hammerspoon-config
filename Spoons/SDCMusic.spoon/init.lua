@@ -286,20 +286,17 @@ function obj:setPlayerMenus()
 						end
 					end
 
-					local notification = hs.notify.new(function()
+					hs.notify.new(function()
 						hs.application.launchOrFocus(obj.playerName)
 					end, {
 						hasActionButton = true,
 						actionButtonTitle = 'Open',
 						title = currentTrack.name,
 						subTitle = 'Artist: ' .. workingArtist,
-						informativeText = 'Album: ' .. currentTrack.album
-					})
-					if workingImage ~= nil then
-						notification:setIdImage(workingImage)
-					end
-          notification:send()
-          hs.timer.doAfter(2.5, function() notification:withdraw() end)
+						informativeText = 'Album: ' .. currentTrack.album,
+						setIdImage = workingImage,
+						withdrawAfter = 2.5
+					}):send()
         end
 			end
 
