@@ -1,10 +1,6 @@
-function sizeAdd(modal, key, size, size2)
+function sizeAdd(modal, key, size)
 	modal:bind('', key, nil, function()
-		if size2 ~= nil then
-			spoon.SDCWindows:windowMove(nil, nil, hs.settings.get('windowSizes')[size][size2])
-		else
-			spoon.SDCWindows:windowMove(nil, nil, hs.settings.get('windowSizes')[size])
-		end
+		spoon.SDCWindows:windowMove(nil, nil, size)
 		modal:exit()
 	end)
 end
@@ -12,10 +8,10 @@ end
 m = hs.hotkey.modal.new(hs.settings.get('hotkeyCombo'), 'pad0')
 function m:entered() hs.timer.doAfter(3, function() m:exit() end) end
 
-sizeAdd(m, 'pad.', 'thirds', 'right2')
-sizeAdd(m, 'padenter', 'full')
-sizeAdd(m, 'pad5', 'center')
-sizeAdd(m, 'pad1', 'quadrants', 'three')
+sizeAdd(m, 'pad.', hs.settings.get('windowSizes')['thirds']['right2'])
+sizeAdd(m, 'padenter', hs.settings.get('windowSizes')['full'])
+sizeAdd(m, 'pad5', hs.settings.get('windowSizes')['center'])
+sizeAdd(m, 'pad1', hs.settings.get('windowSizes')['quadrants']['three'])
 
 hs.window.filter.new({ 'TextEdit' })
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
