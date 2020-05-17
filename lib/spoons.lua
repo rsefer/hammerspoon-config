@@ -21,7 +21,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Messages', 'Tweetbot', 'Home'--[[, 'Hammerspoon']] },
+				apps = { 'Messages', 'Tweetbot', 'Home', 'Hammerspoon' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -158,14 +158,6 @@ hs.spoons.use('SDCWindows', {
 	start = true
 })
 
--- hs.spoons.use('SDCHomeAssistant', {
--- 	hotkeys = {
--- 		switchLights = {hs.settings.get('hotkeyCombo'), 'f19'},
--- 		-- turnOnSecondaryMonitor = {hs.settings.get('hotkeyCombo'), 'S'}
--- 	},
--- 	start = true
--- })
-
 hs.spoons.use('SDCAudio', {
 	config = {
 		devices = {
@@ -269,5 +261,3 @@ hs.spoons.use('SDCReminders', {
 		toggleWebview = {hs.settings.get('hotkeyCombo'), '9'}
 	}
 })
-
--- hs.spoons.use('SDCDesktopCapture')

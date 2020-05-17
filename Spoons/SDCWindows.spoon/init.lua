@@ -298,7 +298,7 @@ function obj:start()
 	end)
 
 	self.screenWatcher = hs.screen.watcher.newWithActiveScreen(function(activeScreenChange)
-		if activeScrenChange then return end
+		if activeScreenChange then return end
 
 		resetGrid()
 		hs.timer.doAfter(1, function()

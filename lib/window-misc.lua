@@ -1,24 +1,3 @@
--- -- Watch Terminal app when (un)plugging iPad as monitor
--- terminalWatcher = hs.screen.watcher.new(function()
--- 	terminal = hs.application.get('Terminal')
--- 	tertiaryMonitor = hs.screen.find(hs.settings.get('tertiaryMonitorName'))
--- 	if terminal:isRunning() then
--- 		if tertiaryMonitor then
--- 			hs.timer.doAfter(1, function()
--- 				terminal:mainWindow():moveToScreen(tertiaryMonitor)
--- 				terminal:mainWindow():moveToUnit(hs.layout.maximized)
--- 			end)
--- 		else
--- 			hs.timer.doAfter(1, function()
--- 				terminal:mainWindow():focus()
--- 				terminal:mainWindow():moveToUnit(hs.layout.right50)
--- 				terminal:hide()
--- 			end)
--- 		end
--- 	end
--- end)
--- terminalWatcher:start()
-
 function sizeAdd(modal, key, size, size2)
 	modal:bind('', key, nil, function()
 		if size2 ~= nil then
