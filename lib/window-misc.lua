@@ -17,12 +17,21 @@ sizeAdd(m, 'padenter', 'full')
 sizeAdd(m, 'pad5', 'center')
 sizeAdd(m, 'pad1', 'quadrants', 'three')
 
-local wf = hs.window.filter
-wf_browsers = wf.new({ 'Google Chrome', 'Firefox', 'Safari' })
+hs.window.filter.new({ 'TextEdit' })
+	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
+		if tablelength(hs.application.get(appName):allWindows()) == 1 then
+			if window:title() ~= 'Open' and (not window:tabCount() or window:tabCount() < 2) then
+				spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
+			end
+		end
+	end)
+
+hs.window.filter.new({ 'Google Chrome', 'Firefox', 'Safari' })
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
 		spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
 	end)
-wf_terminal = wf.new(false):setAppFilter('Terminal')
+
+hs.window.filter.new({ 'Terminal' })
 	:subscribe({
 		hs.window.filter.windowCreated,
 		hs.window.filter.windowDestroyed
