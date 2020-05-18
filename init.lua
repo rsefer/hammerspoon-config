@@ -10,6 +10,7 @@ require('lib/common')
 require('lib/startup')
 
 require('lib/settings')
+require('lib/icons')
 require('lib/spoons')
 require('lib/shortcuts')
 require('lib/window-misc')
