@@ -186,7 +186,6 @@ end
 
 function obj:setPlayerMenus()
 	if obj.isDormant == true then
-		obj.playerMenu:setIcon(obj.icon, true)
 		obj.playerControlMenu:setIcon(nil)
 		obj.playerTitleMenu:setIcon(nil)
 		do return end
@@ -198,7 +197,6 @@ function obj:setPlayerMenus()
 	else
 		obj.playerControlMenu:setIcon(iconPlay)
 	end
-	obj.playerMenu:setIcon(obj.icon, currentState ~= 'playing')
 
 	currentTrack = getCurrentTrackInfo()
 	if obj.playerTitleMenu and currentTrack.artist and currentTrack.name then
@@ -403,20 +401,12 @@ function obj:init()
   self.showNotifications = true
 	self.showAlerts = false
 
-	workingIcon = hs.spoons.scriptPath() .. 'images/music_red.pdf'
-	if self.playerName == 'Spotify' then
-		workingIcon = hs.spoons.scriptPath() .. 'images/spotify_green.pdf'
-	elseif self.playerName == 'Music' then
-		workingIcon = hs.spoons.scriptPath() .. 'images/music_red.pdf'
-	end
-	self.icon = hs.image.imageFromPath(workingIcon):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
-
   self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.togglePlayer)
   self.playerControlMenu = hs.menubar.new():setClickCallback(obj.playerTogglePlayPause)
 
   self.playerMenu = hs.menubar.new()
     :setClickCallback(obj.togglePlayer)
-		:setIcon(self.icon, true)
+		:setIcon(iconMusicNote, true)
 
 	self.isDormant = true
 	self.lastTimePlayed = os.time()
@@ -444,7 +434,6 @@ function obj:init()
       if event == 2 or event == hs.application.watcher.terminated then
         obj.playerTimer:stop()
         obj:unloadPlayerMenus()
-        obj.playerMenu:setIcon(self.icon, true)
       elseif event == 1 or event == hs.application.watcher.launched then
         obj.playerTimer:start()
       end
