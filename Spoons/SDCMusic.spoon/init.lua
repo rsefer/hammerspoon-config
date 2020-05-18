@@ -401,12 +401,17 @@ function obj:init()
   self.showNotifications = true
 	self.showAlerts = false
 
+	self.icon = hs.image.imageFromAppBundle('com.apple.Music'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
+	if self.playerName == 'Spotify' then
+		self.icon = hs.image.imageFromAppBundle('com.spotify.client'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
+	end
+
   self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.togglePlayer)
   self.playerControlMenu = hs.menubar.new():setClickCallback(obj.playerTogglePlayPause)
 
   self.playerMenu = hs.menubar.new()
     :setClickCallback(obj.togglePlayer)
-		:setIcon(iconMusicNote, true)
+		:setIcon(self.icon, false)
 
 	self.isDormant = true
 	self.lastTimePlayed = os.time()
@@ -434,6 +439,7 @@ function obj:init()
       if event == 2 or event == hs.application.watcher.terminated then
         obj.playerTimer:stop()
         obj:unloadPlayerMenus()
+        obj.playerMenu:setIcon(self.icon, false)
       elseif event == 1 or event == hs.application.watcher.launched then
         obj.playerTimer:start()
       end
