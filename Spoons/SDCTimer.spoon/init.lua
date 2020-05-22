@@ -108,7 +108,7 @@ function obj:getClients()
 		hs.settings.set('clients', clients)
 		return clients
 	else
-		return hs.settings.get('clients', clients)
+		return hs.settings.get('clients')
 	end
 end
 
