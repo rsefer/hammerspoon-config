@@ -51,27 +51,20 @@ function obj:toggleChooser()
 end
 
 function obj:setContacts()
-	output, status = hs.execute('featuredContacts', true)
-	names = {}
-	phones = {}
-	i = 1
-	for word in string.gmatch(output, '([^,]+)') do
-		if string.sub(word, 1, 1) == ' ' then
-			word = string.sub(word, 2, string.len(word))
-		end
-		word = string.gsub(word, '\n', '')
-		if i % 2 == 0 then
-			table.insert(phones, word)
-		else
-			table.insert(names, word)
-		end
-		i = i + 1
-	end
+	asBool, asObject, asDesc = hs.osascript.applescript([[
+		tell application "Contacts"
+			set featuredPeople to {}
+			repeat with p in people in group "Featured"
+				copy {nickname of p, value of phone 1 of p} to the end of featuredPeople
+			end repeat
+			featuredPeople
+		end tell
+	]])
 	contacts = {}
-	for i = 1, tablelength(names) do
+	for x, person in ipairs(asObject) do
 		table.insert(contacts, {
-			name = names[i],
-			phone = phones[i]
+			name = person[1],
+			phone = person[2]
 		})
 	end
 	table.sort(contacts, function(a, b)
