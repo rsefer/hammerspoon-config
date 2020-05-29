@@ -250,6 +250,13 @@ hs.spoons.use('SDCWorkspace', {
 	start = true
 })
 
+hs.spoons.use('SDCPasteboard', {
+	hotkeys = {
+		toggleChooser = {hs.settings.get('hotkeyCombo'), 'V'}
+	},
+	start = true
+})
+
 hs.spoons.use('SDCPhone', {
 	hotkeys = {
 		toggleChooser = {hs.settings.get('hotkeyCombo'), 'P'}
