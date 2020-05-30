@@ -88,8 +88,8 @@ function obj:init()
 
 	self.chooser = hs.chooser.new(function(choice)
 		if not choice then return end
-		hs.eventtap.keyStrokes(choice.fullText)
-		hs.pasteboard.setContents(choice.fullText)
+		hs.pasteboard.writeObjects(choice.fullText)
+		hs.eventtap.keyStroke('cmd', 'v')
 		obj.lastPasteboardChange = hs.pasteboard.changeCount()
 	end)
 		:attachedToolbar(hs.webview.toolbar.new('pasteboardToolbar', {{
