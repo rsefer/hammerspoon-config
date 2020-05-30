@@ -119,9 +119,7 @@ function obj:init()
 
 	self:populateChooser()
 
-	hs.settings.watchKey('settings_pasteboardHistory_watcher', 'pasteboardHistory', function()
-		obj:populateChooser()
-	end)
+	hs.settings.watchKey('settings_pasteboardHistory_watcher', 'pasteboardHistory', obj.populateChooser)
 
 end
 
