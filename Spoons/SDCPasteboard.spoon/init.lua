@@ -11,21 +11,11 @@ end
 function obj:storeCopy()
 	now = hs.pasteboard.changeCount()
 	if now > obj.lastPasteboardChange then
-		currentClipboard = hs.pasteboard.getContents() or ''
-		icon = '📄'
-		typesAvailable = hs.pasteboard.typesAvailable()
-		if string.sub(currentClipboard, 1, 4) == 'http' or typesAvailable['URL'] ~= nil then
-			icon = '🔗'
-		elseif typesAvailable['image'] ~= nil then
-			icon = '🖼️'
-		elseif typesAvailable['styledText'] ~= nil then
-			icon = '📝'
-		end
 		table.insert(obj.pasteboardHistory, 1, {
-			content = currentClipboard,
+			content = hs.pasteboard.getContents() or '',
 			timestamp = os.time(),
 			contentTypes = hs.pasteboard.allContentTypes()[1],
-			icon = icon
+			typesAvailable = hs.pasteboard.typesAvailable()
 		})
 		while (tablelength(obj.pasteboardHistory) >= 10) do
 			table.remove(obj.pasteboardHistory, tablelength(obj.pasteboardHistory))
@@ -41,7 +31,15 @@ function obj:populateChooser()
 	choices = {}
 	if tablelength(hs.settings.get('pasteboardHistory')) > 0 then
 		for k, item in pairs(hs.settings.get('pasteboardHistory')) do
-			title = item.icon .. ' ' .. item.content
+			icon = '📄'
+			if string.sub(item.content, 1, 4) == 'http' or item.typesAvailable['URL'] ~= nil then
+				icon = '🔗'
+			elseif item.typesAvailable['image'] ~= nil then
+				icon = '🖼️'
+			elseif item.typesAvailable['styledText'] ~= nil then
+				icon = '📝'
+			end
+			title = icon .. ' ' .. item.content
 			if string.len(item.content) > titleMaxLength then
 				title = title:gsub("\n", ""):gsub("\r", ""):gsub("\t", "")
 				title = string.sub(title, 1, titleMaxLength - string.len(ellipsesString)) .. ellipsesString
