@@ -37,7 +37,7 @@ end
 
 function obj:populateChooser()
 	titleMaxLength = 70
-	ellipsesString = ' [...]'
+	ellipsesString = ' […]'
 	choices = {}
 	if tablelength(hs.settings.get('pasteboardHistory')) > 0 then
 		for k, item in pairs(hs.settings.get('pasteboardHistory')) do
@@ -47,7 +47,7 @@ function obj:populateChooser()
 				title = string.sub(title, 1, titleMaxLength - string.len(ellipsesString)) .. ellipsesString
 			end
 			table.insert(choices, {
-				text = title,
+				text = hs.styledtext.new(title, { font = { name = 'SF Mono' } }),
 				subText = os.date('%I:%M%p', item.timestamp),
 				timestamp = item.timestamp,
 				fullText = item.content
