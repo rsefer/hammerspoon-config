@@ -49,6 +49,7 @@ function obj:populateChooser()
 			table.insert(choices, {
 				text = title,
 				subText = os.date('%I:%M%p', item.timestamp),
+				timestamp = item.timestamp,
 				fullText = item.content
 			})
 		end
@@ -91,6 +92,20 @@ function obj:init()
 		hs.pasteboard.writeObjects(choice.fullText)
 		hs.eventtap.keyStroke('cmd', 'v')
 		obj.lastPasteboardChange = hs.pasteboard.changeCount()
+		choiceIndex = nil
+		choiceItem = nil
+		for k, item in pairs(obj.pasteboardHistory) do
+			if item.timestamp == choice.timestamp then
+				choiceIndex = k
+				choiceItem = item
+				break
+			end
+		end
+		if choiceIndex ~= nil then
+			table.remove(obj.pasteboardHistory, choiceIndex)
+			table.insert(obj.pasteboardHistory, 1, choiceItem)
+			hs.settings.set('pasteboardHistory', obj.pasteboardHistory)
+		end
 	end)
 		:attachedToolbar(hs.webview.toolbar.new('pasteboardToolbar', {{
 			id = 'pasteboardClear',
