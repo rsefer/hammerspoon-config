@@ -116,6 +116,10 @@ function obj:windowMove(window, screen, size)
 				newCoords.x2 = newCoords.x1 + localCoords.w - (margin.x * 2)
 				newCoords.y2 = newCoords.y1 + localCoords.h - (margin.y * 2)
 				terminalFontSize = 20
+			elseif newCoords.y1 > 0 and workingScreen:name() == hs.settings.get('primaryMonitorName') and (hs.settings.get('deskSetup') == 'desk' or hs.settings.get('deskSetup') == 'deskWithiPad') then
+				adjustmentY = newCoords.y1 - margin.y
+				newCoords.y1 = newCoords.y1 - adjustmentY
+				newCoords.y2 = newCoords.y2 - adjustmentY
 			end
 			hs.osascript.applescript('tell application "' .. window:application():name() .. '" to set the font size of window 1 to ' .. terminalFontSize)
 		end
