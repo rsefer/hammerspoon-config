@@ -1,4 +1,5 @@
 hs.notify.withdrawAll()
+hs.autoLaunch(true)
 hs.location.start()
 hs.window.filter.setLogLevel(1)
 hs.hotkey.setLogLevel(1)
