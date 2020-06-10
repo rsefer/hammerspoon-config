@@ -299,10 +299,10 @@ function obj:setPlayerMenus()
 
 			textLineBreak = 'wordWrap'
 			textSize = 12
-			fontCharacterWidth = textSize * .7
+			fontCharacterWidth = textSize * .62
 			textVerticalOffset = 1
 			menubarHeight = 22
-			titleWidth = (string.len(newSongString)) * fontCharacterWidth
+			titleWidth = string.len(newSongString) * fontCharacterWidth
 			maxWidth = 375
 			if hs.settings.get('deskSizeClass') == 'large' then
 				maxWidth = 500
@@ -311,11 +311,7 @@ function obj:setPlayerMenus()
 				barWidth = maxWidth
 				textLineBreak = 'truncateMiddle'
 			else
-				if hasTrackInfo then
-					barWidth = titleWidth + fontCharacterWidth * 4
-				else
-					barWidth = titleWidth
-				end
+				barWidth = titleWidth
 			end
 			barWidth = round(barWidth)
 
