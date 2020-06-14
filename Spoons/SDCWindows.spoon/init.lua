@@ -82,7 +82,8 @@ function obj:windowMove(window, screen, size)
 	}))
 
 	local finickyApps = {
-		'Terminal'
+		'Terminal',
+		'Slack'
 	}
 
 	if contains(finickyApps, window:application():name()) then
