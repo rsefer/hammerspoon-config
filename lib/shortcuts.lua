@@ -18,8 +18,8 @@ end)
 -- (in Settings > Keyboard > Shortcuts)
 -- {'cmd', 'alt', 'ctrl'}, f17
 
--- Full Brightness - key 144 = 'Increase Brightness' key
-hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 144, function()
+-- Full Brightness
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'B', function()
 	for i = 1, 16, 1 do
 		hs.eventtap.event.newSystemKeyEvent('BRIGHTNESS_UP', true):post()
 		hs.eventtap.event.newSystemKeyEvent('BRIGHTNESS_UP', false):post()

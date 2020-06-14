@@ -355,11 +355,7 @@ function obj:playerCheck()
 		if getCurrentPlayerState() == 'playing' then
 			obj.lastTimePlayed = os.time()
 		end
-		if (os.time() - obj.lastTimePlayed) > 5 * 60 then
-			obj.isDormant = true
-		else
-			obj.isDormant = false
-		end
+		obj.isDormant = (os.time() - obj.lastTimePlayed) > 5 * 60
 		obj:setPlayerMenus()
 	end, 4)
 end
