@@ -424,7 +424,7 @@ function obj:init()
 				obj.lastTimePlayed = os.time()
       end
     end
-	end):start()
+	end)
 
 	self.currentSong = ''
   self.currentSongDuration = 0
@@ -440,15 +440,27 @@ function obj:init()
         obj.playerTimer:start()
       end
     end
-	end):start()
+	end)
 
 	self.mediaKeyCapture = hs.eventtap.new({ hs.eventtap.event.types.NSSystemDefined }, function(event)
 		local keyPressed = event:systemKey().key
 		if keyPressed == 'PLAY' or keyPressed == 'REWIND' or keyPressed == 'FAST' then
 			obj:setPlayerMenus()
 		end
-	end):start()
+	end)
 
+end
+
+function obj:start()
+	self.playerTimer:start()
+	self.watcher:start()
+	self.mediaKeyCapture:start()
+end
+
+function obj:stop()
+	self.playerTimer:stop()
+	self.watcher:stop()
+	self.mediaKeyCapture:stop()
 end
 
 return obj

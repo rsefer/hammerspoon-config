@@ -217,7 +217,8 @@ hs.spoons.use('SDCMusic', {
 		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad*', nil, function()
 			thisSpoon.spotifySwitchPlayer()
 		end)
-	end
+	end,
+	start = true
 })
 
 hs.spoons.use('SDCWorkspace', {
