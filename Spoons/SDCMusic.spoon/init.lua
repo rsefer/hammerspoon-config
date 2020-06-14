@@ -199,7 +199,7 @@ function obj:setPlayerMenus()
 	end
 
 	currentTrack = getCurrentTrackInfo()
-	if obj.playerTitleMenu and currentTrack.artist and currentTrack.name then
+	if currentTrack.artist and currentTrack.name then
 
 		workingArtist = currentTrack.artist
 		if not workingArtist or string.len(workingArtist) < 1 then
@@ -208,154 +208,125 @@ function obj:setPlayerMenus()
 		newSongString = songString(workingArtist, currentTrack.name)
     obj.currentSongPosition = currentTrack.playerPosition
 
-		if newSongString ~= obj.currentSong then
-			if currentTrack.duration ~= nil then
-				obj.currentSongDuration = currentTrack.duration
-			else
-				obj.currentSongDuration = 300
-			end
+		if currentTrack.duration ~= nil then
+			obj.currentSongDuration = currentTrack.duration
+		else
+			obj.currentSongDuration = 300
+		end
 
-			if currentState == 'playing' then
-        if obj.showAlerts then
-					hs.alert.closeSpecific(obj.currentSongAlertUUID, 0)
-					alertColorWhite = 0
-					if hs.host.interfaceStyle() == 'Dark' then
-						alertColorWhite = 1
-					end
-          obj.currentSongAlertUUID = hs.alert.show("🎵 " .. newSongString, {
-            fillColor = {
-              white = 0,
-              alpha = 0
-            },
-            strokeColor = {
-              white = 1,
-              alpha = 0
-            },
-            strokeWidth = 0,
-            textColor = {
-              white = alertColorWhite,
-              alpha = 1
-            },
-            textSize = 10,
-            radius = 10,
-            atScreenEdge = 1
-          }, 5)
-        end
-				if obj.showNotifications and currentTrack.artist ~= '' and currentTrack.name ~= '' then
+		currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
 
-					workingImage = hs.image.imageFromAppBundle(obj.playerApp:bundleID())
+		timeCharacters = 0
 
-					if obj.playerName == 'Spotify' then
-						asBool, asObject, asDesc = hs.osascript.applescript('tell application "Spotify" to return artwork url of the current track')
-						if string.len(asObject) > 0 then
-							workingImage = hs.image.imageFromURL(asObject)
-						end
-					elseif setupSetting('discogs_key') and setupSetting('discogs_secret') then
-						discogsURL = 'https://api.discogs.com/database/search?query=' .. urlencode(currentTrack.artist .. ' - ' .. currentTrack.album) .. '&per_page=1&page=1&key=' .. hs.settings.get('discogs_key') .. '&secret=' .. hs.settings.get('discogs_secret')
-						status, body, headers = hs.http.get(discogsURL)
-						if status == 200 then
-							json = hs.json.decode(body)
-							if json.results and json.results[1] and json.results[1].thumb then
-								workingImage = hs.image.imageFromURL(json.results[1].thumb)
-							end
-						end
-					end
+		timeString = ''
+		hasTrackInfo = true
 
-					hs.notify.new(function()
-						hs.application.launchOrFocus(obj.playerName)
-					end, {
-						hasActionButton = true,
-						actionButtonTitle = 'Open',
-						title = currentTrack.name,
-						subTitle = 'Artist: ' .. workingArtist,
-						informativeText = 'Album: ' .. currentTrack.album,
-						setIdImage = workingImage,
-						withdrawAfter = 2.5
-					}):send()
-        end
-			end
+		if obj.currentSongDuration > 15 * 60 then -- if long, show time remaining
+			minutesRemaining = math.ceil((obj.currentSongDuration - obj.currentSongPosition) / 60)
+			timeString = ' [' .. minutesToClock(minutesRemaining, false, false) .. ']'
+			timeCharacters = timeCharacters + string.len(timeString)
+			newSongString = newSongString .. timeString
+		end
 
-    end
+		if currentTrack.artist == '' and currentTrack.name == '' then
+			hasTrackInfo = false
+			newSongString = '📱' .. timeString
+		end
 
-		if hs.settings.get('deskSizeClass') ~= 'small' and obj.showCurrentSongProgressBar then
-			currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
+		textLineBreak = 'wordWrap'
+		textSize = 12
+		fontCharacterWidth = textSize * .62
+		textVerticalOffset = 1
+		menubarHeight = 22
+		titleWidth = string.len(newSongString) * fontCharacterWidth
+		maxWidth = 375
+		if hs.settings.get('deskSizeClass') == 'large' then
+			maxWidth = 500
+		end
+		if titleWidth > maxWidth then
+			barWidth = maxWidth
+			textLineBreak = 'truncateMiddle'
+		else
+			barWidth = titleWidth
+		end
+		barWidth = round(barWidth)
 
-			timeCharacters = 0
-
-			timeString = ''
-			hasTrackInfo = true
-
-			if obj.currentSongDuration > 15 * 60 then -- if long, show time remaining
-				minutesRemaining = math.ceil((obj.currentSongDuration - obj.currentSongPosition) / 60)
-				timeString = ' [' .. minutesToClock(minutesRemaining, false, false) .. ']'
-				timeCharacters = timeCharacters + string.len(timeString)
-				newSongString = newSongString .. timeString
-			end
-
-			if currentTrack.artist == '' and currentTrack.name == '' then
-				hasTrackInfo = false
-				newSongString = '📱' .. timeString
-			end
-
-			textLineBreak = 'wordWrap'
-			textSize = 12
-			fontCharacterWidth = textSize * .62
-			textVerticalOffset = 1
-			menubarHeight = 22
-			titleWidth = string.len(newSongString) * fontCharacterWidth
-			maxWidth = 375
-			if hs.settings.get('deskSizeClass') == 'large' then
-				maxWidth = 500
-			end
-      if titleWidth > maxWidth then
-				barWidth = maxWidth
-				textLineBreak = 'truncateMiddle'
-			else
-				barWidth = titleWidth
-			end
-			barWidth = round(barWidth)
-
-			textColor = '000000'
+		textColor = '000000'
+		fillColor = '1db954'
+		if obj.playerName == 'Spotify' then
 			fillColor = '1db954'
-			if obj.playerName == 'Spotify' then
-				fillColor = '1db954'
-			elseif obj.playerName == 'Music' then
-				fillColor = 'f46060'
-			end
+		elseif obj.playerName == 'Music' then
+			fillColor = 'f46060'
+		end
 
-			if hs.host.interfaceStyle() == 'Dark' then
-				textColor = 'ffffff'
-			end
+		if hs.host.interfaceStyle() == 'Dark' then
+			textColor = 'ffffff'
+		end
 
-      obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = barWidth })
-				:appendElements({
-					id = 'songProgress',
-					type = 'rectangle',
-					action = 'fill',
-					frame = {
-						x = '0%',
-						y = menubarHeight - 2,
-						h = 2,
-						w = round(currentSongPositionPercentage * 100, 2) .. '%'
-					},
-					fillColor = { ['hex'] = fillColor }
+		obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = barWidth })
+			:appendElements({
+				id = 'songProgress',
+				type = 'rectangle',
+				action = 'fill',
+				frame = {
+					x = '0%',
+					y = menubarHeight - 2,
+					h = 2,
+					w = round(currentSongPositionPercentage * 100, 2) .. '%'
 				},
-        {
-          id = 'songText',
-          type = 'text',
-          text = newSongString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
-          textSize = textSize,
-					textLineBreak = textLineBreak,
-					textColor = { ['hex'] = textColor },
-					textFont = 'SF Mono',
-					frame = { x = '0%', y = textVerticalOffset, h = '100%', w = '100%' }
-        })
+				fillColor = { ['hex'] = fillColor }
+			},
+			{
+				id = 'songText',
+				type = 'text',
+				text = newSongString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
+				textSize = textSize,
+				textLineBreak = textLineBreak,
+				textColor = { ['hex'] = textColor },
+				textFont = 'SF Mono',
+				frame = { x = '0%', y = textVerticalOffset, h = '100%', w = '100%' }
+			})
 
-      obj.playerTitleMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
-    end
+		obj.playerTitleMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
 
     obj.currentSong = newSongString
   end
+end
+
+function obj:notifyTrack(currentTrack)
+	workingArtist = currentTrack.artist
+	if not workingArtist or string.len(workingArtist) < 1 then
+		workingArtist = currentTrack.album
+	end
+	workingImage = hs.image.imageFromAppBundle(obj.playerApp:bundleID())
+
+	if obj.playerName == 'Spotify' then
+		asBool, asObject, asDesc = hs.osascript.applescript('tell application "Spotify" to return artwork url of the current track')
+		if string.len(asObject) > 0 then
+			workingImage = hs.image.imageFromURL(asObject)
+		end
+	elseif setupSetting('discogs_key') and setupSetting('discogs_secret') then
+		discogsURL = 'https://api.discogs.com/database/search?query=' .. urlencode(currentTrack.artist .. ' - ' .. currentTrack.album) .. '&per_page=1&page=1&key=' .. hs.settings.get('discogs_key') .. '&secret=' .. hs.settings.get('discogs_secret')
+		status, body, headers = hs.http.get(discogsURL)
+		if status == 200 then
+			json = hs.json.decode(body)
+			if json.results and json.results[1] and json.results[1].thumb then
+				workingImage = hs.image.imageFromURL(json.results[1].thumb)
+			end
+		end
+	end
+
+	hs.notify.new(function()
+		hs.application.launchOrFocus(obj.playerName)
+	end, {
+		hasActionButton = true,
+		actionButtonTitle = 'Open',
+		title = currentTrack.name,
+		subTitle = 'Artist: ' .. workingArtist,
+		informativeText = 'Album: ' .. currentTrack.album,
+		setIdImage = workingImage,
+		withdrawAfter = 2.5
+	}):send()
 end
 
 function obj:unloadPlayerMenus()
@@ -372,7 +343,6 @@ function obj:playerTogglePlayPause()
 	elseif obj.playerName == 'Music' then
 		hs.itunes.playpause()
 	end
-  obj:setPlayerMenus()
 end
 
 function obj:togglePlayer()
@@ -393,13 +363,13 @@ function obj:init()
 
 	self.playerName = hs.settings.get('musicPlayerName')
 	self.playerApp = hs.application.get(self.playerName)
-  self.showCurrentSongProgressBar = true
   self.showNotifications = true
-	self.showAlerts = false
 
 	self.icon = hs.image.imageFromAppBundle('com.apple.Music'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
+	self.distributedPlaybackChangedString = 'com.apple.Music.playerInfo'
 	if self.playerName == 'Spotify' then
 		self.icon = hs.image.imageFromAppBundle('com.spotify.client'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
+		self.distributedPlaybackChangedString = 'com.spotify.client.PlaybackStateChanged'
 	end
 
   self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.togglePlayer)
@@ -411,18 +381,16 @@ function obj:init()
 
 	self.isDormant = true
 	self.lastTimePlayed = os.time()
+	self.lastState = nil
 
   self.playerTimer = hs.timer.doEvery(4, function()
-		if obj.playerApp ~= nil and obj.playerApp:isRunning() then
+		if obj.playerApp:isRunning() then
 			if (os.time() - obj.lastTimePlayed) > 5 * 60 then
 				obj.isDormant = true
 			else
 				obj.isDormant = false
 			end
       obj:setPlayerMenus()
-			if getCurrentPlayerState() == 'playing' then
-				obj.lastTimePlayed = os.time()
-      end
     end
 	end)
 
@@ -442,25 +410,29 @@ function obj:init()
     end
 	end)
 
-	self.mediaKeyCapture = hs.eventtap.new({ hs.eventtap.event.types.NSSystemDefined }, function(event)
-		local keyPressed = event:systemKey().key
-		if keyPressed == 'PLAY' or keyPressed == 'REWIND' or keyPressed == 'FAST' then
-			obj:setPlayerMenus()
+	self.distributednotifications = hs.distributednotifications.new(function(name, object, userInfo)
+		if userInfo['Player State'] == 'Playing' then
+			if obj.lastState ~= 'Paused' then
+				obj:notifyTrack(getCurrentTrackInfo())
+			end
+			obj.lastTimePlayed = os.time()
 		end
-	end)
+		obj.lastState = userInfo['Player State']
+		obj:setPlayerMenus()
+	end, self.distributedPlaybackChangedString)
 
 end
 
 function obj:start()
 	self.playerTimer:start()
 	self.watcher:start()
-	self.mediaKeyCapture:start()
+	self.distributednotifications:start()
 end
 
 function obj:stop()
 	self.playerTimer:stop()
 	self.watcher:stop()
-	self.mediaKeyCapture:stop()
+	self.distributednotifications:stop()
 end
 
 return obj
