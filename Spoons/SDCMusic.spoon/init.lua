@@ -345,6 +345,25 @@ function obj:playerTogglePlayPause()
 	end
 end
 
+function obj:playerCheck()
+	if obj.timer ~= nil then
+		obj.timer:stop()
+	end
+	obj.timer = hs.timer.doUntil(function()
+		return obj.isDormant
+	end, function()
+		if getCurrentPlayerState() == 'playing' then
+			obj.lastTimePlayed = os.time()
+		end
+		if (os.time() - obj.lastTimePlayed) > 5 * 60 then
+			obj.isDormant = true
+		else
+			obj.isDormant = false
+		end
+		obj:setPlayerMenus()
+	end, 4)
+end
+
 function obj:togglePlayer()
   if obj.playerApp ~= nil and obj.playerApp:isRunning() and obj.playerApp:isFrontmost() then
     obj.playerApp:hide()
@@ -379,20 +398,10 @@ function obj:init()
     :setClickCallback(obj.togglePlayer)
 		:setIcon(self.icon, false)
 
-	self.isDormant = true
+	self.isDormant = false
 	self.lastTimePlayed = os.time()
 	self.lastState = nil
-
-  self.playerTimer = hs.timer.doEvery(4, function()
-		if obj.playerApp:isRunning() then
-			if (os.time() - obj.lastTimePlayed) > 5 * 60 then
-				obj.isDormant = true
-			else
-				obj.isDormant = false
-			end
-      obj:setPlayerMenus()
-    end
-	end)
+	self.timer = nil
 
 	self.currentSong = ''
   self.currentSongDuration = 0
@@ -401,21 +410,20 @@ function obj:init()
   self.watcher = hs.application.watcher.new(function(name, event, app)
     if name == self.playerName then
       if event == 2 or event == hs.application.watcher.terminated then
-        obj.playerTimer:stop()
         obj:unloadPlayerMenus()
         obj.playerMenu:setIcon(self.icon, false)
-      elseif event == 1 or event == hs.application.watcher.launched then
-        obj.playerTimer:start()
       end
     end
 	end)
 
 	self.distributednotifications = hs.distributednotifications.new(function(name, object, userInfo)
 		if userInfo['Player State'] == 'Playing' then
+			obj.isDormant = false
 			if obj.lastState ~= 'Paused' then
 				obj:notifyTrack(getCurrentTrackInfo())
 			end
 			obj.lastTimePlayed = os.time()
+			obj:playerCheck()
 		end
 		obj.lastState = userInfo['Player State']
 		obj:setPlayerMenus()
@@ -424,15 +432,24 @@ function obj:init()
 end
 
 function obj:start()
-	self.playerTimer:start()
+
 	self.watcher:start()
 	self.distributednotifications:start()
+
+	if getCurrentPlayerState() == 'playing' then
+		self:playerCheck()
+	end
+
 end
 
 function obj:stop()
-	self.playerTimer:stop()
+
 	self.watcher:stop()
 	self.distributednotifications:stop()
+	if self.timer ~= nil then
+		self.timer:stop()
+	end
+
 end
 
 return obj
