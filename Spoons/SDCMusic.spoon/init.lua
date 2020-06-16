@@ -10,26 +10,26 @@ function songString(artist, track)
 end
 
 function getCurrentPlayerState()
-	playbackState = obj.playerModule:getPlaybackState()
+	playbackState = obj.player.module:getPlaybackState()
 	workingStateString = 'paused'
-	if playbackState == obj.playerModule.state_paused then
+	if playbackState == obj.player.module.state_paused then
 		workingStateString = 'paused'
-	elseif playbackState == obj.playerModule.state_playing then
+	elseif playbackState == obj.player.module.state_playing then
 		workingStateString = 'playing'
-	elseif playbackState == obj.playerModule.state_stopped then
+	elseif playbackState == obj.player.module.state_stopped then
 		workingStateString = 'stopped'
 	end
 	return workingStateString
 end
 
 function getCurrentTrackInfo()
-	if obj.playerModule:getCurrentTrack() then
+	if obj.player.module:getCurrentTrack() then
 		return {
-			artist = obj.playerModule:getCurrentArtist(),
-			album = obj.playerModule:getCurrentAlbum(),
-			name = obj.playerModule:getCurrentTrack(),
-			duration = obj.playerModule:getDuration(),
-			playerPosition = obj.playerModule:getPosition()
+			artist = obj.player.module:getCurrentArtist(),
+			album = obj.player.module:getCurrentAlbum(),
+			name = obj.player.module:getCurrentTrack(),
+			duration = obj.player.module:getDuration(),
+			playerPosition = obj.player.module:getPosition()
 		}
 	end
 	return {}
@@ -231,12 +231,7 @@ function obj:setPlayerMenus()
 		barWidth = round(barWidth)
 
 		textColor = '000000'
-		fillColor = '1db954'
-		if obj.playerName == 'Spotify' then
-			fillColor = '1db954'
-		elseif obj.playerName == 'Music' then
-			fillColor = 'f46060'
-		end
+		fillColor = obj.player.color
 
 		if hs.host.interfaceStyle() == 'Dark' then
 			textColor = 'ffffff'
@@ -277,9 +272,9 @@ function obj:notifyTrack(currentTrack)
 	if not workingArtist or string.len(workingArtist) < 1 then
 		workingArtist = currentTrack.album
 	end
-	workingImage = hs.image.imageFromAppBundle(obj.playerApp:bundleID())
+	workingImage = hs.image.imageFromAppBundle(obj.player.app:bundleID())
 
-	if obj.playerName == 'Spotify' then
+	if obj.player.name == 'Spotify' then
 		asBool, asObject, asDesc = hs.osascript.applescript('tell application "Spotify" to return artwork url of the current track')
 		if string.len(asObject) > 0 then
 			workingImage = hs.image.imageFromURL(asObject)
@@ -296,7 +291,7 @@ function obj:notifyTrack(currentTrack)
 	end
 
 	hs.notify.new(function()
-		hs.application.launchOrFocus(obj.playerName)
+		hs.application.launchOrFocus(obj.player.name)
 	end, {
 		hasActionButton = true,
 		actionButtonTitle = 'Open',
@@ -332,10 +327,10 @@ function obj:playerCheck()
 end
 
 function obj:togglePlayer()
-  if obj.playerApp ~= nil and obj.playerApp:isRunning() and obj.playerApp:isFrontmost() then
-    obj.playerApp:hide()
+  if obj.player.app ~= nil and obj.player.app:isRunning() and obj.player.app:isFrontmost() then
+    obj.player.app:hide()
   else
-    hs.application.launchOrFocus(obj.playerName)
+    hs.application.launchOrFocus(obj.player.name)
   end
 end
 
@@ -347,28 +342,34 @@ end
 
 function obj:init()
 
-	self.playerName = hs.settings.get('musicPlayerName')
-	self.playerApp = hs.application.get(self.playerName)
-	if self.playerName == 'Spotify' then
-		self.playerModule = hs.spotify
+	if hs.settings.get('musicPlayerName') == 'Spotify' then
+		self.player = {
+			name = 'Spotify',
+			app = hs.application.get('Spotify'),
+			module = hs.spotify,
+			icon = hs.image.imageFromAppBundle('com.spotify.client'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') }),
+			distributedPlaybackChangedString = 'com.spotify.client.PlaybackStateChanged',
+			color = '1db954'
+		}
 	else
-		self.playerModule = hs.itunes
+		self.player = {
+			name = 'Music',
+			app = hs.application.get('Music'),
+			module = hs.itunes,
+			icon = hs.image.imageFromAppBundle('com.apple.Music'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') }),
+			distributedPlaybackChangedString = 'com.apple.Music.playerInfo',
+			color = 'f46060'
+		}
 	end
+
   self.showNotifications = true
 
-	self.icon = hs.image.imageFromAppBundle('com.apple.Music'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
-	self.distributedPlaybackChangedString = 'com.apple.Music.playerInfo'
-	if self.playerName == 'Spotify' then
-		self.icon = hs.image.imageFromAppBundle('com.spotify.client'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
-		self.distributedPlaybackChangedString = 'com.spotify.client.PlaybackStateChanged'
-	end
-
   self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.togglePlayer)
-  self.playerControlMenu = hs.menubar.new():setClickCallback(obj.playerModule.playpause)
+  self.playerControlMenu = hs.menubar.new():setClickCallback(obj.player.module.playpause)
 
   self.playerMenu = hs.menubar.new()
     :setClickCallback(obj.togglePlayer)
-		:setIcon(self.icon, false)
+		:setIcon(self.player.icon, false)
 
 	self.isDormant = false
 	self.lastTimePlayed = os.time()
@@ -380,7 +381,7 @@ function obj:init()
 	self.currentSongPosition = 0
 
   self.watcher = hs.application.watcher.new(function(name, event, app)
-    if name == self.playerName then
+    if name == self.player.name then
       if event == 2 or event == hs.application.watcher.terminated then
         obj:unloadPlayerMenus()
         obj.playerMenu:setIcon(self.icon, false)
@@ -399,7 +400,7 @@ function obj:init()
 		end
 		obj.lastState = userInfo['Player State']
 		obj:setPlayerMenus()
-	end, self.distributedPlaybackChangedString)
+	end, self.player.distributedPlaybackChangedString)
 
 end
 
