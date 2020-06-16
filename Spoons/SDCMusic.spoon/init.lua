@@ -364,7 +364,7 @@ function obj:init()
 	end
 
   self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.togglePlayer)
-  self.playerControlMenu = hs.menubar.new():setClickCallback(obj.playerModule.playpause())
+  self.playerControlMenu = hs.menubar.new():setClickCallback(obj.playerModule.playpause)
 
   self.playerMenu = hs.menubar.new()
     :setClickCallback(obj.togglePlayer)
