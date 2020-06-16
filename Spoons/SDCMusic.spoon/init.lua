@@ -10,47 +10,26 @@ function songString(artist, track)
 end
 
 function getCurrentPlayerState()
-	if obj.playerName == 'Spotify' then
-		spotifyPlaybackState = hs.spotify:getPlaybackState()
-		workingState = 'paused'
-		if spotifyPlaybackState == hs.spotify.state_paused then
-			workingState = 'paused'
-		elseif spotifyPlaybackState == hs.spotify.state_playing then
-			workingState = 'playing'
-		elseif spotifyPlaybackState == hs.spotify.state_stopped then
-			workingState = 'stopped'
-		end
-		return workingState
-	elseif obj.playerName == 'Music' then
-		musicPlaybackState = hs.itunes:getPlaybackState()
-		workingState = 'paused'
-		if musicPlaybackState == hs.itunes.state_paused then
-			workingState = 'paused'
-		elseif musicPlaybackState == hs.itunes.state_playing then
-			workingState = 'playing'
-		elseif musicPlaybackState == hs.itunes.state_stopped then
-			workingState = 'stopped'
-		end
-		return workingState
+	playbackState = obj.playerModule:getPlaybackState()
+	workingStateString = 'paused'
+	if playbackState == obj.playerModule.state_paused then
+		workingStateString = 'paused'
+	elseif playbackState == obj.playerModule.state_playing then
+		workingStateString = 'playing'
+	elseif playbackState == obj.playerModule.state_stopped then
+		workingStateString = 'stopped'
 	end
+	return workingStateString
 end
 
 function getCurrentTrackInfo()
-	if obj.playerName == 'Spotify' and hs.spotify:getCurrentTrack() then
+	if obj.playerModule:getCurrentTrack() then
 		return {
-			artist = hs.spotify:getCurrentArtist(),
-			album = hs.spotify:getCurrentAlbum(),
-			name = hs.spotify:getCurrentTrack(),
-			duration = hs.spotify:getDuration(),
-			playerPosition = hs.spotify:getPosition()
-		}
-	elseif obj.playerName == 'Music' and hs.itunes:getCurrentTrack() then
-		return {
-			artist = hs.itunes:getCurrentArtist(),
-			album = hs.itunes:getCurrentAlbum(),
-			name = hs.itunes:getCurrentTrack(),
-			duration = hs.itunes:getDuration(),
-			playerPosition = hs.itunes:getPosition()
+			artist = obj.playerModule:getCurrentArtist(),
+			album = obj.playerModule:getCurrentAlbum(),
+			name = obj.playerModule:getCurrentTrack(),
+			duration = obj.playerModule:getDuration(),
+			playerPosition = obj.playerModule:getPosition()
 		}
 	end
 	return {}
@@ -337,14 +316,6 @@ function obj:unloadPlayerMenus()
   end
 end
 
-function obj:playerTogglePlayPause()
-	if obj.playerName == 'Spotify' then
-		hs.spotify.playpause()
-	elseif obj.playerName == 'Music' then
-		hs.itunes.playpause()
-	end
-end
-
 function obj:playerCheck()
 	if obj.timer ~= nil then
 		obj.timer:stop()
@@ -378,6 +349,11 @@ function obj:init()
 
 	self.playerName = hs.settings.get('musicPlayerName')
 	self.playerApp = hs.application.get(self.playerName)
+	if self.playerName == 'Spotify' then
+		self.playerModule = hs.spotify
+	else
+		self.playerModule = hs.itunes
+	end
   self.showNotifications = true
 
 	self.icon = hs.image.imageFromAppBundle('com.apple.Music'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
@@ -388,7 +364,7 @@ function obj:init()
 	end
 
   self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.togglePlayer)
-  self.playerControlMenu = hs.menubar.new():setClickCallback(obj.playerTogglePlayPause)
+  self.playerControlMenu = hs.menubar.new():setClickCallback(obj.playerModule.playpause())
 
   self.playerMenu = hs.menubar.new()
     :setClickCallback(obj.togglePlayer)
