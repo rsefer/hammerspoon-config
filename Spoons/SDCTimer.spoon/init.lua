@@ -4,9 +4,6 @@ obj.__index = obj
 obj.name = "SDCTimer"
 obj.timeIntervalSeconds = 15 * 60
 
-local iconClockOpen = hs.image.imageFromName('NSStatusPartiallyAvailable'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
-local iconClockClosed = hs.image.imageFromName('NSStatusAvailable'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') })
-
 function clientNameFromID(ID)
 	local name = nil
 	for i, client in ipairs(obj.clients) do
@@ -28,7 +25,7 @@ function updateTimeElapsedAlert()
 		subTitle = notificationSubTitle,
 		informativeText = minutesToClock(obj.timeAccrued / 60, false, true),
 		withdrawAfter = 5,
-		setIdImage = iconClockClosed
+		setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
 	}):send()
 end
 
@@ -115,7 +112,7 @@ function obj:logTime(timeMinutes)
 			subTitle = notificationSubTitle,
 			informativeText = minutesToClock(clientTotalMinutes, false, true),
 			withdrawAfter = 15,
-			setIdImage = iconClockClosed
+			setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
 		}):send()
 	end
 
@@ -136,7 +133,7 @@ function obj:init()
 	self.logger = hs.logger.new(self.name, 'info')
 	self.timerMenu = hs.menubar.new()
 		:setClickCallback(obj.toggleTimer)
-		:setIcon(iconClockOpen, false)
+		:setIcon(hs.image.imageFromName(hs.image.systemImageNames.StatusNone), false)
 	self.timerMain = nil
 	self.timerCounter = nil
 	self.clientChooser = hs.chooser.new(function(choice)
@@ -185,7 +182,7 @@ function obj:start()
 	obj.timeStart = os.time()
 	obj.timerMain:start()
 	obj.timerCounter:start()
-	obj.timerMenu:setIcon(iconClockClosed, false)
+	obj.timerMenu:setIcon(hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable), false)
 	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
 	if obj.activeClient ~= nil then
 		timeStringStart = obj.activeClient.name .. ': ' .. timeStringStart
@@ -199,7 +196,7 @@ function obj:start()
 		title = 'Starting Timer',
 		subTitle = notificationSubTitle,
 		withdrawAfter = 3,
-		setIdImage = iconClockClosed
+		setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
 	}):send()
 
 	updateTimeElapsed()
@@ -209,7 +206,7 @@ end
 function obj:stop()
 	obj.timerMain:stop()
 	obj.timerCounter:stop()
-	obj.timerMenu:setIcon(iconClockOpen, false)
+	obj.timerMenu:setIcon(hs.image.imageFromName(hs.image.systemImageNames.StatusNone), false)
 		:setTitle()
 
 	minutesTimed = math.ceil(obj.timeAccrued / 60)
@@ -228,7 +225,7 @@ function obj:stop()
 		subTitle = notificationSubTitle,
 		informativeText = minutesToClock(minutesTimed, false, true),
 		withdrawAfter = 15,
-		setIdImage = iconClockClosed
+		setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
 	}):send()
 
 	obj.logger:i(timeStringEnd)

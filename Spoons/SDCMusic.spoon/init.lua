@@ -172,9 +172,9 @@ function obj:setPlayerMenus()
 	currentState = getCurrentPlayerState()
 
 	if currentState == 'playing' then
-    obj.playerControlMenu:setIcon(iconPause)
+    obj.playerControlMenu:setIcon(iconPause, true)
 	else
-		obj.playerControlMenu:setIcon(iconPlay)
+		obj.playerControlMenu:setIcon(iconPlay, true)
 	end
 
 	currentTrack = getCurrentTrackInfo()
