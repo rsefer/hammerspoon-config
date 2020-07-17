@@ -231,11 +231,12 @@ function obj:setPlayerMenus()
 		barWidth = round(barWidth)
 
 		textColor = '000000'
-		fillColor = obj.player.color
 
 		if hs.host.interfaceStyle() == 'Dark' then
 			textColor = 'ffffff'
 		end
+
+		obj:updateMiniPlayer(currentTrack)
 
 		obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = barWidth })
 			:appendElements({
@@ -248,7 +249,7 @@ function obj:setPlayerMenus()
 					h = 2,
 					w = round(currentSongPositionPercentage * 100, 2) .. '%'
 				},
-				fillColor = { ['hex'] = fillColor }
+				fillColor = { ['hex'] = obj.player.color }
 			},
 			{
 				id = 'songText',
@@ -267,13 +268,8 @@ function obj:setPlayerMenus()
   end
 end
 
-function obj:notifyTrack(currentTrack)
-	workingArtist = currentTrack.artist
-	if not workingArtist or string.len(workingArtist) < 1 then
-		workingArtist = currentTrack.album
-	end
+function obj:getSongAlbumArt()
 	workingImage = hs.image.imageFromAppBundle(obj.player.app:bundleID())
-
 	if obj.player.name == 'Spotify' then
 		asBool, asObject, asDesc = hs.osascript.applescript('tell application "Spotify" to return artwork url of the current track')
 		if string.len(asObject) > 0 then
@@ -289,6 +285,15 @@ function obj:notifyTrack(currentTrack)
 			end
 		end
 	end
+	obj.currentSongAlbumArt = workingImage
+end
+
+
+function obj:notifyTrack(currentTrack)
+	workingArtist = currentTrack.artist
+	if not workingArtist or string.len(workingArtist) < 1 then
+		workingArtist = currentTrack.album
+	end
 
 	hs.notify.new(function()
 		hs.application.launchOrFocus(obj.player.name)
@@ -298,9 +303,176 @@ function obj:notifyTrack(currentTrack)
 		title = currentTrack.name,
 		subTitle = 'Artist: ' .. workingArtist,
 		informativeText = 'Album: ' .. currentTrack.album,
-		setIdImage = workingImage,
+		setIdImage = obj.currentSongAlbumArt,
 		withdrawAfter = 2.5
 	}):send()
+end
+
+function obj:updateMiniPlayer(activeTrack)
+
+	dimension = 200
+	gridMargin = spoon.SDCWindows:getScreenMargins(hs.screen.primaryScreen())
+
+	if not obj.miniPlayer then
+		obj.miniPlayer = hs.canvas.new({
+			x = hs.screen.primaryScreen():frame().w - dimension - gridMargin.x,
+			y = hs.screen.primaryScreen():frame().h - dimension - gridMargin.y,
+			w = dimension,
+			h = dimension
+		})
+		:alpha(1)
+		:mouseCallback(function(canvas, message, id, x, y)
+			if id == 'miniPlayerActionCircle' then
+				if message == 'mouseUp' then
+					obj.player.module.playpause()
+				elseif message == 'mouseEnter' then
+					obj.miniPlayer.miniPlayerActionCircle.fillColor.alpha = 0.9
+				elseif message == 'mouseExit' then
+					obj.miniPlayer.miniPlayerActionCircle.fillColor.alpha = 0.5
+				end
+			elseif id == 'miniPlayerPrevIcon' then
+				if message == 'mouseUp' then
+					obj.player.module.previous()
+				elseif message == 'mouseEnter' then
+					obj.miniPlayer.miniPlayerPrevIcon.imageAlpha = 1
+				elseif message == 'mouseExit' then
+					obj.miniPlayer.miniPlayerPrevIcon.imageAlpha = 0.5
+				end
+			elseif id == 'miniPlayerNextIcon' then
+				if message == 'mouseUp' then
+					obj.player.module.next()
+				elseif message == 'mouseEnter' then
+					obj.miniPlayer.miniPlayerNextIcon.imageAlpha = 1
+				elseif message == 'mouseExit' then
+					obj.miniPlayer.miniPlayerNextIcon.imageAlpha = 0.5
+				end
+			end
+		end)
+		:appendElements(
+			{
+				id = 'miniPlayerBackground',
+				type = 'rectangle',
+				action = 'fill',
+				frame = {
+					x = 0,
+					y = 0,
+					w = dimension,
+					h = dimension
+				},
+				fillColor = { ['hex'] = '#000' }
+			},
+			{
+				id = 'miniPlayerImage',
+				type = 'image',
+				image = obj.currentSongAlbumArt,
+				imageAlpha = 0.25,
+				frame = {
+					x = 0,
+					y = 0,
+					w = dimension,
+					h = dimension
+				}
+			},
+			{
+				id = 'miniPlayerOverlay',
+				type = 'rectangle',
+				action = 'fill',
+				frame = {
+					x = 0,
+					y = 0,
+					w = dimension,
+					h = dimension
+				},
+				fillColor = { ['hex'] = '#fff', ['alpha'] = 0.5 }
+			},
+			{
+				id = 'miniPlayerProgressBar',
+				type = 'rectangle',
+				action = 'fill',
+				frame = {
+					x = 0,
+					y = dimension - 4,
+					w = dimension,
+					h = 4
+				},
+				fillColor = { ['hex'] = obj.player.color }
+			},
+			{
+				id = 'miniPlayerActionCircle',
+				type = 'circle',
+				action = 'fill',
+				radius = dimension / 8,
+				center = {
+					x = '50%',
+					y = '50%'
+				},
+				fillColor = { ['hex'] = '#fff', ['alpha'] = 0.5 },
+				trackMouseUp = true,
+				trackMouseEnterExit = true
+			},
+			{
+				id = 'miniPlayerActionIcon',
+				type = 'image',
+				image = nil,
+				compositeRule = 'sourceOut',
+				frame = {
+					x = dimension * .375,
+					y = dimension * .375,
+					w = dimension / 4,
+					h = dimension / 4
+				},
+				fillColor = { ['hex'] = obj.player.color }
+			},
+			{
+				id = 'miniPlayerPrevIcon',
+				type = 'image',
+				image = hs.image.imageFromName(hs.image.systemImageNames.TouchBarRewindTemplate),
+				frame = {
+					x = dimension * .10,
+					y = dimension * .375,
+					w = dimension / 4,
+					h = dimension / 4
+				},
+				trackMouseUp = true,
+				trackMouseEnterExit = true
+			},
+			{
+				id = 'miniPlayerNextIcon',
+				type = 'image',
+				image = hs.image.imageFromName(hs.image.systemImageNames.TouchBarFastForwardTemplate):template(true),
+				frame = {
+					x = dimension * .65,
+					y = dimension * .375,
+					w = dimension / 4,
+					h = dimension / 4
+				},
+				trackMouseUp = true,
+				trackMouseEnterExit = true
+			}
+		)
+	end
+
+	if not activeTrack and obj.miniPlayer then
+		obj.miniPlayer:hide()
+		return
+	end
+
+	obj.miniPlayer.miniPlayerImage.image = obj.currentSongAlbumArt
+	obj.miniPlayer.miniPlayerProgressBar.frame.w = round(obj.currentSongPosition / obj.currentSongDuration * 100, 2) .. '%'
+	actionIcon = hs.image.imageFromName(hs.image.systemImageNames.TouchBarPlayTemplate)
+	if getCurrentPlayerState() == 'playing' then
+		actionIcon = hs.image.imageFromName(hs.image.systemImageNames.TouchBarPauseTemplate)
+	end
+	obj.miniPlayer.miniPlayerActionIcon.image = actionIcon
+
+end
+
+function obj:toggleMiniPlayer()
+	if obj.miniPlayer:isShowing() then
+		obj.miniPlayer:hide()
+	else
+		obj.miniPlayer:show()
+	end
 end
 
 function obj:unloadPlayerMenus()
@@ -364,12 +536,14 @@ function obj:init()
 
   self.showNotifications = true
 
-  self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.togglePlayer)
+  self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.toggleMiniPlayer)
   self.playerControlMenu = hs.menubar.new():setClickCallback(obj.player.module.playpause)
 
   self.playerMenu = hs.menubar.new()
     :setClickCallback(obj.togglePlayer)
 		:setIcon(self.player.icon, false)
+
+	self.miniPlayer = nil
 
 	self.isDormant = false
 	self.lastTimePlayed = os.time()
@@ -379,6 +553,7 @@ function obj:init()
 	self.currentSong = ''
   self.currentSongDuration = 0
 	self.currentSongPosition = 0
+	self.currentSongAlbumArt = nil
 
   self.watcher = hs.application.watcher.new(function(name, event, app)
     if name == self.player.name then
@@ -393,6 +568,7 @@ function obj:init()
 		if userInfo['Player State'] == 'Playing' then
 			obj.isDormant = false
 			if obj.lastState ~= 'Paused' then
+				obj:getSongAlbumArt()
 				obj:notifyTrack(getCurrentTrackInfo())
 			end
 			obj.lastTimePlayed = os.time()

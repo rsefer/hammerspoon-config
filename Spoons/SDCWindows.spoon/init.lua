@@ -12,6 +12,19 @@ function screenSizeCategory(screen, large, medium, small)
 	return small
 end
 
+function obj:getScreenMargins(screen)
+	return screenSizeCategory(screen, {
+		x = hs.settings.get('windowMargin').large,
+		y = hs.settings.get('windowMargin').large
+	}, {
+		x = hs.settings.get('windowMargin').medium,
+		y = hs.settings.get('windowMargin').medium
+	}, {
+		x = hs.settings.get('windowMargin').small,
+		y = hs.settings.get('windowMargin').small
+	})
+end
+
 function isCloseSize(window, size)
 	errorMargin = 5
 	grid = hs.grid.get(window)
