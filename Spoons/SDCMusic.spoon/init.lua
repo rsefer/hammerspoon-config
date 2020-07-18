@@ -22,7 +22,7 @@ function getCurrentPlayerState()
 	return workingStateString
 end
 
-function updateCurrentTrackInfo()
+function obj:updateCurrentTrackInfo()
 	if obj.player.module:getCurrentTrack() then
 		obj.currentTrack = {
 			artist = obj.player.module:getCurrentArtist(),
@@ -166,9 +166,13 @@ function obj:spotifySwitchPlayer()
 end
 
 function obj:setPlayerMenus()
+	obj:updateCurrentTrackInfo()
+	obj:updateMiniPlayer()
 	if obj.isDormant == true then
 		obj.playerControlMenu:setIcon(nil)
 		obj.playerTitleMenu:setIcon(nil)
+		obj.currentTrack.albumArt = nil
+		obj:updateMiniPlayer()
 		do return end
 	end
 	currentState = getCurrentPlayerState()
@@ -178,8 +182,6 @@ function obj:setPlayerMenus()
 	else
 		obj.playerControlMenu:setIcon(iconPlay, true)
 	end
-
-	updateCurrentTrackInfo()
 
 	if obj.currentTrack.artist and obj.currentTrack.name then
 
@@ -232,8 +234,6 @@ function obj:setPlayerMenus()
 			textColor = 'ffffff'
 		end
 
-		obj:updateMiniPlayer(obj.currentTrack)
-
 		obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = barWidth })
 			:appendElements({
 				id = 'songProgress',
@@ -262,7 +262,7 @@ function obj:setPlayerMenus()
   end
 end
 
-function obj:getSongAlbumArt()
+function obj:getTrackAlbumArt()
 	workingImage = hs.image.imageFromAppBundle(obj.player.app:bundleID())
 	if obj.player.name == 'Spotify' then
 		asBool, asObject, asDesc = hs.osascript.applescript('tell application "Spotify" to return artwork url of the current track')
@@ -281,7 +281,6 @@ function obj:getSongAlbumArt()
 	end
 	obj.currentTrack.albumArt = workingImage
 end
-
 
 function obj:notifyTrack()
 	workingArtist = obj.currentTrack.artist
@@ -302,7 +301,7 @@ function obj:notifyTrack()
 	}):send()
 end
 
-function obj:updateMiniPlayer(activeTrack)
+function obj:updateMiniPlayer()
 
 	dimension = 200
 	gridMargin = spoon.SDCWindows:getScreenMargins(hs.screen.primaryScreen())
@@ -446,7 +445,7 @@ function obj:updateMiniPlayer(activeTrack)
 		)
 	end
 
-	if not activeTrack and obj.miniPlayer then
+	if obj.isDormant and obj.miniPlayer then
 		obj.miniPlayer:hide()
 		return
 	end
@@ -559,8 +558,8 @@ function obj:init()
 		if userInfo['Player State'] == 'Playing' then
 			obj.isDormant = false
 			if obj.lastState ~= 'Paused' then
-				obj:getSongAlbumArt()
-				updateCurrentTrackInfo()
+				obj:getTrackAlbumArt()
+				obj:updateCurrentTrackInfo()
 				obj:notifyTrack()
 			end
 			obj.lastTimePlayed = os.time()
@@ -578,7 +577,7 @@ function obj:start()
 	self.distributednotifications:start()
 
 	if getCurrentPlayerState() == 'playing' then
-		obj:getSongAlbumArt()
+		obj:getTrackAlbumArt()
 		self:playerCheck()
 	end
 
