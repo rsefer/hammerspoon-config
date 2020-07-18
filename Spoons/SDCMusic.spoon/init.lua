@@ -326,9 +326,9 @@ function obj:updateMiniPlayer(activeTrack)
 				if message == 'mouseUp' then
 					obj.player.module.playpause()
 				elseif message == 'mouseEnter' then
-					obj.miniPlayer.miniPlayerActionCircle.fillColor.alpha = 0.9
+					obj.miniPlayer.miniPlayerActionCircle.fillColor.alpha = 0.75
 				elseif message == 'mouseExit' then
-					obj.miniPlayer.miniPlayerActionCircle.fillColor.alpha = 0.5
+					obj.miniPlayer.miniPlayerActionCircle.fillColor.alpha = 0.25
 				end
 			elseif id == 'miniPlayerPrevIcon' then
 				if message == 'mouseUp' then
@@ -383,7 +383,7 @@ function obj:updateMiniPlayer(activeTrack)
 					w = dimension,
 					h = dimension
 				},
-				fillColor = { ['hex'] = '#fff', ['alpha'] = 0.5 }
+				fillColor = { ['hex'] = '#fff', ['alpha'] = 0.25 }
 			},
 			{
 				id = 'miniPlayerProgressBar',
@@ -406,7 +406,7 @@ function obj:updateMiniPlayer(activeTrack)
 					x = '50%',
 					y = '50%'
 				},
-				fillColor = { ['hex'] = '#fff', ['alpha'] = 0.5 },
+				fillColor = { ['hex'] = '#fff', ['alpha'] = 0.25 },
 				trackMouseUp = true,
 				trackMouseEnterExit = true
 			},
@@ -586,6 +586,7 @@ function obj:start()
 	self.distributednotifications:start()
 
 	if getCurrentPlayerState() == 'playing' then
+		obj:getSongAlbumArt()
 		self:playerCheck()
 	end
 
