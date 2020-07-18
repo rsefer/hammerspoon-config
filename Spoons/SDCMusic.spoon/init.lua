@@ -3,7 +3,7 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCMusic"
 
-function songString(artist, track)
+function trackString(artist, track)
 	track = track:gsub(artist, '')
 	track = track:gsub(' | ', '')
   return artist .. ' - ' .. '"' .. track .. '"'
@@ -189,7 +189,7 @@ function obj:setPlayerMenus()
 		if not workingArtist or string.len(workingArtist) < 1 then
 			workingArtist = obj.currentTrack.album
 		end
-		newSongString = songString(workingArtist, obj.currentTrack.name)
+		newTrackString = trackString(workingArtist, obj.currentTrack.name)
 
 		currentTrackPositionPercentage = obj.currentTrack.position / obj.currentTrack.duration
 
@@ -202,12 +202,12 @@ function obj:setPlayerMenus()
 			minutesRemaining = math.ceil((obj.currentTrack.duration - obj.currentTrack.position) / 60)
 			timeString = ' [' .. minutesToClock(minutesRemaining, false, false) .. ']'
 			timeCharacters = timeCharacters + string.len(timeString)
-			newSongString = newSongString .. timeString
+			newTrackString = newTrackString .. timeString
 		end
 
 		if obj.currentTrack.artist == '' and obj.currentTrack.name == '' then
 			hasTrackInfo = false
-			newSongString = '📱' .. timeString
+			newTrackString = '📱' .. timeString
 		end
 
 		textLineBreak = 'wordWrap'
@@ -215,7 +215,7 @@ function obj:setPlayerMenus()
 		fontCharacterWidth = textSize * .62
 		textVerticalOffset = 1
 		menubarHeight = 22
-		titleWidth = string.len(newSongString) * fontCharacterWidth
+		titleWidth = string.len(newTrackString) * fontCharacterWidth
 		maxWidth = 375
 		if hs.settings.get('deskSizeClass') == 'large' then
 			maxWidth = 500
@@ -236,7 +236,7 @@ function obj:setPlayerMenus()
 
 		obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = barWidth })
 			:appendElements({
-				id = 'songProgress',
+				id = 'trackProgress',
 				type = 'rectangle',
 				action = 'fill',
 				frame = {
@@ -248,9 +248,9 @@ function obj:setPlayerMenus()
 				fillColor = { ['hex'] = obj.player.color }
 			},
 			{
-				id = 'songText',
+				id = 'trackText',
 				type = 'text',
-				text = newSongString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
+				text = newTrackString:gsub(' ', ' '), -- replace 'normal space' character with 'en space'
 				textSize = textSize,
 				textLineBreak = textLineBreak,
 				textColor = { ['hex'] = textColor },
