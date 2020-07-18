@@ -9,7 +9,7 @@ function songString(artist, track)
   return artist .. ' - ' .. '"' .. track .. '"'
 end
 
-function getCurrentPlayerState()
+function obj:getCurrentPlayerState()
 	playbackState = obj.player.module:getPlaybackState()
 	workingStateString = 'paused'
 	if playbackState == obj.player.module.state_paused then
@@ -168,19 +168,19 @@ end
 function obj:setPlayerMenus()
 	obj:updateCurrentTrackInfo()
 	obj:updateMiniPlayer()
-	if obj.isDormant == true then
-		obj.playerControlMenu:setIcon(nil)
-		obj.playerTitleMenu:setIcon(nil)
+	if obj.player.isDormant == true then
+		obj.menus.controlMenu:setIcon(nil)
+		obj.menus.titleMenu:setIcon(nil)
 		obj.currentTrack.albumArt = nil
 		obj:updateMiniPlayer()
 		do return end
 	end
-	currentState = getCurrentPlayerState()
+	currentState = obj:getCurrentPlayerState()
 
 	if currentState == 'playing' then
-    obj.playerControlMenu:setIcon(iconPause, true)
+    obj.menus.controlMenu:setIcon(iconPause, true)
 	else
-		obj.playerControlMenu:setIcon(iconPlay, true)
+		obj.menus.controlMenu:setIcon(iconPlay, true)
 	end
 
 	if obj.currentTrack.artist and obj.currentTrack.name then
@@ -258,7 +258,7 @@ function obj:setPlayerMenus()
 				frame = { x = '0%', y = textVerticalOffset, h = '100%', w = '100%' }
 			})
 
-		obj.playerTitleMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
+		obj.menus.titleMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
   end
 end
 
@@ -445,7 +445,7 @@ function obj:updateMiniPlayer()
 		)
 	end
 
-	if obj.isDormant and obj.miniPlayer then
+	if obj.player.isDormant and obj.miniPlayer then
 		obj.miniPlayer:hide()
 		return
 	end
@@ -453,7 +453,7 @@ function obj:updateMiniPlayer()
 	obj.miniPlayer.miniPlayerImage.image = obj.currentTrack.albumArt
 	obj.miniPlayer.miniPlayerProgressBar.frame.w = round(obj.currentTrack.position / obj.currentTrack.duration * 100, 2) .. '%'
 	actionIcon = hs.image.imageFromName(hs.image.systemImageNames.TouchBarPlayTemplate)
-	if getCurrentPlayerState() == 'playing' then
+	if obj:getCurrentPlayerState() == 'playing' then
 		actionIcon = hs.image.imageFromName(hs.image.systemImageNames.TouchBarPauseTemplate)
 	end
 	obj.miniPlayer.miniPlayerActionIcon.image = actionIcon
@@ -469,8 +469,8 @@ function obj:toggleMiniPlayer()
 end
 
 function obj:unloadPlayerMenus()
-  obj.playerControlMenu:setIcon(nil)
-  obj.playerTitleMenu:setIcon(nil)
+  obj.menus.controlMenu:setIcon(nil)
+  obj.menus.titleMenu:setIcon(nil)
   if obj.currentTrackProgressBar then
     obj.currentTrackProgressBar:delete()
   end
@@ -481,12 +481,12 @@ function obj:playerCheck()
 		obj.timer:stop()
 	end
 	obj.timer = hs.timer.doUntil(function()
-		return obj.isDormant
+		return obj.player.isDormant
 	end, function()
-		if getCurrentPlayerState() == 'playing' then
-			obj.lastTimePlayed = os.time()
+		if obj:getCurrentPlayerState() == 'playing' then
+			obj.player.lastTimePlayed = os.time()
 		end
-		obj.isDormant = (os.time() - obj.lastTimePlayed) > 5 * 60
+		obj.player.isDormant = (os.time() - obj.player.lastTimePlayed) > 5 * 60
 		obj:setPlayerMenus()
 	end, 4)
 end
@@ -527,45 +527,41 @@ function obj:init()
 		}
 	end
 
-  self.showNotifications = true
+	self.player.lastState = nil
+	self.player.isDormant = false
+	self.player.lastTimePlayed = os.time()
 
-  self.playerTitleMenu = hs.menubar.new():setClickCallback(obj.toggleMiniPlayer)
-  self.playerControlMenu = hs.menubar.new():setClickCallback(obj.player.module.playpause)
-
-  self.playerMenu = hs.menubar.new()
-    :setClickCallback(obj.togglePlayer)
-		:setIcon(self.player.icon, false)
+	self.menus = {
+		titleMenu = hs.menubar.new():setClickCallback(obj.toggleMiniPlayer),
+		controlMenu = hs.menubar.new():setClickCallback(obj.player.module.playpause),
+		playerMenu = hs.menubar.new():setClickCallback(obj.togglePlayer):setIcon(self.player.icon, false)
+	}
 
 	self.miniPlayer = nil
-
-	self.isDormant = false
-	self.lastTimePlayed = os.time()
-	self.lastState = nil
-	self.timer = nil
-
 	self.currentTrack = {}
+	self.timer = nil
 
   self.watcher = hs.application.watcher.new(function(name, event, app)
     if name == self.player.name then
       if event == 2 or event == hs.application.watcher.terminated then
         obj:unloadPlayerMenus()
-        obj.playerMenu:setIcon(self.icon, false)
+        obj.menus.playerMenu:setIcon(self.icon, false)
       end
     end
 	end)
 
 	self.distributednotifications = hs.distributednotifications.new(function(name, object, userInfo)
 		if userInfo['Player State'] == 'Playing' then
-			obj.isDormant = false
-			if obj.lastState ~= 'Paused' then
+			obj.player.isDormant = false
+			if obj.player.lastState ~= 'Paused' then
 				obj:getTrackAlbumArt()
 				obj:updateCurrentTrackInfo()
 				obj:notifyTrack()
 			end
-			obj.lastTimePlayed = os.time()
+			obj.player.lastTimePlayed = os.time()
 			obj:playerCheck()
 		end
-		obj.lastState = userInfo['Player State']
+		obj.player.lastState = userInfo['Player State']
 		obj:setPlayerMenus()
 	end, self.player.distributedPlaybackChangedString)
 
@@ -576,7 +572,7 @@ function obj:start()
 	self.watcher:start()
 	self.distributednotifications:start()
 
-	if getCurrentPlayerState() == 'playing' then
+	if obj:getCurrentPlayerState() == 'playing' then
 		obj:getTrackAlbumArt()
 		self:playerCheck()
 	end
