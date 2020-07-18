@@ -22,17 +22,19 @@ function getCurrentPlayerState()
 	return workingStateString
 end
 
-function getCurrentTrackInfo()
+function updateCurrentTrackInfo()
 	if obj.player.module:getCurrentTrack() then
-		return {
+		obj.currentTrack = {
 			artist = obj.player.module:getCurrentArtist(),
 			album = obj.player.module:getCurrentAlbum(),
 			name = obj.player.module:getCurrentTrack(),
-			duration = obj.player.module:getDuration(),
-			playerPosition = obj.player.module:getPosition()
+			duration = obj.player.module:getDuration() or 300,
+			position = obj.player.module:getPosition(),
+			albumArt = obj.currentTrack.albumArt
 		}
+	else
+		obj.currentTrack = {}
 	end
-	return {}
 end
 
 function obj:spotifyGetCode(code)
@@ -177,37 +179,31 @@ function obj:setPlayerMenus()
 		obj.playerControlMenu:setIcon(iconPlay, true)
 	end
 
-	currentTrack = getCurrentTrackInfo()
-	if currentTrack.artist and currentTrack.name then
+	updateCurrentTrackInfo()
 
-		workingArtist = currentTrack.artist
+	if obj.currentTrack.artist and obj.currentTrack.name then
+
+		workingArtist = obj.currentTrack.artist
 		if not workingArtist or string.len(workingArtist) < 1 then
-			workingArtist = currentTrack.album
+			workingArtist = obj.currentTrack.album
 		end
-		newSongString = songString(workingArtist, currentTrack.name)
-    obj.currentSongPosition = currentTrack.playerPosition
+		newSongString = songString(workingArtist, obj.currentTrack.name)
 
-		if currentTrack.duration ~= nil then
-			obj.currentSongDuration = currentTrack.duration
-		else
-			obj.currentSongDuration = 300
-		end
-
-		currentSongPositionPercentage = obj.currentSongPosition / obj.currentSongDuration
+		currentTrackPositionPercentage = obj.currentTrack.position / obj.currentTrack.duration
 
 		timeCharacters = 0
 
 		timeString = ''
 		hasTrackInfo = true
 
-		if obj.currentSongDuration > 15 * 60 then -- if long, show time remaining
-			minutesRemaining = math.ceil((obj.currentSongDuration - obj.currentSongPosition) / 60)
+		if obj.currentTrack.duration > 15 * 60 then -- if long, show time remaining
+			minutesRemaining = math.ceil((obj.currentTrack.duration - obj.currentTrack.position) / 60)
 			timeString = ' [' .. minutesToClock(minutesRemaining, false, false) .. ']'
 			timeCharacters = timeCharacters + string.len(timeString)
 			newSongString = newSongString .. timeString
 		end
 
-		if currentTrack.artist == '' and currentTrack.name == '' then
+		if obj.currentTrack.artist == '' and obj.currentTrack.name == '' then
 			hasTrackInfo = false
 			newSongString = '📱' .. timeString
 		end
@@ -236,7 +232,7 @@ function obj:setPlayerMenus()
 			textColor = 'ffffff'
 		end
 
-		obj:updateMiniPlayer(currentTrack)
+		obj:updateMiniPlayer(obj.currentTrack)
 
 		obj.menubarCanvas = hs.canvas.new({ x = 0, y = 0, h = menubarHeight, w = barWidth })
 			:appendElements({
@@ -247,7 +243,7 @@ function obj:setPlayerMenus()
 					x = '0%',
 					y = menubarHeight - 2,
 					h = 2,
-					w = round(currentSongPositionPercentage * 100, 2) .. '%'
+					w = round(currentTrackPositionPercentage * 100, 2) .. '%'
 				},
 				fillColor = { ['hex'] = obj.player.color }
 			},
@@ -263,8 +259,6 @@ function obj:setPlayerMenus()
 			})
 
 		obj.playerTitleMenu:setIcon(obj.menubarCanvas:imageFromCanvas(), false)
-
-    obj.currentSong = newSongString
   end
 end
 
@@ -276,7 +270,7 @@ function obj:getSongAlbumArt()
 			workingImage = hs.image.imageFromURL(asObject)
 		end
 	elseif setupSetting('discogs_key') and setupSetting('discogs_secret') then
-		discogsURL = 'https://api.discogs.com/database/search?query=' .. urlencode(currentTrack.artist .. ' - ' .. currentTrack.album) .. '&per_page=1&page=1&key=' .. hs.settings.get('discogs_key') .. '&secret=' .. hs.settings.get('discogs_secret')
+		discogsURL = 'https://api.discogs.com/database/search?query=' .. urlencode(obj.currentTrack.artist .. ' - ' .. obj.currentTrack.album) .. '&per_page=1&page=1&key=' .. hs.settings.get('discogs_key') .. '&secret=' .. hs.settings.get('discogs_secret')
 		status, body, headers = hs.http.get(discogsURL)
 		if status == 200 then
 			json = hs.json.decode(body)
@@ -285,14 +279,14 @@ function obj:getSongAlbumArt()
 			end
 		end
 	end
-	obj.currentSongAlbumArt = workingImage
+	obj.currentTrack.albumArt = workingImage
 end
 
 
-function obj:notifyTrack(currentTrack)
-	workingArtist = currentTrack.artist
+function obj:notifyTrack()
+	workingArtist = obj.currentTrack.artist
 	if not workingArtist or string.len(workingArtist) < 1 then
-		workingArtist = currentTrack.album
+		workingArtist = obj.currentTrack.album
 	end
 
 	hs.notify.new(function()
@@ -300,10 +294,10 @@ function obj:notifyTrack(currentTrack)
 	end, {
 		hasActionButton = true,
 		actionButtonTitle = 'Open',
-		title = currentTrack.name,
+		title = obj.currentTrack.name,
 		subTitle = 'Artist: ' .. workingArtist,
-		informativeText = 'Album: ' .. currentTrack.album,
-		setIdImage = obj.currentSongAlbumArt,
+		informativeText = 'Album: ' .. obj.currentTrack.album,
+		setIdImage = obj.currentTrack.albumArt,
 		withdrawAfter = 2.5
 	}):send()
 end
@@ -364,7 +358,7 @@ function obj:updateMiniPlayer(activeTrack)
 			{
 				id = 'miniPlayerImage',
 				type = 'image',
-				image = obj.currentSongAlbumArt,
+				image = obj.currentTrack.albumArt,
 				imageAlpha = 0.25,
 				frame = {
 					x = 0,
@@ -457,8 +451,8 @@ function obj:updateMiniPlayer(activeTrack)
 		return
 	end
 
-	obj.miniPlayer.miniPlayerImage.image = obj.currentSongAlbumArt
-	obj.miniPlayer.miniPlayerProgressBar.frame.w = round(obj.currentSongPosition / obj.currentSongDuration * 100, 2) .. '%'
+	obj.miniPlayer.miniPlayerImage.image = obj.currentTrack.albumArt
+	obj.miniPlayer.miniPlayerProgressBar.frame.w = round(obj.currentTrack.position / obj.currentTrack.duration * 100, 2) .. '%'
 	actionIcon = hs.image.imageFromName(hs.image.systemImageNames.TouchBarPlayTemplate)
 	if getCurrentPlayerState() == 'playing' then
 		actionIcon = hs.image.imageFromName(hs.image.systemImageNames.TouchBarPauseTemplate)
@@ -478,8 +472,8 @@ end
 function obj:unloadPlayerMenus()
   obj.playerControlMenu:setIcon(nil)
   obj.playerTitleMenu:setIcon(nil)
-  if obj.currentSongProgressBar then
-    obj.currentSongProgressBar:delete()
+  if obj.currentTrackProgressBar then
+    obj.currentTrackProgressBar:delete()
   end
 end
 
@@ -550,10 +544,7 @@ function obj:init()
 	self.lastState = nil
 	self.timer = nil
 
-	self.currentSong = ''
-  self.currentSongDuration = 0
-	self.currentSongPosition = 0
-	self.currentSongAlbumArt = nil
+	self.currentTrack = {}
 
   self.watcher = hs.application.watcher.new(function(name, event, app)
     if name == self.player.name then
@@ -569,7 +560,8 @@ function obj:init()
 			obj.isDormant = false
 			if obj.lastState ~= 'Paused' then
 				obj:getSongAlbumArt()
-				obj:notifyTrack(getCurrentTrackInfo())
+				updateCurrentTrackInfo()
+				obj:notifyTrack()
 			end
 			obj.lastTimePlayed = os.time()
 			obj:playerCheck()
