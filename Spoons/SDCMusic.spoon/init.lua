@@ -471,9 +471,6 @@ end
 function obj:unloadPlayerMenus()
   obj.menus.controlMenu:setIcon(nil)
   obj.menus.titleMenu:setIcon(nil)
-  if obj.currentTrackProgressBar then
-    obj.currentTrackProgressBar:delete()
-  end
 end
 
 function obj:playerCheck()
