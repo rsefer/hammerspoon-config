@@ -39,7 +39,11 @@ function obj:toggleTimer()
     obj:stop()
   else
 		obj:timerReset()
-		obj:showChooser()
+		if obj.clientChooser:isVisible() then
+			obj.clientChooser:hide()
+		else
+			obj.clientChooser:show()
+		end
   end
 end
 
@@ -53,10 +57,6 @@ function obj:timerReset()
 	obj.timerCounter = hs.timer.doEvery(60, function()
 		updateTimeElapsed()
 	end):stop()
-end
-
-function obj:showChooser()
-	obj.clientChooser:show()
 end
 
 function obj:getClients()
@@ -89,7 +89,7 @@ end
 function obj:logTime(timeMinutes)
 	if not timeMinutes then
 		obj.isManualLog = true
-		obj:showChooser()
+		obj.clientChooser:show()
 		return true
 	end
 	name = obj.activeClient.name:gsub('%W', '')
