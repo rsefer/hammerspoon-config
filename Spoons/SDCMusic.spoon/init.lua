@@ -309,7 +309,7 @@ function obj:updateMiniPlayer()
 	if not obj.miniPlayer then
 		obj.miniPlayer = hs.canvas.new({
 			x = hs.screen.primaryScreen():frame().w - dimension - gridMargin.x,
-			y = hs.screen.primaryScreen():frame().h - dimension - gridMargin.y,
+			y = hs.screen.primaryScreen():frame().h - dimension,
 			w = dimension,
 			h = dimension
 		})
