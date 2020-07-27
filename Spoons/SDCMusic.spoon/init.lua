@@ -550,8 +550,8 @@ function obj:init()
 	self.distributednotifications = hs.distributednotifications.new(function(name, object, userInfo)
 		if userInfo['Player State'] == 'Playing' then
 			obj.player.isDormant = false
+			obj:getTrackAlbumArt()
 			if obj.player.lastState ~= 'Paused' then
-				obj:getTrackAlbumArt()
 				obj:updateCurrentTrackInfo()
 				obj:notifyTrack()
 			end
