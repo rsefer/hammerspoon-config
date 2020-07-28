@@ -315,7 +315,16 @@ function obj:updateMiniPlayer()
 		})
 		:alpha(1)
 		:mouseCallback(function(canvas, message, id, x, y)
-			if id == 'miniPlayerActionCircle' then
+			if id == 'miniPlayerAppIcon' then
+				if message == 'mouseUp' then
+					obj.miniPlayer:hide()
+					obj:togglePlayer()
+				elseif message == 'mouseEnter' then
+					obj.miniPlayer.miniPlayerAppIcon.imageAlpha = 0.75
+				elseif message == 'mouseExit' then
+					obj.miniPlayer.miniPlayerAppIcon.imageAlpha = 0.25
+				end
+			elseif id == 'miniPlayerActionCircle' then
 				if message == 'mouseUp' then
 					obj.player.module.playpause()
 				elseif message == 'mouseEnter' then
@@ -409,6 +418,20 @@ function obj:updateMiniPlayer()
 					h = 4
 				},
 				fillColor = { ['hex'] = obj.player.color }
+			},
+			{
+				id = 'miniPlayerAppIcon',
+				type = 'image',
+				image = obj.player.icon,
+				imageAlpha = 0.25,
+				frame = {
+					x = dimension * .05,
+					y = dimension * .05,
+					w = dimension / 8,
+					h = dimension / 8
+				},
+				trackMouseUp = true,
+				trackMouseEnterExit = true
 			},
 			{
 				id = 'miniPlayerActionCircle',
