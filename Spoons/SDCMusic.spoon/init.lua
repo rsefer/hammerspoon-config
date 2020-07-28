@@ -339,6 +339,26 @@ function obj:updateMiniPlayer()
 				elseif message == 'mouseExit' then
 					obj.miniPlayer.miniPlayerNextIcon.imageAlpha = 0.5
 				end
+			elseif id == 'miniPlayerRWIcon' then
+				if message == 'mouseUp' then
+					obj.player.module.rw()
+					obj.player.module.rw()
+					obj.player.module.rw()
+				elseif message == 'mouseEnter' then
+					obj.miniPlayer.miniPlayerRWIcon.imageAlpha = 1
+				elseif message == 'mouseExit' then
+					obj.miniPlayer.miniPlayerRWIcon.imageAlpha = 0.5
+				end
+			elseif id == 'miniPlayerFFIcon' then
+				if message == 'mouseUp' then
+					obj.player.module.ff()
+					obj.player.module.ff()
+					obj.player.module.ff()
+				elseif message == 'mouseEnter' then
+					obj.miniPlayer.miniPlayerFFIcon.imageAlpha = 1
+				elseif message == 'mouseExit' then
+					obj.miniPlayer.miniPlayerFFIcon.imageAlpha = 0.5
+				end
 			end
 		end)
 		:appendElements(
@@ -438,6 +458,32 @@ function obj:updateMiniPlayer()
 					y = dimension * .375,
 					w = dimension / 4,
 					h = dimension / 4
+				},
+				trackMouseUp = true,
+				trackMouseEnterExit = true
+			},
+			{
+				id = 'miniPlayerRWIcon',
+				type = 'image',
+				image = hs.image.imageFromName(hs.image.systemImageNames.TouchBarSkipBack15SecondsTemplate),
+				frame = {
+					x = dimension * .175,
+					y = dimension * .625,
+					w = dimension / 6,
+					h = dimension / 6
+				},
+				trackMouseUp = true,
+				trackMouseEnterExit = true
+			},
+			{
+				id = 'miniPlayerFFIcon',
+				type = 'image',
+				image = hs.image.imageFromName(hs.image.systemImageNames.TouchBarSkipAhead15SecondsTemplate),
+				frame = {
+					x = dimension * .675,
+					y = dimension * .625,
+					w = dimension / 6,
+					h = dimension / 6
 				},
 				trackMouseUp = true,
 				trackMouseEnterExit = true
