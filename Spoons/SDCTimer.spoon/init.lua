@@ -158,12 +158,25 @@ function obj:init()
 		:width(30)
 		:rows(6)
 		:searchSubText(true)
-		:attachedToolbar(hs.webview.toolbar.new('clientChooserToolbar', {{
-			id = 'clientRefresh',
-			label = 'Refresh',
-			selectable = true,
-			fn = function() obj.clientChooser:choices(obj:getClients()) end
-		}}
+		:attachedToolbar(hs.webview.toolbar.new('clientChooserToolbar', {
+			{
+				id = 'clientRefresh',
+				label = 'Refresh',
+				selectable = true,
+				fn = function() obj.clientChooser:choices(obj:getClients()) end
+			},
+			{
+				id = 'staticLog',
+				label = 'Log',
+				selectable = true,
+				fn = function()
+					if obj.clientChooser:isVisible() then
+						obj.clientChooser:hide()
+					end
+					obj:logTime()
+				end
+			}
+		}
 		):sizeMode('small'):displayMode('label'))
 		:choices(self:getClients())
 	self.isManualLog = false
