@@ -8,23 +8,6 @@ function obj:clearHistory()
 	hs.settings.set('pasteboardHistory', obj.pasteboardHistory)
 end
 
-function obj:storeCopy()
-	now = hs.pasteboard.changeCount()
-	if now > obj.lastPasteboardChange then
-		table.insert(obj.pasteboardHistory, 1, {
-			content = hs.pasteboard.getContents() or '',
-			timestamp = os.time(),
-			contentTypes = hs.pasteboard.allContentTypes()[1],
-			typesAvailable = hs.pasteboard.typesAvailable()
-		})
-		while (tablelength(obj.pasteboardHistory) >= 10) do
-			table.remove(obj.pasteboardHistory, tablelength(obj.pasteboardHistory))
-		end
-		hs.settings.set('pasteboardHistory', obj.pasteboardHistory)
-		obj.lastPasteboardChange = now
-	end
-end
-
 function obj:populateChooser()
 	titleMaxLength = 70
 	ellipsesString = ' […]'
@@ -83,13 +66,11 @@ function obj:init()
 
 	self.chooserWidthPercentage = 35
 	self.pasteboardHistory = hs.settings.get('pasteboardHistory')
-	self.lastPasteboardChange = hs.pasteboard.changeCount()
 
 	self.chooser = hs.chooser.new(function(choice)
 		if not choice then return end
 		hs.pasteboard.writeObjects(choice.fullText)
 		hs.eventtap.keyStroke('cmd', 'v')
-		obj.lastPasteboardChange = hs.pasteboard.changeCount()
 		choiceIndex = nil
 		choiceItem = nil
 		for k, item in pairs(obj.pasteboardHistory) do
@@ -113,7 +94,18 @@ function obj:init()
 		}}):sizeMode('small'):displayMode('label'))
 		:width(self.chooserWidthPercentage)
 
-	self.timer = hs.timer.new(1, self.storeCopy)
+	self.watcher = hs.pasteboard.watcher.new(function(content)
+		table.insert(obj.pasteboardHistory, 1, {
+			content = content or '',
+			timestamp = os.time(),
+			contentTypes = hs.pasteboard.allContentTypes()[1],
+			typesAvailable = hs.pasteboard.typesAvailable()
+		})
+		while (tablelength(obj.pasteboardHistory) >= 10) do
+			table.remove(obj.pasteboardHistory, tablelength(obj.pasteboardHistory))
+		end
+		hs.settings.set('pasteboardHistory', obj.pasteboardHistory)
+	end)
 
 	self:populateChooser()
 
@@ -122,11 +114,11 @@ function obj:init()
 end
 
 function obj:start()
-	obj.timer:start()
+	obj.watcher:start()
 end
 
 function obj:stop()
-	obj.timer:stop()
+	obj.watcher:stop()
 end
 
 return obj
