@@ -565,9 +565,19 @@ function obj:togglePlayer()
   end
 end
 
+function obj:playerRewind()
+	obj.player.module.rw()
+end
+
+function obj:playerFastForward()
+	obj.player.module.ff()
+end
+
 function obj:bindHotkeys(mapping)
   hs.spoons.bindHotkeysToSpec({
-		spotifySwitchPlayer = hs.fnutils.partial(self.spotifySwitchPlayer, self)
+		spotifySwitchPlayer = hs.fnutils.partial(self.spotifySwitchPlayer, self),
+		playerRewind = hs.fnutils.partial(self.playerRewind, self),
+		playerFastForward = hs.fnutils.partial(self.playerFastForward, self)
   }, mapping)
 end
 

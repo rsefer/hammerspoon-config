@@ -211,7 +211,9 @@ hs.spoons.use('SDCTimer', {
 -- hs.spoons.use('SDCOvercast')
 hs.spoons.use('SDCMusic', {
 	hotkeys = {
-		spotifySwitchPlayer = {hs.settings.get('hotkeyCombo'), 'D'}
+		spotifySwitchPlayer = {hs.settings.get('hotkeyCombo'), 'D'},
+		playerRewind = {hs.settings.get('hotkeyCombo'), 'pagedown'},
+		playerFastForward = {hs.settings.get('hotkeyCombo'), 'pageup'},
 	},
 	fn = function(thisSpoon)
 		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad*', nil, function()
