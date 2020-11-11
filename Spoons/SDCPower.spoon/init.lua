@@ -105,7 +105,7 @@ end
 
 function obj:init()
 
-	self.batteryMenu = hs.menubar:new()
+	-- self.batteryMenu = hs.menubar:new()
 	self.batteryPowerSource = hs.battery.powerSource()
 
 	self.batteryWatcher = hs.battery.watcher.new(function()
@@ -117,7 +117,7 @@ function obj:init()
 			spoon.SDCWindows:toggleSecondaryMonitor(action)
 			obj.batteryPowerSource = hs.battery.powerSource()
 		end
-		obj:updateBatteryMenu()
+		-- obj:updateBatteryMenu()
 	end)
 
 	self.caffeinateScreenWatcher = hs.caffeinate.watcher.new(function(event)
@@ -134,7 +134,7 @@ end
 
 function obj:start()
 	obj.batteryWatcher:start()
-	obj:updateBatteryMenu()
+	-- obj:updateBatteryMenu()
 	obj.caffeinateScreenWatcher:start()
 end
 
