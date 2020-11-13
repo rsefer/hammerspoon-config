@@ -397,9 +397,9 @@ function obj:init()
 			obj:getTrackAlbumArt()
 			if obj.player.lastState ~= 'Paused' then
 				obj:updateCurrentTrackInfo()
-				obj:toggleNowPlaying()
-				hs.timer.doAfter(2, self.toggleNowPlaying)
-				-- obj:notifyTrack()
+				-- obj:toggleNowPlaying()
+				-- hs.timer.doAfter(2, self.toggleNowPlaying)
+				obj:notifyTrack()
 			end
 			obj.player.lastTimePlayed = os.time()
 			obj:playerCheck()
