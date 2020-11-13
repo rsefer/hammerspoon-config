@@ -167,12 +167,10 @@ end
 
 function obj:setPlayerMenus()
 	obj:updateCurrentTrackInfo()
-	obj:updateMiniPlayer()
 	if obj.player.isDormant == true then
 		obj.menus.controlMenu:setIcon(nil)
 		obj.menus.titleMenu:setIcon(nil)
 		obj.currentTrack.albumArt = nil
-		obj:updateMiniPlayer()
 		do return end
 	end
 	currentState = obj:getCurrentPlayerState()
@@ -301,240 +299,8 @@ function obj:notifyTrack()
 	}):send()
 end
 
-function obj:updateMiniPlayer()
-
-	dimension = 200
-	gridMargin = spoon.SDCWindows:getScreenMargins(hs.screen.primaryScreen())
-
-	if not obj.miniPlayer then
-		obj.miniPlayer = hs.canvas.new({
-			x = hs.screen.primaryScreen():frame().w - dimension - gridMargin.x,
-			y = hs.screen.primaryScreen():frame().h - dimension,
-			w = dimension,
-			h = dimension
-		})
-		:alpha(1)
-		:mouseCallback(function(canvas, message, id, x, y)
-			if id == 'miniPlayerAppIcon' then
-				if message == 'mouseUp' then
-					obj.miniPlayer:hide()
-					obj:togglePlayer()
-				elseif message == 'mouseEnter' then
-					obj.miniPlayer.miniPlayerAppIcon.imageAlpha = 0.75
-				elseif message == 'mouseExit' then
-					obj.miniPlayer.miniPlayerAppIcon.imageAlpha = 0.25
-				end
-			elseif id == 'miniPlayerActionCircle' then
-				if message == 'mouseUp' then
-					obj.player.module.playpause()
-				elseif message == 'mouseEnter' then
-					obj.miniPlayer.miniPlayerActionCircle.fillColor.alpha = 0.75
-				elseif message == 'mouseExit' then
-					obj.miniPlayer.miniPlayerActionCircle.fillColor.alpha = 0.25
-				end
-			elseif id == 'miniPlayerPrevIcon' then
-				if message == 'mouseUp' then
-					obj.player.module.previous()
-				elseif message == 'mouseEnter' then
-					obj.miniPlayer.miniPlayerPrevIcon.imageAlpha = 1
-				elseif message == 'mouseExit' then
-					obj.miniPlayer.miniPlayerPrevIcon.imageAlpha = 0.5
-				end
-			elseif id == 'miniPlayerNextIcon' then
-				if message == 'mouseUp' then
-					obj.player.module.next()
-				elseif message == 'mouseEnter' then
-					obj.miniPlayer.miniPlayerNextIcon.imageAlpha = 1
-				elseif message == 'mouseExit' then
-					obj.miniPlayer.miniPlayerNextIcon.imageAlpha = 0.5
-				end
-			elseif id == 'miniPlayerRWIcon' then
-				if message == 'mouseUp' then
-					obj.player.module.rw()
-					obj.player.module.rw()
-					obj.player.module.rw()
-				elseif message == 'mouseEnter' then
-					obj.miniPlayer.miniPlayerRWIcon.imageAlpha = 1
-				elseif message == 'mouseExit' then
-					obj.miniPlayer.miniPlayerRWIcon.imageAlpha = 0.5
-				end
-			elseif id == 'miniPlayerFFIcon' then
-				if message == 'mouseUp' then
-					obj.player.module.ff()
-					obj.player.module.ff()
-					obj.player.module.ff()
-				elseif message == 'mouseEnter' then
-					obj.miniPlayer.miniPlayerFFIcon.imageAlpha = 1
-				elseif message == 'mouseExit' then
-					obj.miniPlayer.miniPlayerFFIcon.imageAlpha = 0.5
-				end
-			end
-		end)
-		:appendElements(
-			{
-				id = 'miniPlayerBackground',
-				type = 'rectangle',
-				action = 'fill',
-				frame = {
-					x = 0,
-					y = 0,
-					w = dimension,
-					h = dimension
-				},
-				fillColor = { ['hex'] = '#000' }
-			},
-			{
-				id = 'miniPlayerImage',
-				type = 'image',
-				image = obj.currentTrack.albumArt,
-				imageAlpha = 0.25,
-				frame = {
-					x = 0,
-					y = 0,
-					w = dimension,
-					h = dimension
-				}
-			},
-			{
-				id = 'miniPlayerOverlay',
-				type = 'rectangle',
-				action = 'fill',
-				frame = {
-					x = 0,
-					y = 0,
-					w = dimension,
-					h = dimension
-				},
-				fillColor = { ['hex'] = '#fff', ['alpha'] = 0.25 }
-			},
-			{
-				id = 'miniPlayerProgressBar',
-				type = 'rectangle',
-				action = 'fill',
-				frame = {
-					x = 0,
-					y = dimension - 4,
-					w = dimension,
-					h = 4
-				},
-				fillColor = { ['hex'] = obj.player.color }
-			},
-			{
-				id = 'miniPlayerAppIcon',
-				type = 'image',
-				image = obj.player.icon,
-				imageAlpha = 0.25,
-				frame = {
-					x = dimension * .05,
-					y = dimension * .05,
-					w = dimension / 8,
-					h = dimension / 8
-				},
-				trackMouseUp = true,
-				trackMouseEnterExit = true
-			},
-			{
-				id = 'miniPlayerActionCircle',
-				type = 'circle',
-				action = 'fill',
-				radius = dimension / 8,
-				center = {
-					x = '50%',
-					y = '50%'
-				},
-				fillColor = { ['hex'] = '#fff', ['alpha'] = 0.25 },
-				trackMouseUp = true,
-				trackMouseEnterExit = true
-			},
-			{
-				id = 'miniPlayerActionIcon',
-				type = 'image',
-				image = nil,
-				compositeRule = 'sourceOut',
-				frame = {
-					x = dimension * .375,
-					y = dimension * .375,
-					w = dimension / 4,
-					h = dimension / 4
-				},
-				fillColor = { ['hex'] = obj.player.color }
-			},
-			{
-				id = 'miniPlayerPrevIcon',
-				type = 'image',
-				image = hs.image.imageFromName(hs.image.systemImageNames.TouchBarRewindTemplate),
-				frame = {
-					x = dimension * .10,
-					y = dimension * .375,
-					w = dimension / 4,
-					h = dimension / 4
-				},
-				trackMouseUp = true,
-				trackMouseEnterExit = true
-			},
-			{
-				id = 'miniPlayerNextIcon',
-				type = 'image',
-				image = hs.image.imageFromName(hs.image.systemImageNames.TouchBarFastForwardTemplate):template(true),
-				frame = {
-					x = dimension * .65,
-					y = dimension * .375,
-					w = dimension / 4,
-					h = dimension / 4
-				},
-				trackMouseUp = true,
-				trackMouseEnterExit = true
-			},
-			{
-				id = 'miniPlayerRWIcon',
-				type = 'image',
-				image = hs.image.imageFromName(hs.image.systemImageNames.TouchBarSkipBack15SecondsTemplate),
-				frame = {
-					x = dimension * .175,
-					y = dimension * .625,
-					w = dimension / 6,
-					h = dimension / 6
-				},
-				trackMouseUp = true,
-				trackMouseEnterExit = true
-			},
-			{
-				id = 'miniPlayerFFIcon',
-				type = 'image',
-				image = hs.image.imageFromName(hs.image.systemImageNames.TouchBarSkipAhead15SecondsTemplate),
-				frame = {
-					x = dimension * .675,
-					y = dimension * .625,
-					w = dimension / 6,
-					h = dimension / 6
-				},
-				trackMouseUp = true,
-				trackMouseEnterExit = true
-			}
-		)
-	end
-
-	if obj.player.isDormant and obj.miniPlayer then
-		obj.miniPlayer:hide()
-		return
-	end
-
-	obj.miniPlayer.miniPlayerImage.image = obj.currentTrack.albumArt
-	obj.miniPlayer.miniPlayerProgressBar.frame.w = round(obj.currentTrack.position / obj.currentTrack.duration * 100, 2) .. '%'
-	actionIcon = hs.image.imageFromName(hs.image.systemImageNames.TouchBarPlayTemplate)
-	if obj:getCurrentPlayerState() == 'playing' then
-		actionIcon = hs.image.imageFromName(hs.image.systemImageNames.TouchBarPauseTemplate)
-	end
-	obj.miniPlayer.miniPlayerActionIcon.image = actionIcon
-
-end
-
-function obj:toggleMiniPlayer()
-	if obj.miniPlayer:isShowing() then
-		obj.miniPlayer:hide()
-	else
-		obj.miniPlayer:show()
-	end
+function obj:toggleNowPlaying()
+	hs.osascript.applescript('tell application "System Events" to tell process "ControlCenter" to tell menu bar 1 to click (menu bar item "Now Playing")')
 end
 
 function obj:unloadPlayerMenus()
@@ -608,12 +374,11 @@ function obj:init()
 	self.player.lastTimePlayed = os.time()
 
 	self.menus = {
-		titleMenu = hs.menubar.new():setClickCallback(obj.toggleMiniPlayer),
+		titleMenu = hs.menubar.new():setClickCallback(obj.toggleNowPlaying),
 		controlMenu = hs.menubar.new():setClickCallback(obj.player.module.playpause),
 		playerMenu = hs.menubar.new():setClickCallback(obj.togglePlayer):setIcon(self.player.icon, false)
 	}
 
-	self.miniPlayer = nil
 	self.currentTrack = {}
 	self.timer = nil
 
