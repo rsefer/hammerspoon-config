@@ -283,14 +283,28 @@ function obj:toggleSecondaryMonitor(action)
 		action = 'on'
 	end
 
-	if setupSetting('secondary_monitor_plug_ip') then
-		local khstring = 'kasa-helper ' .. hs.settings.get('secondary_monitor_plug_ip') .. ' ' .. action
-		hs.execute(khstring, true)
-
+	status, data, headers = hs.http.asyncPost(hs.settings.get('homeassistant_api_endpoint') .. 'services/switch/turn_' .. action, '{"entity_id":"' .. 'switch.bedroom_secondary_monitor_mss110_main_channel' .. '"}', {
+		['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
+		['Content-Type'] = 'application/json'
+	}, function(cstatus, cbody, cheaders)
 		if action == 'on' then
 			self:resetAllApps()
 		end
-	end
+	end)
+
+	-- if setupSetting('meross_username') and setupSetting('meross_password') and setupSetting('meross_secondary_monitor_name') then
+	-- 	local khstring = 'meross-helper ' .. setupSetting('meross_username') .. ' ' .. setupSetting('meross_password') .. ' ' .. setupSetting('meross_secondary_monitor_name') .. ' ' .. action
+	-- 	print('trying')
+	-- 	output, status, type, rc = hs.execute(khstring, true)
+	-- 	print(output)
+	-- 	print(status)
+	-- 	print(type)
+	-- 	print(rc)
+
+	-- 	if action == 'on' then
+	-- 		self:resetAllApps()
+	-- 	end
+	-- end
 end
 
 function obj:getAppLayoutSettings(appName)
