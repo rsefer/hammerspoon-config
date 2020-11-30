@@ -25,12 +25,12 @@ end
 function obj:updateCurrentTrackInfo()
 	if obj.player.module:getCurrentTrack() then
 		obj.currentTrack = {
-			artist = obj.player.module:getCurrentArtist(),
-			album = obj.player.module:getCurrentAlbum(),
-			name = obj.player.module:getCurrentTrack(),
+			artist = obj.player.module:getCurrentArtist() or '',
+			album = obj.player.module:getCurrentAlbum() or '',
+			name = obj.player.module:getCurrentTrack() or '',
 			duration = obj.player.module:getDuration() or 300,
-			position = obj.player.module:getPosition(),
-			albumArt = obj.currentTrack.albumArt
+			position = obj.player.module:getPosition() or 0,
+			albumArt = obj.currentTrack.albumArt or ''
 		}
 	else
 		obj.currentTrack = {}
@@ -264,7 +264,7 @@ function obj:getTrackAlbumArt()
 	workingImage = hs.image.imageFromAppBundle(obj.player.app:bundleID())
 	if obj.player.name == 'Spotify' then
 		asBool, asObject, asDesc = hs.osascript.applescript('tell application "Spotify" to return artwork url of the current track')
-		if string.len(asObject) > 0 then
+		if asObject and string.len(asObject) > 0 then
 			workingImage = hs.image.imageFromURL(asObject)
 		end
 	elseif setupSetting('discogs_key') and setupSetting('discogs_secret') then
@@ -281,10 +281,12 @@ function obj:getTrackAlbumArt()
 end
 
 function obj:notifyTrack()
-	workingArtist = obj.currentTrack.artist
+	workingArtist = obj.currentTrack.artist or ''
 	if not workingArtist or string.len(workingArtist) < 1 then
-		workingArtist = obj.currentTrack.album
+		workingArtist = obj.currentTrack.album or ''
 	end
+
+	if not obj.currentTrack then return end
 
 	hs.notify.new(function()
 		hs.application.launchOrFocus(obj.player.name)
