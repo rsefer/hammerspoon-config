@@ -6,7 +6,7 @@ hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
 			{
-				apps = { 'Google Chrome', 'Safari', 'Firefox', 'Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman' },
+				apps = { 'Google Chrome', 'Brave', 'Safari', 'Firefox', 'Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -228,15 +228,15 @@ hs.spoons.use('SDCWorkspace', {
 		workspaces = {
 			{
 				title = '⌨️ Code',
-				show = { 'Google Chrome', 'GitHub Desktop', 'Visual Studio Code', 'Terminal', 'TextEdit' },
+				show = { 'Google Chrome', 'Brave', 'GitHub Desktop', 'Visual Studio Code', 'Terminal', 'TextEdit' },
 				focus = { 'Visual Studio Code' },
 				hide = { 'Tweetbot', 'Messages', 'Slack' },
 				quit = {}
 			},
 			{
 				title = '😁 Browse',
-				show = { 'Google Chrome', 'Tweetbot' },
-				focus = { 'Google Chrome' },
+				show = { 'Google Chrome', 'Brave', 'Tweetbot' },
+				focus = { 'Google Chrome', 'Brave' },
 				hide = { 'GitHub Desktop', 'Code', 'Terminal' },
 				quit = {}
 			}
