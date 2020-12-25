@@ -54,7 +54,7 @@ hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 	end
 	alertSize = nil
 	label = nil
-	sizeLaptop = { width = 2048, height = 1280, scale = 2 }
+	sizeLaptop = { width = 1536, height = 960, scale = 2 }
 	sizeDesktop = { width = 1792, height = 1120, scale = 2 }
 	if value == 'deskWithiPad' then
 		label = 'Desk with iPad'
