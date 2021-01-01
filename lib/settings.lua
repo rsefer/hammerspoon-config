@@ -13,7 +13,7 @@ hs.settings.set('windowGridFull', {
 })
 hs.settings.set('windowMargin', {
 	large = 12,
-	medium = 12,
+	medium = 6,
 	small = 0
 })
 
