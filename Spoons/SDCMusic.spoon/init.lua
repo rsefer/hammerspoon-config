@@ -216,7 +216,7 @@ function obj:setPlayerMenus()
 		titleWidth = string.len(newTrackString) * fontCharacterWidth
 		maxWidth = 375
 		if hs.settings.get('deskSizeClass') == 'large' then
-			maxWidth = 500
+			maxWidth = 400
 		end
 		if titleWidth > maxWidth then
 			barWidth = maxWidth
