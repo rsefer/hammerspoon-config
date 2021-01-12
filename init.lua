@@ -13,12 +13,11 @@ require('lib/settings')
 require('lib/icons')
 
 local daysTarget = os.time({ year = 2021, month = 12, day = 3 })
-local daysSuffix = ' days to go'
 local daysMenubar = hs.menubar.new():setClickCallback(function()
 	hs.execute('say "yay!"', true)
 end)
 function setDaysTitle()
-	daysMenubar:setTitle(math.floor(os.difftime(daysTarget, os.time()) / (24 * 60 * 60)) .. ' days to go 👰‍♀️🤵')
+	daysMenubar:setTitle(math.floor(os.difftime(daysTarget, os.time()) / (24 * 60 * 60)) .. ' days 👰‍♀️🤵')
 end
 setDaysTitle()
 local daysTimer = hs.timer.doEvery(60 * 60 * 6, setDaysTitle)
