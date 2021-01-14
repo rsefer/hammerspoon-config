@@ -20,7 +20,7 @@ function setDaysTitle()
 	daysMenubar:setTitle(math.floor(os.difftime(daysTarget, os.time()) / (24 * 60 * 60)) .. ' days 👰‍♀️🤵')
 end
 setDaysTitle()
-local daysTimer = hs.timer.doEvery(60 * 60 * 6, setDaysTitle)
+local daysTimer = hs.timer.doEvery(60 * 60, setDaysTitle)
 
 require('lib/spoons')
 require('lib/shortcuts')
