@@ -18,9 +18,10 @@ local daysMenubar = hs.menubar.new():setClickCallback(function()
 end)
 function setDaysTitle()
 	daysMenubar:setTitle(math.floor(os.difftime(daysTarget, os.time()) / (24 * 60 * 60)) .. ' days 👰‍♀️🤵')
+	print(os.time() .. ' updated time')
 end
 setDaysTitle()
-local daysTimer = hs.timer.doEvery(60 * 60, setDaysTitle)
+daysTimer = hs.timer.doEvery(60 * 5, setDaysTitle)
 
 require('lib/spoons')
 require('lib/shortcuts')
