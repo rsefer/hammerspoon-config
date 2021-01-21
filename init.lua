@@ -18,7 +18,6 @@ daysMenubar = hs.menubar.new():setClickCallback(function()
 end)
 function setDaysTitle()
 	daysMenubar:setTitle(math.floor(os.difftime(daysTarget, os.time()) / (24 * 60 * 60)) .. ' days 👰‍♀️🤵')
-	print(os.time() .. ' updated time')
 end
 setDaysTitle()
 daysTimer = hs.timer.doEvery(60 * 5, setDaysTitle)
