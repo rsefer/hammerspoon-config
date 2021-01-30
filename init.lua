@@ -12,7 +12,7 @@ require('lib/startup')
 require('lib/settings')
 require('lib/icons')
 
-daysTarget = os.time({ year = 2021, month = 12, day = 3 })
+daysTarget = os.time({ year = 2022, month = 5, day = 7 })
 daysMenubar = hs.menubar.new():setClickCallback(function()
 	hs.execute('say "yay!" -r 250', true)
 end)
