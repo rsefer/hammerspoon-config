@@ -6,7 +6,7 @@ hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
 			{
-				apps = { 'Google Chrome', 'Brave Browser', 'Safari', 'Firefox', 'Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman' },
+				apps = { 'Google Chrome', 'Brave Browser', 'Safari', 'Firefox', 'Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman', 'Basecamp 3' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
