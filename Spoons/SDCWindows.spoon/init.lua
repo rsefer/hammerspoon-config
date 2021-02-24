@@ -269,7 +269,7 @@ function obj:handleScreenChange()
 			hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_DOWN', false):post()
 		end
 	else
-		hs.settings.set('deskSizeClass', 'medium')
+		hs.settings.set('deskSizeClass', 'small')
 		if contains(screenNames, 'iPad') then
 			hs.settings.set('deskSetup', 'laptopWithiPad')
 		else
