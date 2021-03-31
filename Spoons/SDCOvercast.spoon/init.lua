@@ -89,7 +89,7 @@ function obj:init()
 
 	self.player = {
 		name = 'Overcast',
-		icon = hs.image.imageFromAppBundle('com.apple.Music'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') }),
+		icon = hs.image.imageFromPath(hs.spoons.scriptPath() .. 'images/overcast_orange.pdf'):setSize({ w = hs.settings.get('menuIconSize'), h = hs.settings.get('menuIconSize') }),
 		color = 'fc7e0f'
 	}
 
@@ -100,7 +100,7 @@ function obj:init()
 	self.menus = {
 		titleMenu = hs.menubar.new():setClickCallback(obj.toggleWebview),
 		controlMenu = hs.menubar.new():setClickCallback(obj.togglePlayPause),
-		playerMenu = hs.menubar.new():setClickCallback(obj.toggleWebview):setTitle('OC')
+		playerMenu = hs.menubar.new():setClickCallback(obj.toggleWebview):setIcon(self.player.icon, true)
 	}
 
 	self.currentTrack = {}
@@ -123,7 +123,7 @@ function obj:init()
       if message.body.page == 'home' or message.body.progress >= 1 then
         obj.menus.titleMenu:setIcon(nil)
         obj.menus.controlMenu:setIcon(nil)
-        obj.menus.playerMenu:setIcon(icon, true)
+        obj.menus.playerMenu:setIcon(obj.player.icon, false)
         if message.body.podcast ~= nil then
           local notification = hs.notify.new({ title = 'Overcast', subTitle = 'Finished playing ' .. message.body.podcast.name })
           notification:setIdImage(iconFull)
@@ -146,6 +146,7 @@ function obj:init()
 
 					obj.player.isPlaying = true
 
+					obj.menus.playerMenu:setIcon(obj.player.icon, false)
           obj.menus.controlMenu:setIcon(iconPause, true)
 
           -- if obj.hideSpotify then
