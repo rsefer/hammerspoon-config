@@ -118,3 +118,19 @@ function isHome()
 		return false
 	end
 end
+
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pagedown', function()
+	if spoon.SDCOvercast.player.isPlaying then
+		spoon.SDCOvercast:playerRewind()
+	elseif spoon.SDCMusic:getCurrentPlayerState() == 'playing' then
+		spoon.SDCMusic:playerRewind()
+	end
+end)
+
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pageup', function()
+	if spoon.SDCOvercast.player.isPlaying then
+		spoon.SDCOvercast:playerFastForward()
+	elseif spoon.SDCMusic:getCurrentPlayerState() == 'playing' then
+		spoon.SDCMusic:playerFastForward()
+	end
+end)
