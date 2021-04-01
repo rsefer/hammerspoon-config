@@ -15,6 +15,7 @@ end
 
 function obj:setPlayerMenus()
 	if obj.player.isDormant == true then
+		obj.overcastWebview:url(overcastWebviewHome)
 		obj.menus.controlMenu:setIcon(nil)
 		obj.menus.titleMenu:setIcon(nil)
 		obj.currentTrack.albumArt = nil
