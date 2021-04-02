@@ -146,6 +146,7 @@ function obj:init()
         if message.body.isPlaying == true then
 
 					obj.player.isPlaying = true
+					obj.player.isDormant = false
 
 					obj.menus.playerMenu:setIcon(obj.player.icon, false)
           obj.menus.controlMenu:setIcon(iconPause, true)
