@@ -36,7 +36,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Reminders', 'Slack' },
+				apps = { 'Reminders', 'Slack', 'Notes' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -51,7 +51,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'TextEdit', 'Notes' },
+				apps = { 'TextEdit' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
