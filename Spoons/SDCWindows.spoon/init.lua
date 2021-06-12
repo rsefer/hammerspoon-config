@@ -283,10 +283,13 @@ function obj:toggleSecondaryMonitor(action)
 		action = 'on'
 	end
 
-	status, data, headers = hs.http.asyncPost(hs.settings.get('homeassistant_api_endpoint') .. 'services/switch/turn_' .. action, '{"entity_id":"' .. 'switch.bedroom_secondary_monitor_mss110_main_channel' .. '"}', {
-		['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
-		['Content-Type'] = 'application/json'
-	}, function(cstatus, cbody, cheaders)
+	if action == 'on' then
+		webhook = hs.settings.get('homeassistant_webhook_turn_on_secondary_monitor')
+	else
+		webhook = hs.settings.get('homeassistant_webhook_turn_off_secondary_monitor')
+	end
+
+	status, data, headers = hs.http.asyncPost(webhook, '', {}, function(cstatus, cbody, cheaders)
 		if action == 'on' then
 			self:resetAllApps()
 		end

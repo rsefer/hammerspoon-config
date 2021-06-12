@@ -21,28 +21,30 @@ end
 
 function obj:switchLights(on)
 
-	local groupLightsName = 'group.all_lights'
+	-- use webhooks instead of the below
 
-	status, data, headers = hs.http.asyncGet(hs.settings.get('homeassistant_api_endpoint') .. 'states/' .. groupLightsName, {
-		['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
-		['Content-Type'] = 'application/json'
-	}, function(cstatus, cbody, cheaders)
-		local json = hs.json.decode(cbody)
-		if json.state then
-			local action = 'on'
-			if json.state == 'on' then
-				action = 'off'
-			end
-			status, data, headers = hs.http.asyncPost(hs.settings.get('homeassistant_api_endpoint') .. 'services/light/turn_' .. action, '{"entity_id":"' .. groupLightsName .. '"}', {
-				['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
-				['Content-Type'] = 'application/json'
-			}, function(cstatus, cbody, cheaders)
-				--
-			end)
-		end
-	end)
+	-- local groupLightsName = 'group.all_lights'
 
-  return self
+	-- status, data, headers = hs.http.asyncGet(hs.settings.get('homeassistant_api_endpoint') .. 'states/' .. groupLightsName, {
+	-- 	['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
+	-- 	['Content-Type'] = 'application/json'
+	-- }, function(cstatus, cbody, cheaders)
+	-- 	local json = hs.json.decode(cbody)
+	-- 	if json.state then
+	-- 		local action = 'on'
+	-- 		if json.state == 'on' then
+	-- 			action = 'off'
+	-- 		end
+	-- 		status, data, headers = hs.http.asyncPost(hs.settings.get('homeassistant_api_endpoint') .. 'services/light/turn_' .. action, '{"entity_id":"' .. groupLightsName .. '"}', {
+	-- 			['Authorization'] = 'Bearer ' .. hs.settings.get('homeassistant_api_key'),
+	-- 			['Content-Type'] = 'application/json'
+	-- 		}, function(cstatus, cbody, cheaders)
+	-- 			--
+	-- 		end)
+	-- 	end
+	-- end)
+
+  -- return self
 
 end
 
@@ -71,10 +73,12 @@ end
 
 function obj:init()
 
-	if setupSetting('homeassistant_api_domain') then
-		hs.settings.set('homeassistant_api_endpoint', hs.settings.get('homeassistant_api_domain') .. '/api/')
-	end
-	setupSetting('homeassistant_api_key')
+	-- use webhooks instead of the below
+
+	-- if setupSetting('homeassistant_api_domain') then
+	-- 	hs.settings.set('homeassistant_api_endpoint', hs.settings.get('homeassistant_api_domain') .. '/api/')
+	-- end
+	-- setupSetting('homeassistant_api_key')
 
 	self.isShown = false
 	-- self.haMenu = hs.menubar.new()
