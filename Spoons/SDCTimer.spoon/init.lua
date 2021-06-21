@@ -133,7 +133,7 @@ function obj:init()
 	self.logger = hs.logger.new(self.name, 'info')
 	self.timerMenu = hs.menubar.new()
 		:setClickCallback(obj.toggleTimer)
-		:setIcon(hs.image.imageFromName(hs.image.systemImageNames.StatusNone), false)
+		:setIcon(iconTimerOff, true)
 	self.timerMain = nil
 	self.timerCounter = nil
 	self.clientChooser = hs.chooser.new(function(choice)
@@ -195,7 +195,7 @@ function obj:start()
 	obj.timeStart = os.time()
 	obj.timerMain:start()
 	obj.timerCounter:start()
-	obj.timerMenu:setIcon(hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable), false)
+	obj.timerMenu:setIcon(iconTimerOn, false)
 	local timeStringStart = 'Timer started at ' .. os.date('%I:%M%p')
 	if obj.activeClient ~= nil then
 		timeStringStart = obj.activeClient.name .. ': ' .. timeStringStart
@@ -219,7 +219,7 @@ end
 function obj:stop()
 	obj.timerMain:stop()
 	obj.timerCounter:stop()
-	obj.timerMenu:setIcon(hs.image.imageFromName(hs.image.systemImageNames.StatusNone), false)
+	obj.timerMenu:setIcon(iconTimerOff, true)
 		:setTitle()
 
 	minutesTimed = math.ceil(obj.timeAccrued / 60)
