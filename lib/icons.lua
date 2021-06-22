@@ -26,5 +26,5 @@ iconSize = {
 
 iconPause = symbolToImage(0x100285):setSize({ w = 24, h = 24 })
 iconPlay = symbolToImage(0x100284):setSize({ w = 18, h = 18 })
-iconTimerOff = symbolToImage(0x10042F):setSize(iconSize)
-iconTimerOn = symbolToImage(0x100430, { hex = '#1db954' }):setSize(iconSize)
+iconTimerOff = symbolToImage(0x10042F):setSize({ w = 18, h = 18 })
+iconTimerOn = symbolToImage(0x100430, { hex = '#1db954' }):setSize({ w = 18, h = 18 })
