@@ -136,11 +136,14 @@ function obj:spotifySwitchPlayer()
 					device['name'] = '🌎 ' .. device['name']
 				end
 				if device['is_active'] then
-					device['name'] = '→ ' .. device['name']
+					device['subText'] = 'Currently Playing'
+				else
+					device['subText'] = '---'
 				end
 				deviceTable = {
 					uuid = device['id'],
-					text = device['name']
+					text = device['name'],
+					subText = device['subText']
 				}
 				if string.match(string.lower(device['name']), 'everywhere') then
 					everywhereDevice = deviceTable
@@ -160,7 +163,7 @@ function obj:spotifySwitchPlayer()
 					hs.execute(string)
 				end
 			end
-		end):choices(finalDevices):width(30):rows(tablelength(finalDevices)):placeholderText('Spotify Devices'):show()
+		end):choices(finalDevices):width(30):rows(tablelength(finalDevices) - 1):placeholderText('Spotify Devices'):show()
 	end
 
 end

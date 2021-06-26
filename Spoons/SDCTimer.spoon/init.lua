@@ -156,7 +156,7 @@ function obj:init()
 		obj.clientChooser:query(nil)
 	end)
 		:width(30)
-		:rows(6)
+		:rows(7)
 		:searchSubText(true)
 		:attachedToolbar(hs.webview.toolbar.new('clientChooserToolbar', {
 			{
