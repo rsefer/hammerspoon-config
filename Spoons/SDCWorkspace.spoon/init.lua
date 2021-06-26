@@ -40,6 +40,9 @@ function obj:setWorkspaces()
 		choice.focus = workspace.focus
     choice.hide = workspace.hide
     choice.quit = workspace.quit
+		if workspace.symbol then
+			choice.image = textToImage(workspace.symbol)
+		end
     table.insert(choices, choice)
   end
 	if tablelength(choices) == 0 then

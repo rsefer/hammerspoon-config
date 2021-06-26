@@ -119,21 +119,21 @@ function obj:spotifySwitchPlayer()
 		for x, device in ipairs(allDevices) do
 			if device['name'] ~= nil then
 				if string.match(string.lower(device['name']), 'mac') then
-					device['name'] = '💻 ' .. device['name']
+					device['image'] = textToImage('💻')
 				elseif string.match(string.lower(device['name']), 'phone') then
-					device['name'] = '📱 ' .. device['name']
+					device['image'] = textToImage('📱')
 				elseif string.match(string.lower(device['name']), 'pad') then
-					device['name'] = '⌨️ ' .. device['name']
+					device['image'] = textToImage('⌨️')
 				elseif string.match(string.lower(device['name']), 'bed') then
-					device['name'] = '🛏 ' .. device['name']
+					device['image'] = textToImage('🛏')
 				elseif string.match(string.lower(device['name']), 'dining') then
-					device['name'] = '🍛 ' .. device['name']
+					device['image'] = textToImage('🍛')
 				elseif string.match(string.lower(device['name']), 'bath') then
-					device['name'] = '🚽 ' .. device['name']
+					device['image'] = textToImage('🚽')
 				elseif string.match(string.lower(device['name']), 'appletv') then
-					device['name'] = '📺 ' .. device['name']
+					device['image'] = textToImage('📺')
 				elseif string.match(string.lower(device['name']), 'everywhere') then
-					device['name'] = '🌎 ' .. device['name']
+					device['image'] = textToImage('🌎')
 				end
 				if device['is_active'] then
 					device['subText'] = 'Currently Playing'
@@ -145,6 +145,9 @@ function obj:spotifySwitchPlayer()
 					text = device['name'],
 					subText = device['subText']
 				}
+				if device['image'] then
+					deviceTable['image'] = device['image']
+				end
 				if string.match(string.lower(device['name']), 'everywhere') then
 					everywhereDevice = deviceTable
 				else

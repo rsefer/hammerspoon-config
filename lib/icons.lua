@@ -19,6 +19,21 @@ function symbolToImage(hexCode, color)
 	return canvas:imageFromCanvas()
 end
 
+function textToImage(text)
+	local text = hs.styledtext.new(text, {
+		font = {
+			size = 100
+		}
+	})
+	local canvas = hs.canvas.new({ x = 0, y = 0, h = 0, w = 0 })
+	canvas:size(canvas:minimumTextSize(text))
+	canvas[#canvas + 1] = {
+		type = 'text',
+		text = text
+	}
+	return canvas:imageFromCanvas()
+end
+
 iconSize = {
 	w = hs.settings.get('menuIconSize'),
 	h = hs.settings.get('menuIconSize')

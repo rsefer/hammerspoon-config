@@ -232,14 +232,16 @@ hs.spoons.use('SDCWorkspace', {
 	config = {
 		workspaces = {
 			{
-				title = '⌨️ Code',
+				title = 'Code',
+				symbol = '⌨️',
 				show = { 'Google Chrome', 'Brave Browser', 'GitHub Desktop', 'Visual Studio Code', 'Terminal', 'TextEdit' },
 				focus = { 'Visual Studio Code' },
 				hide = { 'Tweetbot', 'Messages', 'Slack' },
 				quit = {}
 			},
 			{
-				title = '😁 Browse',
+				title = 'Browse',
+				symbol = '😁',
 				show = { 'Google Chrome', 'Brave Browser', 'Tweetbot' },
 				focus = { 'Google Chrome', 'Brave Browser' },
 				hide = { 'GitHub Desktop', 'Code', 'Terminal' },

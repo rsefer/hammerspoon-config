@@ -84,17 +84,18 @@ function obj:setShortcuts()
 			if x == 2 and string.lower(string.sub(shortcut.name, 1, 1)) ~= 'k' then
 				skip = true
 			end
-			workingPre = '☎️'
+			imageSymbol = '☎️'
 			workingProtocol = 'tel'
 			if x == 2 then
 				workingProtocol = 'imessage'
-				workingPre = '✉️'
+				imageSymbol = '✉️'
 			end
 			if skip ~= true then
-				table.insert(choices,{
-					text = workingPre .. ' ' .. shortcut.name,
+				table.insert(choices, {
+					text = shortcut.name,
 					phone = shortcut.phone,
-					protocol = workingProtocol
+					protocol = workingProtocol,
+					image = textToImage(imageSymbol)
 				})
 			end
 		end

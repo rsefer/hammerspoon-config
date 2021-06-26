@@ -14,15 +14,16 @@ function obj:populateChooser()
 	choices = {}
 	if tablelength(hs.settings.get('pasteboardHistory')) > 0 then
 		for k, item in pairs(hs.settings.get('pasteboardHistory')) do
-			icon = '📄'
+			title = item.content
+			imageSymbol = '📄'
 			if string.sub(item.content, 1, 4) == 'http' or item.typesAvailable['URL'] ~= nil then
-				icon = '🔗'
+				imageSymbol = '🔗'
 			elseif item.typesAvailable['image'] ~= nil then
-				icon = '🖼️'
+				imageSymbol = '🖼️'
+				title = '[image]'
 			elseif item.typesAvailable['styledText'] ~= nil then
-				icon = '📝'
+				imageSymbol = '📝'
 			end
-			title = icon .. ' ' .. item.content
 			if string.len(item.content) > titleMaxLength then
 				title = title:gsub("\n", ""):gsub("\r", ""):gsub("\t", "")
 				title = string.sub(title, 1, titleMaxLength - string.len(ellipsesString)) .. ellipsesString
@@ -31,11 +32,12 @@ function obj:populateChooser()
 				text = hs.styledtext.new(title, { font = { name = 'SF Mono' } }),
 				subText = os.date('%I:%M%p', item.timestamp),
 				timestamp = item.timestamp,
-				fullText = item.content
+				fullText = item.content,
+				image = textToImage(imageSymbol)
 			})
 		end
 	end
-	obj.chooser:rows(tablelength(choices) + 1)
+	obj.chooser:rows(tablelength(choices) + 2)
 		:choices(choices)
 end
 
