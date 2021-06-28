@@ -138,7 +138,7 @@ function obj:spotifySwitchPlayer()
 				if device['is_active'] then
 					device['subText'] = 'Currently Playing'
 				else
-					device['subText'] = '---'
+					device['subText'] = nil
 				end
 				deviceTable = {
 					uuid = device['id'],
