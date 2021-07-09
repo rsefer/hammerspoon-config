@@ -51,6 +51,21 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
+				apps = { 'Home Assistant' },
+				screens = {
+					deskWithiPad = nil,
+					desk = nil,
+					laptopWithiPad = nil,
+					laptop = nil
+				},
+				sizes = {
+					deskWithiPad = hs.settings.get('windowSizes').halves.right,
+					desk = hs.settings.get('windowSizes').halves.right,
+					laptopWithiPad = hs.settings.get('windowSizes').full,
+					laptop = hs.settings.get('windowSizes').full
+				}
+			},
+			{
 				apps = { 'TextEdit' },
 				screens = {
 					deskWithiPad = nil,
