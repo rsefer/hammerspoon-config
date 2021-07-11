@@ -114,7 +114,7 @@ function obj:init()
 			if hs.battery.powerSource() == 'AC Power' then
 				action = 'on'
 			end
-			spoon.SDCWindows:toggleSecondaryMonitor(action)
+			-- spoon.SDCWindows:toggleSecondaryMonitor(action)
 			obj.batteryPowerSource = hs.battery.powerSource()
 		end
 		-- obj:updateBatteryMenu()
@@ -123,9 +123,9 @@ function obj:init()
 	self.caffeinateScreenWatcher = hs.caffeinate.watcher.new(function(event)
 		if isHome() and hs.battery.powerSource() == 'AC Power' then
 			if event == 1 or event == 2 then -- systemWillSleep (1) or systemWillPowerOff (2)
-				spoon.SDCWindows:toggleSecondaryMonitor('off')
+				-- spoon.SDCWindows:toggleSecondaryMonitor('off')
 			elseif event == 0 then -- systemDidWake (0)
-				spoon.SDCWindows:toggleSecondaryMonitor('on')
+				-- spoon.SDCWindows:toggleSecondaryMonitor('on')
 			end
 		end
 	end)

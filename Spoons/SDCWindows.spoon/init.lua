@@ -279,21 +279,21 @@ function obj:handleScreenChange()
 end
 
 function obj:toggleSecondaryMonitor(action)
-	if not action then
-		action = 'on'
-	end
+	-- if not action then
+	-- 	action = 'on'
+	-- end
 
-	if action == 'on' then
-		webhook = hs.settings.get('homeassistant_webhook_turn_on_secondary_monitor')
-	else
-		webhook = hs.settings.get('homeassistant_webhook_turn_off_secondary_monitor')
-	end
+	-- if action == 'on' then
+	-- 	webhook = hs.settings.get('homeassistant_webhook_turn_on_secondary_monitor')
+	-- else
+	-- 	webhook = hs.settings.get('homeassistant_webhook_turn_off_secondary_monitor')
+	-- end
 
-	status, data, headers = hs.http.asyncPost(webhook, '', {}, function(cstatus, cbody, cheaders)
-		if action == 'on' then
-			self:resetAllApps()
-		end
-	end)
+	-- status, data, headers = hs.http.asyncPost(webhook, '', {}, function(cstatus, cbody, cheaders)
+	-- 	if action == 'on' then
+	-- 		self:resetAllApps()
+	-- 	end
+	-- end)
 
 	-- if setupSetting('meross_username') and setupSetting('meross_password') and setupSetting('meross_secondary_monitor_name') then
 	-- 	local khstring = 'meross-helper ' .. setupSetting('meross_username') .. ' ' .. setupSetting('meross_password') .. ' ' .. setupSetting('meross_secondary_monitor_name') .. ' ' .. action
