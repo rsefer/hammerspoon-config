@@ -114,6 +114,14 @@ function obj:logTime(timeMinutes)
 			withdrawAfter = 15,
 			setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
 		}):send()
+	else
+		hs.notify.new({
+			title = 'FAILED TO LOG',
+			subTitle = ltstring,
+			withdrawAfter = 999,
+			setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
+		}):send()
+		obj.logger:i('FAILED TO LOG: ' .. ltstring)
 	end
 
 end
