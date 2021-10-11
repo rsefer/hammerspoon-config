@@ -12,12 +12,14 @@ require('lib/startup')
 require('lib/settings')
 require('lib/icons')
 
+local daysToWedding = 0
 daysTarget = os.time({ year = 2022, month = 5, day = 7 })
 daysMenubar = hs.menubar.new():setClickCallback(function()
-	hs.execute('say "yay!" -r 250', true)
+	hs.execute('say "yay! ' .. daysToWedding .. ' days to go" -r 200')
 end)
 function setDaysTitle()
-	daysMenubar:setTitle(math.floor(os.difftime(daysTarget, os.time()) / (24 * 60 * 60)) .. ' days 👰‍♀️🤵')
+	daysToWedding = math.floor(os.difftime(daysTarget, os.time()) / (24 * 60 * 60))
+	daysMenubar:setTitle(daysToWedding .. ' days 👰‍♀️🤵')
 end
 setDaysTitle()
 daysTimer = hs.timer.doEvery(60 * 5, setDaysTitle)
