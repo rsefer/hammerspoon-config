@@ -5,7 +5,6 @@
 spoon = {} -- fixes global spoon loading issue
 
 require('hs.ipc') -- commandline 'hs'
-require('config')
 require('lib/common')
 require('lib/startup')
 
