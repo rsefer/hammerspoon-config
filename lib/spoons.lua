@@ -278,12 +278,6 @@ hs.spoons.use('SDCPasteboard', {
 	start = true
 })
 
-hs.spoons.use('SDCPhone', {
-	hotkeys = {
-		toggleChooser = {hs.settings.get('hotkeyCombo'), 'P'}
-	}
-})
-
 hs.spoons.use('SDCReminders', {
 	hotkeys = {
 		toggleWebview = {hs.settings.get('hotkeyCombo'), '9'}
