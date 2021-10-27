@@ -39,17 +39,17 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f2', function()
 end)
 
 -- Location
-if hs.location.servicesEnabled() and hs.location.authorizationStatus() == 'authorized' and hs.location.start() and hs.location.get() then
-	location = hs.location.get()
-	hs.settings.set('latitude', location.latitude)
-	hs.settings.set('longitude', location.longitude)
-	hs.location.register('updateLocationTag', function(locationTable)
-		hs.settings.set('latitude', locationTable.latitude)
-		hs.settings.set('longitude', locationTable.longitude)
-	end, 400)
-else
-	-- hs.alert.show('⛅️Cannot retrieve lat/lng')
-end
+-- if hs.location.servicesEnabled() and hs.location.authorizationStatus() == 'authorized' and hs.location.start() and hs.location.get() then
+-- 	location = hs.location.get()
+-- 	hs.settings.set('latitude', location.latitude)
+-- 	hs.settings.set('longitude', location.longitude)
+-- 	hs.location.register('updateLocationTag', function(locationTable)
+-- 		hs.settings.set('latitude', locationTable.latitude)
+-- 		hs.settings.set('longitude', locationTable.longitude)
+-- 	end, 400)
+-- else
+-- 	-- hs.alert.show('⛅️Cannot retrieve lat/lng')
+-- end
 
 -- Google Query Suggestions
 -- Based heavily on Andrew Hampton's "autocomplete"
