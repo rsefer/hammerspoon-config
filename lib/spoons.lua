@@ -239,38 +239,6 @@ hs.spoons.use('SDCMusic', {
 	start = true
 })
 
-hs.spoons.use('SDCWorkspace', {
-	config = {
-		workspaces = {
-			{
-				title = 'Code',
-				symbol = '⌨️',
-				show = { 'Google Chrome', 'Brave Browser', 'GitHub Desktop', 'Visual Studio Code', 'Terminal', 'TextEdit' },
-				focus = { 'Visual Studio Code' },
-				hide = { 'Tweetbot', 'Messages', 'Slack' },
-				quit = {}
-			},
-			{
-				title = 'Browse',
-				symbol = '😁',
-				show = { 'Google Chrome', 'Brave Browser', 'Tweetbot' },
-				focus = { 'Google Chrome', 'Brave Browser' },
-				hide = { 'GitHub Desktop', 'Code', 'Terminal' },
-				quit = {}
-			}
-		}
-	},
-	hotkeys = {
-		toggleChooser = {hs.settings.get('hotkeyCombo'), 'pad.'}
-	},
-	fn = function(thisSpoon)
-		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'w', nil, function()
-			thisSpoon.toggleChooser()
-		end)
-	end,
-	start = true
-})
-
 hs.spoons.use('SDCPasteboard', {
 	hotkeys = {
 		toggleChooser = {hs.settings.get('hotkeyCombo'), 'V'}
