@@ -26,6 +26,18 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'B', function()
 	end
 end)
 
+-- Illumination Down
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f1', function()
+	hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_DOWN', true):post()
+	hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_DOWN', false):post()
+end)
+
+-- Illumination Up
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f2', function()
+	hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_UP', true):post()
+	hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_UP', false):post()
+end)
+
 -- Location
 if hs.location.servicesEnabled() and hs.location.authorizationStatus() == 'authorized' and hs.location.start() and hs.location.get() then
 	location = hs.location.get()
