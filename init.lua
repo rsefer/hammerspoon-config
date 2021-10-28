@@ -4,7 +4,7 @@
 
 spoon = {} -- fixes global spoon loading issue
 
-require('hs.ipc') -- commandline 'hs'
+require('hs.ipc') -- commandline 'hs' -- if CLI is not working, try `hs.ipc.cliInstall('/opt/homebrew')`
 require('lib/common')
 require('lib/startup')
 
