@@ -105,8 +105,10 @@ function obj:init()
 					actionButtonTitle = 'Open',
 					title = 'Reminder added:',
 					subTitle = reminder.name,
-					informativeText = 'For: ' .. reminder.date .. ' @ ' .. reminder.time
-				}):setIdImage(hs.image.imageFromAppBundle(hs.application.find('Reminders'):bundleID())):send()
+					informativeText = 'For: ' .. reminder.date .. ' @ ' .. reminder.time,
+					setIdImage = hs.image.imageFromAppBundle(hs.application.find('Reminders'):bundleID()),
+					contentImage = hs.image.imageFromAppBundle(hs.application.find('Reminders'):bundleID())
+				}):send()
 			end
 		end
   end)

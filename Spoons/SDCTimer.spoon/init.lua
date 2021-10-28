@@ -25,7 +25,8 @@ function updateTimeElapsedAlert()
 		subTitle = notificationSubTitle,
 		informativeText = minutesToClock(obj.timeAccrued / 60, false, true),
 		withdrawAfter = 5,
-		setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
+		setIdImage = iconTimerOnAlt,
+		contentImage = iconTimerOnAlt
 	}):send()
 end
 
@@ -112,14 +113,16 @@ function obj:logTime(timeMinutes)
 			subTitle = notificationSubTitle,
 			informativeText = minutesToClock(clientTotalMinutes, false, true),
 			withdrawAfter = 15,
-			setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
+			setIdImage = iconTimerAlt,
+			contentImage = iconTimerAlt
 		}):send()
 	else
 		hs.notify.new({
 			title = 'FAILED TO LOG',
 			subTitle = ltstring,
 			withdrawAfter = 999,
-			setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
+			setIdImage = iconTimerFail,
+			contentImage = iconTimerFail
 		}):send()
 		obj.logger:i('FAILED TO LOG: ' .. ltstring)
 	end
@@ -217,7 +220,8 @@ function obj:start()
 		title = 'Starting Timer',
 		subTitle = notificationSubTitle,
 		withdrawAfter = 3,
-		setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
+		setIdImage = iconTimerOn,
+		contentImage = iconTimerOn
 	}):send()
 
 	updateTimeElapsed()
@@ -246,7 +250,8 @@ function obj:stop()
 		subTitle = notificationSubTitle,
 		informativeText = minutesToClock(minutesTimed, false, true),
 		withdrawAfter = 15,
-		setIdImage = hs.image.imageFromName(hs.image.systemImageNames.StatusAvailable)
+		setIdImage = iconTimerSuccess,
+		contentImage = iconTimerSuccess
 	}):send()
 
 	obj.logger:i(timeStringEnd)
