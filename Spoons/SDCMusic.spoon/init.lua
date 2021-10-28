@@ -3,6 +3,8 @@ local obj = {}
 obj.__index = obj
 obj.name = "SDCMusic"
 
+local trackNotification
+
 function trackString(artist, track)
 	track = track:gsub(artist, '')
 	track = track:gsub(' | ', '')
@@ -294,15 +296,20 @@ function obj:notifyTrack()
 
 	if not obj.currentTrack then return end
 
-	hs.notify.new(function()
+	if trackNotification then
+		trackNotification:withdraw()
+	end
+
+	trackNotification = hs.notify.new(function()
 		hs.application.launchOrFocus(obj.player.name)
 	end, {
 		hasActionButton = true,
 		actionButtonTitle = 'Open',
-		title = obj.currentTrack.name,
+		title = 'Track: ' .. obj.currentTrack.name,
 		subTitle = 'Artist: ' .. workingArtist,
 		informativeText = 'Album: ' .. obj.currentTrack.album,
 		setIdImage = obj.currentTrack.albumArt,
+		contentImage = obj.currentTrack.albumArt,
 		withdrawAfter = 2.5
 	}):send()
 end
