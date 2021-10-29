@@ -169,6 +169,10 @@ hs.spoons.use('SDCWindows', {
 	start = true
 })
 
+hs.spoons.use('SDCMeetings', {
+	start = true
+})
+
 hs.spoons.use('SDCAudio', {
 	config = {
 		devices = {

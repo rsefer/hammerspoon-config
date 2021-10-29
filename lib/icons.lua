@@ -1,6 +1,6 @@
 -- If providing a non-string, will assume hex code
 -- https://mathew-kurian.github.io/CharacterMap/
--- starting at 5800
+-- starting at 6994
 -- hexCode = 0x1001D3 of UNI1001D3.LARGE
 -- /Library/Fonts/SF Pro
 function textToImage(input, color)
@@ -31,3 +31,4 @@ iconTimerOnAlt = textToImage(0x100430, { hex = '#f9ff31' })
 iconTimerSuccess = textToImage(0x100E74, { hex = '#1db954' })
 iconTimerFail = textToImage(0x100E76, { hex = '#ff0000' })
 iconTimerAlt = textToImage(0x1011B8, { hex = '#cccccc' })
+iconsCalendar = textToImage(0x100249)
