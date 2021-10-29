@@ -3,6 +3,20 @@ function round(num, numDecimalPlaces)
   return math.floor(num * mult + 0.5) / mult
 end
 
+-- https://gist.github.com/zwh8800/9b0442efadc97408ffff248bc8573064
+function parse_json_date(json_date)
+	local pattern = "(%d+)%-(%d+)%-(%d+)%a(%d+)%:(%d+)%:([%d%.]+)([Z%+%-])(%d?%d?)%:?(%d?%d?)"
+	local year, month, day, hour, minute, seconds, offsetsign, offsethour, offsetmin = json_date:match(pattern)
+	seconds = math.floor(tonumber(seconds))
+	local timestamp = os.time{ year = year, month = month, day = day, hour = hour, min = minute, sec = seconds }
+	local offset = 0
+	-- if offsetsign ~= 'Z' then
+	-- 	offset = tonumber(offsethour) * 60 + tonumber(offsetmin)
+	-- 	if xoffset == "-" then offset = offset * -1 end
+	-- end
+	return timestamp + offset
+end
+
 function urlencode(url)
 	-- https://gist.github.com/liukun/f9ce7d6d14fa45fe9b924a3eed5c3d99
   if not url then return end
