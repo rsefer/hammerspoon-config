@@ -26,25 +26,22 @@ function obj:updateMenu()
 		for i, ourEvent in ipairs(data) do
 			parsedEndDate = parse_json_date(ourEvent.dateEnd)
 			if parsedEndDate > os.time() then
-				workingStateImage = iconHouse
+				workingImage = iconHouse
 				if ourEvent.calendar == 'Sefer Design Co.' then
-					workingStateImage = iconBriefcase
-				end
-				workingModImage = nil
-				if ourEvent.urls ~= nil and tablelength(ourEvent.urls) > 0 then
-					workingModImage = iconVideoWhite:setSize({ w = 24, h = 24 })
+					workingImage = iconBriefcase
 				end
 				workingDate = os.date('%I:%M%p', parse_json_date(ourEvent.dateStart))
 				if workingDate:sub(1, 1) == '0' then
 					workingDate = workingDate:sub(2, string.len(workingDate))
 				end
-				titleString = workingDate .. ' - '
-				titleString = titleString .. ourEvent.title
+				titleString = hs.styledtext.new(workingDate, { font = { name = 'SF Mono' } }) .. ' - ' .. ourEvent.title
+				if ourEvent.urls ~= nil and tablelength(ourEvent.urls) > 0 then
+					titleString = titleString .. ' ' .. hs.styledtext.new(utf8.char(0x10034A), { font = { name = 'SF Pro' } }) -- character is video icon. /common/icons.lua
+				end
 				table.insert(menuItems, {
-					title = hs.styledtext.new(titleString, { font = { name = 'SF Mono', size = 12 } }),
-					state = 'on',
-					onStateImage = workingStateImage:setSize({ w = 36, h = 36 }),
-					image = workingModImage,
+					title = titleString,
+					image = workingImage:setSize({ w = 16, h = 16 }),
+					tooltip = ourEvent.notes,
 					fn = function()
 						workingURL = nil
 						if ourEvent.urls ~= nil and tablelength(ourEvent.urls) > 0 then
