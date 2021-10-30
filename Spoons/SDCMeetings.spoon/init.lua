@@ -16,37 +16,35 @@ function obj:getDataFromFile()
 end
 
 function obj:createMenu()
-	obj.menubar = hs.menubar.new():setIcon(iconsCalendar:setSize({ w = 16, h = 16 }))
+	obj.menubar = hs.menubar.new():setIcon(iconCalendar:setSize({ w = 16, h = 16 }))
 end
 
 function obj:updateMenu()
 	menuItems = {}
 	data = obj:getDataFromFile()
-	if data == nil or tablelength(data) == 0 then
-		table.insert(menuItems, {
-			title = 'No upcoming events.'
-		})
-	else
+	if data ~= nil and tablelength(data) > 0 then
 		for i, ourEvent in ipairs(data) do
 			parsedEndDate = parse_json_date(ourEvent.dateEnd)
 			if parsedEndDate > os.time() then
-				titleString = ''
+				workingStateImage = iconHouse
 				if ourEvent.calendar == 'Sefer Design Co.' then
-					titleString = titleString .. '🟩'
-				else
-					titleString = titleString .. '🟥'
+					workingStateImage = iconBriefcase
+				end
+				workingModImage = nil
+				if ourEvent.urls ~= nil and tablelength(ourEvent.urls) > 0 then
+					workingModImage = iconVideoWhite:setSize({ w = 24, h = 24 })
 				end
 				workingDate = os.date('%I:%M%p', parse_json_date(ourEvent.dateStart))
 				if workingDate:sub(1, 1) == '0' then
 					workingDate = workingDate:sub(2, string.len(workingDate))
 				end
-				titleString = titleString .. ' ' .. workingDate .. ' - '
-				if ourEvent.urls ~= nil and tablelength(ourEvent.urls) > 0 then
-					titleString = titleString .. '🎥'
-				end
+				titleString = workingDate .. ' - '
 				titleString = titleString .. ourEvent.title
 				table.insert(menuItems, {
-					title = titleString,
+					title = hs.styledtext.new(titleString, { font = { name = 'SF Mono', size = 12 } }),
+					state = 'on',
+					onStateImage = workingStateImage:setSize({ w = 36, h = 36 }),
+					image = workingModImage,
 					fn = function()
 						workingURL = nil
 						if ourEvent.urls ~= nil and tablelength(ourEvent.urls) > 0 then
@@ -58,13 +56,18 @@ function obj:updateMenu()
 						elseif workingURL ~= nil and string.find(workingURL, 'zoom.us') then
 							urlParts = hs.http.urlParts(workingURL)
 							hs.urlevent.openURL('zoommtg://zoom.us/join?confno=' .. urlParts.lastPathComponent .. '&' .. urlParts.query)
-						elseif workingURL ~= nil and string.find(workingURL, 'teams.microsoft.com') then
+						elseif workingURL ~= nil and (string.find(workingURL, 'teams.microsoft.com') or string.find(workingURL, 'facetime.apple.com')) then
 							hs.urlevent.openURL(workingURL)
 						end
 					end
 				})
 			end
 		end
+	end
+	if tablelength(menuItems) == 0 then
+		table.insert(menuItems, {
+			title = 'No upcoming events.'
+		})
 	end
 	obj.menubar:setMenu(menuItems)
 end
