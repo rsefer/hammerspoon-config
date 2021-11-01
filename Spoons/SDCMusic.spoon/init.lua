@@ -49,7 +49,7 @@ function obj:spotifyGetCode(code)
 	end
 
 	if not code then
-		hs.urlevent.openURL('https://accounts.spotify.com/authorize?client_id=' .. hs.settings.get('spotify_client_id') .. '&response_type=code&redirect_uri=https://rsefer.com/&scope=user-library-read%20user-read-private%20user-read-playback-state%20streaming%20app-remote-control%20streaming&state=rsefer')
+		hs.urlevent.openURL('https://accounts.spotify.com/authorize?client_id=' .. hs.settings.get('spotify_client_id') .. '&response_type=code&redirect_uri=https://rsefer.com/&scope=user-library-read%20user-read-private%20user-read-playback-state%20user-read-playback-position%20streaming%20app-remote-control%20streaming&state=rsefer')
 		newCode = setupSetting('spotify_authorization_code', 'Spotify Authorization Code', '', true)
 		if newCode ~= nil then
 			return obj:spotifyGetCode(newCode)
@@ -117,10 +117,30 @@ function obj:getSpotifyPodcastEpisodes()
 		if show['show']['images'][3] ~= nil then
 			workingImage = hs.image.imageFromURL(show['show']['images'][3]['url'])
 		end
+		episodeIDs = ''
 		for x, episode in ipairs(decodedShowBody['items']) do
+			if x > 1 then episodeIDs = episodeIDs .. ',' end
+			episodeIDs = episodeIDs .. episode['id']
+		end
+
+		episodesHeaders = {}
+		episodesHeaders['Authorization'] = 'Bearer ' .. hs.settings.get('spotify_access_token')
+		episodesStatus, episodesBody, episodesReturnHeaders = hs.http.get('https://api.spotify.com/v1/episodes?ids=' .. episodeIDs, episodesHeaders)
+		decodedShowBody = hs.json.decode(showBody)
+
+		for x, episode in ipairs(decodedShowBody['items']) do
+			workingText = '[' .. episode['release_date'] .. '] - '
+			if episode['resume_point'] ~= nil then
+				if episode['resume_point']['fully_played'] ~= nil and episode['resume_point']['fully_played'] == true then
+					workingText = '✓ ' .. workingText
+				elseif episode['resume_point']['resume_position_ms'] ~= nil and episode['resume_point']['resume_position_ms'] > 0 then
+					workingText = utf8.char(0x100002) .. ' ' .. workingText
+				end
+			end
+			workingText = workingText .. episode['name']
 			episodeObject = {
 				uuid = episode['id'],
-				text = '[' .. episode['release_date'] .. '] - ' .. episode['name'],
+				text = workingText,
 				subText = show['show']['name'],
 				image = workingImage,
 				date = episode['release_date'],
