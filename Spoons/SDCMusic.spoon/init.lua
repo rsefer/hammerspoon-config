@@ -92,6 +92,8 @@ end
 function obj:getSpotifyPodcastEpisodes()
 	obj:spotifyGetAccessToken(hs.settings.get('spotify_refresh_token'))
 
+	hs.settings.set('spotify_podcasts_episode_date', os.time())
+
 	showsHeaders = {}
 	showsHeaders['Authorization'] = 'Bearer ' .. hs.settings.get('spotify_access_token')
 	showsStatus, showsBody, showsReturnHeaders = hs.http.get('https://api.spotify.com/v1/me/shows', showsHeaders)
@@ -115,7 +117,7 @@ function obj:getSpotifyPodcastEpisodes()
 		decodedShowBody = hs.json.decode(showBody)
 		workingImage = nil
 		if show['show']['images'][3] ~= nil then
-			workingImage = hs.image.imageFromURL(show['show']['images'][3]['url'])
+			workingImage = show['show']['images'][3]['url']
 		end
 		episodeIDs = ''
 		for x, episode in ipairs(decodedShowBody['items']) do
@@ -142,7 +144,7 @@ function obj:getSpotifyPodcastEpisodes()
 				uuid = episode['id'],
 				text = workingText,
 				subText = show['show']['name'],
-				image = workingImage,
+				imageURL = workingImage,
 				date = episode['release_date'],
 				uri = episode['uri']
 			}
@@ -152,7 +154,47 @@ function obj:getSpotifyPodcastEpisodes()
 	table.sort(episodes, function(a, b)
 		return b.date < a.date
 	end)
-	obj.episodesList = episodes
+	hs.settings.set('spotify_podcast_episodes', episodes)
+end
+
+function obj:transformEpisodesList()
+	tmpEpisodes = hs.settings.get('spotify_podcast_episodes')
+	tmpTable = {}
+	for x, episode in ipairs(tmpEpisodes) do
+		tmpEpisode = episode
+		if episode['imageURL'] ~= nil then
+			tmpEpisode['image'] = hs.image.imageFromURL(episode['imageURL'])
+		end
+		table.insert(tmpTable, tmpEpisode)
+	end
+	obj.episodesList = tmpTable
+	return obj.episodesList
+end
+
+function obj:setEpisodeChooserToolbar()
+	if obj.episodeChooserToolbar ~= nil then
+		obj.episodeChooserToolbar:delete()
+	end
+	obj.episodeChooserToolbar = hs.webview.toolbar.new('episodeChooserToolbar', {
+		{
+			id = 'episodesRefreshedLast',
+			label = 'Last Updated: ' .. os.date('%A @ %I:%M%p', hs.settings.get('spotify_podcasts_episode_date')),
+			selectable = false,
+			fn = function()
+				--
+			end
+		},
+		{
+			id = 'episodesRefresh',
+			label = 'Refresh',
+			selectable = true,
+			fn = function()
+				obj:setEpisodeChooserToolbar()
+				obj:getSpotifyPodcastEpisodes()
+			end
+		}
+	}):sizeMode('small'):displayMode('label')
+	obj.episodeChooser:attachedToolbar(obj.episodeChooserToolbar)
 end
 
 function obj:spotifyPlayPodcastEpisode()
@@ -466,24 +508,25 @@ function obj:init()
 
 	self.currentTrack = {}
 	self.timer = nil
-	self.episodesList = {}
+	self.episodesUpdateTimer = hs.timer.doEvery(15 * 60, function()
+		if not hs.settings.get('spotify_podcasts_episode_date') or (60 * 60 * 4) < os.time() - hs.settings.get('spotify_podcasts_episode_date') then
+			obj:getSpotifyPodcastEpisodes()
+		end
+	end):stop()
+	self.episodesList = self:transformEpisodesList()
+	self.episodeChooserToolbar = nil
 	self.episodeChooser = hs.chooser.new(function(choice)
 		if not choice then return end
 		hs.osascript.applescript('tell application "Spotify" to play track "' .. choice.uri .. '"')
 	end):width(40)
 		:placeholderText('Episodes')
-		:attachedToolbar(hs.webview.toolbar.new('episodeChooserToolbar', {
-			{
-				id = 'episodesRefresh',
-				label = 'Refresh',
-				selectable = true,
-				fn = function()
-					obj:getSpotifyPodcastEpisodes()
-					obj.episodeChooser:choices(obj.episodesList)
-				end
-			}
-		}):sizeMode('small'):displayMode('label'))
 		:choices(self.episodesList)
+
+	self.episodesListWatchKey = hs.settings.watchKey('settings_spotify_podcast_episodes_watcher', 'spotify_podcast_episodes', function()
+		obj:setEpisodeChooserToolbar()
+		obj:transformEpisodesList()
+		obj.episodeChooser:choices(obj.episodesList)
+	end)
 
   self.watcher = hs.application.watcher.new(function(name, event, app)
     if name == self.player.name then
@@ -517,7 +560,8 @@ function obj:start()
 
 	self.watcher:start()
 	self.distributednotifications:start()
-	self:getSpotifyPodcastEpisodes()
+	self.episodesUpdateTimer:start()
+	self:setEpisodeChooserToolbar()
 
 	if obj:getCurrentPlayerState() == 'playing' then
 		obj:getTrackAlbumArt()
@@ -529,6 +573,7 @@ end
 function obj:stop()
 
 	self.watcher:stop()
+	self.episodesUpdateTimer:stop()
 	self.distributednotifications:stop()
 	if self.timer ~= nil then
 		self.timer:stop()
