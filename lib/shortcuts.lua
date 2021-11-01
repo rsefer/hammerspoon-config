@@ -120,7 +120,8 @@ function promptForNote()
 	choices = {}
 	for i, file in ipairs(files) do
 		choice = file
-		choice.text = '📄 ' .. file.fileName:gsub('.txt', '')
+		choice.image = textToImage('📄')
+		choice.text = file.fileName:gsub('.txt', '')
 		choice.subText = 'Last edited ' .. os.date('%B %d, %Y', file.lastChange)
 		table.insert(choices, choice)
 	end
