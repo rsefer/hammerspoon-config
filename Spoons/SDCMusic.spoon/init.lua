@@ -114,18 +114,15 @@ function obj:getSpotifyPodcastEpisodes()
 		showStatus, showBody, showReturnHeaders = hs.http.get('https://api.spotify.com/v1/shows/' .. show['show']['id'] .. '/episodes?limit=2', showHeaders)
 		decodedShowBody = hs.json.decode(showBody)
 		workingImage = nil
-		-- if show['show']['images'][2] ~= nil then
-		-- 	workingImage = hs.image.imageFromURL(show['show']['images'][2]['url']) -- bug in chooser code not allowing images to work at all?
-		-- end
+		if show['show']['images'][3] ~= nil then
+			workingImage = hs.image.imageFromURL(show['show']['images'][3]['url'])
+		end
 		for x, episode in ipairs(decodedShowBody['items']) do
 			episodeObject = {
 				uuid = episode['id'],
 				text = '[' .. episode['release_date'] .. '] - ' .. episode['name'],
 				subText = show['show']['name'],
 				image = workingImage,
-				show = show['show']['name'],
-				name = episode['name'],
-				id = episode['id'],
 				date = episode['release_date'],
 				uri = episode['uri']
 			}
@@ -135,11 +132,11 @@ function obj:getSpotifyPodcastEpisodes()
 	table.sort(episodes, function(a, b)
 		return b.date < a.date
 	end)
-	hs.settings.set('spotify_podcast_episodes', episodes)
+	obj.episodesList = episodes
 end
 
 function obj:spotifyPlayPodcastEpisode()
-	obj.episodeChooser:show()
+	obj.episodeChooser:choices(obj.episodesList):show()
 end
 
 function obj:spotifySwitchPlayer()
@@ -214,12 +211,11 @@ function obj:spotifySwitchPlayer()
 			table.insert(finalDevices, everywhereDevice)
 		end
 		hs.chooser.new(function(choice)
-			if choice then
-				if choice.uuid ~= 0 then
-					-- using cURL because hammerspoon is unable to execute PUT commands
-					string = 'curl -X "PUT" "https://api.spotify.com/v1/me/player" --data "{\\\"device_ids\\\":[\\\"' .. choice.uuid .. '\\\"]}" -H "Accept: application/json" -H "Authorization: Bearer ' .. hs.settings.get('spotify_access_token') .. '"'
-					hs.execute(string)
-				end
+			if not choice then return end
+			if choice.uuid ~= 0 then
+				-- using cURL because hammerspoon is unable to execute PUT commands
+				string = 'curl -X "PUT" "https://api.spotify.com/v1/me/player" --data "{\\\"device_ids\\\":[\\\"' .. choice.uuid .. '\\\"]}" -H "Accept: application/json" -H "Authorization: Bearer ' .. hs.settings.get('spotify_access_token') .. '"'
+				hs.execute(string)
 			end
 		end):choices(finalDevices):width(30):rows(tablelength(finalDevices) - 1):placeholderText('Spotify Devices'):show()
 	end
@@ -450,11 +446,11 @@ function obj:init()
 
 	self.currentTrack = {}
 	self.timer = nil
+	self.episodesList = {}
 	self.episodeChooser = hs.chooser.new(function(choice)
-		if choice then
-			hs.osascript.applescript('tell application "Spotify" to play track "' .. choice.uri .. '"')
-		end
-	end):width(30)
+		if not choice then return end
+		hs.osascript.applescript('tell application "Spotify" to play track "' .. choice.uri .. '"')
+	end):width(40)
 		:placeholderText('Episodes')
 		:attachedToolbar(hs.webview.toolbar.new('episodeChooserToolbar', {
 			{
@@ -463,11 +459,11 @@ function obj:init()
 				selectable = true,
 				fn = function()
 					obj:getSpotifyPodcastEpisodes()
-					obj.episodeChooser:choices(hs.settings.get('spotify_podcast_episodes'))
+					obj.episodeChooser:choices(obj.episodesList)
 				end
 			}
 		}):sizeMode('small'):displayMode('label'))
-		:choices(hs.settings.get('spotify_podcast_episodes'))
+		:choices(self.episodesList)
 
   self.watcher = hs.application.watcher.new(function(name, event, app)
     if name == self.player.name then
@@ -501,6 +497,7 @@ function obj:start()
 
 	self.watcher:start()
 	self.distributednotifications:start()
+	self:getSpotifyPodcastEpisodes()
 
 	if obj:getCurrentPlayerState() == 'playing' then
 		obj:getTrackAlbumArt()
