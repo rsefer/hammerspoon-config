@@ -49,7 +49,7 @@ function obj:spotifyGetCode(code)
 	end
 
 	if not code then
-		hs.urlevent.openURL('https://accounts.spotify.com/authorize?client_id=' .. hs.settings.get('spotify_client_id') .. '&response_type=code&redirect_uri=https://rsefer.com/&scope=user-read-private%20user-read-playback-state%20streaming%20app-remote-control&state=rsefer')
+		hs.urlevent.openURL('https://accounts.spotify.com/authorize?client_id=' .. hs.settings.get('spotify_client_id') .. '&response_type=code&redirect_uri=https://rsefer.com/&scope=user-library-read%20user-read-private%20user-read-playback-state%20streaming%20app-remote-control%20streaming&state=rsefer')
 		newCode = setupSetting('spotify_authorization_code', 'Spotify Authorization Code', '', true)
 		if newCode ~= nil then
 			return obj:spotifyGetCode(newCode)
@@ -87,6 +87,59 @@ function obj:spotifyGetAccessToken(refreshToken)
 	end
 
 	return decodedGetTokenBody
+end
+
+function obj:getSpotifyPodcastEpisodes()
+	obj:spotifyGetAccessToken(hs.settings.get('spotify_refresh_token'))
+
+	showsHeaders = {}
+	showsHeaders['Authorization'] = 'Bearer ' .. hs.settings.get('spotify_access_token')
+	showsStatus, showsBody, showsReturnHeaders = hs.http.get('https://api.spotify.com/v1/me/shows', showsHeaders)
+
+	if showsStatus ~= 200 then
+		obj:spotifyGetAccessToken(hs.settings.get('spotify_refresh_token'))
+		hs.alert('Had to get new token. Try again.')
+		return
+	end
+	decodedShowsBody = hs.json.decode(showsBody)
+
+	if hs.settings.get('spotify_podcast_images') == nil then
+		hs.settings.set('spotify_podcast_images', {})
+	end
+
+	episodes = {}
+	for x, show in ipairs(decodedShowsBody['items']) do
+		showHeaders = {}
+		showHeaders['Authorization'] = 'Bearer ' .. hs.settings.get('spotify_access_token')
+		showStatus, showBody, showReturnHeaders = hs.http.get('https://api.spotify.com/v1/shows/' .. show['show']['id'] .. '/episodes?limit=2', showHeaders)
+		decodedShowBody = hs.json.decode(showBody)
+		workingImage = nil
+		-- if show['show']['images'][2] ~= nil then
+		-- 	workingImage = hs.image.imageFromURL(show['show']['images'][2]['url']) -- bug in chooser code not allowing images to work at all?
+		-- end
+		for x, episode in ipairs(decodedShowBody['items']) do
+			episodeObject = {
+				uuid = episode['id'],
+				text = '[' .. episode['release_date'] .. '] - ' .. episode['name'],
+				subText = show['show']['name'],
+				image = workingImage,
+				show = show['show']['name'],
+				name = episode['name'],
+				id = episode['id'],
+				date = episode['release_date'],
+				uri = episode['uri']
+			}
+			table.insert(episodes, episodeObject)
+		end
+	end
+	table.sort(episodes, function(a, b)
+		return b.date < a.date
+	end)
+	hs.settings.set('spotify_podcast_episodes', episodes)
+end
+
+function obj:spotifyPlayPodcastEpisode()
+	obj.episodeChooser:show()
 end
 
 function obj:spotifySwitchPlayer()
@@ -357,6 +410,7 @@ end
 function obj:bindHotkeys(mapping)
   hs.spoons.bindHotkeysToSpec({
 		spotifySwitchPlayer = hs.fnutils.partial(self.spotifySwitchPlayer, self),
+		spotifyPlayPodcastEpisode = hs.fnutils.partial(self.spotifyPlayPodcastEpisode, self),
 		playerRewind = hs.fnutils.partial(self.playerRewind, self),
 		playerFastForward = hs.fnutils.partial(self.playerFastForward, self)
   }, mapping)
@@ -396,6 +450,24 @@ function obj:init()
 
 	self.currentTrack = {}
 	self.timer = nil
+	self.episodeChooser = hs.chooser.new(function(choice)
+		if choice then
+			hs.osascript.applescript('tell application "Spotify" to play track "' .. choice.uri .. '"')
+		end
+	end):width(30)
+		:placeholderText('Episodes')
+		:attachedToolbar(hs.webview.toolbar.new('episodeChooserToolbar', {
+			{
+				id = 'episodesRefresh',
+				label = 'Refresh',
+				selectable = true,
+				fn = function()
+					obj:getSpotifyPodcastEpisodes()
+					obj.episodeChooser:choices(hs.settings.get('spotify_podcast_episodes'))
+				end
+			}
+		}):sizeMode('small'):displayMode('label'))
+		:choices(hs.settings.get('spotify_podcast_episodes'))
 
   self.watcher = hs.application.watcher.new(function(name, event, app)
     if name == self.player.name then
