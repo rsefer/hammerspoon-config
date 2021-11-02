@@ -129,31 +129,19 @@ function obj:getSpotifyPodcastEpisodes()
 		episodesHeaders['Authorization'] = 'Bearer ' .. hs.settings.get('spotify_access_token')
 		episodesStatus, episodesBody, episodesReturnHeaders = hs.http.get('https://api.spotify.com/v1/episodes?ids=' .. episodeIDs, episodesHeaders)
 		decodedShowBody = hs.json.decode(showBody)
-
 		for x, episode in ipairs(decodedShowBody['items']) do
-			workingText = '[' .. episode['release_date'] .. '] - '
-			if episode['resume_point'] ~= nil then
-				if episode['resume_point']['fully_played'] ~= nil and episode['resume_point']['fully_played'] == true then
-					workingText = '✓ ' .. workingText
-				elseif episode['resume_point']['resume_position_ms'] ~= nil and episode['resume_point']['resume_position_ms'] > 0 then
-					workingText = utf8.char(0x100002) .. ' ' .. workingText
-				end
-			end
-			workingText = workingText .. episode['name']
 			episodeObject = {
-				uuid = episode['id'],
-				text = workingText,
-				subText = show['show']['name'],
+				id = episode['id'],
+				episodeName = episode['name'],
+				showName = show['show']['name'],
 				imageURL = workingImage,
-				date = episode['release_date'],
-				uri = episode['uri']
+				release_date = episode['release_date'],
+				uri = episode['uri'],
+				resume_point = episode['resume_point']
 			}
 			table.insert(episodes, episodeObject)
 		end
 	end
-	table.sort(episodes, function(a, b)
-		return b.date < a.date
-	end)
 	hs.settings.set('spotify_podcast_episodes', episodes)
 end
 
@@ -162,11 +150,34 @@ function obj:transformEpisodesList()
 	tmpTable = {}
 	for x, episode in ipairs(tmpEpisodes) do
 		tmpEpisode = episode
+		workingText = '[' .. tmpEpisode['release_date'] .. '] - '
+		isFullyPlayed = false
+		if tmpEpisode['resume_point'] ~= nil then
+			if tmpEpisode['resume_point']['fully_played'] ~= nil and tmpEpisode['resume_point']['fully_played'] == true then
+				workingText = '✓ ' .. workingText
+				isFullyPlayed = true
+			elseif tmpEpisode['resume_point']['resume_position_ms'] ~= nil and tmpEpisode['resume_point']['resume_position_ms'] > 0 then
+				workingText = utf8.char(0x100002) .. ' ' .. workingText
+			end
+		end
+		workingText = workingText .. tmpEpisode['episodeName']
+		styleObj = {
+			color = { hex = '#ffffff', alpha = 1 }
+		}
+		if isFullyPlayed then
+			styleObj['color']['alpha'] = 0.25
+		end
+		tmpEpisode['uuid'] = tmpEpisode['id']
+		tmpEpisode['text'] = hs.styledtext.new(workingText, styleObj)
+		tmpEpisode['subText'] =hs.styledtext.new(tmpEpisode['showName'], styleObj)
 		if episode['imageURL'] ~= nil then
 			tmpEpisode['image'] = hs.image.imageFromURL(episode['imageURL'])
 		end
 		table.insert(tmpTable, tmpEpisode)
 	end
+	table.sort(tmpTable, function(a, b)
+		return b.release_date < a.release_date
+	end)
 	obj.episodesList = tmpTable
 	return obj.episodesList
 end
