@@ -137,7 +137,8 @@ function obj:getSpotifyPodcastEpisodes()
 				imageURL = workingImage,
 				release_date = episode['release_date'],
 				uri = episode['uri'],
-				resume_point = episode['resume_point']
+				resume_point = episode['resume_point'],
+				duration_ms = episode['duration_ms']
 			}
 			table.insert(episodes, episodeObject)
 		end
@@ -157,7 +158,11 @@ function obj:transformEpisodesList()
 				workingText = '✓ ' .. workingText
 				isFullyPlayed = true
 			elseif tmpEpisode['resume_point']['resume_position_ms'] ~= nil and tmpEpisode['resume_point']['resume_position_ms'] > 0 then
-				workingText = utf8.char(0x100002) .. ' ' .. workingText
+				remainingText = ''
+				if tmpEpisode['duration_ms'] ~= nil then
+					remainingText = ' ' .. minutesToClock((tmpEpisode['duration_ms'] - tmpEpisode['resume_point']['resume_position_ms']) / 1000 / 60) .. ' left'
+				end
+				workingText = utf8.char(0x100002) .. remainingText .. ' ' .. workingText
 			end
 		end
 		workingText = workingText .. tmpEpisode['episodeName']
