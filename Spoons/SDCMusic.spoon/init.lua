@@ -134,15 +134,15 @@ end
 
 function obj:transformEpisodesList()
 	tmpEpisodes = hs.settings.get('spotify_podcast_episodes')
-	tmpTable = {}
+	tmpTableWithDates = {}
 	for x, episode in ipairs(tmpEpisodes) do
 		tmpEpisode = episode
 		workingText = '[' .. tmpEpisode['release_date'] .. '] - '
-		isFullyPlayed = false
+		tmpEpisode['is_fully_played'] = false
 		if tmpEpisode['resume_point'] ~= nil then
 			if tmpEpisode['resume_point']['fully_played'] ~= nil and tmpEpisode['resume_point']['fully_played'] == true then
 				workingText = '✓ ' .. workingText
-				isFullyPlayed = true
+				tmpEpisode['is_fully_played'] = true
 			elseif tmpEpisode['resume_point']['resume_position_ms'] ~= nil and tmpEpisode['resume_point']['resume_position_ms'] > 0 then
 				remainingText = ''
 				if tmpEpisode['duration_ms'] ~= nil then
@@ -155,7 +155,7 @@ function obj:transformEpisodesList()
 		styleObj = {
 			color = { hex = '#ffffff', alpha = 1 }
 		}
-		if isFullyPlayed then
+		if tmpEpisode['is_fully_played'] then
 			styleObj['color']['alpha'] = 0.25
 		end
 		tmpEpisode['uuid'] = tmpEpisode['id']
@@ -164,13 +164,27 @@ function obj:transformEpisodesList()
 		if episode['imageURL'] ~= nil then
 			tmpEpisode['image'] = hs.image.imageFromURL(episode['imageURL'])
 		end
-		if not isFullyPlayed or os.time() - tmpEpisode['release_date_full'] < 60 * 60 * 24 * 7 then
-			table.insert(tmpTable, tmpEpisode)
+		if not tmpEpisode['is_fully_played'] or os.time() - tmpEpisode['release_date_full'] < 60 * 60 * 24 * 7 then
+			if not tmpTableWithDates[tmpEpisode['release_date']] then
+				tmpTableWithDates[tmpEpisode['release_date']] = {}
+			end
+			table.insert(tmpTableWithDates[tmpEpisode['release_date']], tmpEpisode)
 		end
 	end
-	table.sort(tmpTable, function(a, b)
-		return b.release_date < a.release_date
-	end)
+	local tkeys = {}
+	for date, episodes in pairs(tmpTableWithDates) do
+		table.insert(tkeys, date)
+		table.sort(episodes, function(a, b)
+			return b.is_fully_played and not a.is_fully_played
+		end)
+	end
+	table.sort(tkeys, function(a, b) return b < a end)
+	tmpTable = {}
+	for x, key in pairs(tkeys) do
+		for i, episode in pairs(tmpTableWithDates[key]) do
+			table.insert(tmpTable, episode)
+		end
+	end
 	obj.episodesList = tmpTable
 	return obj.episodesList
 end
