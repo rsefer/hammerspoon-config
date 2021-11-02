@@ -104,11 +104,6 @@ function obj:getSpotifyPodcastEpisodes()
 		return
 	end
 	decodedShowsBody = hs.json.decode(showsBody)
-
-	if hs.settings.get('spotify_podcast_images') == nil then
-		hs.settings.set('spotify_podcast_images', {})
-	end
-
 	episodes = {}
 	for x, show in ipairs(decodedShowsBody['items']) do
 		showHeaders = {}
@@ -119,16 +114,6 @@ function obj:getSpotifyPodcastEpisodes()
 		if show['show']['images'][3] ~= nil then
 			workingImage = show['show']['images'][3]['url']
 		end
-		episodeIDs = ''
-		for x, episode in ipairs(decodedShowBody['items']) do
-			if x > 1 then episodeIDs = episodeIDs .. ',' end
-			episodeIDs = episodeIDs .. episode['id']
-		end
-
-		episodesHeaders = {}
-		episodesHeaders['Authorization'] = 'Bearer ' .. hs.settings.get('spotify_access_token')
-		episodesStatus, episodesBody, episodesReturnHeaders = hs.http.get('https://api.spotify.com/v1/episodes?ids=' .. episodeIDs, episodesHeaders)
-		decodedShowBody = hs.json.decode(showBody)
 		for x, episode in ipairs(decodedShowBody['items']) do
 			episodeObject = {
 				id = episode['id'],
