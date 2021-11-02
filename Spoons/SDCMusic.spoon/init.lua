@@ -121,6 +121,7 @@ function obj:getSpotifyPodcastEpisodes()
 				showName = show['show']['name'],
 				imageURL = workingImage,
 				release_date = episode['release_date'],
+				release_date_full = os.time({ year = string.sub(episode['release_date'], 1, 4), month = string.sub(episode['release_date'], 6, 7), day = string.sub(episode['release_date'], 9, 10), hour = 12 }),
 				uri = episode['uri'],
 				resume_point = episode['resume_point'],
 				duration_ms = episode['duration_ms']
@@ -159,11 +160,13 @@ function obj:transformEpisodesList()
 		end
 		tmpEpisode['uuid'] = tmpEpisode['id']
 		tmpEpisode['text'] = hs.styledtext.new(workingText, styleObj)
-		tmpEpisode['subText'] =hs.styledtext.new(tmpEpisode['showName'], styleObj)
+		tmpEpisode['subText'] = hs.styledtext.new(tmpEpisode['showName'], styleObj)
 		if episode['imageURL'] ~= nil then
 			tmpEpisode['image'] = hs.image.imageFromURL(episode['imageURL'])
 		end
-		table.insert(tmpTable, tmpEpisode)
+		if not isFullyPlayed or os.time() - tmpEpisode['release_date_full'] < 60 * 60 * 24 * 7 then
+			table.insert(tmpTable, tmpEpisode)
+		end
 	end
 	table.sort(tmpTable, function(a, b)
 		return b.release_date < a.release_date
@@ -510,7 +513,7 @@ function obj:init()
 	self.currentTrack = {}
 	self.timer = nil
 	self.episodesUpdateTimer = hs.timer.doEvery(15 * 60, function()
-		if not hs.settings.get('spotify_podcasts_episode_date') or (60 * 60 * 4) < os.time() - hs.settings.get('spotify_podcasts_episode_date') then
+		if not hs.settings.get('spotify_podcasts_episode_date') or (os.date('*t').hour > 6 and (60 * 60 * 1) < os.time() - hs.settings.get('spotify_podcasts_episode_date')) then
 			obj:getSpotifyPodcastEpisodes()
 		end
 	end):stop()
