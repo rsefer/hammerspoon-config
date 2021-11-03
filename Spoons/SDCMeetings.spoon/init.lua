@@ -8,10 +8,12 @@ function obj:updateFileFromCalendar()
 end
 
 function obj:getDataFromFile()
-	output, status = hs.execute('cat ' .. obj.eventsFilePath)
+	file = io.open(obj.eventsFilePath, "rb")
+	output = file:read('*a')
+	file:close()	
 	output = output:gsub("\r?\n|\r", "")
 	output = output:gsub("\n", "")
-	if output == '' then return '[]' end
+	if output == '' then output = '[]' end
 	return hs.json.decode(output)
 end
 
@@ -72,7 +74,7 @@ end
 function obj:init()
 
 	self.shortcutName = 'Hammerspoon: Upcoming Meetings'
-	self.eventsFilePath = '~/Documents/events.txt'
+	self.eventsFilePath = '/Users/rsefer/Documents/events.txt'
 	self.dataUpdateInterval = 60 * 30
 	self.menuUpdateInterval = 60 * 10
 	self.menubar = nil
