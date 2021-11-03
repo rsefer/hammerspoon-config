@@ -193,10 +193,15 @@ function obj:setEpisodeChooserToolbar()
 	if obj.episodeChooserToolbar ~= nil then
 		obj.episodeChooserToolbar:delete()
 	end
+	timestamp = os.date('%I:%M%p', hs.settings.get('spotify_podcasts_episode_date'))
+	if string.sub(timestamp, 1, 1) == '0' then
+		timestamp = string.sub(timestamp, 2)
+	end
+	timestamp = os.date('%A @ ', hs.settings.get('spotify_podcasts_episode_date')) .. timestamp
 	obj.episodeChooserToolbar = hs.webview.toolbar.new('episodeChooserToolbar', {
 		{
 			id = 'episodesRefreshedLast',
-			label = 'Last Updated: ' .. os.date('%A @ %I:%M%p', hs.settings.get('spotify_podcasts_episode_date')),
+			label = 'Last Updated: ' .. timestamp,
 			selectable = false,
 			fn = function()
 				--
