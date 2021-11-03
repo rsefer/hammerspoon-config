@@ -25,6 +25,7 @@ function obj:updateMenu()
 	menuItems = {}
 	data = obj:getDataFromFile()
 	if data ~= nil and tablelength(data) > 0 then
+		has2DigitHours = false
 		for i, ourEvent in ipairs(data) do
 			parsedEndDate = parse_json_date(ourEvent.dateEnd)
 			if parsedEndDate > os.time() then
@@ -35,6 +36,11 @@ function obj:updateMenu()
 				workingDate = os.date('%I:%M%p', parse_json_date(ourEvent.dateStart))
 				if workingDate:sub(1, 1) == '0' then
 					workingDate = workingDate:sub(2, string.len(workingDate))
+					if has2DigitHours then
+						workingDate = ' ' .. workingDate
+					end
+				else
+					has2DigitHours = true
 				end
 				titleString = hs.styledtext.new(workingDate, { font = { name = 'SF Mono' } }) .. ' - ' .. ourEvent.title
 				if ourEvent.urls ~= nil and tablelength(ourEvent.urls) > 0 then
