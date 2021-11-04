@@ -531,7 +531,7 @@ function obj:init()
 
 	self.currentTrack = {}
 	self.timer = nil
-	self.episodesUpdateTimer = hs.timer.doEvery(15 * 60, function()
+	self.episodesUpdateTimer = hs.timer.doEvery(15, function()
 		if not hs.settings.get('spotify_podcasts_episode_date') or (os.date('*t').hour > 6 and (60 * 60 * 1) < os.time() - hs.settings.get('spotify_podcasts_episode_date')) then
 			obj:getSpotifyPodcastEpisodes()
 		end
