@@ -5,6 +5,7 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '/', function()
 		spoon.SDCTimer:toggleTimer()
 		hs.timer.usleep(2000000)
 	end
+	print('Hammerspoon is reloading')
 	hs.reload()
 end)
 
@@ -83,9 +84,53 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f16', function()
 	hs.osascript.applescript('tell application "System Events" to tell appearance preferences to set dark mode to not dark mode')
 end)
 
--- Toggle Sidecar for iPad
-hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'padenter', toggleSidecariPad)
-hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'i', toggleSidecariPad)
+-- -- Toggle Sidecar for iPad
+-- hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'padenter', toggleSidecariPad)
+-- hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'i', toggleSidecariPad)
+
+-- DevTools Chooser
+-- inspired by https://devutils.app/
+devToolsList = {
+	{
+		text = 'RegExr',
+		image = hs.image.imageFromURL('https://regexr.com/assets/icons/favicon-32x32.png'),
+		url = 'https://regexr.com'
+	},
+	{
+		text = 'Unix Time Converter',
+		image = hs.image.imageFromURL('https://dpidudyah7i0b.cloudfront.net/favicon.ico'),
+		url = 'https://www.unixtimestamp.com'
+	},
+	{
+		text = 'Character Count',
+		image = hs.image.imageFromURL('https://wordcounter.net/favicon.ico'),
+		action = 'countCharacters'
+	},
+	{
+		text = 'Hammerspoon Documentation',
+		image = hs.image.imageFromAppBundle('org.hammerspoon.Hammerspoon'),
+		url = 'https://www.hammerspoon.org/docs/index.html'
+	},
+}
+
+function countCharacters()
+	button, text = hs.dialog.textPrompt('Insert string to count', '')
+	hs.alert('Given string has ' .. string.len(text) .. ' characters')
+end
+
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'K', function()
+	devToolsChooser = hs.chooser.new(function(choice)
+		if not choice then return end
+		if choice.action ~= nil then
+			if choice.action == 'countCharacters' then
+				countCharacters()
+			end
+		else
+			hs.urlevent.openURL(choice.url)
+		end
+	end):choices(devToolsList):show()
+end)
+
 
 -- Select note/text file to open
 function promptForNote()
