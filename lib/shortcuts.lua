@@ -92,6 +92,11 @@ end)
 -- inspired by https://devutils.app/
 devToolsList = {
 	{
+		text = 'GitHub Repositories (@rsefer)',
+		image = hs.image.imageFromAppBundle('com.github.GitHubClient'),
+		url = 'https://github.com/rsefer?tab=repositories'
+	},
+	{
 		text = 'RegExr',
 		image = hs.image.imageFromURL('https://regexr.com/assets/icons/favicon-32x32.png'),
 		url = 'https://regexr.com'
@@ -110,7 +115,7 @@ devToolsList = {
 		text = 'Hammerspoon Documentation',
 		image = hs.image.imageFromAppBundle('org.hammerspoon.Hammerspoon'),
 		url = 'https://www.hammerspoon.org/docs/index.html'
-	},
+	}
 }
 
 function countCharacters()
