@@ -112,6 +112,11 @@ devToolsList = {
 		action = 'countCharacters'
 	},
 	{
+		text = 'Learn X in Y Minutes (JavaScript)',
+		iamge = hs.image.imageFromURL('https://learnxinyminutes.com/favicon.ico'),
+		url = 'https://learnxinyminutes.com/docs/javascript/'
+	},
+	{
 		text = 'Hammerspoon Documentation',
 		image = hs.image.imageFromAppBundle('org.hammerspoon.Hammerspoon'),
 		url = 'https://www.hammerspoon.org/docs/index.html'
