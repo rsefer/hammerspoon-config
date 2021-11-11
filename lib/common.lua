@@ -92,7 +92,11 @@ function toggleSidecariPad()
 end
 
 function minutesToClock(minutesGiven, includeZeroes, prettify)
+	minutesGivenOriginal = minutesGiven
 	minutesGiven = tonumber(minutesGiven)
+	if not minutesGiven then
+		minutesGiven = tostring(minutesGivenOriginal):match("%d+")
+	end
 	hours = math.floor(minutesGiven / 60)
 	minutes = math.floor(minutesGiven - hours * 60)
 	hoursAppend = 'h'
