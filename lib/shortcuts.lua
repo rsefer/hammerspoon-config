@@ -113,7 +113,7 @@ devToolsList = {
 	},
 	{
 		text = 'Learn X in Y Minutes (JavaScript)',
-		iamge = hs.image.imageFromURL('https://learnxinyminutes.com/favicon.ico'),
+		image = hs.image.imageFromURL('https://learnxinyminutes.com/favicon.ico'),
 		url = 'https://learnxinyminutes.com/docs/javascript/'
 	},
 	{
