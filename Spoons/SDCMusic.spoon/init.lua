@@ -255,6 +255,9 @@ function obj:spotifySwitchPlayer()
 		everywhereDevice = nil
 		for x, device in ipairs(allDevices) do
 			if device['name'] ~= nil then
+				if device['name'] == '4ed03509-ef37-4dab-a6a8-c38dc6546aeb' then -- fixes reporting issue
+					device['name'] = 'Bedroom Echo Dot'
+				end
 				if string.match(string.lower(device['name']), 'mac') then
 					device['image'] = textToImage('💻')
 				elseif string.match(string.lower(device['name']), 'phone') then
