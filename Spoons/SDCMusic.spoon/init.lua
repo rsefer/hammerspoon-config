@@ -264,6 +264,8 @@ function obj:spotifySwitchPlayer()
 					device['image'] = textToImage('📱')
 				elseif string.match(string.lower(device['name']), 'pad') then
 					device['image'] = textToImage('⌨️')
+				elseif string.match(string.lower(device['name']), 'tv') then
+					device['image'] = textToImage('📺')
 				elseif string.match(string.lower(device['name']), 'bed') then
 					device['image'] = textToImage('🛏')
 				elseif string.match(string.lower(device['name']), 'dining') or string.match(string.lower(device['name']), 'kitchen') then
