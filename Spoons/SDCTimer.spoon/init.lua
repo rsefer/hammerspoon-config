@@ -35,6 +35,10 @@ function updateTimeElapsed()
 	obj.timerMenu:setTitle(hs.styledtext.new(' ' .. minutesToClock(obj.timeAccrued / 60, false, false), { textFont = 'SF Mono' }))
 end
 
+function ltScriptFullPath()
+	return '/Users/rsefer/dotfiles/bin/lt'
+end
+
 function obj:toggleTimer()
   if obj.timerMain and obj.timerMain:running() then
     obj:stop()
@@ -98,10 +102,10 @@ function obj:logTime(timeMinutes)
 	if string.len(name) > lengthlimit then
 		name = string.sub(name, 1, lengthlimit)
 	end
-	local ltstring = 'lt add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. timeMinutes
+	local ltstring = ltScriptFullPath() .. ' add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. timeMinutes
 	output, status = hs.execute(ltstring, true)
 	if status then
-		output2, status2 = hs.execute('lt ct ' .. obj.activeClient.uuid, true)
+		output2, status2 = hs.execute(ltScriptFullPath() .. ' ct ' .. obj.activeClient.uuid, true)
 		clientTotalMinutes = output2:gsub("[\n\r]", "")
 
 		notificationSubTitle = nil
