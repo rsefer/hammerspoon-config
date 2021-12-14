@@ -4,13 +4,13 @@ obj.__index = obj
 obj.name = "SDCMeetings"
 
 function obj:updateFileFromCalendar()
-	hs.execute('shortcuts run "' .. obj.shortcutName .. '"')
+	hs.shortcuts.run(obj.shortcutName)
 end
 
 function obj:getDataFromFile()
 	file = io.open(obj.eventsFilePath, "rb")
 	output = file:read('*a')
-	file:close()	
+	file:close()
 	output = output:gsub("\r?\n|\r", "")
 	output = output:gsub("\n", "")
 	if output == '' then output = '[]' end
