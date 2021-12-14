@@ -122,7 +122,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Terminal' },
+				apps = { 'Terminal', 'iTerm2' },
 				screens = {
 					deskWithiPad = hs.settings.get('tertiaryMonitorName'),
 					desk = hs.settings.get('secondaryMonitorName'),

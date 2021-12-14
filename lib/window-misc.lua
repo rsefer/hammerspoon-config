@@ -27,7 +27,7 @@ hs.window.filter.new({ 'Google Chrome', 'Brave Browser', 'Firefox', 'Safari' })
 		spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
 	end)
 
-hs.window.filter.new({ 'Terminal' })
+hs.window.filter.new({ 'Terminal', 'iTerm2' })
 	:subscribe({
 		hs.window.filter.windowCreated,
 		hs.window.filter.windowDestroyed
@@ -41,13 +41,13 @@ hs.window.filter.new({ 'Terminal' })
 			workingWindow = app:focusedWindow()
 		elseif event == 'windowCreated' and app ~= nil and app:isRunning() then
 			if string.find(workingWindow:title(), '⌥⌘1') then -- hack to determine if window has only 1 tab
-				spoon.SDCWindows:windowMove(workingWindow, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings('Terminal').sizes))
+				spoon.SDCWindows:windowMove(workingWindow, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(hs.settings.get('terminalAppName')).sizes))
 			end
 		end
 		spoon.SDCWindows:moveWindowIfCloseToPreset(workingWindow)
 	end)
 	:subscribe(hs.window.filter.windowMoved, function()
-		terminal = hs.application.get('Terminal')
+		terminal = hs.application.get(hs.settings.get('terminalAppName'))
 		if tertiaryMonitor and terminal:mainWindow():screen() == hs.screen.find(hs.settings.get('tertiaryMonitorName')) then
 			win = terminal:mainWindow()
 			winUR = win:frame():toUnitRect(win:screen():frame())
