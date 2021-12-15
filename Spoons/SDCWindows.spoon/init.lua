@@ -139,8 +139,7 @@ function obj:windowMove(window, screen, size)
 		]]
 		hs.osascript.applescript(asString)
 	else
-		print('test')
-		print(hs.grid.set(window, size, workingScreen))
+		hs.grid.set(window, size, workingScreen)
 	end
 
 end
