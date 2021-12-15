@@ -105,9 +105,8 @@ function obj:logTime(timeMinutes)
 	local ltstring = ltScriptFullPath() .. ' add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. timeMinutes
 	output, status = hs.execute(ltstring, true)
 	if status then
-		output2, status2 = hs.execute(ltScriptFullPath() .. ' ct ' .. obj.activeClient.uuid, true)
+		output2, status2 = hs.execute(ltScriptFullPath() .. ' ct ' .. obj.activeClient.uuid)
 		clientTotalMinutes = output2:gsub("[\n\r]", "")
-
 		notificationSubTitle = nil
 		if obj.activeClient ~= nil then
 			notificationSubTitle = obj.activeClient.name
