@@ -136,6 +136,9 @@ hs.spoons.use('SDCWindows', {
 					laptop = hs.settings.get('windowSizes').halves.right
 				}
 			}
+		},
+		finickyApps = {
+			'Terminal'
 		}
 	},
 	hotkeys = {

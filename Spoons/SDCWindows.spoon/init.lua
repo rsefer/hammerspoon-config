@@ -94,12 +94,7 @@ function obj:windowMove(window, screen, size)
 		y = hs.settings.get('windowMargin').small
 	}))
 
-	local finickyApps = {
-		'Terminal',
-		'Slack'
-	}
-
-	if contains(finickyApps, window:application():name()) then
+	if contains(obj.finickyApps, window:application():name()) then
 		window:moveToScreen(workingScreen)
 		cell = hs.grid.getCell(size, workingScreen)
 		margin = screenSizeCategory(workingScreen, {
@@ -144,7 +139,8 @@ function obj:windowMove(window, screen, size)
 		]]
 		hs.osascript.applescript(asString)
 	else
-		hs.grid.set(window, size, workingScreen)
+		print('test')
+		print(hs.grid.set(window, size, workingScreen))
 	end
 
 end
@@ -322,6 +318,9 @@ end
 function obj:init()
 	self.screenWatcher = nil
 	self.applicationWatcher = nil
+	if not self.finickyApps then
+		self.finickyApps = {}
+	end
 end
 
 function obj:start()
