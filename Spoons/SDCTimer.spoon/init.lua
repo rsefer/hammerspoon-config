@@ -176,12 +176,14 @@ function obj:init()
 			{
 				id = 'clientRefresh',
 				label = 'Refresh',
+				image = iconRefresh,
 				selectable = true,
 				fn = function() obj.clientChooser:choices(obj:getClients()) end
 			},
 			{
 				id = 'staticLog',
 				label = 'Log',
+				image = iconNote,
 				selectable = true,
 				fn = function()
 					if obj.clientChooser:isVisible() then
@@ -191,7 +193,7 @@ function obj:init()
 				end
 			}
 		}
-		):sizeMode('small'):displayMode('label'))
+		):sizeMode('small'):displayMode('both'))
 		:choices(self:getClients())
 	self.isManualLog = false
 	self.clients = self:getClients()

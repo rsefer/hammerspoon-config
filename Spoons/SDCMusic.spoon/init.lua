@@ -210,13 +210,14 @@ function obj:setEpisodeChooserToolbar()
 		{
 			id = 'episodesRefresh',
 			label = 'Refresh',
+			image = iconRefresh,
 			selectable = true,
 			fn = function()
 				obj:setEpisodeChooserToolbar()
 				obj:getSpotifyPodcastEpisodes()
 			end
 		}
-	}):sizeMode('small'):displayMode('label')
+	}):sizeMode('small'):displayMode('both')
 	obj.episodeChooser:attachedToolbar(obj.episodeChooserToolbar)
 end
 

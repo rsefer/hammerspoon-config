@@ -91,9 +91,10 @@ function obj:init()
 		:attachedToolbar(hs.webview.toolbar.new('pasteboardToolbar', {{
 			id = 'pasteboardClear',
 			label = 'Clear',
+			image = iconTrash,
 			selectable = true,
 			fn = obj.clearHistory
-		}}):sizeMode('small'):displayMode('label'))
+		}}):sizeMode('small'):displayMode('both'))
 		:width(self.chooserWidthPercentage)
 
 	self.watcher = hs.pasteboard.watcher.new(function(content)
