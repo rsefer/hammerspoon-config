@@ -53,14 +53,18 @@ function obj:updateMenu()
 					fn = function()
 						workingURL = nil
 						if ourEvent.urls ~= nil and tablelength(ourEvent.urls) > 0 then
-							workingURL = ourEvent.urls[1]
+							workingURL = ourEvent.urls[1]:gsub("%s+", "")
 						end
 						if workingURL ~= nil and string.find(workingURL, 'google.com') then
 							hs.urlevent.openURL('https://accounts.google.com/AccountChooser/signinchooser?continue=' .. workingURL .. '&hl=en&flowName=GlifWebSignIn&flowEntry=AccountChooser')
 							-- hs.execute('open -na \'Google Chrome\' --args --profile-directory="Profile 1" "' .. workingURL .. '"',) -- this doesn't work as expected from HS
 						elseif workingURL ~= nil and string.find(workingURL, 'zoom.us') then
 							urlParts = hs.http.urlParts(workingURL)
-							hs.urlevent.openURL('zoommtg://zoom.us/join?confno=' .. urlParts.lastPathComponent .. '&' .. urlParts.query)
+							workingFinalURL = 'zoommtg://zoom.us/join?confno=' .. urlParts.lastPathComponent
+							if urlParts.query ~= nil then
+								workingFinalURL = workingFinalURL .. '&' .. urlParts.query
+							end
+							hs.urlevent.openURL(workingFinalURL)
 						elseif workingURL ~= nil and (string.find(workingURL, 'teams.microsoft.com') or string.find(workingURL, 'facetime.apple.com')) then
 							hs.urlevent.openURL(workingURL)
 						end
