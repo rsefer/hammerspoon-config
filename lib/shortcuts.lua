@@ -112,6 +112,11 @@ devToolsList = {
 		action = 'countCharacters'
 	},
 	{
+		text = 'Convert Case',
+		image = hs.image.imageFromURL('https://convertcase.net/favicon.ico'),
+		url = 'https://convertcase.net'
+	},
+	{
 		text = 'Learn X in Y Minutes (JavaScript)',
 		image = hs.image.imageFromURL('https://learnxinyminutes.com/favicon.ico'),
 		url = 'https://learnxinyminutes.com/docs/javascript/'
