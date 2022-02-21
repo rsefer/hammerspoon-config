@@ -32,7 +32,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Reminders', 'Slack', 'Notes' },
+				apps = { 'Reminders', 'Slack', 'Notes', '1Password' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
