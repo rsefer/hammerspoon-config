@@ -36,7 +36,7 @@ function updateTimeElapsed()
 end
 
 function ltScriptFullPath()
-	return '/Users/rsefer/dotfiles/bin/lt'
+	return 'python3 /Users/rsefer/dotfiles/bin/lt'
 end
 
 function obj:toggleTimer()
@@ -103,9 +103,10 @@ function obj:logTime(timeMinutes)
 		name = string.sub(name, 1, lengthlimit)
 	end
 	local ltstring = ltScriptFullPath() .. ' add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. timeMinutes
-	output, status = hs.execute(ltstring, true)
+	status, output = hs.osascript.applescript('do shell script "' .. ltstring .. '"')
 	if status then
-		output2, status2 = hs.execute(ltScriptFullPath() .. ' ct ' .. obj.activeClient.uuid)
+		local ltstring2 = ltScriptFullPath() .. ' ct ' .. obj.activeClient.uuid
+		status2, output2 = hs.osascript.applescript('do shell script "' .. ltstring2 .. '"')
 		clientTotalMinutes = output2:gsub("[\n\r]", "")
 		notificationSubTitle = nil
 		if obj.activeClient ~= nil then
