@@ -254,8 +254,9 @@ hs.spoons.use('SDCPasteboard', {
 	start = true
 })
 
-hs.spoons.use('SDCReminders', {
-	hotkeys = {
-		toggleWebview = {hs.settings.get('hotkeyCombo'), '9'}
-	}
-})
+-- -- this is now covered by fanastical
+-- hs.spoons.use('SDCReminders', {
+-- 	hotkeys = {
+-- 		toggleWebview = {hs.settings.get('hotkeyCombo'), '9'}
+-- 	}
+-- })
