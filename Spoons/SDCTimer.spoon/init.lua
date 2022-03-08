@@ -16,6 +16,7 @@ function clientNameFromID(ID)
 end
 
 function updateTimeElapsedAlert()
+	updateTimeElapsed()
 	notificationSubTitle = nil
 	if obj.activeClient ~= nil then
 		notificationSubTitle = obj.activeClient.name
@@ -23,7 +24,7 @@ function updateTimeElapsedAlert()
 	hs.notify.new({
 		title = 'Tracking Time',
 		subTitle = notificationSubTitle,
-		informativeText = minutesToClock(obj.timeAccrued / 60, false, true),
+		informativeText = minutesToClock(math.ceil(obj.timeAccrued / 60), false, true),
 		withdrawAfter = 5,
 		setIdImage = iconTimerOnAlt,
 		contentImage = iconTimerOnAlt

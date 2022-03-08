@@ -98,7 +98,7 @@ function minutesToClock(minutesGiven, includeZeroes, prettify)
 		minutesGiven = tostring(minutesGivenOriginal):match("%d+")
 	end
 	hours = math.floor(minutesGiven / 60)
-	minutes = math.floor(minutesGiven - hours * 60)
+	minutes = math.ceil(minutesGiven - hours * 60)
 	hoursAppend = 'h'
 	minutesAppend = 'm'
 	if prettify then
