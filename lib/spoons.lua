@@ -2,7 +2,7 @@ hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
 			{
-				apps = { 'Google Chrome', 'Brave Browser', 'Safari', 'Firefox', 'Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman', 'Basecamp 3', 'Shortcuts', 'Fantastical', 'Spark' },
+				apps = { 'Google Chrome', 'Brave Browser', 'Safari', 'Firefox', 'Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'TV', 'News', 'Podcasts', 'Postman', 'Basecamp 3', 'Shortcuts', 'Fantastical' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -107,7 +107,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Code', 'GitHub Desktop' },
+				apps = { 'Spark', 'Code', 'GitHub Desktop' },
 				screens = {
 					deskWithiPad = hs.settings.get('primaryMonitorName'),
 					desk = hs.settings.get('primaryMonitorName'),
