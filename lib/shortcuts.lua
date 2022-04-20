@@ -125,6 +125,11 @@ devToolsList = {
 		text = 'Hammerspoon Documentation',
 		image = hs.image.imageFromAppBundle('org.hammerspoon.Hammerspoon'),
 		url = 'https://www.hammerspoon.org/docs/index.html'
+	},
+	{
+		text = 'Lorem Ipsum',
+		image = hs.image.imageFromURL('https://loremipsum.io/assets/images/favicon.png'),
+		action = 'loremIpsum'
 	}
 }
 
@@ -133,12 +138,25 @@ function countCharacters()
 	hs.alert('Given string has ' .. string.len(text) .. ' characters')
 end
 
+function loremIpsum()
+	sentences = {
+		'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. Enim ut tellus elementum sagittis vitae et.',
+		'Varius vel pharetra vel turpis nunc eget lorem. Posuere sollicitudin aliquam ultrices sagittis orci a. Nunc pulvinar sapien et ligula ullamcorper malesuada. Accumsan tortor posuere ac ut consequat semper. Urna molestie at elementum eu facilisis.',
+		'Ultrices mi tempus imperdiet nulla malesuada pellentesque. Tempor commodo ullamcorper a lacus vestibulum sed arcu.',
+		'Nulla facilisi cras fermentum odio eu feugiat pretium nibh. Tortor aliquam nulla facilisi cras fermentum odio eu. Integer feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Vitae purus faucibus ornare suspendisse sed.'
+	}
+	hs.application.frontmostApplication():activate()
+	hs.eventtap.keyStrokes(sentences[math.random(#sentences)])
+end
+
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'K', function()
 	devToolsChooser = hs.chooser.new(function(choice)
 		if not choice then return end
 		if choice.action ~= nil then
 			if choice.action == 'countCharacters' then
 				countCharacters()
+			elseif choice.action == 'loremIpsum' then
+				loremIpsum()
 			end
 		else
 			hs.urlevent.openURL(choice.url)
