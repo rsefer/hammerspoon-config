@@ -211,29 +211,29 @@ end
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), ';', promptForNote)
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad9', promptForNote)
 
--- Video Camera
-local videoDimensions = { width = 800, height = 450, frame = hs.screen.primaryScreen():frame() }
+-- -- Video Camera
+-- local videoDimensions = { width = 800, height = 450, frame = hs.screen.primaryScreen():frame() }
 
-local videoWebview = hs.webview.newBrowser(hs.geometry.rect((videoDimensions.frame.w / 2) - (videoDimensions.width / 2), (videoDimensions.frame.h / 2) - (videoDimensions.height / 2), videoDimensions.width, videoDimensions.height), {
-	developerExtrasEnabled = true,
-	plugInsEnabled = true
-})
-:shadow(true)
-:titleVisibility('visible')
-:allowTextEntry(true)
-:windowCallback(function(action, webview, state)
-	if action == 'focusChange' and state ~= true and webview:isVisible() then
-		webview:evaluateJavaScript('togglePlayPause();'):hide()
-	end
-end)
-:url('https://rsefer.github.io/webcam-full/blank.html')
-:hide()
+-- local videoWebview = hs.webview.newBrowser(hs.geometry.rect((videoDimensions.frame.w / 2) - (videoDimensions.width / 2), (videoDimensions.frame.h / 2) - (videoDimensions.height / 2), videoDimensions.width, videoDimensions.height), {
+-- 	developerExtrasEnabled = true,
+-- 	plugInsEnabled = true
+-- })
+-- :shadow(true)
+-- :titleVisibility('visible')
+-- :allowTextEntry(true)
+-- :windowCallback(function(action, webview, state)
+-- 	if action == 'focusChange' and state ~= true and webview:isVisible() then
+-- 		webview:evaluateJavaScript('togglePlayPause();'):hide()
+-- 	end
+-- end)
+-- :url('https://rsefer.github.io/webcam-full/blank.html')
+-- :hide()
 
-hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'E', function()
-	if videoWebview:isVisible() then
-		videoWebview:hide():url('https://rsefer.github.io/webcam-full/blank.html')
-	else
-		videoWebview:url('https://rsefer.github.io/webcam-full/'):show():bringToFront(true)
-		videoWebview:hswindow():moveToScreen(hs.screen.primaryScreen()):focus()
-	end
-end)
+-- hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'E', function()
+-- 	if videoWebview:isVisible() then
+-- 		videoWebview:hide():url('https://rsefer.github.io/webcam-full/blank.html')
+-- 	else
+-- 		videoWebview:url('https://rsefer.github.io/webcam-full/'):show():bringToFront(true)
+-- 		videoWebview:hswindow():moveToScreen(hs.screen.primaryScreen()):focus()
+-- 	end
+-- end)
