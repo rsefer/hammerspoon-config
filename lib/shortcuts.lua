@@ -130,6 +130,11 @@ devToolsList = {
 		text = 'Lorem Ipsum',
 		image = hs.image.imageFromURL('https://loremipsum.io/assets/images/favicon.png'),
 		action = 'loremIpsum'
+	},
+	{
+		text = 'GenerateWP',
+		image = hs.image.imageFromURL('https://generatewp.com/wp-content/uploads/cropped-generatewp-logo.png'),
+		url = 'https://generatewp.com/generator/'
 	}
 }
 
