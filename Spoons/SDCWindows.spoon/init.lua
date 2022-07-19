@@ -254,7 +254,7 @@ function obj:handleScreenChange()
 	existingDeskSetup = hs.settings.get('deskSetup')
 	if contains(screenNames, hs.settings.get('secondaryMonitorName')) then
 		hs.settings.set('deskSizeClass', 'large')
-		if contains(screenNames, 'iPad') then
+		if contains(screenNames, 'iPad') or contains(screenNames, 'Sidecar Display (AirPlay)') then
 			hs.settings.set('deskSetup', 'deskWithiPad')
 		else
 			hs.settings.set('deskSetup', 'desk')
@@ -265,7 +265,7 @@ function obj:handleScreenChange()
 		end
 	else
 		hs.settings.set('deskSizeClass', 'small')
-		if contains(screenNames, 'iPad') then
+		if contains(screenNames, 'iPad')  or contains(screenNames, 'Sidecar Display (AirPlay)') then
 			hs.settings.set('deskSetup', 'laptopWithiPad')
 		else
 			hs.settings.set('deskSetup', 'laptop')
