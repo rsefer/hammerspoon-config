@@ -222,6 +222,8 @@ function obj:setEpisodeChooserToolbar()
 end
 
 function obj:spotifyPlayPodcastEpisode()
+	obj:setEpisodeChooserToolbar()
+	obj:getSpotifyPodcastEpisodes()
 	obj.episodeChooser:choices(obj.episodesList):show()
 end
 
@@ -541,6 +543,7 @@ function obj:init()
 	self.timer = nil
 	self.episodesUpdateTimer = hs.timer.doEvery(15 * 60, function()
 		if not hs.settings.get('spotify_podcasts_episode_date') or (os.date('*t').hour > 6 and (60 * 60 * 1) < os.time() - hs.settings.get('spotify_podcasts_episode_date')) then
+			obj:setEpisodeChooserToolbar()
 			obj:getSpotifyPodcastEpisodes()
 		end
 	end):stop()
