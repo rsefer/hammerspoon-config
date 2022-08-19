@@ -97,6 +97,11 @@ devToolsList = {
 		url = 'https://github.com/rsefer?tab=repositories'
 	},
 	{
+		text = 'Meeting',
+		image = hs.image.imageFromURL('https://flexibits.com/img/new-fantastical/logo/product/fantastical-mac-glyph@2x.png'),
+		url = 'https://fantastical.app/rsefer/meeting'
+	},
+	{
 		text = 'RegExr',
 		image = hs.image.imageFromURL('https://regexr.com/assets/icons/favicon-32x32.png'),
 		url = 'https://regexr.com'
