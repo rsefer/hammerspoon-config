@@ -176,46 +176,48 @@ end)
 
 -- Select note/text file to open
 function promptForNote()
-	if not settingExists('notes_directory') then
-		directories = hs.dialog.chooseFileOrFolder('Choose the Notes directory', '', false, true)
-		if directories['1'] then
-			hs.settings.set('notes_directory', directories['1'])
-		else
-			hs.alert('No directory selected')
-			return
-		end
-	end
+	hs.application.open('Obsidian', 3, true)
+	hs.eventtap.keyStroke('cmd', 'o', hs.application.find('Obsidian')) -- bring up 'Open' dialog in Obsidian
+	-- if not settingExists('notes_directory') then
+	-- 	directories = hs.dialog.chooseFileOrFolder('Choose the Notes directory', '', false, true)
+	-- 	if directories['1'] then
+	-- 		hs.settings.set('notes_directory', directories['1'])
+	-- 	else
+	-- 		hs.alert('No directory selected')
+	-- 		return
+	-- 	end
+	-- end
 
-	files = {}
-	local iterFn, dirObj = hs.fs.dir(hs.settings.get('notes_directory'))
-	if not iterFn then return end
-	for file in iterFn, dirObj do
-		if string.sub(file, 1, 1) ~= '.' then
-			table.insert(files, {
-				fileName = file,
-				filePath = hs.settings.get('notes_directory') .. '/' .. file,
-				lastChange = hs.fs.attributes(hs.settings.get('notes_directory') .. '/' .. file, 'change')
-			})
-		end
-	end
-	if tablelength(files) == 0 then return end
+	-- files = {}
+	-- local iterFn, dirObj = hs.fs.dir(hs.settings.get('notes_directory'))
+	-- if not iterFn then return end
+	-- for file in iterFn, dirObj do
+	-- 	if string.sub(file, 1, 1) ~= '.' then
+	-- 		table.insert(files, {
+	-- 			fileName = file,
+	-- 			filePath = hs.settings.get('notes_directory') .. '/' .. file,
+	-- 			lastChange = hs.fs.attributes(hs.settings.get('notes_directory') .. '/' .. file, 'change')
+	-- 		})
+	-- 	end
+	-- end
+	-- if tablelength(files) == 0 then return end
 
-	table.sort(files, function(a, b)
-		return b.fileName > a.fileName -- alphabetical
-		-- return a.lastChange > b.lastChange -- recently modified
-	end)
-	choices = {}
-	for i, file in ipairs(files) do
-		choice = file
-		choice.image = textToImage('📄')
-		choice.text = file.fileName:gsub('.txt', '')
-		choice.subText = 'Last edited ' .. os.date('%B %d, %Y', file.lastChange)
-		table.insert(choices, choice)
-	end
-	local chooser = hs.chooser.new(function(choice)
-		if not choice then return end
-		hs.execute('open ' .. choice.filePath:gsub(" ", "\\ "), true)
-	end):width(30):choices(choices):show()
+	-- table.sort(files, function(a, b)
+	-- 	return b.fileName > a.fileName -- alphabetical
+	-- 	-- return a.lastChange > b.lastChange -- recently modified
+	-- end)
+	-- choices = {}
+	-- for i, file in ipairs(files) do
+	-- 	choice = file
+	-- 	choice.image = textToImage('📄')
+	-- 	choice.text = file.fileName:gsub('.txt', '')
+	-- 	choice.subText = 'Last edited ' .. os.date('%B %d, %Y', file.lastChange)
+	-- 	table.insert(choices, choice)
+	-- end
+	-- local chooser = hs.chooser.new(function(choice)
+	-- 	if not choice then return end
+	-- 	hs.execute('open ' .. choice.filePath:gsub(" ", "\\ "), true)
+	-- end):width(30):choices(choices):show()
 end
 
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), ';', promptForNote)
