@@ -13,7 +13,7 @@ sizeAdd(m, 'padenter', hs.settings.get('windowSizes')['full'])
 sizeAdd(m, 'pad5', hs.settings.get('windowSizes')['center'])
 sizeAdd(m, 'pad1', hs.settings.get('windowSizes')['quadrants']['three'])
 
-hs.window.filter.new({ 'TextEdit' })
+hs.window.filter.new({ 'TextEdit', 'Obsidian' })
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
 		if tablelength(hs.application.get(appName):allWindows()) == 1 then
 			if window:title() ~= 'Open' and (not window:tabCount() or window:tabCount() < 2) then

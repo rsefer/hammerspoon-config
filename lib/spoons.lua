@@ -62,7 +62,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'TextEdit' },
+				apps = { 'TextEdit', 'Obsidian' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
