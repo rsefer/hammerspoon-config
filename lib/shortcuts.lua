@@ -140,6 +140,11 @@ devToolsList = {
 		text = 'GenerateWP',
 		image = hs.image.imageFromURL('https://generatewp.com/wp-content/uploads/cropped-generatewp-logo.png'),
 		url = 'https://generatewp.com/generator/'
+	},
+	{
+		text = 'Excalidraw',
+		image = hs.image.imageFromURL('https://excalidraw.com/favicon.ico'),
+		url = 'https://excalidraw.com/'
 	}
 }
 
