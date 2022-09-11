@@ -178,6 +178,15 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'K', function()
 	end):choices(devToolsList):show()
 end)
 
+-- Move tab to new window and minimize old
+hs.hotkey.bind({'cmd', 'option', 'shift'}, 'T', function()
+	if hs.application.frontmostApplication():name() == 'Google Chrome' then
+		browser = hs.application.find('Google Chrome')
+		browser:selectMenuItem({ 'Tab', 'Move Tab to New Window' })
+		hs.eventtap.keyStroke({'cmd'}, '`')
+		browser:selectMenuItem({ 'Window', 'Minimize' })
+	end
+end)
 
 -- Select note/text file to open
 function promptForNote()
