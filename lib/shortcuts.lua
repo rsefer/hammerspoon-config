@@ -180,11 +180,19 @@ end)
 
 -- Move tab to new window and minimize old
 hs.hotkey.bind({'cmd', 'option', 'shift'}, 'T', function()
-	if hs.application.frontmostApplication():name() == 'Google Chrome' then
-		browser = hs.application.find('Google Chrome')
-		browser:selectMenuItem({ 'Tab', 'Move Tab to New Window' })
+	local app = hs.application.frontmostApplication()
+	if contains({
+		'Google Chrome',
+		'Safari'
+	}, app:name()) then
+		local workingTabMenu = 'Tab'
+		if app:name() == 'Safari' then
+			workingTabMenu = 'Window'
+		end
+		print(workingTabMenu)
+		app:selectMenuItem({ workingTabMenu, 'Move Tab to New Window' })
 		hs.eventtap.keyStroke({'cmd'}, '`')
-		browser:selectMenuItem({ 'Window', 'Minimize' })
+		app:selectMenuItem({ 'Window', 'Minimize' })
 	end
 end)
 
