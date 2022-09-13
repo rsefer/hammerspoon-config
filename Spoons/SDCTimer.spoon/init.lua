@@ -37,6 +37,8 @@ function updateTimeElapsed()
 end
 
 function ltScriptFullPath()
+	-- this can fail after OS updates some times due to changes
+	-- run `sudo xcodebuild -license && xcodebuild -runFirstLaunch` to solve this
 	return 'python3 /Users/rsefer/dotfiles/bin/lt'
 end
 
