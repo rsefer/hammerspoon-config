@@ -145,6 +145,11 @@ devToolsList = {
 		text = 'Excalidraw',
 		image = hs.image.imageFromURL('https://excalidraw.com/favicon.ico'),
 		url = 'https://excalidraw.com/'
+	},
+	{
+		text = 'WooCommerce Templates',
+		image = hs.image.imageFromURL('https://woocommerce.com/wp-content/uploads/2020/06/cropped-Favicon_512.png'),
+		url = 'https://github.com/woocommerce/woocommerce/tree/trunk/plugins/woocommerce/templates'
 	}
 }
 
