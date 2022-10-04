@@ -107,7 +107,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Spark', 'Code', 'GitHub Desktop' },
+				apps = { 'Spark', 'Spark Desktop', 'Code', 'GitHub Desktop' },
 				screens = {
 					deskWithiPad = hs.settings.get('primaryMonitorName'),
 					desk = hs.settings.get('primaryMonitorName'),
