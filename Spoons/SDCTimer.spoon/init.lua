@@ -16,6 +16,14 @@ function clientNameFromID(ID)
 end
 
 function updateTimeElapsedAlert()
+	shouldShow = true
+	for i, device in ipairs(hs.audiodevice.allInputDevices()) do
+		if device:inUse() then -- don't show updates if microphone is being used
+			shouldShow = false
+			break
+		end
+	end
+	if not shouldShow then return end
 	updateTimeElapsed()
 	-- notificationSubTitle = nil
 	-- if obj.activeClient ~= nil then
