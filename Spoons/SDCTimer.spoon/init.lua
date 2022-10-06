@@ -41,67 +41,76 @@ function updateTimeElapsedAlert()
 end
 
 function updateTimeElapsedRectangle()
-	mainScreenFrame = hs.screen.mainScreen():fullFrame()
-	textElapsed = hs.styledtext.new(minutesToClock(math.ceil(obj.timeAccrued / 60), false, true), {
-		font = {
-			name = 'SF Mono Semibold',
-			size = mainScreenFrame.h / 15
-		},
-		color = { ['hex'] = '#ffffff' },
-		strokeColor = { ['hex'] = '#000000' },
-		strokeWidth = -1
-	})
-	textElapsedFrame = hs.drawing.getTextDrawingSize(textElapsed)
-	textClock = hs.styledtext.new(os.date('%I:%M%p'), {
-		font = {
-			name = 'SF Mono',
-			size = mainScreenFrame.h / 30
-		},
-		color = { ['hex'] = '#ffffff' },
-		strokeColor = { ['hex'] = '#000000' },
-		strokeWidth = -1
-	})
-	textClockFrame = hs.drawing.getTextDrawingSize(textClock)
-	alpha = 0.05
-	if hs.screen.mainScreen():name() == hs.settings.get('secondaryMonitorName') then
-		alpha = 0.1
-	end
-	obj.timeElapsedRectangle = hs.canvas.new({ x = 0, y = 0, h = mainScreenFrame.h, w = mainScreenFrame.w })
-		:appendElements({
-			type = 'rectangle',
-			action = 'fill',
-			frame = {
-				x = '0%',
-				y = '0%',
-				h = '100%',
-				w = '100%'
+	textRaw = minutesToClock(math.ceil(obj.timeAccrued / 60), false, true)
+	textTime = os.date('%I:%M%p')
+
+	timeElapsedRectangles = {}
+	for i, screen in ipairs(hs.screen.allScreens()) do
+		screenFrame = screen:fullFrame()
+		alpha = 0.5
+		strokeWidth = -1.5
+		if screen:name() == hs.settings.get('secondaryMonitorName') then
+			alpha = 0.7
+		end
+		textElapsed = hs.styledtext.new(textRaw, {
+			font = {
+				name = 'SF Mono Semibold',
+				size = screenFrame.h / 15
 			},
-			fillColor = { ['red'] = 0, ['blue'] = 0, ['green'] = 1, ['alpha'] = alpha }
-		},
-		{
-			type = 'text',
-			text = textElapsed,
-			frame = {
-				x = (mainScreenFrame.w / 2) - (textElapsedFrame.w / 2),
-				y = (mainScreenFrame.h / 2) - (textElapsedFrame.h * 0.75),
-				h = textElapsedFrame.h,
-				w = textElapsedFrame.w
-			}
-		},
-		{
-			type = 'text',
-			text = textClock,
-			frame = {
-				x = (mainScreenFrame.w / 2) - (textClockFrame.w / 2),
-				y = (mainScreenFrame.h / 2) + (textElapsedFrame.h * 0.25),
-				h = textClockFrame.h,
-				w = textClockFrame.w
-			}
+			color = { ['hex'] = '#ffffff' },
+			strokeColor = { ['hex'] = '#000000' },
+			strokeWidth = strokeWidth
 		})
-		:show(0.5)
-	endTimer = hs.timer.doAfter(3, function()
-		obj.timeElapsedRectangle:hide(0.5)
-	end)
+		textElapsedFrame = hs.drawing.getTextDrawingSize(textElapsed)
+		textClock = hs.styledtext.new(textTime, {
+			font = {
+				name = 'SF Mono',
+				size = screenFrame.h / 30
+			},
+			color = { ['hex'] = '#ffffff' },
+			strokeColor = { ['hex'] = '#000000' },
+			strokeWidth = strokeWidth
+		})
+		textClockFrame = hs.drawing.getTextDrawingSize(textClock)
+		timeElapsedRectangles[i] = hs.canvas.new({ x = 0, y = 0, h = screenFrame.h, w = screenFrame.w })
+			:frame(screenFrame)
+			:appendElements({
+				type = 'rectangle',
+				action = 'fill',
+				frame = {
+					x = '0%',
+					y = '0%',
+					h = '100%',
+					w = '100%'
+				},
+				fillColor = { ['hex'] = '#1db954', ['alpha'] = alpha }
+			},
+			{
+				type = 'text',
+				text = textElapsed,
+				frame = {
+					x = (screenFrame.w / 2) - (textElapsedFrame.w / 2),
+					y = (screenFrame.h / 2) - (textElapsedFrame.h * 0.75),
+					h = textElapsedFrame.h,
+					w = textElapsedFrame.w
+				}
+			},
+			{
+				type = 'text',
+				text = textClock,
+				frame = {
+					x = (screenFrame.w / 2) - (textClockFrame.w / 2),
+					y = (screenFrame.h / 2) + (textElapsedFrame.h * 0.25),
+					h = textClockFrame.h,
+					w = textClockFrame.w
+				}
+			})
+			:show(0.5)
+		endTimer = hs.timer.doAfter(3, function()
+			timeElapsedRectangles[i]:hide(0.5)
+		end)
+	end
+
 end
 
 function updateTimeElapsed()
