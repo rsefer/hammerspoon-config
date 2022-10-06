@@ -45,6 +45,7 @@ function updateTimeElapsedRectangle()
 	textTime = os.date('%I:%M%p')
 
 	timeElapsedRectangles = {}
+	rectangleTimers = {}
 	for i, screen in ipairs(hs.screen.allScreens()) do
 		screenFrame = screen:fullFrame()
 		alpha = 0.5
@@ -72,9 +73,8 @@ function updateTimeElapsedRectangle()
 			strokeWidth = strokeWidth
 		})
 		textClockFrame = hs.drawing.getTextDrawingSize(textClock)
-		timeElapsedRectangles[i] = hs.canvas.new({ x = 0, y = 0, h = screenFrame.h, w = screenFrame.w })
-			:frame(screenFrame)
-			:appendElements({
+		elements = {
+			{
 				type = 'rectangle',
 				action = 'fill',
 				frame = {
@@ -104,10 +104,36 @@ function updateTimeElapsedRectangle()
 					h = textClockFrame.h,
 					w = textClockFrame.w
 				}
+			}
+		}
+		if obj.activeClient then
+			textClient = hs.styledtext.new(obj.activeClient.name, {
+				font = {
+					name = 'SF Mono Semibold',
+					size = screenFrame.h / 30
+				},
+				color = { ['hex'] = '#ffffff' },
+				strokeColor = { ['hex'] = '#000000' },
+				strokeWidth = strokeWidth
 			})
+			textClientFrame = hs.drawing.getTextDrawingSize(textClient)
+			table.insert(elements, {
+				type = 'text',
+				text = textClient,
+				frame = {
+					x = (screenFrame.w / 2) - (textClientFrame.w / 2),
+					y = '5%',
+					h = textClientFrame.h,
+					w = textClientFrame.w
+				}
+			})
+		end
+		timeElapsedRectangles[i] = hs.canvas.new({ x = 0, y = 0, h = screenFrame.h, w = screenFrame.w })
+			:frame(screenFrame)
+			:appendElements(elements)
 			:show(0.5)
-		endTimer = hs.timer.doAfter(3, function()
-			timeElapsedRectangles[i]:hide(0.5)
+		rectangleTimers[i] = hs.timer.doAfter(3, function()
+			timeElapsedRectangles[i]:delete(0.5)
 		end)
 	end
 
