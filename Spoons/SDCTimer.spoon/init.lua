@@ -17,18 +17,78 @@ end
 
 function updateTimeElapsedAlert()
 	updateTimeElapsed()
-	notificationSubTitle = nil
-	if obj.activeClient ~= nil then
-		notificationSubTitle = obj.activeClient.name
-	end
-	hs.notify.new({
-		title = 'Tracking Time',
-		subTitle = notificationSubTitle,
-		informativeText = minutesToClock(math.ceil(obj.timeAccrued / 60), false, true),
-		withdrawAfter = 5,
-		setIdImage = iconTimerOnAlt,
-		contentImage = iconTimerOnAlt
-	}):send()
+	-- notificationSubTitle = nil
+	-- if obj.activeClient ~= nil then
+	-- 	notificationSubTitle = obj.activeClient.name
+	-- end
+	-- hs.notify.new({
+	-- 	title = 'Tracking Time',
+	-- 	subTitle = notificationSubTitle,
+	-- 	informativeText = minutesToClock(math.ceil(obj.timeAccrued / 60), false, true),
+	-- 	withdrawAfter = 5,
+	-- 	setIdImage = iconTimerOnAlt,
+	-- 	contentImage = iconTimerOnAlt
+	-- }):send()
+	updateTimeElapsedRectangle()
+end
+
+function updateTimeElapsedRectangle()
+	textElapsed = hs.styledtext.new(minutesToClock(math.ceil(obj.timeAccrued / 60), false, true), {
+		font = {
+			name = 'SF Mono Semibold',
+			size = obj.mainScreenFrame.h / 15
+		},
+		color = { ['hex'] = '#ffffff' },
+		strokeColor = { ['hex'] = '#000000' },
+		strokeWidth = -1
+	})
+	textElapsedFrame = hs.drawing.getTextDrawingSize(textElapsed)
+	textClock = hs.styledtext.new(os.date('%I:%M%p'), {
+		font = {
+			name = 'SF Mono',
+			size = obj.mainScreenFrame.h / 30
+		},
+		color = { ['hex'] = '#ffffff' },
+		strokeColor = { ['hex'] = '#000000' },
+		strokeWidth = -1
+	})
+	textClockFrame = hs.drawing.getTextDrawingSize(textClock)
+	obj.timeElapsedRectangle = hs.canvas.new({ x = 0, y = 0, h = obj.mainScreenFrame.h, w = obj.mainScreenFrame.w })
+		:appendElements({
+			type = 'rectangle',
+			action = 'fill',
+			frame = {
+				x = '0%',
+				y = '0%',
+				h = '100%',
+				w = '100%'
+			},
+			fillColor = { ['red'] = 0, ['blue'] = 0, ['green'] = 1, ['alpha'] = 0.05 }
+		},
+		{
+			type = 'text',
+			text = textElapsed,
+			frame = {
+				x = (obj.mainScreenFrame.w / 2) - (textElapsedFrame.w / 2),
+				y = (obj.mainScreenFrame.h / 2) - (textElapsedFrame.h * 0.75),
+				h = textElapsedFrame.h,
+				w = textElapsedFrame.w
+			}
+		},
+		{
+			type = 'text',
+			text = textClock,
+			frame = {
+				x = (obj.mainScreenFrame.w / 2) - (textClockFrame.w / 2),
+				y = (obj.mainScreenFrame.h / 2) + (textElapsedFrame.h * 0.25),
+				h = textClockFrame.h,
+				w = textClockFrame.w
+			}
+		})
+		:show(0.5)
+	endTimer = hs.timer.doAfter(3, function()
+		obj.timeElapsedRectangle:delete(0.5)
+	end)
 end
 
 function updateTimeElapsed()
@@ -201,6 +261,9 @@ function obj:init()
 		:choices(self:getClients())
 	self.isManualLog = false
 	self.clients = self:getClients()
+
+	self.mainScreenFrame = hs.screen.mainScreen():fullFrame()
+	self.timeElapsedRectangle = nil
 
 	hs.urlevent.bind('toggleTimer', function(event, params)
 		self:toggleTimer()
