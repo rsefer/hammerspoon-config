@@ -15,7 +15,7 @@ function nextAudioSource(current)
   newSource = nil
   workingStart = current - 1
   if workingStart < 1 then
-    workingStart = tablelength(obj.devices)
+    workingStart = #obj.devices
   end
 	for i = workingStart, 1, -1 do
 		thisDevice = obj.devices[i]

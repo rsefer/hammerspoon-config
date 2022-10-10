@@ -64,7 +64,7 @@ function obj:appMove(appName, screen, size)
 	if appName ~= nil then
 		app = hs.application.get(appName)
 	end
-	if app ~= nil and tablelength(app:allWindows()) > 0 then
+	if app ~= nil and #app:allWindows() > 0 then
 		for x, window in ipairs(app:allWindows()) do
 			obj:windowMove(window, screen, size)
 		end
@@ -341,14 +341,14 @@ function obj:start()
 	end):start()
 
 	self.applicationWatcher = hs.application.watcher.new(function(name, event, app)
-		if event == 5 and name == 'Finder' and tablelength(app:allWindows()) == 0 then
+		if event == 5 and name == 'Finder' and #app:allWindows() == 0 then
 			hs.timer.doAfter(0.25, function()
 				obj:windowMove(hs.window.focusedWindow(), nil, hs.settings.get('windowSizes').center)
 			end)
 		elseif event == 1 or event == hs.application.watcher.launched then
 			for k, ao in ipairs(self.windowLayout) do
 				if contains(ao.apps, name) then
-					if tablelength(app:allWindows()) ~= 1 or (tablelength(app:allWindows()) == 1 and app:allWindows()[1]:title() ~= 'Open') then
+					if #app:allWindows() ~= 1 or (#app:allWindows() == 1 and app:allWindows()[1]:title() ~= 'Open') then
 						hs.timer.doAfter(2, function()
 							obj:appMove(name, screenChooser(ao.screens), windowSizeChooser(ao.sizes))
 						end)

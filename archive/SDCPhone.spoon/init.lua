@@ -100,11 +100,11 @@ function obj:setShortcuts()
 			end
 		end
   end
-  if tablelength(choices) == 0 then
+  if #choices == 0 then
     obj.chooser:cancel()
   else
     obj.chooser:width(30)
-    obj.chooser:rows(tablelength(choices))
+    obj.chooser:rows(#choices)
     obj.chooser:choices(choices)
   end
 end

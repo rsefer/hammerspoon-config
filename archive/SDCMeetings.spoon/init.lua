@@ -24,7 +24,7 @@ end
 function obj:updateMenu()
 	menuItems = {}
 	data = obj:getDataFromFile()
-	if data ~= nil and tablelength(data) > 0 then
+	if data ~= nil and #data > 0 then
 		has2DigitHours = false
 		for i, ourEvent in ipairs(data) do
 			parsedEndDate = parse_json_date(ourEvent.dateEnd)
@@ -43,7 +43,7 @@ function obj:updateMenu()
 					has2DigitHours = true
 				end
 				titleString = hs.styledtext.new(workingDate, { font = { name = 'SF Mono' } }) .. ' - ' .. ourEvent.title
-				if ourEvent.urls ~= nil and tablelength(ourEvent.urls) > 0 then
+				if ourEvent.urls ~= nil and #ourEvent.urls > 0 then
 					titleString = titleString .. ' ' .. hs.styledtext.new(utf8.char(0x10034A), { font = { name = 'SF Pro' } }) -- character is video icon. /common/icons.lua
 				end
 				table.insert(menuItems, {
@@ -52,7 +52,7 @@ function obj:updateMenu()
 					tooltip = ourEvent.notes,
 					fn = function()
 						workingURL = nil
-						if ourEvent.urls ~= nil and tablelength(ourEvent.urls) > 0 then
+						if ourEvent.urls ~= nil and #ourEvent.urls > 0 then
 							workingURL = ourEvent.urls[1]:gsub("%s+", "")
 						end
 						if workingURL ~= nil and string.find(workingURL, 'google.com') then
@@ -73,7 +73,7 @@ function obj:updateMenu()
 			end
 		end
 	end
-	if tablelength(menuItems) == 0 then
+	if #menuItems == 0 then
 		table.insert(menuItems, {
 			title = 'No upcoming events.'
 		})

@@ -25,12 +25,6 @@ function urlencode(url)
   return url
 end
 
-function tablelength(t)
-	local count = 0
-	for _ in pairs(t) do count = count + 1 end
-	return count
-end
-
 function contains(table, val)
   for i = 1, #table do
     if table[i] == val then

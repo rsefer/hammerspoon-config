@@ -12,7 +12,7 @@ function obj:populateChooser()
 	titleMaxLength = 70
 	ellipsesString = ' […]'
 	choices = {}
-	if tablelength(hs.settings.get('pasteboardHistory')) > 0 then
+	if #hs.settings.get('pasteboardHistory') > 0 then
 		for k, item in pairs(hs.settings.get('pasteboardHistory')) do
 			title = item.content
 			imageSymbol = '📄'
@@ -37,7 +37,7 @@ function obj:populateChooser()
 			})
 		end
 	end
-	obj.chooser:rows(tablelength(choices) + 2)
+	obj.chooser:rows(#choices + 2)
 		:choices(choices)
 end
 
@@ -104,8 +104,8 @@ function obj:init()
 			contentTypes = hs.pasteboard.allContentTypes()[1],
 			typesAvailable = hs.pasteboard.typesAvailable()
 		})
-		while (tablelength(obj.pasteboardHistory) >= 10) do
-			table.remove(obj.pasteboardHistory, tablelength(obj.pasteboardHistory))
+		while (#obj.pasteboardHistory >= 10) do
+			table.remove(obj.pasteboardHistory, #obj.pasteboardHistory)
 		end
 		hs.settings.set('pasteboardHistory', obj.pasteboardHistory)
 	end)

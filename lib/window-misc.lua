@@ -15,7 +15,7 @@ sizeAdd(m, 'pad1', hs.settings.get('windowSizes')['quadrants']['three'])
 
 hs.window.filter.new({ 'TextEdit', 'Obsidian' })
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
-		if tablelength(hs.application.get(appName):allWindows()) == 1 then
+		if #hs.application.get(appName):allWindows() == 1 then
 			if window:title() ~= 'Open' and (not window:tabCount() or window:tabCount() < 2) then
 				spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
 			end
@@ -35,7 +35,7 @@ hs.window.filter.new({ 'Terminal', 'iTerm2' })
 		workingWindow = window
 		app = hs.application.get(appName)
 		if event == 'windowDestroyed' and app ~= nil and app:isRunning() then
-			if (tablelength(app:allWindows()) < 1) then
+			if (#app:allWindows() < 1) then
 				return
 			end
 			workingWindow = app:focusedWindow()

@@ -227,7 +227,7 @@ function promptForNote()
 	-- 		})
 	-- 	end
 	-- end
-	-- if tablelength(files) == 0 then return end
+	-- if #files == 0 then return end
 
 	-- table.sort(files, function(a, b)
 	-- 	return b.fileName > a.fileName -- alphabetical
