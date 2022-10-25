@@ -533,11 +533,11 @@ function obj:init()
 	self.player.isDormant = false
 	self.player.lastTimePlayed = os.time()
 
-	self.menus = {
-		titleMenu = hs.menubar.new():setClickCallback(obj.toggleNowPlaying),
-		controlMenu = hs.menubar.new():setClickCallback(obj.player.module.playpause),
-		playerMenu = hs.menubar.new():setClickCallback(obj.togglePlayer):setIcon(self.player.icon, false)
-	}
+	-- self.menus = {
+	-- 	titleMenu = hs.menubar.new():setClickCallback(obj.toggleNowPlaying),
+	-- 	controlMenu = hs.menubar.new():setClickCallback(obj.player.module.playpause),
+	-- 	playerMenu = hs.menubar.new():setClickCallback(obj.togglePlayer):setIcon(self.player.icon, false)
+	-- }
 
 	self.currentTrack = {}
 	self.timer = nil
@@ -562,53 +562,53 @@ function obj:init()
 		obj.episodeChooser:choices(obj.episodesList)
 	end)
 
-  self.watcher = hs.application.watcher.new(function(name, event, app)
-    if name == self.player.name then
-      if event == 2 or event == hs.application.watcher.terminated then
-        obj:unloadPlayerMenus()
-        obj.menus.playerMenu:setIcon(self.icon, false)
-      end
-    end
-	end)
+  -- self.watcher = hs.application.watcher.new(function(name, event, app)
+  --   if name == self.player.name then
+  --     if event == 2 or event == hs.application.watcher.terminated then
+  --       obj:unloadPlayerMenus()
+  --       obj.menus.playerMenu:setIcon(self.icon, false)
+  --     end
+  --   end
+	-- end)
 
-	self.distributednotifications = hs.distributednotifications.new(function(name, object, userInfo)
-		if userInfo['Player State'] == 'Playing' then
-			obj.player.isDormant = false
-			obj:getTrackAlbumArt()
-			if obj.player.lastState ~= 'Paused' then
-				obj:updateCurrentTrackInfo()
-				-- obj:toggleNowPlaying()
-				-- hs.timer.doAfter(2, self.toggleNowPlaying)
-				obj:notifyTrack()
-			end
-			obj.player.lastTimePlayed = os.time()
-			obj:playerCheck()
-		end
-		obj.player.lastState = userInfo['Player State']
-		obj:setPlayerMenus()
-	end, self.player.distributedPlaybackChangedString)
+	-- self.distributednotifications = hs.distributednotifications.new(function(name, object, userInfo)
+	-- 	if userInfo['Player State'] == 'Playing' then
+	-- 		obj.player.isDormant = false
+	-- 		obj:getTrackAlbumArt()
+	-- 		if obj.player.lastState ~= 'Paused' then
+	-- 			obj:updateCurrentTrackInfo()
+	-- 			-- obj:toggleNowPlaying()
+	-- 			-- hs.timer.doAfter(2, self.toggleNowPlaying)
+	-- 			obj:notifyTrack()
+	-- 		end
+	-- 		obj.player.lastTimePlayed = os.time()
+	-- 		obj:playerCheck()
+	-- 	end
+	-- 	obj.player.lastState = userInfo['Player State']
+	-- 	obj:setPlayerMenus()
+	-- end, self.player.distributedPlaybackChangedString)
 
 end
 
 function obj:start()
 
-	self.watcher:start()
-	self.distributednotifications:start()
+	-- self.watcher:start()
+	-- self.distributednotifications:start()
 	self.episodesUpdateTimer:start()
 	self:setEpisodeChooserToolbar()
 
-	if obj:getCurrentPlayerState() == 'playing' then
-		obj:getTrackAlbumArt()
-		self:playerCheck()
-	end
+	-- if obj:getCurrentPlayerState() == 'playing' then
+	-- 	obj:getTrackAlbumArt()
+	-- 	self:playerCheck()
+	-- end
 
 end
 
 function obj:stop()
 
-	self.watcher:stop()
+	-- self.watcher:stop()
 	self.episodesUpdateTimer:stop()
-	self.distributednotifications:stop()
+	-- self.distributednotifications:stop()
 	if self.timer ~= nil then
 		self.timer:stop()
 	end
