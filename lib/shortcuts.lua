@@ -79,6 +79,13 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '8', function()
 	hs.urlevent.openURL('https://calendar.google.com/calendar/r/eventedit')
 end)
 
+-- New Fantastical Todo for today
+hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '0', function()
+	hs.eventtap.keyStroke(hs.settings.get('hotkeyCombo'), '9') -- triggers Fantastical mini app
+	hs.eventtap.keyStrokes('TODO today ')
+	-- hs.urlevent.openURL('x-fantastical3://parse?s=TODO%20today%20') -- opens up Full Fantastical app
+end)
+
 -- Dark Mode toggle
 hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f16', function()
 	hs.osascript.applescript('tell application "System Events" to tell appearance preferences to set dark mode to not dark mode')
