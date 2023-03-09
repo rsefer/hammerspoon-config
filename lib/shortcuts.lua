@@ -167,10 +167,10 @@ end
 
 function loremIpsum()
 	-- API from https://loripsum.net
-	status, body, headers = hs.http.get('https://loripsum.net/api/1/short/plaintext') -- 1 paragraph, plaintext
-	if not body then
+	-- status, body, headers = hs.http.get('https://loripsum.net/api/1/short/plaintext') -- 1 paragraph, plaintext
+	-- if not body then
 		body = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-	end
+	-- end
 	hs.application.frontmostApplication():activate()
 	hs.eventtap.keyStrokes(body)
 end
