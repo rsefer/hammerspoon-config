@@ -99,9 +99,9 @@ function obj:init()
 	self.player.lastTimePlayed = os.time()
 
 	self.menus = {
-		titleMenu = hs.menubar.new():setClickCallback(obj.toggleWebview),
-		controlMenu = hs.menubar.new():setClickCallback(obj.togglePlayPause),
-		playerMenu = hs.menubar.new():setClickCallback(obj.toggleWebview):setIcon(self.player.icon, true)
+		titleMenu = hs.menubar.new():autosaveName('Overcast Title'):setClickCallback(obj.toggleWebview),
+		controlMenu = hs.menubar.new():autosaveName('Overcast Control'):setClickCallback(obj.togglePlayPause),
+		playerMenu = hs.menubar.new():autosaveName('Overcast Player'):setClickCallback(obj.toggleWebview):setIcon(self.player.icon, true)
 	}
 
 	self.currentTrack = {}

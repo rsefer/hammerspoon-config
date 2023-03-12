@@ -30,6 +30,7 @@ end
 
 function obj:init()
 	self.desktopCaptureMenu = hs.menubar.new()
+		:autosaveName('Capture Desktop')
 		:setTitle('📸 Capture Desktop')
     :setClickCallback(obj.captureDesktop)
 end

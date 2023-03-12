@@ -534,9 +534,9 @@ function obj:init()
 	self.player.lastTimePlayed = os.time()
 
 	-- self.menus = {
-	-- 	titleMenu = hs.menubar.new():setClickCallback(obj.toggleNowPlaying),
-	-- 	controlMenu = hs.menubar.new():setClickCallback(obj.player.module.playpause),
-	-- 	playerMenu = hs.menubar.new():setClickCallback(obj.togglePlayer):setIcon(self.player.icon, false)
+	-- 	titleMenu = hs.menubar.new():autosaveName('Music Title'):setClickCallback(obj.toggleNowPlaying),
+	-- 	controlMenu = hs.menubar.new():autosaveName('Music Control'):setClickCallback(obj.player.module.playpause),
+	-- 	playerMenu = hs.menubar.new():autosaveName('Music Player'):setClickCallback(obj.togglePlayer):setIcon(self.player.icon, false)
 	-- }
 
 	self.currentTrack = {}

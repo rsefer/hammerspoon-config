@@ -74,7 +74,7 @@ end
 function obj:init()
 
 	self.updateInterval = 60 * 15
-	self.menuWeather = hs.menubar.new()
+	self.menuWeather = hs.menubar.new():autosaveName('Weather')
 	self.weatherTimer = hs.timer.doEvery(obj.updateInterval, function()
 		obj.updateWeather()
 	end):stop()

@@ -257,7 +257,7 @@ function obj:init()
 	setupSetting('biz_api_key')
 
 	self.logger = hs.logger.new(self.name, 'info')
-	self.timerMenu = hs.menubar.new()
+	self.timerMenu = hs.menubar.new():autosaveName('Timer')
 		:setClickCallback(obj.toggleTimer)
 		:setIcon(iconTimerOff, true)
 	self.timerMain = nil

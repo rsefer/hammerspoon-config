@@ -105,7 +105,7 @@ end
 
 function obj:init()
 
-	-- self.batteryMenu = hs.menubar:new()
+	-- self.batteryMenu = hs.menubar:new():autosaveName('Battery')
 	self.batteryPowerSource = hs.battery.powerSource()
 
 	self.batteryWatcher = hs.battery.watcher.new(function()

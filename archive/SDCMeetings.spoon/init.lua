@@ -18,7 +18,7 @@ function obj:getDataFromFile()
 end
 
 function obj:createMenu()
-	obj.menubar = hs.menubar.new():setIcon(iconCalendar:setSize({ w = 16, h = 16 }))
+	obj.menubar = hs.menubar.new():autosaveName('Meetings'):setIcon(iconCalendar:setSize({ w = 16, h = 16 }))
 end
 
 function obj:updateMenu()
