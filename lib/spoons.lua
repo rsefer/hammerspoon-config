@@ -17,7 +17,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Messages', 'Twitter', 'Home', 'Hammerspoon' },
+				apps = { 'Messages', 'Twitter', 'com.apple.Home', 'Hammerspoon' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -47,7 +47,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Home Assistant' },
+				apps = { 'io.robbie.HomeAssistant' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
