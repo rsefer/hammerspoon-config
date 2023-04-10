@@ -11,6 +11,22 @@ require('lib/startup')
 require('lib/settings')
 require('lib/icons')
 
+local daysToWedding = 0
+daysTarget = os.time({ year = 2023, month = 7, day = 9, hour = 0 })
+daysMenubar = hs.menubar.new():autosaveName('Personal Countdown'):setClickCallback(function()
+	hs.execute('say "yay! ' .. daysToWedding .. ' days to go"')
+end)
+function setDaysTitle()
+	daysToWedding = math.ceil(os.difftime(daysTarget, os.time()) / (24 * 60 * 60))
+	suffix = 's'
+	if daysToWedding == 1 then
+		suffix = ''
+	end
+	daysMenubar:setTitle(daysToWedding .. ' day' .. suffix .. ' 🐣')
+end
+setDaysTitle()
+daysTimer = hs.timer.doEvery(60 * 1, setDaysTitle)
+
 require('lib/spoons')
 require('lib/shortcuts')
 require('lib/window-misc')
