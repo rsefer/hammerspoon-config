@@ -66,7 +66,7 @@ function obj:appMove(appName, screen, size)
 
 		-- if window movement/resetting is not working, change the offending app name to the app bundle id in lib/spoons.lua
 		-- Obtain app bundle id: osascript -e 'id of app "AppName"'
-		-- print(hs.inspect(appName))
+		print(hs.inspect(appName))
 		if app ~= nil and #app:allWindows() > 0 then
 			for x, window in ipairs(app:allWindows()) do
 				-- print(hs.inspect(window))
