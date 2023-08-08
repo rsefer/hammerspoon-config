@@ -57,11 +57,18 @@ end
 
 function screenChooser(options)
 	desiredScreenName = options[hs.settings.get('deskSetup')]
-	if desiredScreenName ~= nil and screenIsConnected(desiredScreenName) then
-		return hs.screen.find(desiredScreenName)
-	else
-		return hs.screen.primaryScreen()
+	if desiredScreenName ~= nil then
+		if type(desiredScreenName) == 'table' then
+			for i, screen in ipairs(desiredScreenName) do
+				if screenIsConnected(screen) then
+					return hs.screen.find(screen)
+				end
+			end
+		elseif screenIsConnected(desiredScreenName) then
+			return hs.screen.find(desiredScreenName)
+		end
 	end
+	return hs.screen.primaryScreen()
 end
 
 function windowSizeChooser(options)

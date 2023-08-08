@@ -3,7 +3,9 @@ hs.settings.set('musicPlayerName', 'Spotify')
 hs.settings.set('hotkeyCombo', {'cmd', 'alt', 'ctrl'})
 hs.settings.set('primaryMonitorName', '37D8832A-2D66-02CA-B9F7-8F30A301B230') -- MacBook Pro screen
 hs.settings.set('secondaryMonitorName', 'DELL P2415Q')
-hs.settings.set('tertiaryMonitorName', 4128829) -- Sidecar Display / Sidecar Display (AirPlay)
+hs.settings.set('tertiaryMonitorNames', { 4128829, 3 }) -- Sidecar Display / Sidecar Display (AirPlay)
+-- Sidecar Display / Sidecar Display (AirPlay) / ID: 4128829
+-- RTKFHD / ID: 3 / UUID: EAD6D7D6-AB53-4D20-8337-F301D398F377
 hs.settings.set('terminalAppName', 'iTerm2')
 
 hs.settings.set('windowGridFull', {
@@ -47,7 +49,7 @@ setAlertSize()
 hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 	value = hs.settings.get('deskSetup')
 	oldLabel = hs.settings.get('deskSetupLabel')
-	if oldLabel == 'deskWithiPad' and value == 'laptopWithiPad' then
+	if oldLabel == 'deskWithiPad' and value == 'laptopWithSide' then
 		hs.settings.set('deskSetup', 'laptop')
 		return
 	end
@@ -63,8 +65,8 @@ hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 		label = 'Desk'
 		sizing = sizeDesktop
 		alertSize = 45
-	elseif value == 'laptopWithiPad' then
-		label = 'Laptop with iPad'
+	elseif value == 'laptopWithSide' then
+		label = 'Laptop with Side Monitor'
 		sizing = sizeLaptop
 		alertSize = 30
 	else

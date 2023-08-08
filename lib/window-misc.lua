@@ -48,7 +48,7 @@ hs.window.filter.new({ 'Terminal', 'iTerm2' })
 	end)
 	:subscribe(hs.window.filter.windowMoved, function()
 		terminal = hs.application.get(hs.settings.get('terminalAppName'))
-		if tertiaryMonitor and terminal:mainWindow():screen() == hs.screen.find(hs.settings.get('tertiaryMonitorName')) then
+		if tertiaryMonitor and terminal:mainWindow():screen() == hs.screen.find(hs.settings.get('tertiaryMonitorNames')) then
 			win = terminal:mainWindow()
 			winUR = win:frame():toUnitRect(win:screen():frame())
 			if (winUR.w > 0.51 and winUR.w < 1.00) or (winUR.h > 0.50 and winUR.h < 0.97) then

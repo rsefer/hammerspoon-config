@@ -124,7 +124,7 @@ function obj:windowMove(window, screen, size)
 		localCoords = workingScreen:absoluteToLocal(cell)
 		if window:application():name() == 'Terminal' then
 			terminalFontSize = 14
-			if workingScreen:id() == hs.settings.get('tertiaryMonitorName') then
+			if contains(hs.settings.get('tertiaryMonitorNames'), workingScreen:id()) then
 				newCoords = {
 					x1 = cell.x + localCoords.x + margin.x,
 					y1 = localCoords.y + margin.y
@@ -255,7 +255,7 @@ end
 
 function obj:handleScreenChange()
 	screenNames = hs.fnutils.imap(hs.screen.allScreens(), function(screen)
-		if not screen:name() and screen:id() == hs.settings.get('tertiaryMonitorName') then return 'iPad' end
+		if not screen:name() and screen:id() == hs.settings.get('tertiaryMonitorNames') then return 'iPad' end
 		return screen:name()
 	end)
 	existingDeskSetup = hs.settings.get('deskSetup')
@@ -272,8 +272,8 @@ function obj:handleScreenChange()
 		end
 	else
 		hs.settings.set('deskSizeClass', 'small')
-		if contains(screenNames, 'iPad')  or contains(screenNames, 'Sidecar Display (AirPlay)') then
-			hs.settings.set('deskSetup', 'laptopWithiPad')
+		if contains(screenNames, 'iPad')  or contains(screenNames, 'Sidecar Display (AirPlay)') or contains(screenNames, 'RTKFHD') then
+			hs.settings.set('deskSetup', 'laptopWithSide')
 		else
 			hs.settings.set('deskSetup', 'laptop')
 		end
