@@ -77,7 +77,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Photoshop', 'Illustrator', 'XD', 'Sketch' },
+				apps = { 'Photoshop', 'Illustrator', 'XD', 'Sketch', 'UltiMaker Cura', 'Fusion 360' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
