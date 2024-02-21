@@ -129,6 +129,30 @@ function obj:getSpotifyPodcastEpisodes()
 			table.insert(episodes, episodeObject)
 		end
 	end
+	showHeaders = {}
+	showHeaders['Authorization'] = 'Bearer ' .. hs.settings.get('spotify_access_token')
+	showStatus, showBody, showReturnHeaders = hs.http.get('https://api.spotify.com/v1/me/episodes?limit=50', showHeaders)
+	decodedShowBody = hs.json.decode(showBody)
+	for x, episode in ipairs(decodedShowBody['items']) do
+		workingImage = nil
+		episode = episode['episode']
+		print(hs.inspect(episode['show']))
+		if episode['show']['images'][3] ~= nil then
+			workingImage = episode['show']['images'][3]['url']
+		end
+		episodeObject = {
+			id = episode['id'],
+			episodeName = episode['name'],
+			showName = episode['show']['name'],
+			imageURL = workingImage,
+			release_date = episode['release_date'],
+			release_date_full = os.time({ year = string.sub(episode['release_date'], 1, 4), month = string.sub(episode['release_date'], 6, 7), day = string.sub(episode['release_date'], 9, 10), hour = 12 }),
+			uri = episode['uri'],
+			resume_point = episode['resume_point'],
+			duration_ms = episode['duration_ms']
+		}
+		table.insert(episodes, episodeObject)
+	end
 	hs.settings.set('spotify_podcast_episodes', episodes)
 end
 
