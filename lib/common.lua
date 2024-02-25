@@ -132,7 +132,7 @@ function minutesToClock(minutesGiven, includeZeroes, prettify)
 end
 
 function isHome()
-	if contains({ 'Kathryn', 'Kathryn-2' }, hs.wifi.currentNetwork()) then
+	if contains({ 'Kathryn' }, hs.wifi.currentNetwork()) then
 		return true
 	else
 		return false
