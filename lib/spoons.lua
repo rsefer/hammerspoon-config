@@ -64,14 +64,14 @@ hs.spoons.use('SDCWindows', {
 			{
 				apps = { 'TextEdit', 'Obsidian' },
 				screens = {
-					deskWithiPad = nil,
-					desk = nil,
+					deskWithiPad = hs.settings.get('primaryMonitorName'),
+					desk = hs.settings.get('primaryMonitorName'),
 					laptopWithSide = nil,
 					laptop = nil
 				},
 				sizes = {
-					deskWithiPad = hs.settings.get('windowSizes').thirds.rightBottom,
-					desk = hs.settings.get('windowSizes').thirds.rightBottom,
+					deskWithiPad = hs.settings.get('windowSizes').halves.left,
+					desk = hs.settings.get('windowSizes').halves.left,
 					laptopWithSide = hs.settings.get('windowSizes').halves.right,
 					laptop = hs.settings.get('windowSizes').halves.right
 				}

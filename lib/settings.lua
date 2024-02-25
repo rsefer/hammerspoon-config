@@ -55,27 +55,27 @@ hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 	end
 	alertSize = nil
 	label = nil
-	sizeLaptop = { width = 1512, height = 982, scale = 2, freq = 120, depth = 8 }
-	sizeDesktop = { width = 1792, height = 1120, scale = 2, freq = 120, depth = 8 }
+	-- sizeLaptop = { width = 1512, height = 982, scale = 2, freq = 120, depth = 8 }
+	-- sizeDesktop = { width = 1792, height = 1120, scale = 2, freq = 120, depth = 8 }
 	if value == 'deskWithiPad' then
 		label = 'Desk with iPad'
-		sizing = sizeDesktop
+		-- sizing = sizeDesktop
 		alertSize = 45
 	elseif value == 'desk' then
 		label = 'Desk'
-		sizing = sizeDesktop
+		-- sizing = sizeDesktop
 		alertSize = 45
 	elseif value == 'laptopWithSide' then
 		label = 'Laptop with Side Monitor'
-		sizing = sizeLaptop
+		-- sizing = sizeLaptop
 		alertSize = 30
 	else
 		label = 'Laptop'
-		sizing = sizeLaptop
+		-- sizing = sizeLaptop
 		alertSize = 30
 	end
 	setAlertSize(alertSize)
-	resetMacBookProScreen(sizing)
+	-- resetMacBookProScreen(sizing)
 	hs.settings.set('deskSetupLabel', label)
 	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
 	resetGrid()
