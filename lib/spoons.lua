@@ -186,36 +186,38 @@ hs.spoons.use('SDCAudio', {
 		devices = {
 			{
 				order = 1,
+				name = 'Studio Display Speakers',
+				type = 'built-in',
+				menuIcon = '🖥️',
+				alertIcon = '🖥️'
+			},
+			{
+				order = 2,
 				name = 'MacBook Pro Speakers',
+				type = 'built-in',
 				menuIcon = '💻',
 				alertIcon = '💻'
 			},
 			{
-				order = 2,
-				name = 'Studio Display Speakers',
-				menuIcon = '🖥️',
-				alertIcon = '🖥️',
-				overrides = 1
-			},
-			{
 				order = 3,
-				name = 'USB Audio Device',
+				name = 'Robert’s AirPods Pro',
+				type = 'headphones',
 				menuIcon = '🎧',
-				alertIcon = '🎧'
+				alertIcon = ''
 			},
 			{
 				order = 4,
-				name = 'Robert’s AirPods Pro',
+				name = 'Desk AirPods Pro',
+				type = 'headphones',
 				menuIcon = '🎧',
-				alertIcon = '',
-				overrides = 2
+				alertIcon = ''
 			},
 			{
 				order = 5,
-				name = 'Desk AirPods Pro',
+				name = 'USB Audio Device',
+				type = 'headphones',
 				menuIcon = '🎧',
-				alertIcon = '',
-				overrides = 2
+				alertIcon = '🎧'
 			}
 		}
 	},

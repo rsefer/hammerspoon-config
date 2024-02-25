@@ -12,14 +12,14 @@ function directAudioSource(direct)
 end
 
 function nextAudioSource(current)
-  newSource = nil
-  workingStart = current - 1
-  if workingStart < 1 then
-    workingStart = #obj.devices
-  end
-	for i = workingStart, 1, -1 do
+  newSource = obj:getSourceByName(hs.audiodevice.defaultOutputDevice():name())
+	lookingForType = 'headphones'
+	if obj.activeAudioType == lookingForType then
+		lookingForType = 'built-in'
+	end
+	for i = 1, #obj.devices, 1 do
 		thisDevice = obj.devices[i]
-		if hs.audiodevice.findOutputByName(thisDevice.name) and (not obj.devices[current].overrides or obj.devices[current].overrides ~= i) then
+		if hs.audiodevice.findOutputByName(thisDevice.name) and lookingForType == thisDevice.type then
       return thisDevice
     end
 	end
@@ -53,6 +53,7 @@ end
 function obj:recordSource(newSource)
 	if not newSource then return end
 	obj.activeAudioName = newSource.name
+	obj.activeAudioType = newSource.type
 	obj.activeMenuTitle = newSource.menuIcon
 	obj.activeAlertTitle = newSource.alertIcon
 	obj.activeOrder = newSource.order
