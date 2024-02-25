@@ -2,7 +2,7 @@ hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
 			{
-				apps = { 'Google Chrome', 'Brave Browser', 'Safari', 'Firefox', 'com.apple.Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'com.apple.TV', 'com.apple.news', 'com.apple.podcasts', 'Postman', 'Basecamp 3', 'Shortcuts', 'Fantastical', 'Weather' },
+				apps = { 'Google Chrome', 'Brave Browser', 'Safari', 'Firefox', 'com.apple.Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'com.apple.TV', 'com.apple.news', 'com.apple.podcasts', 'Postman', 'Basecamp 3', 'Shortcuts', 'Fantastical', 'Weather', 'GitHub Desktop' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -17,22 +17,22 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Messages', 'Twitter', 'com.apple.Home', 'Hammerspoon' },
+				apps = { 'Messages', 'Twitter', 'com.apple.Home', 'Hammerspoon', 'Reminders', 'Slack', 'com.apple.Notes' },
 				screens = {
-					deskWithiPad = nil,
-					desk = nil,
+					deskWithiPad = hs.settings.get('primaryMonitorName'),
+					desk = hs.settings.get('primaryMonitorName'),
 					laptopWithSide = nil,
 					laptop = nil
 				},
 				sizes = {
-					deskWithiPad = hs.settings.get('windowSizes').thirds.rightTop,
-					desk = hs.settings.get('windowSizes').thirds.rightTop,
+					deskWithiPad = hs.settings.get('windowSizes').halves.left,
+					desk = hs.settings.get('windowSizes').halves.left,
 					laptopWithSide = hs.settings.get('windowSizes').thirds.right,
 					laptop = hs.settings.get('windowSizes').thirds.right
 				}
 			},
 			{
-				apps = { 'Reminders', 'Slack', 'com.apple.Notes', '1Password' },
+				apps = { 'Code', '1Password' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -107,7 +107,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Spark', 'Spark Desktop', 'Mimestream', 'Code', 'GitHub Desktop' },
+				apps = { 'Spark', 'Spark Desktop', 'Mimestream' },
 				screens = {
 					deskWithiPad = hs.settings.get('primaryMonitorName'),
 					desk = hs.settings.get('primaryMonitorName'),
@@ -124,14 +124,14 @@ hs.spoons.use('SDCWindows', {
 			{
 				apps = { 'Terminal', 'iTerm2' },
 				screens = {
-					deskWithiPad = hs.settings.get('tertiaryMonitorNames'),
-					desk = hs.settings.get('secondaryMonitorName'),
-					laptopWithSide = hs.settings.get('tertiaryMonitorNames'),
+					deskWithiPad =hs.settings.get('primaryMonitorName'),
+					desk = hs.settings.get('primaryMonitorName'),
+					laptopWithSide = hs.settings.get('primaryMonitorName'),
 					laptop = hs.settings.get('primaryMonitorName')
 				},
 				sizes = {
-					deskWithiPad = hs.settings.get('windowSizes').full,
-					desk = hs.settings.get('windowSizes').thirds.rightTop,
+					deskWithiPad = hs.settings.get('windowSizes').halves.right,
+					desk = hs.settings.get('windowSizes').halves.right,
 					laptopWithSide = hs.settings.get('windowSizes').full,
 					laptop = hs.settings.get('windowSizes').halves.right
 				}
@@ -187,18 +187,32 @@ hs.spoons.use('SDCAudio', {
 			{
 				order = 1,
 				name = 'MacBook Pro Speakers',
-				menuIcon = '📻',
-				alertIcon = '📻'
+				menuIcon = '💻',
+				alertIcon = '💻'
 			},
 			{
 				order = 2,
+				name = 'Studio Display Speakers',
+				menuIcon = '🖥️',
+				alertIcon = '🖥️',
+				overrides = 1
+			},
+			{
+				order = 3,
 				name = 'USB Audio Device',
 				menuIcon = '🎧',
 				alertIcon = '🎧'
 			},
 			{
-				order = 3,
+				order = 4,
 				name = 'Robert’s AirPods Pro',
+				menuIcon = '🎧',
+				alertIcon = '',
+				overrides = 2
+			},
+			{
+				order = 5,
+				name = 'Desk AirPods Pro',
 				menuIcon = '🎧',
 				alertIcon = '',
 				overrides = 2
