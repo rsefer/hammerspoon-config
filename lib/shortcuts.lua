@@ -201,7 +201,6 @@ hs.hotkey.bind({'cmd', 'option', 'shift'}, 'T', function()
 		if app:name() == 'Safari' then
 			workingTabMenu = 'Window'
 		end
-		print(workingTabMenu)
 		app:selectMenuItem({ workingTabMenu, 'Move Tab to New Window' })
 		hs.eventtap.keyStroke({'cmd'}, '`')
 		app:selectMenuItem({ 'Window', 'Minimize' })

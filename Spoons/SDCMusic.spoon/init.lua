@@ -136,7 +136,6 @@ function obj:getSpotifyPodcastEpisodes()
 	for x, episode in ipairs(decodedShowBody['items']) do
 		workingImage = nil
 		episode = episode['episode']
-		print(hs.inspect(episode['show']))
 		if episode['show']['images'][3] ~= nil then
 			workingImage = episode['show']['images'][3]['url']
 		end
