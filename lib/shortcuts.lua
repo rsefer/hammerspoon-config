@@ -144,6 +144,11 @@ devToolsList = {
 		action = 'loremIpsum'
 	},
 	{
+		text = 'PHP Date Format',
+		image = hs.image.imageFromURL('https://www.php.net/favicon.svg'),
+		url = 'https://www.php.net/manual/en/datetime.format.php#refsect1-datetime.format-parameters'
+	},
+	{
 		text = 'GenerateWP',
 		image = hs.image.imageFromURL('https://generatewp.com/wp-content/uploads/cropped-generatewp-logo.png'),
 		url = 'https://generatewp.com/generator/'
