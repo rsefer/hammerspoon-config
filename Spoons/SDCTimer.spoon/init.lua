@@ -141,7 +141,7 @@ end
 
 function updateTimeElapsed()
 	obj.timeAccrued = os.time() - obj.timeStart
-	obj.timerMenu:setTitle(hs.styledtext.new(' ' .. minutesToClock(obj.timeAccrued / 60, false, false), { textFont = 'SF Mono' }))
+	obj.timerMenu:setTitle(hs.styledtext.new(' ' .. obj.activeClient.nameAbbreviation .. ' ' .. minutesToClock(obj.timeAccrued / 60, false, false), { textFont = 'SF Mono' }))
 end
 
 function ltScriptFullPath()
@@ -183,16 +183,23 @@ function obj:getClients()
 			{
 				uuid = 0,
 				text = '---',
-				name = '---'
+				name = '---',
+				nameAbbreviation = '- - -'
 			}
 		}
 		for i, client in ipairs(clientsRaw) do
-			table.insert(clients, {
+			clientData = {
 				uuid = client.id,
 				text = client.name,
 				name = client.name,
 				subText = client.contact
-			})
+			}
+			local firstLetters = {}
+			for word in string.gmatch(clientData.name, "%w+") do
+				table.insert(firstLetters, word:sub(1,1))
+			end
+			clientData.nameAbbreviation = table.concat(firstLetters)
+			table.insert(clients, clientData)
 		end
 		self.clients = clients
 		hs.settings.set('clients', clients)
