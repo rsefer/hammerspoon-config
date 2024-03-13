@@ -184,7 +184,7 @@ function obj:getClients()
 				uuid = 0,
 				text = '---',
 				name = '---',
-				nameAbbreviation = '- - -'
+				nameAbbreviation = '---'
 			}
 		}
 		for i, client in ipairs(clientsRaw) do
@@ -194,11 +194,13 @@ function obj:getClients()
 				name = client.name,
 				subText = client.contact
 			}
-			local firstLetters = {}
-			for word in string.gmatch(clientData.name, "%w+") do
-				table.insert(firstLetters, word:sub(1,1))
-			end
-			clientData.nameAbbreviation = table.concat(firstLetters)
+			-- local firstLetters = {}
+			-- for word in string.gmatch(clientData.name, "%w+") do
+			-- 	table.insert(firstLetters, word:sub(1,1))
+			-- end
+			-- nameAbbreviation = table.concat(firstLetters)
+			nameAbbreviation = client.name:sub(1,4)
+			clientData.nameAbbreviation = nameAbbreviation
 			table.insert(clients, clientData)
 		end
 		self.clients = clients
