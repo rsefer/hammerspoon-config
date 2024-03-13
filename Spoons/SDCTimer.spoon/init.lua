@@ -106,7 +106,7 @@ function updateTimeElapsedRectangle()
 				}
 			}
 		}
-		if obj.activeClient then
+		if obj.activeClient and obj.activeClient.uuid ~= 0 then
 			textClient = hs.styledtext.new(obj.activeClient.name, {
 				font = {
 					name = 'SF Mono Semibold',
@@ -222,33 +222,35 @@ function obj:logTime(timeMinutes)
 	if string.len(name) > lengthlimit then
 		name = string.sub(name, 1, lengthlimit)
 	end
-	local ltstring = ltScriptFullPath() .. ' add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. timeMinutes
-	status, output = hs.osascript.applescript('do shell script "' .. ltstring .. '"')
-	if status then
-		local ltstring2 = ltScriptFullPath() .. ' ct ' .. obj.activeClient.uuid
-		status2, output2 = hs.osascript.applescript('do shell script "' .. ltstring2 .. '"')
-		clientTotalMinutes = output2:gsub("[\n\r]", "")
-		notificationSubTitle = nil
-		if obj.activeClient ~= nil then
-			notificationSubTitle = obj.activeClient.name
+	if obj.activeClient.uuid and obj.activeClient.uuid ~= 0 then
+		local ltstring = ltScriptFullPath() .. ' add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. timeMinutes
+		status, output = hs.osascript.applescript('do shell script "' .. ltstring .. '"')
+		if status then
+			local ltstring2 = ltScriptFullPath() .. ' ct ' .. obj.activeClient.uuid
+			status2, output2 = hs.osascript.applescript('do shell script "' .. ltstring2 .. '"')
+			clientTotalMinutes = output2:gsub("[\n\r]", "")
+			notificationSubTitle = nil
+			if obj.activeClient ~= nil then
+				notificationSubTitle = obj.activeClient.name
+			end
+			hs.notify.new({
+				title = 'Total Client Time',
+				subTitle = notificationSubTitle,
+				informativeText = minutesToClock(clientTotalMinutes, false, true),
+				withdrawAfter = 15,
+				setIdImage = iconTimerAlt,
+				contentImage = iconTimerAlt
+			}):send()
+		else
+			hs.notify.new({
+				title = 'FAILED TO LOG',
+				subTitle = ltstring,
+				withdrawAfter = 999,
+				setIdImage = iconTimerFail,
+				contentImage = iconTimerFail
+			}):send()
+			obj.logger:i('FAILED TO LOG: ' .. ltstring)
 		end
-		hs.notify.new({
-			title = 'Total Client Time',
-			subTitle = notificationSubTitle,
-			informativeText = minutesToClock(clientTotalMinutes, false, true),
-			withdrawAfter = 15,
-			setIdImage = iconTimerAlt,
-			contentImage = iconTimerAlt
-		}):send()
-	else
-		hs.notify.new({
-			title = 'FAILED TO LOG',
-			subTitle = ltstring,
-			withdrawAfter = 999,
-			setIdImage = iconTimerFail,
-			contentImage = iconTimerFail
-		}):send()
-		obj.logger:i('FAILED TO LOG: ' .. ltstring)
 	end
 
 end
@@ -273,9 +275,7 @@ function obj:init()
 	self.timerCounter = nil
 	self.clientChooser = hs.chooser.new(function(choice)
 		if choice then
-			if choice.uuid ~= 0 then
-				obj.activeClient = choice
-			end
+			obj.activeClient = choice
 			if obj.isManualLog == true then
 				hs.application.get('Hammerspoon'):activate()
 				button, timeMinutes = hs.dialog.textPrompt('Log Minutes:', 'For ' .. obj.activeClient.name, '15', 'Log', 'Cancel')
