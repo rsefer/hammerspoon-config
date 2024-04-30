@@ -223,10 +223,10 @@ function obj:logTime(timeMinutes)
 		name = string.sub(name, 1, lengthlimit)
 	end
 	if obj.activeClient.uuid and obj.activeClient.uuid ~= 0 then
-		local ltstring = ltScriptFullPath() .. ' add ' .. obj.activeClient.uuid .. ' ' .. name .. ' ' .. timeMinutes
+		local ltstring = ltScriptFullPath() .. ' add -i ' .. obj.activeClient.uuid .. ' -n ' .. name .. ' -t ' .. timeMinutes
 		status, output = hs.osascript.applescript('do shell script "' .. ltstring .. '"')
 		if status then
-			local ltstring2 = ltScriptFullPath() .. ' ct ' .. obj.activeClient.uuid
+			local ltstring2 = ltScriptFullPath() .. ' ct -i ' .. obj.activeClient.uuid
 			status2, output2 = hs.osascript.applescript('do shell script "' .. ltstring2 .. '"')
 			clientTotalMinutes = output2:gsub("[\n\r]", "")
 			notificationSubTitle = nil
