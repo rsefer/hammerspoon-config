@@ -1,17 +1,17 @@
-function sizeAdd(modal, key, size)
-	modal:bind('', key, nil, function()
-		spoon.SDCWindows:windowMove(nil, nil, size)
-		modal:exit()
-	end)
-end
+-- function sizeAdd(modal, key, size)
+-- 	modal:bind('', key, nil, function()
+-- 		spoon.SDCWindows:windowMove(nil, nil, size)
+-- 		modal:exit()
+-- 	end)
+-- end
 
-m = hs.hotkey.modal.new(hs.settings.get('hotkeyCombo'), 'pad0')
-function m:entered() hs.timer.doAfter(3, function() m:exit() end) end
+-- m = hs.hotkey.modal.new(hs.settings.get('hotkeyCombo'), 'pad0')
+-- function m:entered() hs.timer.doAfter(3, function() m:exit() end) end
 
-sizeAdd(m, 'pad.', hs.settings.get('windowSizes')['thirds']['right2'])
-sizeAdd(m, 'padenter', hs.settings.get('windowSizes')['full'])
-sizeAdd(m, 'pad5', hs.settings.get('windowSizes')['center'])
-sizeAdd(m, 'pad1', hs.settings.get('windowSizes')['quadrants']['three'])
+-- sizeAdd(m, 'pad.', hs.settings.get('windowSizes')['thirds']['right2'])
+-- sizeAdd(m, 'padenter', hs.settings.get('windowSizes')['full'])
+-- sizeAdd(m, 'pad5', hs.settings.get('windowSizes')['center'])
+-- sizeAdd(m, 'pad1', hs.settings.get('windowSizes')['quadrants']['three'])
 
 hs.window.filter.new({ 'TextEdit', 'Obsidian' })
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
