@@ -231,17 +231,17 @@ hs.spoons.use('SDCWindows', {
 -- 	end,
 -- 	start = true
 -- })
-hs.spoons.use('SDCMusic', {
-	hotkeys = {
-		-- spotifySwitchPlayer = {hs.settings.get('hotkeyCombo'), 'I'},
-		spotifyPlayPodcastEpisode = {hs.settings.get('hotkeyCombo'), 'P'},
-		-- playerRewind = {hs.settings.get('hotkeyCombo'), 'pagedown'},
-		-- playerFastForward = {hs.settings.get('hotkeyCombo'), 'pageup'},
-	},
-	fn = function(thisSpoon)
-		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad*', nil, function()
-			thisSpoon.spotifySwitchPlayer()
-		end)
-	end,
-	start = true
-})
+-- hs.spoons.use('SDCMusic', {
+-- 	hotkeys = {
+-- 		-- spotifySwitchPlayer = {hs.settings.get('hotkeyCombo'), 'I'},
+-- 		spotifyPlayPodcastEpisode = {hs.settings.get('hotkeyCombo'), 'P'},
+-- 		-- playerRewind = {hs.settings.get('hotkeyCombo'), 'pagedown'},
+-- 		-- playerFastForward = {hs.settings.get('hotkeyCombo'), 'pageup'},
+-- 	},
+-- 	fn = function(thisSpoon)
+-- 		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad*', nil, function()
+-- 			thisSpoon.spotifySwitchPlayer()
+-- 		end)
+-- 	end,
+-- 	start = true
+-- })

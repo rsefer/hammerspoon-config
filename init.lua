@@ -30,4 +30,3 @@ require('lib/icons')
 require('lib/spoons')
 require('lib/shortcuts')
 require('lib/window-misc')
-
