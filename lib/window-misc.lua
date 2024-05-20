@@ -22,7 +22,7 @@ hs.window.filter.new({ 'TextEdit', 'Obsidian' })
 		end
 	end)
 
-hs.window.filter.new({ 'Google Chrome', 'Brave Browser', 'Firefox', 'Safari' })
+hs.window.filter.new({ 'Google Chrome', 'Arc', 'Brave Browser', 'Firefox', 'Safari' })
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
 		spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
 	end)

@@ -200,7 +200,8 @@ hs.hotkey.bind({'cmd', 'option', 'shift'}, 'T', function()
 	local app = hs.application.frontmostApplication()
 	if contains({
 		'Google Chrome',
-		'Safari'
+		'Safari',
+		'Arc'
 	}, app:name()) then
 		local workingTabMenu = 'Tab'
 		if app:name() == 'Safari' then
