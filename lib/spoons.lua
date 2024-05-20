@@ -167,13 +167,8 @@ hs.spoons.use('SDCWindows', {
 		-- sizeQ2                          = {hs.settings.get('hotkeyCombo'), 'pad7'},
 		-- sizeQ3                          = {hs.settings.get('hotkeyCombo'), 'pad1'},
 		-- sizeQ4                          = {hs.settings.get('hotkeyCombo'), 'pad3'},
-		turnOnSecondaryMonitor          = {hs.settings.get('hotkeyCombo'), 'S'}
+		-- turnOnSecondaryMonitor          = {hs.settings.get('hotkeyCombo'), 'S'}
 	},
-	fn = function(thisSpoon)
-		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f5', nil, function()
-			thisSpoon.resetAllApps()
-		end)
-	end,
 	start = true
 })
 
