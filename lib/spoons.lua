@@ -36,13 +36,13 @@ hs.spoons.use('SDCWindows', {
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
-					laptopWithSide = nil,
+					laptopWithSide = hs.settings.get('tertiaryMonitorNames'),
 					laptop = nil
 				},
 				sizes = {
 					deskWithiPad = hs.settings.get('windowSizes').halves.right,
 					desk = hs.settings.get('windowSizes').halves.right,
-					laptopWithSide = hs.settings.get('windowSizes').halves.right,
+					laptopWithSide = hs.settings.get('windowSizes').full,
 					laptop = hs.settings.get('windowSizes').halves.right
 				}
 			},
