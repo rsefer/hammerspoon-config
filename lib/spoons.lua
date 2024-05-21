@@ -2,7 +2,7 @@ hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
 			{
-				apps = { 'com.google.Chrome', 'Arc', 'Brave Browser', 'Safari', 'Firefox', 'com.apple.Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'com.apple.TV', 'com.apple.news', 'com.apple.podcasts', 'Postman', 'Basecamp 3', 'Shortcuts', 'Weather' },
+				apps = { 'com.google.Chrome', 'company.thebrowser.Browser', 'Brave Browser', 'Safari', 'Firefox', 'com.apple.Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'com.apple.TV', 'com.apple.news', 'com.apple.podcasts', 'Postman', 'Basecamp 3', 'Shortcuts', 'Weather' },
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
@@ -167,76 +167,6 @@ hs.spoons.use('SDCWindows', {
 		-- sizeQ2                          = {hs.settings.get('hotkeyCombo'), 'pad7'},
 		-- sizeQ3                          = {hs.settings.get('hotkeyCombo'), 'pad1'},
 		-- sizeQ4                          = {hs.settings.get('hotkeyCombo'), 'pad3'},
-		-- turnOnSecondaryMonitor          = {hs.settings.get('hotkeyCombo'), 'S'}
 	},
 	start = true
 })
-
--- hs.spoons.use('SDCMeetings', {
--- 	start = true
--- })
-
--- hs.spoons.use('SDCAudio', {
--- 	config = {
--- 		devices = {
--- 			{
--- 				order = 1,
--- 				name = 'Studio Display Speakers',
--- 				type = 'built-in',
--- 				menuIcon = '🖥️',
--- 				alertIcon = '🖥️'
--- 			},
--- 			{
--- 				order = 2,
--- 				name = 'MacBook Pro Speakers',
--- 				type = 'built-in',
--- 				menuIcon = '💻',
--- 				alertIcon = '💻'
--- 			},
--- 			{
--- 				order = 3,
--- 				name = 'Robert’s AirPods Pro',
--- 				type = 'headphones',
--- 				menuIcon = '🎧',
--- 				alertIcon = ''
--- 			},
--- 			{
--- 				order = 4,
--- 				name = 'Desk AirPods Pro',
--- 				type = 'headphones',
--- 				menuIcon = '🎧',
--- 				alertIcon = ''
--- 			},
--- 			{
--- 				order = 5,
--- 				name = 'USB Audio Device',
--- 				type = 'headphones',
--- 				menuIcon = '🎧',
--- 				alertIcon = '🎧'
--- 			}
--- 		}
--- 	},
--- 	hotkeys = {
--- 		switchAudio = {hs.settings.get('hotkeyCombo'), 'A'}
--- 	},
--- 	fn = function(thisSpoon)
--- 		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f13', nil, function()
--- 			thisSpoon.switchAudio()
--- 		end)
--- 	end,
--- 	start = true
--- })
--- hs.spoons.use('SDCMusic', {
--- 	hotkeys = {
--- 		-- spotifySwitchPlayer = {hs.settings.get('hotkeyCombo'), 'I'},
--- 		spotifyPlayPodcastEpisode = {hs.settings.get('hotkeyCombo'), 'P'},
--- 		-- playerRewind = {hs.settings.get('hotkeyCombo'), 'pagedown'},
--- 		-- playerFastForward = {hs.settings.get('hotkeyCombo'), 'pageup'},
--- 	},
--- 	fn = function(thisSpoon)
--- 		hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'pad*', nil, function()
--- 			thisSpoon.spotifySwitchPlayer()
--- 		end)
--- 	end,
--- 	start = true
--- })

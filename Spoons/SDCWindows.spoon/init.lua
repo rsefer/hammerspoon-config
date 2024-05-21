@@ -69,6 +69,7 @@ function obj:appMove(appName, screen, size)
 		-- print(hs.inspect(appName))
 		if app ~= nil then
 			if #app:allWindows() > 0 then
+				print('moving ' .. app:name())
 				for x, window in ipairs(app:allWindows()) do
 					-- print(hs.inspect(window))
 					obj:windowMove(window, screen, size)
@@ -248,8 +249,7 @@ function obj:bindHotkeys(mapping)
 		end,
 		moveWindowDownScreen = function()
 			hs.window.focusedWindow():moveOneScreenSouth(false, true)
-		end,
-		turnOnSecondaryMonitor = hs.fnutils.partial(self.toggleSecondaryMonitor, self)
+		end
   }, mapping)
 end
 
@@ -278,38 +278,6 @@ function obj:handleScreenChange()
 			hs.settings.set('deskSetup', 'laptop')
 		end
 	end
-end
-
-function obj:toggleSecondaryMonitor(action)
-	-- if not action then
-	-- 	action = 'on'
-	-- end
-
-	-- if action == 'on' then
-	-- 	webhook = hs.settings.get('homeassistant_webhook_turn_on_secondary_monitor')
-	-- else
-	-- 	webhook = hs.settings.get('homeassistant_webhook_turn_off_secondary_monitor')
-	-- end
-
-	-- status, data, headers = hs.http.asyncPost(webhook, '', {}, function(cstatus, cbody, cheaders)
-	-- 	if action == 'on' then
-	-- 		self:resetAllApps()
-	-- 	end
-	-- end)
-
-	-- if setupSetting('meross_username') and setupSetting('meross_password') and setupSetting('meross_secondary_monitor_name') then
-	-- 	local khstring = 'meross-helper ' .. setupSetting('meross_username') .. ' ' .. setupSetting('meross_password') .. ' ' .. setupSetting('meross_secondary_monitor_name') .. ' ' .. action
-	-- 	print('trying')
-	-- 	output, status, type, rc = hs.execute(khstring, true)
-	-- 	print(output)
-	-- 	print(status)
-	-- 	print(type)
-	-- 	print(rc)
-
-	-- 	if action == 'on' then
-	-- 		self:resetAllApps()
-	-- 	end
-	-- end
 end
 
 function obj:getAppLayoutSettings(appName)

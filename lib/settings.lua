@@ -29,10 +29,6 @@ fullHeight = hs.settings.get('windowGridFull').height
 halfHeightTop = fullHeight * 0.65
 halfHeightBottom = fullHeight - halfHeightTop
 
-function resetMacBookProScreen(sizing)
-	hs.screen.find(hs.settings.get('primaryMonitorName')):setMode(sizing.width, sizing.height, sizing.scale, sizing.freq, sizing.depth)
-end
-
 function resetGrid()
 	for x, screen in ipairs(hs.screen.allScreens()) do
 		hs.grid.setGrid(hs.settings.get('windowGridFull').width .. 'x' .. hs.settings.get('windowGridFull').height, screen)
@@ -75,7 +71,6 @@ hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 		alertSize = 30
 	end
 	setAlertSize(alertSize)
-	-- resetMacBookProScreen(sizing)
 	hs.settings.set('deskSetupLabel', label)
 	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
 	resetGrid()
