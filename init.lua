@@ -101,3 +101,9 @@ hs.window.filter.new({ 'Terminal', 'iTerm2' })
 			end
 		end
 	end)
+
+local musicItunesLaunchWatcher = hs.application.watcher.new(function(name, event, app)
+	if (app:bundleID() == 'com.apple.iTunes' or app:bundleID() == 'com.apple.Music') and (event == 0 or event == 1 or event == hs.application.watcher.launching or event == hs.application.watcher.launched) then
+		app:kill9()
+	end
+end):start()

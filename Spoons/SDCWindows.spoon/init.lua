@@ -69,7 +69,6 @@ function obj:appMove(appName, screen, size)
 		-- print(hs.inspect(appName))
 		if app ~= nil then
 			if #app:allWindows() > 0 then
-				print('moving ' .. app:name())
 				for x, window in ipairs(app:allWindows()) do
 					-- print(hs.inspect(window))
 					obj:windowMove(window, screen, size)
