@@ -101,7 +101,7 @@ function obj:windowMove(window, screen, size)
 		y = hs.settings.get('windowMargin').small
 	}))
 
-	if contains(obj.finickyApps, window:application():name()) then
+	if window:application():name() and contains(obj.finickyApps, window:application():name()) then
 		window:moveToScreen(workingScreen)
 		cell = hs.grid.getCell(size, workingScreen)
 		margin = screenSizeCategory(workingScreen, {
