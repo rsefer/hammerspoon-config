@@ -29,18 +29,6 @@ hs.hotkey.bind(hs.settings.get('hotkeyCombo'), '/', function()
 	hs.reload()
 end)
 
--- Illumination Down
-hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f1', function()
-	hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_DOWN', true):post()
-	hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_DOWN', false):post()
-end)
-
--- Illumination Up
-hs.hotkey.bind(hs.settings.get('hotkeyCombo'), 'f2', function()
-	hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_UP', true):post()
-	hs.eventtap.event.newSystemKeyEvent('ILLUMINATION_UP', false):post()
-end)
-
 -- Move tab to new window and minimize old
 hs.hotkey.bind({'cmd', 'option', 'shift'}, 'T', function()
 	local app = hs.application.frontmostApplication()
