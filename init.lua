@@ -11,7 +11,7 @@ require('lib/common')
 hs.autoLaunch(true)
 hs.window.filter.setLogLevel(1)
 hs.hotkey.setLogLevel(1)
-hs.alert.defaultStyle.textSize = 40
+-- hs.alert.defaultStyle.textSize = 40
 
 if hs.updateAvailable() ~= false then
 	hs.alert.show('Hammerspoon update available: ' .. hs.updateAvailable())
