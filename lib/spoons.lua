@@ -17,7 +17,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Messages', 'Twitter', 'com.apple.Home', 'Hammerspoon', 'Reminders', 'Slack', 'com.apple.Notes' },
+				apps = { 'Messages', 'Twitter', 'X', 'com.apple.Home', 'Hammerspoon', 'Reminders', 'Slack', 'com.apple.Notes' },
 				screens = {
 					deskWithiPad = hs.settings.get('primaryMonitorName'),
 					desk = hs.settings.get('primaryMonitorName'),
@@ -142,7 +142,7 @@ hs.spoons.use('SDCWindows', {
 		}
 	},
 	hotkeys = {
-		resetWindows                    = {hs.settings.get('hotkeyCombo'), 'f18'},
+		resetWindows                    = {hs.settings.get('hotkeyCombo'), '\\'},
 		-- moveWindowRightScreen           = {hs.settings.get('hotkeyCombo'), 'right'},
 		-- moveWindowLeftScreen            = {hs.settings.get('hotkeyCombo'), 'left'},
 		-- moveWindowUpScreen              = {hs.settings.get('hotkeyCombo'), 'up'},
