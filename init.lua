@@ -32,10 +32,7 @@ end)
 -- Move tab to new window and minimize old
 hs.hotkey.bind({'cmd', 'option', 'shift'}, 'T', function()
 	local app = hs.application.frontmostApplication()
-	if contains({
-		'Google Chrome',
-		'Safari'
-	}, app:name()) then
+	if contains(mapList(browsers(), 'name'), app:name()) then
 		local workingTabMenu = 'Tab'
 		if app:name() == 'Safari' then
 			workingTabMenu = 'Window'
@@ -55,7 +52,7 @@ hs.window.filter.new({ 'TextEdit', 'Obsidian' })
 		end
 	end)
 
-hs.window.filter.new({ 'Google Chrome', 'Brave Browser', 'Firefox', 'Safari' })
+hs.window.filter.new(mapList(browsers(), 'name'))
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
 		spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
 	end)

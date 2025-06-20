@@ -1,3 +1,18 @@
+function combineLists(list1, list2)
+  for i = 1, #list2 do
+    list1[#list1 + 1] = list2[i]
+  end
+  return list1
+end
+
+function mapList(originalList, key)
+	local newList = {}
+	for _, item in ipairs(originalList) do
+		table.insert(newList, item[key])
+	end
+	return newList
+end
+
 function contains(table, val)
   for i = 1, #table do
     if table[i] == val then
@@ -38,4 +53,45 @@ function windowSizeChooser(options)
 	else
 		return hs.settings.get('windowSizes').center
 	end
+end
+
+function browsers()
+	return {
+		{
+			name = 'Safari',
+			appBundleID = 'com.apple.Safari'
+		},
+		{
+			name = 'Google Chrome',
+			appBundleID = 'com.google.Chrome'
+		},
+		{
+			name = 'Firefox',
+			appBundleID = 'org.mozilla.firefox'
+		},
+		{
+			name = 'Orion',
+			appBundleID = 'com.kagi.kagimacOS'
+		},
+		{
+			name = 'Zen',
+			appBundleID = 'app.zen-browser.zen'
+		},
+		{
+			name = 'Brave Browser',
+			appBundleID = 'com.brave.Browser'
+		},
+		{
+			name = 'Google Chrome Canary',
+			appBundleID = 'com.google.Chrome.canary'
+		},
+		{
+			name = 'Microsoft Edge',
+			appBundleID = 'com.microsoft.edgemac'
+		},
+		{
+			name = 'Arc',
+			appBundleID = 'company.thebrowser.Browser'
+		}
+	}
 end

@@ -2,7 +2,10 @@ hs.spoons.use('SDCWindows', {
 	config = {
 		windowLayout = {
 			{
-				apps = { 'com.google.Chrome', 'company.thebrowser.Browser', 'Brave Browser', 'Safari', 'Firefox', 'com.apple.Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'com.apple.TV', 'com.apple.news', 'com.apple.podcasts', 'Postman', 'Basecamp 3', 'Shortcuts', 'Weather' },
+				apps = combineLists(
+					combineLists(mapList(browsers(), 'appBundleID'), mapList(browsers(), 'name')),
+					{'com.apple.Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'com.apple.TV', 'com.apple.news', 'com.apple.podcasts', 'Postman', 'Shortcuts', 'Weather'}
+				),
 				screens = {
 					deskWithiPad = nil,
 					desk = nil,
