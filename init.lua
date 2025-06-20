@@ -95,3 +95,40 @@ local musicItunesLaunchWatcher = hs.application.watcher.new(function(name, event
 		app:kill9()
 	end
 end):start()
+
+local preferredAudioInputName = 'Tempest'
+local unpreferredAudioInputName = 'Desk Airpods Pro'
+
+-- Function to check and switch audio input
+local function switchAudioInput()
+	local secondaryMonitorConnected = false
+	local unpreferredAudioConnected = false
+	for _, screen in ipairs(hs.screen.allScreens()) do
+		if screen:name() == hs.settings.get('secondaryMonitorName') then
+			secondaryMonitorConnected = true
+			break
+		end
+	end
+	local devices = hs.audiodevice.allInputDevices()
+	for _, device in ipairs(devices) do
+		if device.name == unpreferredAudioInputName and device.connected then
+			unpreferredAudioConnected = true
+		end
+	end
+	if secondaryMonitorConnected or (secondaryMonitorConnected and unpreferredAudioConnected) then
+		hs.execute("SwitchAudioSource -t input -s '" .. preferredAudioInputName .. "'")
+	end
+end
+
+-- Watch for screen changes
+local screenWatcher = hs.screen.watcher.new(function()
+	hs.timer.doAfter(3, switchAudioInput)
+end)
+
+-- Start the screen watcher
+screenWatcher:start()
+
+switchAudioInput()
+
+hs.audiodevice.watcher.setCallback(switchAudioInput)
+hs.audiodevice.watcher.start()
