@@ -1,5 +1,4 @@
 hs.settings.set('menuIconSize', 14.0)
-hs.settings.set('musicPlayerName', 'Spotify')
 hs.settings.set('hotkeyCombo', {'cmd', 'alt', 'ctrl'})
 hs.settings.set('primaryMonitorName', '37D8832A-2D66-02CA-B9F7-8F30A301B230') -- MacBook Pro screen
 hs.settings.set('secondaryMonitorName', 'Studio Display') -- DELL P2415Q
