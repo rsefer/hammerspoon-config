@@ -22,6 +22,15 @@ function contains(table, val)
   return false
 end
 
+function findByKeyValue(arr, key, value)
+	for i, item in ipairs(arr) do
+		if item[key] == value then
+			return item
+		end
+	end
+	return nil
+end
+
 function screenIsConnected(screenName)
 	if hs.screen.find(screenName) ~= nil then
 		return true
@@ -71,7 +80,8 @@ function browsers()
 		},
 		{
 			name = 'Orion',
-			appBundleID = 'com.kagi.kagimacOS'
+			appBundleID = 'com.kagi.kagimacOS',
+			ignoreWindowTitles = { 'Completions' }
 		},
 		{
 			name = 'Zen',

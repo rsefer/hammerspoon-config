@@ -54,6 +54,10 @@ hs.window.filter.new({ 'TextEdit', 'Obsidian' })
 
 hs.window.filter.new(mapList(browsers(), 'name'))
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
+		local foundBrowser = findByKeyValue(browsers(), 'name', appName)
+		if foundBrowser and foundBrowser.ignoreWindowTitles and contains(foundBrowser.ignoreWindowTitles, window:title()) then
+			return
+		end
 		spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
 	end)
 
