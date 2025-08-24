@@ -79,9 +79,13 @@ function browsers()
 			appBundleID = 'org.mozilla.firefox'
 		},
 		{
+			name = 'Vivaldi',
+			appBundleID = 'com.vivaldi.Vivaldi'
+		},
+		{
 			name = 'Orion',
 			appBundleID = 'com.kagi.kagimacOS',
-			ignoreWindowTitles = { 'Completions' }
+			ignoreWindowTitles = { 'Untitled', 'Completions' }
 		},
 		{
 			name = 'Zen',
