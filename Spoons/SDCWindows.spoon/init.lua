@@ -68,6 +68,9 @@ function obj:appMove(appName, screen, size)
 		-- Obtain app bundle id: osascript -e 'id of app "AppName"'
 		-- print(hs.inspect(appName))
 		if app ~= nil then
+			if (contains(obj.ignoreTitles, app:title())) then
+				return
+			end
 			if #app:allWindows() > 0 then
 				for x, window in ipairs(app:allWindows()) do
 					-- print(hs.inspect(window))

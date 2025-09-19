@@ -142,6 +142,9 @@ hs.spoons.use('SDCWindows', {
 		},
 		finickyApps = {
 			'Terminal'
+		},
+		ignoreTitles = {
+			'MenuBarCover'
 		}
 	},
 	hotkeys = {

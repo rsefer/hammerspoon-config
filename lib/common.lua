@@ -80,7 +80,8 @@ function browsers()
 		},
 		{
 			name = 'Vivaldi',
-			appBundleID = 'com.vivaldi.Vivaldi'
+			appBundleID = 'com.vivaldi.Vivaldi',
+			ignoreWindowTitles = { 'Updating Vivaldi' }
 		},
 		{
 			name = 'Orion',
