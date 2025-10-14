@@ -1,7 +1,7 @@
 hs.settings.set('menuIconSize', 14.0)
 hs.settings.set('hotkeyCombo', {'cmd', 'alt', 'ctrl'})
 hs.settings.set('primaryMonitorName', '37D8832A-2D66-02CA-B9F7-8F30A301B230') -- MacBook Pro screen
-hs.settings.set('secondaryMonitorName', 'Studio Display') -- DELL P2415Q
+hs.settings.set('secondaryMonitorNames', { 'Studio Display', 'DELL P2415Q' })
 hs.settings.set('tertiaryMonitorNames', { 4128829, 3 }) -- Sidecar Display / Sidecar Display (AirPlay)
 -- Sidecar Display / Sidecar Display (AirPlay) / ID: 4128829
 -- RTKFHD / ID: 3 / UUID: EAD6D7D6-AB53-4D20-8337-F301D398F377

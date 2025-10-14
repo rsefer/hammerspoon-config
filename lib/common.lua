@@ -22,6 +22,20 @@ function contains(table, val)
   return false
 end
 
+function tableIntersection(table1, table2)
+	local intersection = {}
+	local set = {}
+	for _, value in ipairs(table1) do
+		set[value] = true
+	end
+	for _, value in ipairs(table2) do
+		if set[value] then
+			table.insert(intersection, value)
+		end
+	end
+	return intersection
+end
+
 function findByKeyValue(arr, key, value)
 	for i, item in ipairs(arr) do
 		if item[key] == value then

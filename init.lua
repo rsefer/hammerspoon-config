@@ -105,7 +105,7 @@ local function switchAudioInput()
 	local secondaryMonitorConnected = false
 	local unpreferredAudioConnected = false
 	for _, screen in ipairs(hs.screen.allScreens()) do
-		if screen:name() == hs.settings.get('secondaryMonitorName') then
+		if contains(hs.settings.get('secondaryMonitorNames'), screen:name()) then
 			secondaryMonitorConnected = true
 			break
 		end
