@@ -61,22 +61,26 @@ function obj:moveWindowIfCloseToPreset(window)
 end
 
 function obj:appMove(appName, screen, size)
-	if appName ~= nil then
-		app = hs.application.get(appName)
+	if appName == nil then
+		return
+	end
+	app = hs.application.get(appName)
+	if app == nil then
+		return
+	end
+	-- if window movement/resetting is not working, change the offending app name to the app bundle id in lib/spoons.lua
+	-- Obtain app bundle id: osascript -e 'id of app "AppName"'
+	-- print(hs.inspect(appName))
+	-- print(app:title())
 
-		-- if window movement/resetting is not working, change the offending app name to the app bundle id in lib/spoons.lua
-		-- Obtain app bundle id: osascript -e 'id of app "AppName"'
-		-- print(hs.inspect(appName))
-		if app ~= nil then
-			if (contains(obj.ignoreTitles, app:title())) then
-				return
-			end
-			if #app:allWindows() > 0 then
-				for x, window in ipairs(app:allWindows()) do
-					-- print(hs.inspect(window))
-					obj:windowMove(window, screen, size)
-				end
-			end
+	if (contains(obj.ignoreTitles, app:title())) then
+		return
+	end
+
+	local status, err = pcall(function() return app:allWindows() end)
+	if status and #app:allWindows() > 0 then
+		for x, window in ipairs(app:allWindows()) do
+			obj:windowMove(window, screen, size)
 		end
 	end
 end
