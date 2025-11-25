@@ -124,7 +124,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Terminal', 'iTerm2', 'ChatGPT' },
+				apps = { 'Terminal', 'iTerm2', 'Ghostty', 'ChatGPT' },
 				screens = {
 					deskWithiPad =hs.settings.get('primaryMonitorName'),
 					deskAlt = hs.settings.get('primaryMonitorName'),

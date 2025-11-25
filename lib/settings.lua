@@ -7,7 +7,7 @@ hs.settings.set('secondaryMonitorNames', { hs.settings.get('secondaryMonitorMain
 hs.settings.set('tertiaryMonitorNames', { 4128829, 3 }) -- Sidecar Display / Sidecar Display (AirPlay)
 -- Sidecar Display / Sidecar Display (AirPlay) / ID: 4128829
 -- RTKFHD / ID: 3 / UUID: EAD6D7D6-AB53-4D20-8337-F301D398F377
-hs.settings.set('terminalAppName', 'iTerm2')
+hs.settings.set('terminalAppName', 'Ghostty')
 
 hs.settings.set('windowGridFull', {
 	width = 100,

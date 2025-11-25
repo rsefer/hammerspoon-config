@@ -61,7 +61,7 @@ hs.window.filter.new(mapList(browsers(), 'name'))
 		spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
 	end)
 
-hs.window.filter.new({ 'Terminal', 'iTerm2' })
+hs.window.filter.new({ 'Terminal', 'iTerm2', 'Ghostty' })
 	:subscribe({
 		hs.window.filter.windowCreated,
 		hs.window.filter.windowDestroyed
