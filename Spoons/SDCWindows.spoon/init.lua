@@ -162,7 +162,7 @@ function obj:toggleDock()
 	hs.osascript.applescript('tell application "System Events" to tell dock preferences to set autohide to not autohide')
 end
 
-function obj:resetAllApps()
+function obj:reset_all_apps()
 	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
 	for i, item in ipairs(obj.windowLayout) do
 		for a, app in ipairs(item.apps) do
@@ -174,7 +174,7 @@ end
 function obj:bindHotkeys(mapping)
   hs.spoons.bindHotkeysToSpec({
 		resetWindows = function()
-			obj:resetAllApps()
+			obj:reset_all_apps()
 		end,
 		sizeLeftHalf = function()
 			obj:windowMove(nil, nil, hs.settings.get('windowSizes').halves.left)
@@ -309,8 +309,8 @@ function obj:start()
 
 	self:handleScreenChange()
 
-	hs.urlevent.bind('resetAllApps', function(event, params)
-		self:resetAllApps()
+	hs.urlevent.bind('reset_all_apps', function(event, params)
+		self:reset_all_apps()
 	end)
 
 	self.screenWatcher = hs.screen.watcher.newWithActiveScreen(function(activeScreenChange)

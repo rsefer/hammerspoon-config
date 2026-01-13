@@ -75,7 +75,7 @@ hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 	hs.settings.set('deskSetupLabel', label)
 	hs.alert.show('Desk Setup: ' .. hs.settings.get('deskSetupLabel'), { atScreenEdge = 1 })
 	resetGrid()
-	spoon.SDCWindows:resetAllApps()
+	spoon.SDCWindows:reset_all_apps()
 end)
 
 hs.settings.set('windowSizes', {
