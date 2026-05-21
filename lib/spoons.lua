@@ -4,7 +4,7 @@ hs.spoons.use('SDCWindows', {
 			{
 				apps = combineLists(
 					combineLists(mapList(browsers(), 'appBundleID'), mapList(browsers(), 'name')),
-					{'Fiery Feeds', 'com.apple.Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'com.apple.TV', 'com.apple.news', 'com.apple.podcasts', 'Postman', 'Shortcuts', 'Weather', 'io.robbie.HomeAssistant'}
+					{'SDC RSS', 'com.apple.Music', 'Spotify', 'Photos', 'App Store', 'Coda', 'com.apple.TV', 'com.apple.news', 'com.apple.podcasts', 'Postman', 'Shortcuts', 'Weather', 'io.robbie.HomeAssistant'}
 				),
 				screens = {
 					deskWithiPad = nil,
