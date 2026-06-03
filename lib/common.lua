@@ -124,3 +124,23 @@ function browsers()
 		}
 	}
 end
+
+function audioDeviceName(device)
+	if device == nil then
+		return nil
+	end
+	if type(device.name) == 'function' then
+		return device:name()
+	end
+	return device.name
+end
+
+function audioDeviceConnected(device)
+	if device == nil then
+		return false
+	end
+	if type(device.connected) == 'function' then
+		return device:connected()
+	end
+	return device.connected == true
+end

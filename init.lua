@@ -100,23 +100,27 @@ end):start()
 local preferredAudioInputName = 'Tempest'
 local unpreferredAudioInputName = 'Desk Airpods Pro'
 
--- Function to check and switch audio input
 local function switchAudioInput()
-	local secondaryMonitorConnected = false
-	local unpreferredAudioConnected = false
-	for _, screen in ipairs(hs.screen.allScreens()) do
-		if contains(hs.settings.get('secondaryMonitorNames'), screen:name()) then
-			secondaryMonitorConnected = true
+	local currentInput = hs.audiodevice.defaultInputDevice()
+	if audioDeviceName(currentInput) ~= unpreferredAudioInputName then
+		return
+	end
+
+	local preferredInput = nil
+	for _, device in ipairs(hs.audiodevice.allInputDevices()) do
+		if audioDeviceName(device) == preferredAudioInputName and audioDeviceConnected(device) then
+			preferredInput = device
 			break
 		end
 	end
-	local devices = hs.audiodevice.allInputDevices()
-	for _, device in ipairs(devices) do
-		if device.name == unpreferredAudioInputName and device.connected then
-			unpreferredAudioConnected = true
-		end
+
+	if preferredInput == nil then
+		return
 	end
-	if secondaryMonitorConnected or (secondaryMonitorConnected and unpreferredAudioConnected) then
+
+	if type(preferredInput.setDefaultInputDevice) == 'function' then
+		preferredInput:setDefaultInputDevice()
+	else
 		hs.execute("SwitchAudioSource -t input -s '" .. preferredAudioInputName .. "'")
 	end
 end
