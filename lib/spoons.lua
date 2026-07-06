@@ -90,7 +90,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Spotify', 'Local', 'Fantastical', 'GitHub Desktop' },
+				apps = { 'Spotify', 'Local', 'Fantastical', 'GitHub Desktop', 'ClickUp'},
 				screens = {
 					deskWithiPad = hs.settings.get('primaryMonitorName'),
 					deskAlt = hs.settings.get('primaryMonitorName'),
