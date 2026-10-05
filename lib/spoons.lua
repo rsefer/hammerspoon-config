@@ -22,7 +22,7 @@ hs.spoons.use('SDCWindows', {
 				}
 			},
 			{
-				apps = { 'Messages', 'Twitter', 'X', 'com.apple.Home', 'Hammerspoon', 'Reminders', 'Slack', 'com.apple.Notes' },
+				apps = { 'Messages', 'X', 'com.apple.Home', 'Hammerspoon', 'Reminders', 'Slack', 'com.apple.Notes' },
 				screens = {
 					deskWithiPad = hs.settings.get('primaryMonitorName'),
 					deskAlt = hs.settings.get('secondaryMonitorAlt'),
@@ -35,7 +35,7 @@ hs.spoons.use('SDCWindows', {
 					deskAlt = hs.settings.get('windowSizes').thirds.right,
 					desk = hs.settings.get('windowSizes').halves.left,
 					laptopWithSide = hs.settings.get('windowSizes').thirds.right,
-					laptop = hs.settings.get('windowSizes').thirds.right
+					laptop = hs.settings.get('windowSizes').halves.right
 				}
 			},
 			{
