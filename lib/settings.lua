@@ -1,8 +1,9 @@
 hs.settings.set('menuIconSize', 14.0)
 hs.settings.set('hotkeyCombo', {'cmd', 'alt', 'ctrl'})
-hs.settings.set('primaryMonitorName', '37D8832A-2D66-02CA-B9F7-8F30A301B230') -- MacBook Pro screen
+hs.settings.set('primaryMonitorName', '37D8832A-2D66-02CA-B9F7-8F30A301B230') -- MacBook Pro screen, not the desk default
 hs.settings.set('secondaryMonitorMain', 'Studio Display')
 hs.settings.set('secondaryMonitorAlt', 'DELL P2415Q')
+-- Ordered desk defaults; both external displays may be connected at once.
 hs.settings.set('secondaryMonitorNames', { hs.settings.get('secondaryMonitorMain'), hs.settings.get('secondaryMonitorAlt') })
 hs.settings.set('tertiaryMonitorNames', { 4128829, 3 }) -- Sidecar Display / Sidecar Display (AirPlay)
 -- Sidecar Display / Sidecar Display (AirPlay) / ID: 4128829
@@ -61,6 +62,9 @@ hs.settings.watchKey('settings_deskSetup_watcher', 'deskSetup', function()
 	elseif value == 'desk' then
 		label = 'Desk'
 		-- sizing = sizeDesktop
+		alertSize = 45
+	elseif value == 'deskAlt' then
+		label = 'Desk (DELL)'
 		alertSize = 45
 	elseif value == 'laptopWithSide' then
 		label = 'Laptop with Side Monitor'

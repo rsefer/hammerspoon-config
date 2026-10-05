@@ -47,7 +47,8 @@ hs.window.filter.new({ 'TextEdit', 'Obsidian' })
 	:subscribe(hs.window.filter.windowCreated, function(window, appName, event)
 		if #hs.application.get(appName):allWindows() == 1 then
 			if window:title() ~= 'Open' and (not window:tabCount() or window:tabCount() < 2) then
-				spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
+				local layout = spoon.SDCWindows:getAppLayoutSettings(appName)
+				spoon.SDCWindows:windowMove(window, screenChooser(layout.screens), windowSizeChooser(layout.sizes))
 			end
 		end
 	end)
@@ -58,7 +59,8 @@ hs.window.filter.new(mapList(browsers(), 'name'))
 		if foundBrowser and foundBrowser.ignoreWindowTitles and contains(foundBrowser.ignoreWindowTitles, window:title()) then
 			return
 		end
-		spoon.SDCWindows:windowMove(window, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(appName).sizes))
+		local layout = spoon.SDCWindows:getAppLayoutSettings(appName)
+		spoon.SDCWindows:windowMove(window, screenChooser(layout.screens), windowSizeChooser(layout.sizes))
 	end)
 
 hs.window.filter.new({ 'Terminal', 'iTerm2', 'Ghostty' })
@@ -75,7 +77,8 @@ hs.window.filter.new({ 'Terminal', 'iTerm2', 'Ghostty' })
 			workingWindow = app:focusedWindow()
 		elseif event == 'windowCreated' and app ~= nil and app:isRunning() then
 			if string.find(workingWindow:title(), '⌥⌘1') then -- hack to determine if window has only 1 tab
-				spoon.SDCWindows:windowMove(workingWindow, nil, windowSizeChooser(spoon.SDCWindows:getAppLayoutSettings(hs.settings.get('terminalAppName')).sizes))
+				local layout = spoon.SDCWindows:getAppLayoutSettings(hs.settings.get('terminalAppName'))
+				spoon.SDCWindows:windowMove(workingWindow, screenChooser(layout.screens), windowSizeChooser(layout.sizes))
 			end
 		end
 		spoon.SDCWindows:moveWindowIfCloseToPreset(workingWindow)

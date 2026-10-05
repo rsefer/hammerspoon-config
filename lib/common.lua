@@ -54,7 +54,8 @@ function screenIsConnected(screenName)
 end
 
 function screenChooser(options)
-	desiredScreenName = options[hs.settings.get('deskSetup')]
+	local deskSetup = hs.settings.get('deskSetup')
+	local desiredScreenName = options[deskSetup]
 	if desiredScreenName ~= nil then
 		if type(desiredScreenName) == 'table' then
 			for i, screen in ipairs(desiredScreenName) do
@@ -64,6 +65,14 @@ function screenChooser(options)
 			end
 		elseif screenIsConnected(desiredScreenName) then
 			return hs.screen.find(desiredScreenName)
+		end
+	end
+	if deskSetup == 'desk' or deskSetup == 'deskWithiPad' or deskSetup == 'deskAlt' then
+		for _, screenName in ipairs(hs.settings.get('secondaryMonitorNames')) do
+			local screen = hs.screen.find(screenName)
+			if screen then
+				return screen
+			end
 		end
 	end
 	return hs.screen.primaryScreen()
