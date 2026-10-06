@@ -52,7 +52,7 @@ hs.spoons.use('SDCWindows', {
 					deskAlt = hs.settings.get('windowSizes').full,
 					desk = hs.settings.get('windowSizes').halves.right,
 					laptopWithSide = hs.settings.get('windowSizes').full,
-					laptop = hs.settings.get('windowSizes').halves.right
+					laptop = hs.settings.get('windowSizes').full
 				}
 			},
 			{
