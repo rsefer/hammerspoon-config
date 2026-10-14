@@ -15,6 +15,7 @@ hs.hotkey.bind(defaults.hotkeyCombo, "/", () => {
 	hs.reload()
 })
 hs.hotkey.bind(defaults.hotkeyCombo, "\\", () => sdcWindows.resetAllApps())
+hs.urlevent.bind("reset_all_apps", () => sdcWindows.resetAllApps())
 
 hs.screen.on("change", () => sdcWindows.resetAllApps())
 hs.userdefaults.on("deskSetup", value => sdcWindows.setDeskSetup(value))
