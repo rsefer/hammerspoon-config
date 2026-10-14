@@ -1,0 +1,21 @@
+{
+  "name": "hammerspoon-config",
+  "private": true,
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.node.json",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "start": "node scripts/dev.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@types/node": "^24.19.2",
+    "chokidar": "^5.0.0",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
+    "typescript": "~6.0.0",
+    "typescript-eslint": "^8.71.2"
+  }
+}

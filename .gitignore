@@ -1,2 +1,4 @@
 config.lua
 Spoons/*/docs.json
+node_modules/
+compiled/

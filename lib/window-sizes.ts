@@ -1,11 +1,13 @@
-const gridWidth = 100
-const gridHeight = 60
-const thirdCenter = gridWidth * 2 / 3
-const thirdLeft = gridWidth - thirdCenter
-const halfHeightTop = gridHeight * 0.65
-const halfHeightBottom = gridHeight - halfHeightTop
+export type GridSize = [number, number, number, number];
 
-const sizes = {
+export const gridWidth = 100;
+export const gridHeight = 60;
+const thirdCenter = gridWidth * 2 / 3;
+const thirdLeft = gridWidth - thirdCenter;
+const halfHeightTop = gridHeight * 0.65;
+const halfHeightBottom = gridHeight - halfHeightTop;
+
+export const sizes = {
 	full: [0, 0, gridWidth, gridHeight],
 	center: [gridWidth / 5, gridHeight / 5, gridWidth * 3 / 5, gridHeight * 3 / 5],
 	halves: {
@@ -30,6 +32,4 @@ const sizes = {
 		three: [0, gridHeight / 2, gridWidth / 2, gridHeight / 2],
 		four: [gridWidth / 2, gridHeight / 2, gridWidth / 2, gridHeight / 2]
 	}
-}
-
-module.exports = { sizes, gridWidth, gridHeight }
+} satisfies Record<string, GridSize | Record<string, GridSize>>;
