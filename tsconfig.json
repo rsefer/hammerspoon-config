@@ -13,5 +13,5 @@
   },
   "files": ["hammerspoon.d.ts"],
   "include": ["config.ts", "lib/**/*.ts"],
-  "exclude": ["lib/raycast-window-gaps.ts", "compiled", "node_modules"]
+  "exclude": ["lib/external/**/*.ts", "compiled", "node_modules"]
 }

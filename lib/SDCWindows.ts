@@ -84,7 +84,7 @@ export default class SDCWindows {
 		if (!this.gapRefreshEnabled || this.gapRefreshPending) return;
 
 		const generation = this.gapRefreshGeneration;
-		const helperPath = `${hs.appinfo.configDir}/compiled/lib/raycast-window-gaps.js`;
+		const helperPath = `${hs.appinfo.configDir}/compiled/lib/external/raycast-window-gaps.js`;
 		const homePath = hs.fs.homeDirectory();
 		const nodePath = `${homePath}/.local/share/fnm/aliases/default/bin`;
 		const inheritedPath = hs.appinfo.environment.PATH || '/usr/bin:/bin:/usr/sbin:/sbin';

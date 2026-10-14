@@ -17,7 +17,7 @@ to keep Node typings isolated from Hammerspoon globals. The window manager runs
 the generated helper under Node. To inspect its output directly after building:
 
 ```sh
-node compiled/lib/raycast-window-gaps.js --json
+node compiled/lib/external/raycast-window-gaps.js --json
 ```
 
 Start development mode with:
