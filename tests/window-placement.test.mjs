@@ -1,0 +1,103 @@
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import test from 'node:test';
+
+const require = createRequire(import.meta.url);
+const { default: SDCWindows } = require('../compiled/lib/SDCWindows.js');
+const { sizes } = require('../compiled/lib/window-sizes.js');
+
+function fixture(rejections = 1) {
+	const source = { id: 1, frame: { x: 0, y: 0, w: 1280, h: 800 } };
+	const destination = { id: 2, frame: { x: 1280, y: 0, w: 2560, h: 1440 } };
+	const screens = [source, destination];
+	const timers = [];
+	globalThis.HSRect = class {
+		constructor(x, y, w, h) {
+			Object.assign(this, { x, y, w, h });
+		}
+	};
+	globalThis.hs = {
+		userdefaults: { get: () => null },
+		screen: { all: () => screens },
+		timer: {
+			doAfter(delay, callback) {
+				assert.equal(delay, 0.2);
+				const timer = { callback, stopped: false, stop() { this.stopped = true; } };
+				timers.push(timer);
+				return timer;
+			}
+		},
+		application: { runningApplications: () => [] }
+	};
+	const manager = new SDCWindows();
+	let frame = { x: 0, y: 0, w: 1000, h: 700 };
+	let writes = 0;
+	const window = {
+		pid: 10,
+		id: 20,
+		screen: source,
+		application: { title: 'Code', isRunning: true },
+		get frame() { return frame; },
+		set frame(value) {
+			writes++;
+			this.screen = destination;
+			frame = writes <= rejections ? { ...value, w: 1000, h: 700 } : value;
+		}
+	};
+	return {
+		manager, window, destination, screens,
+		writes: () => writes,
+		flush() {
+			let callbacks = 0;
+			while (timers.length) {
+				assert.ok(callbacks++ < 10, 'retries must be bounded');
+				const timer = timers.shift();
+				if (!timer.stopped) timer.callback();
+			}
+		}
+	};
+}
+
+test('cross-monitor placement corrects clamped sizes with bounded retries', () => {
+	for (const rejections of [0, 1, 2, Infinity]) {
+		const state = fixture(rejections);
+		state.manager.placeWindow(state.window, state.destination, sizes.full);
+		state.flush();
+		assert.equal(state.writes(), Math.min(rejections + 1, 3));
+		if (rejections !== Infinity) {
+			assert.deepEqual(state.window.frame, state.manager.layoutFrame(state.destination, sizes.full));
+		}
+		assert.equal(state.manager.pendingPlacements.size, 0);
+	}
+});
+
+test('correctly aligned windows receive no redundant frame writes', () => {
+	const state = fixture(0);
+	state.manager.placeWindow(state.window, state.destination, sizes.full);
+	state.flush();
+	state.manager.placeWindow(state.window, state.destination, sizes.full);
+	state.flush();
+	assert.equal(state.writes(), 1);
+});
+
+test('new placements cancel stale corrections', () => {
+	const state = fixture();
+	state.manager.placeWindow(state.window, state.destination, sizes.full);
+	state.manager.placeWindow(state.window, state.destination, sizes.halves.left);
+	state.flush();
+	assert.equal(state.writes(), 2);
+	assert.deepEqual(state.window.frame, state.manager.layoutFrame(state.destination, sizes.halves.left));
+});
+
+test('disconnection, app termination, and stop cancel corrections', () => {
+	for (const reason of ['disconnect', 'terminate', 'stop']) {
+		const state = fixture();
+		state.manager.placeWindow(state.window, state.destination, sizes.full);
+		if (reason === 'disconnect') state.screens.pop();
+		if (reason === 'terminate') state.window.application.isRunning = false;
+		if (reason === 'stop') state.manager.stop();
+		state.flush();
+		assert.equal(state.writes(), 1);
+		assert.equal(state.manager.pendingPlacements.size, 0);
+	}
+});

@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "tsc && tsc -p tsconfig.node.json",
+    "test": "npm run build && node --test tests/*.test.mjs",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
