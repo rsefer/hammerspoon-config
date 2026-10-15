@@ -48,8 +48,13 @@ See the [Hammerspoon TypeScript guide](https://cmsj.github.io/Hammerspoon2/main/
 
 ## Permissions
 
-The JavaScript config targets Hammerspoon 2. Set the desk mode once in the
-Hammerspoon 2 console if needed, for example:
+The JavaScript config targets Hammerspoon 2. Desk mode is detected at startup
+and whenever connected displays change, using the monitor names and IDs in
+`lib/defaults.ts` (or their user-default overrides). Studio Display selects Desk,
+Studio Display plus a configured side monitor selects Desk with iPad, and DELL
+selects Desk (DELL). Without either desk display, the setup is Laptop, with or
+without a configured side monitor. A manual selection lasts until the next
+display change or reload, for example in the Hammerspoon 2 console:
 ```
 hs.userdefaults.set("deskSetup", "desk")
 ```

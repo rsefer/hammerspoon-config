@@ -1,6 +1,8 @@
 import SDCWindows from './lib/SDCWindows.js';
-import { defaults, deskLabels, setting } from './lib/defaults.js';
+import { defaults, deskLabels, detectDeskSetup, setting } from './lib/defaults.js';
 
+hs.userdefaults.set('deskSetup', detectDeskSetup());
+hs.userdefaults.set('deskSetupLabel', deskLabels[setting('deskSetup')]);
 const sdcWindows = new SDCWindows();
 
 if (hs.permissions.checkAccessibility()) {
@@ -18,7 +20,11 @@ hs.hotkey.bind(defaults.hotkeyCombo, '\\', () => sdcWindows.resetAllApps());
 hs.urlevent.bind('reset_all_apps', () => sdcWindows.resetAllApps());
 hs.urlevent.bind('reload_config', () => hs.reload());
 
-hs.screen.on('change', () => sdcWindows.resetAllApps());
+hs.screen.on('change', () => {
+	const deskSetup = detectDeskSetup();
+	if (deskSetup === sdcWindows.currentDeskSetup) sdcWindows.resetAllApps();
+	else sdcWindows.setDeskSetup(deskSetup);
+});
 hs.userdefaults.on('deskSetup', value => sdcWindows.setDeskSetup(value));
 
 const deskSetup = setting('deskSetup') as keyof typeof deskLabels;

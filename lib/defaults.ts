@@ -32,6 +32,15 @@ export const deskLabels: Record<string, string> = {
 };
 export const ignoreTitles = ['MenuBarCover'];
 
+export function detectDeskSetup(screens = hs.screen.all()): string {
+	const matches = (identifier: string | number) => screens.some(screen =>
+		screen.name === identifier || screen.id === identifier || screen.uuid === identifier);
+	const hasSideMonitor = setting('tertiaryMonitorNames').some(matches);
+	if (matches(setting('secondaryMonitorMain'))) return hasSideMonitor ? 'deskWithiPad' : 'desk';
+	if (matches(setting('secondaryMonitorAlt'))) return 'deskAlt';
+	return hasSideMonitor ? 'laptopWithSide' : 'laptop';
+}
+
 export function setting<Key extends keyof Settings>(key: Key): Settings[Key] {
 	const value = hs.userdefaults.get(key) as Settings[Key] | null | undefined;
 	return value ?? defaults[key];

@@ -49,7 +49,7 @@ export default class SDCWindows {
 		const names = Array.isArray(desired) ? desired : [desired];
 		for (const name of names) {
 			if (name == null) continue;
-			const match = hs.screen.all().find(screen => screen.name === name || screen.id === name);
+			const match = hs.screen.all().find(screen => screen.name === name || screen.id === name || screen.uuid === name);
 			if (match) return match;
 		}
 
@@ -301,10 +301,6 @@ export default class SDCWindows {
 	setDeskSetup(value: unknown) {
 		const oldValue = this.currentDeskSetup;
 		if (typeof value !== 'string' || !value || value === oldValue) return;
-		if (oldValue === 'deskWithiPad' && value === 'laptopWithSide') {
-			hs.userdefaults.set('deskSetup', 'laptop');
-			return;
-		}
 
 		this.currentDeskSetup = value;
 		deskLabels[value] = deskLabels[value] || value;
