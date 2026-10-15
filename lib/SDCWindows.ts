@@ -20,6 +20,7 @@ export default class SDCWindows {
 	gapRefreshTask: HSTask | null;
 	gapRefreshTimer: HSTimer | null;
 	lastGapRefreshError: string | null;
+	pendingPlacements: Map<string, HSTimer>;
 
 	constructor() {
 		this.currentDeskSetup = setting('deskSetup');
@@ -36,6 +37,7 @@ export default class SDCWindows {
 		this.gapRefreshTask = null;
 		this.gapRefreshTimer = null;
 		this.lastGapRefreshError = null;
+		this.pendingPlacements = new Map();
 	}
 
 	layoutForApp(app: HSApplication | null) {
@@ -176,17 +178,25 @@ export default class SDCWindows {
 		return null;
 	}
 
+	windowMatchesFrame(window: HSWindow, screen: HSScreen, frame: HSRect) {
+		const currentFrame = window.frame;
+		return window.screen?.id === screen.id && currentFrame != null &&
+			Math.abs(currentFrame.x - frame.x) <= 1 && Math.abs(currentFrame.y - frame.y) <= 1 &&
+			Math.abs(currentFrame.w - frame.w) <= 1 && Math.abs(currentFrame.h - frame.h) <= 1;
+	}
+
 	placeWindow(window: HSWindow | null, screen: HSScreen | null, size: GridSize | null) {
 		if (!window) window = hs.window.focusedWindow();
 		if (!window || !window.screen) return;
 		const targetScreen = screen || window.screen;
 		if (!targetScreen || !size) return;
 
+		const placementKey = `${window.pid}:${window.id}`;
+		this.pendingPlacements.get(placementKey)?.stop();
+		this.pendingPlacements.delete(placementKey);
+		const changingScreens = window.screen.id !== targetScreen.id;
 		const frame = this.layoutFrame(targetScreen, size);
-		const currentFrame = window.frame;
-		if (window.screen.id === targetScreen.id && currentFrame &&
-			Math.abs(currentFrame.x - frame.x) <= 1 && Math.abs(currentFrame.y - frame.y) <= 1 &&
-			Math.abs(currentFrame.w - frame.w) <= 1 && Math.abs(currentFrame.h - frame.h) <= 1) return;
+		if (this.windowMatchesFrame(window, targetScreen, frame)) return;
 		const appName = window.application && window.application.title;
 
 		if (appName === 'Terminal') {
@@ -194,6 +204,23 @@ export default class SDCWindows {
 			hs.osascript.applescript(`tell application "Terminal" to set the font size of window 1 to ${terminalFontSize}`);
 		}
 		window.frame = frame;
+		if (!changingScreens) return;
+
+		const movedWindow = window;
+		const targetSize = size;
+		const settlePlacement = (attempts: number) => {
+			const timer = hs.timer.doAfter(0.2, () => {
+				this.pendingPlacements.delete(placementKey);
+				const destination = hs.screen.all().find(candidate => candidate.id === targetScreen.id);
+				if (!destination || !movedWindow.screen || movedWindow.application?.isRunning === false) return;
+				const settledFrame = this.layoutFrame(destination, targetSize);
+				if (this.windowMatchesFrame(movedWindow, destination, settledFrame)) return;
+				movedWindow.frame = settledFrame;
+				if (attempts > 1) settlePlacement(attempts - 1);
+			});
+			this.pendingPlacements.set(placementKey, timer);
+		};
+		settlePlacement(2);
 	}
 
 	appMove(app: HSApplication | null, screen: HSScreen | null, size: GridSize) {
@@ -248,7 +275,7 @@ export default class SDCWindows {
 		const width = frame.w / screenFrame.w;
 		const height = frame.h / screenFrame.h;
 		if (tertiary && ((width > 0.51 && width < 1) || (height > 0.5 && height < 0.97))) {
-			window.frame = new HSRect(screenFrame.x, screenFrame.y, screenFrame.w, screenFrame.h);
+			this.placeWindow(window, screen, sizes.full);
 		}
 	}
 
@@ -326,12 +353,15 @@ export default class SDCWindows {
 		hs.application.on('didLaunch', this.appListener);
 		hs.application.on('didTerminate', this.appTerminateListener);
 		hs.application.runningApplications().forEach(app => this.watchApp(app));
+		this.resetAllApps(false);
 		return this;
 	}
 
 	stop() {
 		this.gapRefreshEnabled = false;
 		this.gapRefreshGeneration += 1;
+		for (const timer of this.pendingPlacements.values()) timer.stop();
+		this.pendingPlacements.clear();
 		if (this.gapRefreshTimer) this.gapRefreshTimer.stop();
 		if (this.gapRefreshTask) this.gapRefreshTask.terminate();
 		this.gapRefreshTimer = null;
