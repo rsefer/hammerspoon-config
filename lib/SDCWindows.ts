@@ -183,6 +183,10 @@ export default class SDCWindows {
 		if (!targetScreen || !size) return;
 
 		const frame = this.layoutFrame(targetScreen, size);
+		const currentFrame = window.frame;
+		if (window.screen.id === targetScreen.id && currentFrame &&
+			Math.abs(currentFrame.x - frame.x) <= 1 && Math.abs(currentFrame.y - frame.y) <= 1 &&
+			Math.abs(currentFrame.w - frame.w) <= 1 && Math.abs(currentFrame.h - frame.h) <= 1) return;
 		const appName = window.application && window.application.title;
 
 		if (appName === 'Terminal') {
@@ -288,14 +292,16 @@ export default class SDCWindows {
 	resetAllApps(showAlert = true) {
 		const deskSetup = setting('deskSetup');
 		if (showAlert) hs.ui.alert(`Desk Setup: ${deskLabels[deskSetup] || deskSetup}`).duration(2).show();
+		const placements = new Map<number, { app: HSApplication; screen: HSScreen | null; size: GridSize }>();
 		windowLayout.forEach(layout => {
 			const screen = this.chooseScreen(layout.screens);
 			const size = this.chooseSize(layout.sizes);
 			layout.apps.forEach(name => {
 				const app = hs.application.matchingName(name) || hs.application.matchingBundleID(name);
-				this.appMove(app, screen, size);
+				if (app) placements.set(app.pid, { app, screen, size });
 			});
 		});
+		placements.forEach(({ app, screen, size }) => this.appMove(app, screen, size));
 	}
 
 	setDeskSetup(value: unknown) {
