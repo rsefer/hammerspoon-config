@@ -22,7 +22,7 @@ export const windowLayout: WindowLayout[] = [
 		sizes: { deskWithiPad: sizes.halves.left, deskAlt: sizes.thirds.left2, desk: sizes.halves.left, laptopWithSide: sizes.full, laptop: sizes.full }
 	},
 	{
-		apps: ['Messages', 'X', 'com.apple.Home', 'Hammerspoon', 'Reminders', 'Slack', 'com.apple.Notes'],
+		apps: ['com.apple.MobileSMS', 'X', 'com.apple.Home', 'Hammerspoon', 'Reminders', 'Slack', 'com.apple.Notes'],
 		screens: { deskWithiPad: defaults.primaryMonitorName, deskAlt: defaults.secondaryMonitorAlt, desk: defaults.primaryMonitorName, laptopWithSide: null, laptop: null },
 		sizes: { deskWithiPad: sizes.halves.left, deskAlt: sizes.thirds.right, desk: sizes.halves.left, laptopWithSide: sizes.thirds.right, laptop: sizes.halves.right }
 	},

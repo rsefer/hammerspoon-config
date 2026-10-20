@@ -80,6 +80,40 @@ test('correctly aligned windows receive no redundant frame writes', () => {
 	assert.equal(state.writes(), 1);
 });
 
+test('new Messages windows use the laptop layout', () => {
+	const state = fixture(0);
+	state.screens.splice(1);
+	globalThis.hs.screen.primary = () => state.screens[0];
+	const window = { ...state.window, title: 'Messages' };
+	const app = {
+		title: 'Messages', bundleID: 'com.apple.MobileSMS', isRunning: true,
+		allWindows: [window], mainWindow: window
+	};
+	window.application = app;
+	state.manager.processCreatedWindow(app, { title: window.title });
+	assert.deepEqual(window.frame, state.manager.layoutFrame(state.screens[0], sizes.halves.right));
+});
+
+test('reset places Messages even when name lookup matches its assistant extension', () => {
+	const state = fixture(0);
+	state.screens.splice(1);
+	globalThis.hs.screen.primary = () => state.screens[0];
+	const window = { ...state.window, title: 'Messages' };
+	const app = {
+		pid: 10, title: 'Messages', bundleID: 'com.apple.MobileSMS', isRunning: true,
+		allWindows: [window], mainWindow: window
+	};
+	const helper = {
+		pid: 11, title: 'Messages Assistant Extension',
+		bundleID: 'com.apple.messages.AssistantExtension', isRunning: true, allWindows: []
+	};
+	window.application = app;
+	globalThis.hs.application.matchingName = name => name === 'Messages' ? helper : null;
+	globalThis.hs.application.matchingBundleID = bundleID => bundleID === app.bundleID ? app : null;
+	state.manager.resetAllApps(false);
+	assert.deepEqual(window.frame, state.manager.layoutFrame(state.screens[0], sizes.halves.right));
+});
+
 test('new placements cancel stale corrections', () => {
 	const state = fixture();
 	state.manager.placeWindow(state.window, state.destination, sizes.full);

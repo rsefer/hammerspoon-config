@@ -243,6 +243,12 @@ export default class SDCWindows {
 			return;
 		}
 
+		if (app.title === 'Messages' || app.bundleID === 'com.apple.MobileSMS') {
+			const layout = this.layoutForApp(app);
+			if (layout) this.placeWindow(window, this.chooseScreen(layout.screens), this.chooseSize(layout.sizes));
+			return;
+		}
+
 		if (['TextEdit', 'Obsidian'].includes(app.title ?? '')) {
 			if (app.allWindows.length === 1 && window.title !== 'Open') {
 				const layout = this.layoutForApp(app);
