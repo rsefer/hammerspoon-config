@@ -1,5 +1,6 @@
 import SDCWindows from './lib/SDCWindows.js';
 import { defaults, deskLabels, detectDeskSetup, setting } from './lib/defaults.js';
+import { initAlert } from './lib/alerts.js';
 
 hs.userdefaults.set('deskSetup', detectDeskSetup());
 hs.userdefaults.set('deskSetupLabel', deskLabels[setting('deskSetup')]);
@@ -28,5 +29,5 @@ hs.screen.on('change', () => {
 hs.userdefaults.on('deskSetup', value => sdcWindows.setDeskSetup(value));
 
 const deskSetup = setting('deskSetup') as keyof typeof deskLabels;
-hs.ui.alert(`Configuration loaded: ${deskLabels[deskSetup] || deskLabels.laptop}`).duration(2).show();
+initAlert(`Configuration loaded: ${deskLabels[deskSetup] || deskLabels.laptop}`, { font: HSFont.body() });
 console.log('Hammerspoon 2 config loaded');

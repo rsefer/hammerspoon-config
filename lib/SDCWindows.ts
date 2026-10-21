@@ -2,6 +2,7 @@ import { setting, secondaryMonitorNames, deskLabels, ignoreTitles } from './defa
 import { sizes, gridWidth, gridHeight, type GridSize } from './window-sizes.js';
 import { browsers } from './browsers.js';
 import { windowLayout, type ScreenOptions, type SizeOptions } from './window-layout.js';
+import { initAlert } from './alerts.js';
 const gapRefreshInterval = 30;
 
 export default class SDCWindows {
@@ -21,6 +22,7 @@ export default class SDCWindows {
 	gapRefreshTimer: HSTimer | null;
 	lastGapRefreshError: string | null;
 	pendingPlacements: Map<string, HSTimer>;
+	deskSetupAlert: HSUIAlert | null;
 
 	constructor() {
 		this.currentDeskSetup = setting('deskSetup');
@@ -38,6 +40,7 @@ export default class SDCWindows {
 		this.gapRefreshTimer = null;
 		this.lastGapRefreshError = null;
 		this.pendingPlacements = new Map();
+		this.deskSetupAlert = null;
 	}
 
 	layoutForApp(app: HSApplication | null) {
@@ -324,7 +327,10 @@ export default class SDCWindows {
 
 	resetAllApps(showAlert = true) {
 		const deskSetup = setting('deskSetup');
-		if (showAlert) hs.ui.alert(`Desk Setup: ${deskLabels[deskSetup] || deskSetup}`).duration(2).show();
+		if (showAlert) {
+			this.deskSetupAlert?.close();
+			this.deskSetupAlert = initAlert(`Desk Setup: ${deskLabels[deskSetup] || deskSetup}`, { font: HSFont.body() });
+		}
 		const placements = new Map<number, { app: HSApplication; screen: HSScreen | null; size: GridSize }>();
 		windowLayout.forEach(layout => {
 			const screen = this.chooseScreen(layout.screens);
