@@ -2,6 +2,8 @@ import SDCWindows from './lib/SDCWindows.js';
 import { defaults, deskLabels, detectDeskSetup, setting } from './lib/defaults.js';
 import { initAlert } from './lib/alerts.js';
 
+hs.ipc.start();
+
 hs.userdefaults.set('deskSetup', detectDeskSetup());
 hs.userdefaults.set('deskSetupLabel', deskLabels[setting('deskSetup')]);
 const sdcWindows = new SDCWindows();

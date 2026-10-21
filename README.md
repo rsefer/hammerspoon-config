@@ -38,10 +38,13 @@ Standalone checks are available with `npm run lint`, `npm run lint:fix`, and
 `npm run typecheck`. Dependencies and compiled output are ignored by Git.
 
 The official `hammerspoon.d.ts` provides ambient Hammerspoon API types. Update it
-when upgrading Hammerspoon 2, using the documentation version matching your app:
+when upgrading Hammerspoon 2. The updater queries `hs.appinfo.version` through
+`hs2 --no-prompt` and downloads the matching published docs; pass a docs version
+after `--` to override automatic detection:
 
 ```sh
-curl --fail --location https://cmsj.github.io/Hammerspoon2/main/hammerspoon.d.ts -o hammerspoon.d.ts
+npm run docs:typescript
+npm run docs:typescript -- VERSION
 ```
 
 See the [Hammerspoon TypeScript guide](https://cmsj.github.io/Hammerspoon2/main/js/typescript-guide.html).

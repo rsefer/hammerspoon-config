@@ -11,7 +11,6 @@
     "esModuleInterop": true,
     "types": []
   },
-  "files": ["hammerspoon.d.ts"],
-  "include": ["config.ts", "lib/**/*.ts"],
+  "include": ["*.ts", "lib/**/*.ts"],
   "exclude": ["lib/external/**/*.ts", "compiled", "node_modules"]
 }
