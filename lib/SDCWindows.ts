@@ -58,7 +58,7 @@ export default class SDCWindows {
 			if (match) return match;
 		}
 
-		if (['desk', 'deskWithiPad', 'deskAlt'].includes(deskSetup)) {
+		if (['desk', 'deskAlt'].includes(deskSetup)) {
 			for (const name of secondaryMonitorNames) {
 				const match = hs.screen.all().find(screen => screen.name === name);
 				if (match) return match;

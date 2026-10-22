@@ -24,7 +24,6 @@ export const defaults: Settings = {
 
 export const secondaryMonitorNames = [defaults.secondaryMonitorMain, defaults.secondaryMonitorAlt];
 export const deskLabels: Record<string, string> = {
-	deskWithiPad: 'Desk with iPad',
 	desk: 'Desk',
 	deskAlt: 'Desk (DELL)',
 	laptopWithSide: 'Laptop with Side Monitor',
@@ -36,7 +35,7 @@ export function detectDeskSetup(screens = hs.screen.all()): string {
 	const matches = (identifier: string | number) => screens.some(screen =>
 		screen.name === identifier || screen.id === identifier || screen.uuid === identifier);
 	const hasSideMonitor = setting('tertiaryMonitorNames').some(matches);
-	if (matches(setting('secondaryMonitorMain'))) return hasSideMonitor ? 'deskWithiPad' : 'desk';
+	if (matches(setting('secondaryMonitorMain'))) return 'desk';
 	if (matches(setting('secondaryMonitorAlt'))) return 'deskAlt';
 	return hasSideMonitor ? 'laptopWithSide' : 'laptop';
 }

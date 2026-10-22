@@ -4,7 +4,6 @@ import test from 'node:test';
 
 const require = createRequire(import.meta.url);
 const { default: SDCWindows } = require('../compiled/lib/SDCWindows.js');
-const { detectDeskSetup } = require('../compiled/lib/defaults.js');
 const { sizes } = require('../compiled/lib/window-sizes.js');
 
 function fixture(rejections = 1) {
@@ -58,13 +57,6 @@ function fixture(rejections = 1) {
 		}
 	};
 }
-
-test('desk setup only reports iPad for the configured side display', () => {
-	globalThis.hs = { userdefaults: { get: () => null } };
-	const studioDisplay = { name: 'Studio Display' };
-	assert.equal(detectDeskSetup([studioDisplay, { id: 3 }]), 'desk');
-	assert.equal(detectDeskSetup([studioDisplay, { id: 4128829 }]), 'deskWithiPad');
-});
 
 test('cross-monitor placement corrects clamped sizes with bounded retries', () => {
 	for (const rejections of [0, 1, 2, Infinity]) {
