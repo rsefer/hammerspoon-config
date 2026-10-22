@@ -8,7 +8,7 @@
     "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "start": "npm run docs:typescript && node scripts/dev.mjs"
+    "start": "node scripts/start.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
