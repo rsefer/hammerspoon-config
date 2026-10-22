@@ -16,7 +16,7 @@ export const defaults: Settings = {
 	primaryMonitorName: '37D8832A-2D66-02CA-B9F7-8F30A301B230',
 	secondaryMonitorMain: 'Studio Display',
 	secondaryMonitorAlt: 'DELL P2415Q',
-	tertiaryMonitorNames: [4128829, 3],
+	tertiaryMonitorNames: [4128829],
 	terminalAppName: 'Ghostty',
 	windowGap: 8,
 	deskSetup: 'laptop'
