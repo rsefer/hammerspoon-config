@@ -7,8 +7,8 @@ const { default: SDCWindows } = require('../compiled/lib/SDCWindows.js');
 const { sizes } = require('../compiled/lib/window-sizes.js');
 
 function fixture(rejections = 1) {
-	const source = { id: 1, frame: { x: 0, y: 0, w: 1280, h: 800 } };
-	const destination = { id: 2, frame: { x: 1280, y: 0, w: 2560, h: 1440 } };
+	const source = { id: 1, frame: { x: 0, y: 0, w: 1280, h: 800 }, fullFrame: { x: 0, y: 0, w: 1280, h: 800 } };
+	const destination = { id: 2, frame: { x: 1280, y: 0, w: 2560, h: 1440 }, fullFrame: { x: 1280, y: 0, w: 2560, h: 1440 } };
 	const screens = [source, destination];
 	const timers = [];
 	globalThis.HSRect = class {
@@ -18,7 +18,7 @@ function fixture(rejections = 1) {
 	};
 	globalThis.hs = {
 		userdefaults: { get: () => null },
-		screen: { all: () => screens },
+		screen: { all: () => screens, primary: () => screens[0] },
 		timer: {
 			doAfter(delay, callback) {
 				assert.equal(delay, 0.2);
@@ -69,6 +69,18 @@ test('cross-monitor placement corrects clamped sizes with bounded retries', () =
 		}
 		assert.equal(state.manager.pendingPlacements.size, 0);
 	}
+});
+
+test('Dock space stays reserved on the primary display when the Dock migrates', () => {
+	const state = fixture(0);
+	const [primary, secondary] = state.screens;
+	const frames = () => state.screens.map(screen => ({ ...state.manager.usableFrame(screen) }));
+	primary.frame = { x: 0, y: 0, w: 1280, h: 730 };
+	const dockOnPrimary = frames();
+	primary.frame = { ...primary.fullFrame };
+	secondary.frame = { x: 1280, y: 0, w: 2560, h: 1370 };
+	assert.deepEqual(frames(), dockOnPrimary);
+	assert.deepEqual(dockOnPrimary, [{ x: 0, y: 0, w: 1280, h: 730 }, { ...secondary.fullFrame }]);
 });
 
 test('correctly aligned windows receive no redundant frame writes', () => {

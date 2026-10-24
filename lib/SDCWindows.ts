@@ -71,8 +71,27 @@ export default class SDCWindows {
 		return (options && options[setting('deskSetup')]) || sizes.center;
 	}
 
+	// The Dock can migrate between displays, so always reserve its space on the primary display only.
+	usableFrame(screen: HSScreen) {
+		const full = screen.fullFrame;
+		const menuBar = screen.frame.y - full.y;
+		let left = 0;
+		let right = 0;
+		let bottom = 0;
+		if (screen.id === hs.screen.primary()?.id) {
+			for (const candidate of hs.screen.all()) {
+				const outer = candidate.fullFrame;
+				const inner = candidate.frame;
+				left = Math.max(left, inner.x - outer.x);
+				right = Math.max(right, outer.x + outer.w - inner.x - inner.w);
+				bottom = Math.max(bottom, outer.y + outer.h - inner.y - inner.h);
+			}
+		}
+		return new HSRect(full.x + left, full.y + menuBar, full.w - left - right, full.h - menuBar - bottom);
+	}
+
 	layoutFrame(screen: HSScreen, size: GridSize) {
-		const bounds = screen.frame;
+		const bounds = this.usableFrame(screen);
 		const { innerGap, outerGap } = this.raycastGaps;
 		const left = size[0] === 0 ? outerGap : innerGap / 2;
 		const top = size[1] === 0 ? outerGap : innerGap / 2;
@@ -154,7 +173,7 @@ export default class SDCWindows {
 		const frame = window.frame;
 		const screen = window.screen;
 		if (!frame || !screen) return null;
-		const bounds = screen.frame;
+		const bounds = this.usableFrame(screen);
 		return [
 			(frame.x - bounds.x) / bounds.w * gridWidth,
 			(frame.y - bounds.y) / bounds.h * gridHeight,
@@ -280,7 +299,7 @@ export default class SDCWindows {
 		const frame = window.frame;
 		if (!screen || !frame) return;
 		const tertiary = setting('tertiaryMonitorNames').includes(screen.id);
-		const screenFrame = screen.frame;
+		const screenFrame = this.usableFrame(screen);
 		const width = frame.w / screenFrame.w;
 		const height = frame.h / screenFrame.h;
 		if (tertiary && ((width > 0.51 && width < 1) || (height > 0.5 && height < 0.97))) {
