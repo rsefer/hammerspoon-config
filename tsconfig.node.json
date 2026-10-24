@@ -4,6 +4,6 @@
     "types": ["node"]
   },
   "files": [],
-  "include": ["lib/raycast-window-gaps.ts"],
+  "include": ["lib/external/raycast-window-gaps.ts"],
   "exclude": ["compiled", "node_modules"]
 }
