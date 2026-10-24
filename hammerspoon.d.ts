@@ -41,6 +41,13 @@ If this color is bound to a UI element, the canvas re-renders automatically.
      */
     set(value: string | HSColor): void;
 
+    /**
+     * Returns a plain object containing this color's sRGB components, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with `red`, `green`, `blue` and `alpha` properties, each between 0.0 and 1.0, matching the arguments of `HSColor.rgb()`
+     */
+    toJSON(): Record<string, any>;
+
 }
 
 /**
@@ -114,19 +121,12 @@ declare class HSFont {
     static title3(): HSFont;
 
     /**
-     * The system font in a custom size
-     * @param size The font size in points
-     * @returns An HSFont object
-     */
-    static system(size: number): HSFont;
-
-    /**
      * The system font in a custom size with a choice of weights
      * @param size The font size in points
-     * @param weight The font weight as a string (e.g. "ultralight", "thin", "light", "regular", "medium", "semibold", "bold", "heavy", "black")
+     * @param weight The font weight as a string (e.g. "ultralight", "thin", "light", "regular", "medium", "semibold", "bold", "heavy", "black").  Defaults to "regular".
      * @returns An HSFont object
      */
-    static system(size: number, weight: string): HSFont;
+    static system(size: number, weight?: string | null): HSFont;
 
     /**
      * A font present on the system at a given size
@@ -361,6 +361,13 @@ declare class HSPoint {
     vector(other: HSPoint | HSRect): HSPoint;
 
     /**
+     * Returns a plain object containing this point's coordinates, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with `x` and `y` properties
+     */
+    toJSON(): Record<string, any>;
+
+    /**
      * A coordinate for the x-axis position of this point
      */
     x: number;
@@ -476,6 +483,13 @@ declare class HSRect {
     vector(other: HSPoint | HSRect): HSPoint;
 
     /**
+     * Returns a plain object containing this rect's origin and size, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with `x`, `y`, `w` and `h` properties
+     */
+    toJSON(): Record<string, any>;
+
+    /**
      * An x-axis coordinate for the top-left point of the rectangle
      */
     x: number;
@@ -543,6 +557,13 @@ declare class HSSize {
      * @returns A new HSSize scaled by the given factor, or an unchanged copy of this size if `factor` is not a number, HSSize or HSPoint
      */
     scale(factor: number | HSSize | HSPoint): HSSize;
+
+    /**
+     * Returns a plain object containing this size's dimensions, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with `w` and `h` properties
+     */
+    toJSON(): Record<string, any>;
 
     /**
      * The width of the rectangle
@@ -756,6 +777,25 @@ safe to call more than once, or do one-time setup at `init.js`'s top level inste
      * @returns Whatever the Spoon's `init.js` assigned to `module.exports`
      */
     function loadSpoon(name: string): Object;
+
+    /**
+     * Called when Hammerspoon 2 is launched again while it's already
+running (e.g. from Finder, Spotlight or `open -a`), or when its Dock icon is clicked, or null
+to remove it. It's only called when Settings → Advanced → "When launched while running" is
+set to "Call hs.onRelaunch". If it's set to that and no callback is set (for example because
+your config failed to load), the Console is shown instead, so you can always get back to it.
+     */
+    let onRelaunch: (() => void) | null;
+
+    /**
+     * Called when a file or folder is opened with Hammerspoon 2,
+e.g. by dropping it on the Dock icon, choosing Hammerspoon 2 from Finder's "Open With" menu,
+or `open -a "Hammerspoon 2" file.txt`, or null to remove it. It's called once for each item,
+with its path. Spoons (`.spoon2` files) are installed as usual rather than passed to it.
+Items opened before your config has loaded (for example, the one that launched
+Hammerspoon 2) are passed to it once your config has loaded.
+     */
+    let onOpenFile: ((path: string) => void) | null;
 
     /**
      * A namespace holding every Spoon loaded so far via `loadSpoon()`,
@@ -1072,6 +1112,13 @@ window; whichever window is currently the application's main window is the one t
     getWindow(title: string): HSWindow | null;
 
     /**
+     * Returns a plain object describing this application, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with the application's `pid`, `bundleID`, `name`, `bundlePath`, `kind`, `isRunning`, `isActive` and `isHidden`. Values that can't be read are `null`
+     */
+    toJSON(): Record<string, any>;
+
+    /**
      * POSIX Process Identifier
      */
     readonly pid: number;
@@ -1082,9 +1129,9 @@ window; whichever window is currently the application's main window is the one t
     readonly bundleID: string | null;
 
     /**
-     * The application's title
+     * The application's name
      */
-    readonly title: string | null;
+    readonly name: string | null;
 
     /**
      * Location of the application on disk
@@ -1112,7 +1159,8 @@ window; whichever window is currently the application's main window is the one t
     readonly focusedWindow: HSWindow | null;
 
     /**
-     * All windows of this application
+     * All windows of this application, including windows in native fullscreen and on other Spaces
+(with the limitation described in `hs.window.allWindows()`)
      */
     readonly allWindows: HSWindow[];
 
@@ -1345,6 +1393,13 @@ report it, as ``isInUse`` and ``jackConnected`` do.
      * @throws {Error} Throws an Error on failure; wrap calls in try/catch to handle it.
      */
     once(event: "vmout" | "vmin" | "mout" | "min" | "rate" | "dsout" | "dsin" | "balance" | "inUse" | "jack" | "config", listener: (value?: number | boolean | {id: number, name: string} | null) => void): void;
+
+    /**
+     * Returns a plain object describing this device, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with the device's `id`, `name`, `uid`, `isInput`, `isOutput`, `transportType`, `isInUse`, `jackConnected`, `inputChannels`, `outputChannels`, `volume`, `muted`, `balance`, `inputVolume`, `inputMuted` and `sampleRate`. Values the device doesn't support are `null`
+     */
+    toJSON(): Record<string, any>;
 
     /**
      * The CoreAudio object ID of this device.
@@ -1601,9 +1656,26 @@ declare class HSAXElement {
 
     /**
      * Set the value of a specific attribute
+The value must be of the type the Accessibility API expects for the attribute. For the
+well-known attributes below the type is checked first, and a value of the wrong type throws
+an error naming the expected type.
+| Attribute | Expected value |
+|---|---|
+| `AXPosition` | an `HSPoint` |
+| `AXSize` | an `HSSize` |
+| `AXFrame` | an `HSRect` |
+| `AXFocused`, `AXMain`, `AXMinimized`, `AXHidden`, `AXFrontmost`, `AXFullScreen`, `AXSelected`, `AXExpanded`, `AXDisclosing`, `AXEnhancedUserInterface` | a boolean |
+| `AXSelectedText` | a string |
+Plain objects such as `{x: 1, y: 2}` are not accepted for geometry attributes; use `new HSPoint(1, 2)`.
+If the Accessibility API refuses the change, this throws an `Error` whose message says why, and whose
+`code` property is the Accessibility error's name, e.g. `"kAXErrorAttributeUnsupported"` (the element
+doesn't have the attribute), `"kAXErrorIllegalArgument"` (the value isn't valid for it) or
+`"kAXErrorCannotComplete"` (the application didn't respond). A value of the wrong type for one of
+the attributes above throws an `Error` with no `code`.
      * @param attribute The attribute name to set
      * @param value The value to set
-     * @returns True if the operation succeeded, otherwise False
+     * @returns `true` if the attribute was set. Failures throw rather than returning `false`.
+     * @throws {Error} Throws an Error on failure; wrap calls in try/catch to handle it.
      */
     setAttributeValue(attribute: string, value: any): boolean;
 
@@ -1622,8 +1694,14 @@ declare class HSAXElement {
 
     /**
      * Perform a specific action
+If the Accessibility API refuses the action, this throws an `Error` whose message says why, and whose
+`code` property is the Accessibility error's name, e.g. `"kAXErrorActionUnsupported"` or
+`"kAXErrorAttributeUnsupported"` (the element doesn't have the action; AppKit applications report the
+latter) or `"kAXErrorCannotComplete"` (the application didn't respond). Use `actionNames()` to see
+which actions an element supports.
      * @param action The action to perform
-     * @returns True if the action succeeded, otherwise False
+     * @returns `true` if the action was performed. Failures throw rather than returning `false`.
+     * @throws {Error} Throws an Error on failure; wrap calls in try/catch to handle it.
      */
     performAction(action: string): boolean;
 
@@ -1904,6 +1982,13 @@ Call `stopMonitoring()` to unsubscribe.
      * @returns self, for chaining
      */
     stopMonitoring(): HSBonjourService;
+
+    /**
+     * Returns a plain object describing this service, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with the service's `name`, `type`, `domain`, `hostname`, `port`, `addresses`, `txtRecord` and `includesPeerToPeer`. `hostname` and `txtRecord` are `null` until the service has been resolved
+     */
+    toJSON(): Record<string, any>;
 
     /**
      * A unique identifier assigned to this service object.
@@ -2614,8 +2699,8 @@ const allApps = hs.application.runningApplications()
 chooser.setChoices((query) => {
     const q = query.toLowerCase()
     return allApps
-        .filter(a => a.title.toLowerCase().includes(q))
-        .map(a => ({ text: a.title, subText: a.bundleID }))
+        .filter(a => a.name.toLowerCase().includes(q))
+        .map(a => ({ text: a.name, subText: a.bundleID }))
 })
 ```
 ## Async Choices (with debounce)
@@ -2874,6 +2959,32 @@ If unset, activating an invalid row is silently ignored.
 }
 
 /**
+ * Module for customising Hammerspoon's own Dock icon.
+The Dock icon is only shown when the "Show in" setting in Hammerspoon's Settings includes the Dock.
+## Adding items to the Dock icon's menu
+```js
+hs.dockicon.setMenu([
+    { title: "Reload config", fn: () => hs.reload() },
+    { title: "-" },
+    { title: "Open Console", fn: () => hs.openConsole() }
+])
+```
+ */
+declare namespace hs.dockicon {
+    /**
+     * Set extra items for the menu shown when the Dock icon is right-clicked (or Control-clicked, or held).
+The items appear above the Dock's own items (Options, Show All Windows, Hide and Quit).
+Pass an array of menu item objects for a static menu, or a function that returns an array for a menu
+populated each time it opens. The function receives one argument: the modifier keys held when the menu
+opened, in the same form as `hs.eventtap.currentModifiers()`.
+The menu is removed when the config is reloaded.
+     * @param menuOrFn Array of menu item objects, a function returning such an array, or null to remove the extra items
+     */
+    function setMenu(menuOrFn: Array<Record<string, any>> | ((modifiers: string[]) => Array<Record<string, any>>) | null): void;
+
+}
+
+/**
  * # hs.docs
 **Offline API documentation browser**
 Browse and query the Hammerspoon 2 API documentation from within the app.
@@ -2972,20 +3083,30 @@ are always delivered to other applications. Requires Accessibility permission.
 
     /**
      * Create a keyboard event
+If `mods` is given, the event carries exactly those modifiers, whatever modifier keys are
+held when it's created. It is a single key event: to send a whole keystroke with modifiers to an
+application, including the modifier key presses some applications need to see, use
+`hs.eventtap.keyStroke(mods, key, app)`.
 through the current keyboard layout (see `hs.keycodes.map`), or a numeric virtual key code
+Omit to keep the modifiers that are currently held.
      * @param key A key name or character (e.g. "a", "space", "return", "f1"), resolved
      * @param isDown true for key down, false for key up
+     * @param mods An array of modifier names (e.g. ["cmd", "shift"]), as accepted by `hs.eventtap.keyStroke()`.
      * @returns An HSEventTapEvent, or null if the key name is unknown
      */
-    function makeKeyEvent(key: string | number, isDown: boolean): HSEventTapEvent | null;
+    function makeKeyEvent(key: string | number, isDown: boolean, mods?: string[] | null): HSEventTapEvent | null;
 
     /**
      * Create a keyboard event using a raw key code
+If `mods` is given, the event carries exactly those modifiers, whatever modifier keys are
+held when it's created.
+Omit to keep the modifiers that are currently held.
      * @param keyCode A numeric virtual key code
      * @param isDown true for key down, false for key up
+     * @param mods An array of modifier names (e.g. ["cmd", "shift"]), as accepted by `hs.eventtap.keyStroke()`.
      * @returns An HSEventTapEvent
      */
-    function makeKeyEventWithCode(keyCode: number, isDown: boolean): HSEventTapEvent | null;
+    function makeKeyEventWithCode(keyCode: number, isDown: boolean, mods?: string[] | null): HSEventTapEvent | null;
 
     /**
      * Create a mouse event at the given position.
@@ -3023,15 +3144,23 @@ to set brightness directly if they have no effect.
     function makeSystemKeyEvent(key: string, isDown: boolean): HSEventTapEvent | null;
 
     /**
-     * Send a key down and key up event with optional modifier keys.
+     * Send a key down and key up event with optional modifier keys, optionally to a specific
+application.
 A 5 ms pause is inserted between the key-down and key-up events to improve
 compatibility with applications that miss very fast synthetic keystrokes.
+Without `app`, the keystroke is posted to the system, so it goes to whichever application
+is frontmost. With `app`, it is delivered straight to that application, even if it's in the
+background, without activating it. In that case the modifier keys are also pressed and
+released around the key, as a real keyboard does, so applications that track modifier
+key presses themselves see them held.
 through the current keyboard layout (see `hs.keycodes.map`), or a numeric virtual key code,
 which always presses the same physical key
+send it to the frontmost application.
      * @param mods An array of modifier names (e.g. ["cmd", "shift"])
      * @param key A key name or character (e.g. "a", "space", "return"), resolved
+     * @param app The application to send the keystroke to. Omit, or pass null, to
      */
-    function keyStroke(mods: string[], key: string | number): void;
+    function keyStroke(mods: string[], key: string | number, app?: HSApplication | null): void;
 
     /**
      * Type a string of characters as individual key events.
@@ -3343,11 +3472,16 @@ provided, the event is delivered directly to that process by PID.
     rawFlags: number;
 
     /**
-     * An array of active modifier key names (e.g. ["cmd", "shift"]).
+     * An array of active modifier key names (e.g. ["cmd", "shift"]) (get/set).
 When a device-specific modifier is detected, both the generic and side-specific
 names are included — e.g. pressing the left Command key yields ["cmd", "leftCmd"].
+Setting this replaces the event's modifiers with the named ones, accepting the same names
+as `hs.eventtap.keyStroke()` ("cmd", "shift", "alt", "ctrl", "fn", "capslock", and the
+side-specific forms such as "rightCmd"). Unknown names are ignored. This only changes the
+event's flags: an application that tracks modifier key presses itself may also need to see
+the modifier keys go down and up, which `hs.eventtap.keyStroke(mods, key, app)` does for you.
      */
-    readonly flags: string[];
+    flags: string[];
 
     /**
      * The event's screen position as {x, y} in Hammerspoon screen coordinates
@@ -3802,8 +3936,35 @@ point to paths that do not yet exist.
     /**
      * Replace all Finder tags on a file or directory.
 This function is only available on macOS Tahoe (26) or later.
-     * @param path Path to the file.
+     * @param path Path to the file or directory. `~` is expanded.
+     * @param newTags Array of tag name strings.
      * @returns `true` on success, `false` on failure.
+     */
+    function setTags(path: string, newTags: string[]): boolean;
+
+    /**
+     * Add Finder tags to a file or directory (union with existing tags).
+This function is only available on macOS Tahoe (26) or later.
+     * @param path Path to the file or directory. `~` is expanded.
+     * @param newTags Array of tag name strings to add.
+     * @returns `true` on success, `false` on failure.
+     */
+    function addTags(path: string, newTags: string[]): boolean;
+
+    /**
+     * Remove specific Finder tags from a file or directory.
+This function is only available on macOS Tahoe (26) or later.
+Tags not currently present are silently ignored.
+     * @param path Path to the file or directory. `~` is expanded.
+     * @param tagsToRemove Array of tag name strings to remove.
+     * @returns `true` on success, `false` on failure.
+     */
+    function removeTags(path: string, tagsToRemove: string[]): boolean;
+
+    /**
+     * Return the Uniform Type Identifier for the file at the given path.
+     * @param path Path to the file.
+     * @returns UTI string, or `null` on failure.
      */
     function fileUTI(path: string): string | null;
 
@@ -4599,27 +4760,27 @@ declare namespace hs.http {
      * Perform an HTTP GET request.
      * @param url The URL to request.
      * @param headers Optional dictionary of request headers.
-     * @returns {Promise<{status: number, body: string, headers: object}>} Resolves with the HTTP response.
+     * @returns Resolves with the HTTP response.
      */
-    function get(url: string, headers?: Record<string, string> | null): Promise<any>;
+    function get(url: string, headers?: Record<string, string> | null): Promise<{status: number, body: string, headers: object}>;
 
     /**
      * Perform an HTTP POST request.
      * @param url The URL to request.
      * @param body Optional request body string.
      * @param headers Optional dictionary of request headers.
-     * @returns {Promise<{status: number, body: string, headers: object}>} Resolves with the HTTP response.
+     * @returns Resolves with the HTTP response.
      */
-    function post(url: string, body?: string | null, headers?: Record<string, string> | null): Promise<any>;
+    function post(url: string, body?: string | null, headers?: Record<string, string> | null): Promise<{status: number, body: string, headers: object}>;
 
     /**
      * Perform an HTTP PUT request.
      * @param url The URL to request.
      * @param body Optional request body string.
      * @param headers Optional dictionary of request headers.
-     * @returns {Promise<{status: number, body: string, headers: object}>} Resolves with the HTTP response.
+     * @returns Resolves with the HTTP response.
      */
-    function put(url: string, body?: string | null, headers?: Record<string, string> | null): Promise<any>;
+    function put(url: string, body?: string | null, headers?: Record<string, string> | null): Promise<{status: number, body: string, headers: object}>;
 
     /**
      * Perform an HTTP request with any method (GET, POST, PUT, DELETE, PATCH, etc.).
@@ -4628,9 +4789,9 @@ Use this for methods not covered by the convenience helpers, such as DELETE or P
      * @param method The HTTP method string (e.g. "DELETE", "PATCH", "HEAD").
      * @param body Optional request body string.
      * @param headers Optional dictionary of request headers.
-     * @returns {Promise<{status: number, body: string, headers: object}>} Resolves with the HTTP response.
+     * @returns Resolves with the HTTP response.
      */
-    function doRequest(url: string, method: string, body?: string | null, headers?: Record<string, string> | null): Promise<any>;
+    function doRequest(url: string, method: string, body?: string | null, headers?: Record<string, string> | null): Promise<{status: number, body: string, headers: object}>;
 
     /**
      * URL-encode a string for use as a query parameter value.
@@ -5745,6 +5906,13 @@ Called automatically when Hammerspoon reloads.
     destroy(): void;
 
     /**
+     * Returns a plain object describing this device, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with the device's `name`, `displayName`, `manufacturer`, `model`, `isOnline` and `isVirtual`
+     */
+    toJSON(): Record<string, any>;
+
+    /**
      * A unique identifier for this device object.
      */
     readonly identifier: string;
@@ -6415,6 +6583,13 @@ from Vision's internal bottom-left-origin system (the conversion is automatic).
  */
 declare class HSOCRObservation {
     /**
+     * Returns a plain object describing this observation, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with the observation's `text`, `confidence` and `bounds`
+     */
+    toJSON(): Record<string, any>;
+
+    /**
      * The Swift type name, for JavaScript introspection.
      */
     readonly typeName: string;
@@ -6448,6 +6623,13 @@ full recognized text together with an array of per-region observations,
 each carrying its own confidence score and bounding box.
  */
 declare class HSOCRResult {
+    /**
+     * Returns a plain object describing this result, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with the result's `text` and `observations`
+     */
+    toJSON(): Record<string, any>;
+
     /**
      * The Swift type name, for JavaScript introspection.
      */
@@ -6485,10 +6667,35 @@ Every async function returns a `Promise` that **always resolves** (never rejects
 | `success` | `Boolean` | `true` if the script ran without error |
 | `result` | `any` | Parsed return value of the script, or `null` on failure |
 | `raw` | `String` | Raw string representation of the result, or the error message on failure |
+## Parallel execution
+Async scripts run **in parallel**, and their Promises resolve in whatever
+order the scripts finish, not the order they were started. A slow script
+(for example one waiting up to two minutes for an unresponsive application
+to answer an AppleEvent) does not hold up any other script.
+If your scripts must run in a strict order, chain them so that each one
+```javascript
+hs.osascript.applescript('tell application "Music" to pause')
+  .then(() => hs.osascript.applescript('tell application "Music" to set sound volume to 50'))
+  .then(() => hs.osascript.applescript('tell application "Music" to play'));
+```
+```javascript
+async function restartMusic() {
+  await hs.osascript.applescript('tell application "Music" to pause');
+  await hs.osascript.applescript('tell application "Music" to set sound volume to 50');
+  await hs.osascript.applescript('tell application "Music" to play');
+}
+```
 ## Sync API
 The `*Sync` variants block until the script completes and return the same
-`{ success, result, raw }` object directly.  Use these only when a Promise
-chain is impractical; they block the JS thread for the duration of the call.
+`{ success, result, raw }` object directly.
+**Warning:** while a sync call is running, Hammerspoon's main thread is
+blocked. Nothing else in Hammerspoon can run: no timers, hotkeys, event
+watchers, UI updates, or console. If the target application is slow to
+respond, Hammerspoon hangs until it does, or until the AppleEvent times out
+(two minutes by default). If the target application tries to talk back to
+Hammerspoon while it is blocked, both wait on each other until that timeout.
+Prefer the async API, and only use the `*Sync` variants for scripts that are
+known to finish quickly.
 The `result` field is typed based on what the script returned: strings,
 numbers, booleans, lists, and records are all mapped to their JavaScript
 equivalents. `null` is used for AppleScript's `missing value` and for any
@@ -6530,6 +6737,7 @@ hs.osascript.applescriptFromFile('/Users/me/scripts/notify.applescript')
 declare namespace hs.osascript {
     /**
      * Run an AppleScript source string.
+Scripts run in parallel; chain Promises if they must run in order (see the module overview).
      * @param source The AppleScript source code to compile and execute.
      * @returns A `Promise` resolving to `{ success, result, raw }`.
      */
@@ -6540,6 +6748,7 @@ declare namespace hs.osascript {
 OSA JavaScript is Apple's Open Scripting Architecture dialect of
 JavaScript, distinct from the JavaScriptCore engine that runs
 Hammerspoon scripts themselves.
+Scripts run in parallel; chain Promises if they must run in order (see the module overview).
      * @param source The OSA JavaScript source code to compile and execute.
      * @returns A `Promise` resolving to `{ success, result, raw }`.
      */
@@ -6576,7 +6785,8 @@ Prefer `applescript()` or `javascript()` over calling this directly.
 
     /**
      * Run an AppleScript source string synchronously.
-Blocks the JS thread until the script completes.
+**Warning:** blocks Hammerspoon's main thread until the script completes, so
+nothing else in Hammerspoon can run in the meantime. Prefer the async API.
      * @param source The AppleScript source code to compile and execute.
      * @returns An object `{ success, result, raw }`, or `null` on XPC failure.
      */
@@ -6584,7 +6794,8 @@ Blocks the JS thread until the script completes.
 
     /**
      * Run an OSA JavaScript source string synchronously.
-Blocks the JS thread until the script completes.
+**Warning:** blocks Hammerspoon's main thread until the script completes, so
+nothing else in Hammerspoon can run in the meantime. Prefer the async API.
      * @param source The OSA JavaScript source code to compile and execute.
      * @returns An object `{ success, result, raw }`, or `null` on XPC failure.
      */
@@ -6592,6 +6803,8 @@ Blocks the JS thread until the script completes.
 
     /**
      * Read a file from disk and execute its contents as AppleScript synchronously.
+**Warning:** blocks Hammerspoon's main thread until the script completes, so
+nothing else in Hammerspoon can run in the meantime. Prefer the async API.
      * @param path Absolute path to the AppleScript source file.
      * @returns An object `{ success, result, raw }`, or `null` on XPC failure.
      */
@@ -6599,6 +6812,8 @@ Blocks the JS thread until the script completes.
 
     /**
      * Read a file from disk and execute its contents as OSA JavaScript synchronously.
+**Warning:** blocks Hammerspoon's main thread until the script completes, so
+nothing else in Hammerspoon can run in the meantime. Prefer the async API.
      * @param path Absolute path to the OSA JavaScript source file.
      * @returns An object `{ success, result, raw }`, or `null` on XPC failure.
      */
@@ -6607,6 +6822,8 @@ Blocks the JS thread until the script completes.
     /**
      * Low-level synchronous execution entry point.
 Prefer `applescriptSync()` or `javascriptSync()` over calling this directly.
+**Warning:** blocks Hammerspoon's main thread until the script completes, so
+nothing else in Hammerspoon can run in the meantime. Prefer the async API.
      * @param source The script source code.
      * @param language The OSA language name — must be `"AppleScript"` or `"JavaScript"`.
      * @returns An object `{ success, result, raw }`, or `null` on XPC failure.
@@ -7340,6 +7557,13 @@ most third-party monitors, which are controlled via DDC rather than software).
      * @returns `true` on success, `false` if the display does not support software brightness control.
      */
     setBrightness(brightness: number): boolean;
+
+    /**
+     * Returns a plain object describing this screen, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with the screen's `id`, `name`, `uuid`, `frame`, `fullFrame`, `position`, `mode` and `rotation`
+     */
+    toJSON(): Record<string, any>;
 
     /**
      * Unique display identifier (matches `CGDirectDisplayID`).
@@ -9911,7 +10135,7 @@ hs.ui.window({x: 100, y: 100, w: 1024, h: 768}).webview(wv).show()
 // Fire and forget
 wv.execJS("document.body.style.backgroundColor = 'lightyellow'")
 
-// With result (note the JS method name is evalJSResult, and the script must `return` its value)
+// With result (the script must `return` its value)
 wv.evalJSResult("return document.title", (result, error) => {
     if (error) { console.log("Error: " + error) }
     else { console.log("Title: " + result) }
@@ -10078,6 +10302,24 @@ The script runs as the body of an async function, so it can use `await`.
      * @returns Self for chaining
      */
     execJS(script: string): UIWebView;
+
+    /**
+     * Execute JavaScript in the web page and deliver the result to a callback
+The script is not evaluated as an expression: it runs as the body of an async
+function, and the result is the value it returns. Use `return` to send a value
+back — a script without one, such as `"document.title"`, gives a result of `null`.
+Because the function is async, the script can use `await`, and if it returns a
+Promise the callback gets the value the Promise resolves to.
+The result is copied out of the page, so it must be a number, string, boolean,
+array, plain object, `null` or `undefined` (which arrives as `null`). Anything else,
+such as a DOM element or a function, is delivered as an error.
+If the script throws, or returns a Promise that rejects, the error is the page's own
+message for it, such as `"Error: boom"` or `"SyntaxError: Unexpected token '}'"`.
+     * @param script The JavaScript function body to run, which should `return` the result
+     * @param callback Called with the result or an error message
+     * @returns Self for chaining
+     */
+    evalJSResult(script: string, callback: (result: any, error: string | null) => void): UIWebView;
 
     /**
      * The URL of the current page, or `null` if no page is loaded
@@ -10429,6 +10671,12 @@ declare namespace hs.window {
 
     /**
      * Get all windows from all applications
+This includes windows in native fullscreen and on other Spaces, with one limitation: macOS
+only reveals a window on a Space that isn't visible if its app has already handed that
+window to an accessibility client, e.g. because Hammerspoon listed it while its Space was
+visible. A window that no accessibility client has looked at since it was created is
+missing until its Space is next visible, unless it's its app's main or focused window,
+which are always included.
      * @returns An array of all windows
      */
     function allWindows(): HSWindow[];
@@ -10441,10 +10689,12 @@ declare namespace hs.window {
 
     /**
      * Get windows for a specific application
+Like `allWindows()`, this includes windows in native fullscreen and on other Spaces, with the
+same limitation.
      * @param app An HSApplication object
-     * @returns An array of windows for that application
+     * @returns An array of windows for that application, or an empty array if `app` is null
      */
-    function windowsForApp(app: HSApplication): HSWindow[];
+    function windowsForApp(app: HSApplication | null): HSWindow[];
 
     /**
      * Get all windows on a specific screen
@@ -10599,6 +10849,13 @@ Requires **Screen Recording** permission.
     axElement(): HSAXElement;
 
     /**
+     * Returns a plain object describing this window, for JSON serialisation
+`JSON.stringify()` calls this automatically, so you rarely need to call it yourself.
+     * @returns An object with the window's `id`, `pid`, `title`, `application` (the owning app's title), `frame`, `isMinimized`, `isFullscreen` and `isStandard`. Values that can't be read are `null`
+     */
+    toJSON(): Record<string, any>;
+
+    /**
      * The window's title
      */
     readonly title: string | null;
@@ -10666,6 +10923,192 @@ ones in particular) otherwise animate the change, or end up at the wrong size.
      * The screen that contains the largest portion of this window.
      */
     readonly screen: HSScreen | null;
+
+}
+
+/**
+ * A connection to a SQLite database, as Node's `DatabaseSync` from `require('node:sqlite')`.
+Every method runs synchronously. Databases are opened with foreign key constraints enforced and
+double-quoted string literals disabled, as in Node.
+Not implemented from Node: `function()`, `aggregate()`, `loadExtension()`,
+`enableLoadExtension()`, `createSession()`, `applyChangeset()`, `backup()`,
+`createTagStore()` and `Symbol.dispose`.
+ */
+declare namespace node {
+}
+
+/**
+ * A connection to a SQLite database, as Node's `DatabaseSync` from `require('node:sqlite')`.
+Every method runs synchronously. Databases are opened with foreign key constraints enforced and
+double-quoted string literals disabled, as in Node.
+Not implemented from Node: `function()`, `aggregate()`, `loadExtension()`,
+`enableLoadExtension()`, `createSession()`, `applyChangeset()`, `backup()`,
+`createTagStore()` and `Symbol.dispose`.
+ */
+declare class DatabaseSync {
+    /**
+     * Opens a SQLite database.
+Statements prepared on this database start with its `readBigInts`, `returnArrays`,
+`allowBareNamedParameters` and `allowUnknownNamedParameters` settings.
+     * @param path The path of the database file, or `":memory:"` for an in-memory database. A leading `~` is expanded to the home directory. Relative paths are relative to Hammerspoon's working directory, so use absolute paths.
+     * @param options The options described above
+     */
+    constructor(path: string, options?: Record<string, any>);
+
+    /**
+     * Opens the database. Only needed if it was constructed with `open: false`, or after
+`close()`. Throws if the database is already open.
+     */
+    open(): void;
+
+    /**
+     * Closes the database, finalizing every statement prepared on it. Throws if the database
+isn't open.
+     */
+    close(): void;
+
+    /**
+     * Runs one or more SQL statements, without returning any results. Statements run in order
+until one fails, which throws.
+     * @param sql The SQL to run
+     */
+    exec(sql: string): void;
+
+    /**
+     * Compiles a SQL statement so it can be run, any number of times, with different parameters.
+Only the first statement in `sql` is compiled.
+     * @param sql The SQL to compile
+     * @returns The prepared statement
+     */
+    prepare(sql: string): StatementSync;
+
+    /**
+     * The file path of a database attached to this connection.
+     * @param dbName The name of the attached database. Defaults to `"main"`.
+     * @returns The path, or `null` for an in-memory database or an unknown name
+     */
+    location(dbName?: string): string | null;
+
+    /**
+     * Whether the database is currently open.
+     */
+    readonly isOpen: boolean;
+
+    /**
+     * Whether the database is inside a transaction. Throws if the database isn't open.
+     */
+    readonly isTransaction: boolean;
+
+}
+
+/**
+ * A prepared statement, as Node's `StatementSync`. Made by `DatabaseSync.prepare()`; it can't be
+constructed directly.
+Parameters are bound the same way for `run()`, `get()`, `all()` and `iterate()`: if the first
+argument is an object (other than a typed array), its properties are bound to named
+parameters (`:name`, `@name` or `$name`), and any remaining arguments are bound, in order, to
+| JavaScript | SQLite |
+|---|---|
+| `null`, `undefined` | NULL |
+| number | REAL (stored as INTEGER in columns with INTEGER affinity) |
+| boolean | INTEGER 1 or 0 |
+| bigint | INTEGER |
+| string | TEXT |
+| typed array (e.g. `Uint8Array`) | BLOB |
+Results come back as `null`, numbers (or `BigInt`s, see `setReadBigInts()`), strings and
+`Uint8Array`s. An INTEGER too large to be a JS number throws, unless `readBigInts` is set.
+ */
+declare class StatementSync {
+    /**
+     * Runs the statement, and returns the number of rows it changed and the ID of the last row
+inserted.
+     * @param params Named parameters (an object) and/or anonymous parameters
+     * @returns The rows changed and the last inserted row ID. These are `BigInt`s if `readBigInts` is set.
+     */
+    run(...params: any[]): { changes: number | bigint, lastInsertRowid: number | bigint };
+
+    /**
+     * Runs the statement and returns its first row.
+     * @param params Named parameters (an object) and/or anonymous parameters
+     * @returns The first row, as an object keyed by column name (or an array, if `returnArrays` is set), or `undefined` if there are no rows
+     */
+    get(...params: any[]): any;
+
+    /**
+     * Runs the statement and returns all of its rows.
+     * @param params Named parameters (an object) and/or anonymous parameters
+     * @returns The rows, each an object keyed by column name (or an array, if `returnArrays` is set)
+     */
+    all(...params: any[]): any[];
+
+    /**
+     * Runs the statement and returns an iterator over its rows, which are read as the iterator
+is advanced. Running the statement again invalidates the iterator.
+     * @param params Named parameters (an object) and/or anonymous parameters
+     * @returns An iterator over the rows
+     */
+    iterate(...params: any[]): IterableIterator<any>;
+
+    /**
+     * Describes the columns the statement returns.
+     * @returns One object per column: its name in the result (`name`), and, for a column read directly from a table, the original column name, database, table and declared type
+     */
+    columns(): Array<{ column: string | null, database: string | null, name: string, table: string | null, type: string | null }>;
+
+    /**
+     * Sets whether INTEGER values are read as `BigInt`s, including `run()`'s `changes` and
+`lastInsertRowid`.
+     * @param enabled Whether to read `BigInt`s
+     */
+    setReadBigInts(enabled: boolean): void;
+
+    /**
+     * Sets whether rows are returned as arrays of values instead of objects.
+     * @param enabled Whether to return arrays
+     */
+    setReturnArrays(enabled: boolean): void;
+
+    /**
+     * Sets whether named parameters may be given without their prefix character (`{ id: 1 }`
+for `:id`).
+     * @param enabled Whether to allow bare names
+     */
+    setAllowBareNamedParameters(enabled: boolean): void;
+
+    /**
+     * Sets whether named parameters the statement doesn't use are ignored, rather than throwing.
+     * @param enabled Whether to ignore unknown names
+     */
+    setAllowUnknownNamedParameters(enabled: boolean): void;
+
+    /**
+     * The statement's SQL, with each parameter replaced by the value most recently bound to it.
+     */
+    readonly expandedSQL: string | null;
+
+    /**
+     * The statement's SQL, as passed to `prepare()`.
+     */
+    readonly sourceSQL: string | null;
+
+}
+
+/**
+ * Iterates over the rows of a statement, as returned by `StatementSync.iterate()`. It's a
+standard JS iterator, so it works with `for...of`, spread syntax and iterator helpers.
+ */
+declare class StatementSyncIterator {
+    /**
+     * Reads the next row.
+     * @returns The next row as `value`, or `done: true` (with `value` `null`) once there are no more rows
+     */
+    next(): { done: boolean, value: any };
+
+    /**
+     * Stops iterating, releasing the statement. `for...of` calls this when the loop exits early.
+     * @returns `{ done: true, value: null }`
+     */
+    return(): { done: boolean, value: any };
 
 }
 

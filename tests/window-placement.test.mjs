@@ -36,7 +36,7 @@ function fixture(rejections = 1) {
 		pid: 10,
 		id: 20,
 		screen: source,
-		application: { title: 'Code', isRunning: true },
+		application: { name: 'Code', isRunning: true },
 		get frame() { return frame; },
 		set frame(value) {
 			writes++;
@@ -98,7 +98,7 @@ test('new Messages windows use the laptop layout', () => {
 	globalThis.hs.screen.primary = () => state.screens[0];
 	const window = { ...state.window, title: 'Messages' };
 	const app = {
-		title: 'Messages', bundleID: 'com.apple.MobileSMS', isRunning: true,
+		name: 'Messages', bundleID: 'com.apple.MobileSMS', isRunning: true,
 		allWindows: [window], mainWindow: window
 	};
 	window.application = app;
@@ -112,11 +112,11 @@ test('reset places Messages even when name lookup matches its assistant extensio
 	globalThis.hs.screen.primary = () => state.screens[0];
 	const window = { ...state.window, title: 'Messages' };
 	const app = {
-		pid: 10, title: 'Messages', bundleID: 'com.apple.MobileSMS', isRunning: true,
+		pid: 10, name: 'Messages', bundleID: 'com.apple.MobileSMS', isRunning: true,
 		allWindows: [window], mainWindow: window
 	};
 	const helper = {
-		pid: 11, title: 'Messages Assistant Extension',
+		pid: 11, name: 'Messages Assistant Extension',
 		bundleID: 'com.apple.messages.AssistantExtension', isRunning: true, allWindows: []
 	};
 	window.application = app;

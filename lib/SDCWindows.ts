@@ -45,7 +45,7 @@ export default class SDCWindows {
 
 	layoutForApp(app: HSApplication | null) {
 		if (!app) return null;
-		return windowLayout.find(layout => layout.apps.some(name => name === app.title || name === app.bundleID)) || null;
+		return windowLayout.find(layout => layout.apps.some(name => name === app.name || name === app.bundleID)) || null;
 	}
 
 	chooseScreen(options?: ScreenOptions | null) {
@@ -219,7 +219,7 @@ export default class SDCWindows {
 		const changingScreens = window.screen.id !== targetScreen.id;
 		const frame = this.layoutFrame(targetScreen, size);
 		if (this.windowMatchesFrame(window, targetScreen, frame)) return;
-		const appName = window.application && window.application.title;
+		const appName = window.application && window.application.name;
 
 		if (appName === 'Terminal') {
 			const terminalFontSize = setting('tertiaryMonitorNames').includes(targetScreen.id) ? 20 : 14;
@@ -246,8 +246,8 @@ export default class SDCWindows {
 	}
 
 	appMove(app: HSApplication | null, screen: HSScreen | null, size: GridSize) {
-		if (!app || !app.title || !app.isRunning) return;
-		if (ignoreTitles.includes(app.title)) return;
+		if (!app || !app.name || !app.isRunning) return;
+		if (ignoreTitles.includes(app.name)) return;
 		app.allWindows.forEach(window => this.placeWindow(window, screen, size));
 	}
 
@@ -257,7 +257,7 @@ export default class SDCWindows {
 		const window = app.allWindows.find(candidate => candidate.title === title) || app.mainWindow;
 		if (!window || ignoreTitles.includes(window.title ?? '')) return;
 
-		const browser = browsers.find(item => item.name === app.title || item.bundleID === app.bundleID);
+		const browser = browsers.find(item => item.name === app.name || item.bundleID === app.bundleID);
 		if (browser) {
 			if (browser.ignoreWindowTitles && browser.ignoreWindowTitles.includes(window.title ?? '')) return;
 			const layout = this.layoutForApp(app);
@@ -265,13 +265,13 @@ export default class SDCWindows {
 			return;
 		}
 
-		if (app.title === 'Messages' || app.bundleID === 'com.apple.MobileSMS') {
+		if (app.name === 'Messages' || app.bundleID === 'com.apple.MobileSMS') {
 			const layout = this.layoutForApp(app);
 			if (layout) this.placeWindow(window, this.chooseScreen(layout.screens), this.chooseSize(layout.sizes));
 			return;
 		}
 
-		if (['TextEdit', 'Obsidian'].includes(app.title ?? '')) {
+		if (['TextEdit', 'Obsidian'].includes(app.name ?? '')) {
 			if (app.allWindows.length === 1 && window.title !== 'Open') {
 				const layout = this.layoutForApp(app);
 				if (layout) this.placeWindow(window, this.chooseScreen(layout.screens), this.chooseSize(layout.sizes));
@@ -279,7 +279,7 @@ export default class SDCWindows {
 			return;
 		}
 
-		if (['Terminal', 'iTerm2', 'Ghostty'].includes(app.title ?? '')) {
+		if (['Terminal', 'iTerm2', 'Ghostty'].includes(app.name ?? '')) {
 			if (window.title?.includes('⌥⌘1')) {
 				const layout = this.layoutForApp(app);
 				if (layout) this.placeWindow(window, this.chooseScreen(layout.screens), this.chooseSize(layout.sizes));
@@ -294,7 +294,7 @@ export default class SDCWindows {
 		if (!window) return;
 		this.moveWindowIfCloseToPreset(window);
 
-		if (app.title !== setting('terminalAppName')) return;
+		if (app.name !== setting('terminalAppName')) return;
 		const screen = window.screen;
 		const frame = window.frame;
 		if (!screen || !frame) return;
@@ -318,7 +318,7 @@ export default class SDCWindows {
 		if (!element) return;
 
 		const notifications = [hs.ax.notificationTypes.windowCreated];
-		const isTerminal = ['Terminal', 'iTerm2', 'Ghostty'].includes(app.title ?? '');
+		const isTerminal = ['Terminal', 'iTerm2', 'Ghostty'].includes(app.name ?? '');
 		if (isTerminal) notifications.push(hs.ax.notificationTypes.windowMoved);
 		const listener = (notification: string, windowElement: HSAXElement) => {
 			if (notification === hs.ax.notificationTypes.windowCreated) {
@@ -332,7 +332,7 @@ export default class SDCWindows {
 			hs.ax.on(element, notifications, listener);
 			this.watchedApps.set(app.pid, { element, notifications, listener });
 		} catch (error) {
-			console.warn(`[SDCWindows] Could not watch ${app.title}: ${error instanceof Error ? error.message : String(error)}`);
+			console.warn(`[SDCWindows] Could not watch ${app.name}: ${error instanceof Error ? error.message : String(error)}`);
 		}
 	}
 
